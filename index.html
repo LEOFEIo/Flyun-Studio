@@ -87,20 +87,52 @@
 }
 
         /* 白皮书视图 */
-        #whitepaper-view { 
-            position: fixed; inset: 0; z-index: 200; background: rgba(0,0,0,0.98); 
-            padding: 100px 10%; transform: translateY(100%); transition: 0.8s cubic-bezier(0.19, 1, 0.22, 1); overflow-y: auto; 
-        }
-        #whitepaper-view.active { transform: translateY(0); }
-        .paper-content { max-width: 800px; margin: 0 auto; border-left: 1px solid var(--cyan); padding-left: 40px; }
-        .paper-title { font-size: 32px; color: var(--cyan); margin-bottom: 40px; font-family: 'Syncopate'; }
-        .paper-section { margin-bottom: 40px; opacity: 0.8; font-size: 14px; line-height: 1.8; }
-        .close-btn { position: fixed; top: 40px; right: 40px; color: var(--cyan); border: 1px solid var(--cyan); padding: 10px 20px; cursor: pointer; font-size: 10px; z-index: 201; }
+  <div id="whitepaper-view">
+    <div class="close-btn" onclick="togglePaper()">CLOSE_TERMINAL [ESC]</div>
+    <div class="paper-content">
+        <div class="paper-tag">// DECRYPTED_FILE: STRATEGIC_PLAN_2026 //</div>
+        <h2 class="paper-title">WHITEPAPER 2.0: THE CLOUD MANIFESTO</h2>
 
-        .hud-bottom { position: absolute; bottom: 40px; left: 50px; font-size: 9px; color: rgba(0, 243, 255, 0.3); letter-spacing: 2px; }
-    </style>
-</head>
-<body>
+        <div class="paper-section">
+            <h3>[ MISSION ] 空间智能协议</h3>
+            <p>Flyun Studio 旨在打破“屏幕”作为交互终点的现状。我们认为，2026 年的数字体验应是<b>物理与算法的共振</b>。通过 LEO 架构师提出的 AFE 引擎，我们将云端数据直接转化为人类感官的电讯号。</p>
+        </div>
+
+        <div style="display: flex; gap: 20px; margin: 30px 0;">
+            <div style="flex: 1; border: 1px solid var(--purple); padding: 15px; font-size: 8px;">
+                <p>// MARKET_PENETRATION_CHART</p>
+                <div style="height: 100px; display: flex; align-items: flex-end; gap: 5px; margin-top: 10px;">
+                    <div style="width: 20%; height: 30%; background: var(--purple); opacity: 0.5;"></div>
+                    <div style="width: 20%; height: 50%; background: var(--purple); opacity: 0.7;"></div>
+                    <div style="width: 20%; height: 85%; background: var(--cyan); box-shadow: 0 0 10px var(--cyan);"></div>
+                </div>
+                <p style="margin-top: 10px;">EST. GROWTH +240%</p>
+            </div>
+            <div style="flex: 1; border: 1px solid var(--cyan); padding: 15px; font-size: 8px;">
+                <p>// ALGORITHM_STABILITY_INDEX</p>
+                <div style="height: 100px; border-left: 1px solid #444; border-bottom: 1px solid #444; position: relative; margin-top: 10px;">
+                    <svg viewBox="0 0 100 50" style="fill:none; stroke:var(--cyan); stroke-width:1;">
+                        <path d="M0 45 Q 25 10, 50 35 T 100 5" />
+                    </svg>
+                </div>
+                <p style="margin-top: 10px;">AFE ENGINE V4.02</p>
+            </div>
+        </div>
+
+        <div class="paper-section">
+            <h3>[ PLAN 1.0 ] 硬件分发与定制</h3>
+            <p>通过<b>“云端造物”</b>系列，我们将限量生产具备唯一 Hash 的赛博周边。重点产品包括 [PRIVATE_SEQUENCE] 交互套件，预计在 2026 年 Q3 开启首个 Drop。</p>
+            <div style="margin-top:20px;">
+                <img src="https://img.js.design/assets/static/767980b1e843285749964585c5316dfc.png" style="width:100%; filter: contrast(1.2) brightness(0.8) sepia(100%) hue-rotate(150deg); border: 1px solid var(--cyan);">
+            </div>
+        </div>
+
+        <div class="paper-section">
+            <h3>[ PLAN 2.0 ] 虚拟空间 SAAS</h3>
+            <p>基于 LEO 的毕业设计成果，我们提供虚拟展厅的交互架构。这不仅仅是建模，而是基于 <b>UX 心理学</b>的路径优化系统。目标市场：高端艺术馆、科技品牌旗舰店。</p>
+        </div>
+    </div>
+</div>
 
     <canvas id="warpCanvas"></canvas>
     <div class="vignette"></div>
@@ -224,4 +256,5 @@
     </script>
 </body>
 </html>
+
 
