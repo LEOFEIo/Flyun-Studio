@@ -2,208 +2,98 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FLYUN STUDIO // Chronos Warp v2.0</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>FLYUN STUDIO // Chronos Warp v2.1</title>
     <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syncopate:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root { --cyan: #00F3FF; --purple: #BD00FF; --black: #000; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background-color: var(--black); color: white; font-family: 'Space Mono', monospace; overflow: hidden; cursor: crosshair; }
-        canvas { position: fixed; top: 0; left: 0; z-index: 1; }
+        
+        /* 允许手机端滚动查看业务板块 */
+        body { 
+            background-color: var(--black); 
+            color: white; 
+            font-family: 'Space Mono', monospace; 
+            overflow-x: hidden; 
+            background: #000;
+        }
+
+        canvas { position: fixed; top: 0; left: 0; z-index: 1; pointer-events: none; }
         .vignette { position: fixed; inset: 0; background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.9) 100%); z-index: 2; pointer-events: none; }
 
-        /* 导航栏 */
-        nav { position: fixed; top: 0; width: 100%; padding: 40px; display: flex; justify-content: space-between; align-items: center; z-index: 100; }
-        .logo { font-family: 'Syncopate', sans-serif; color: var(--cyan); letter-spacing: 5px; font-size: 14px; text-decoration: none; }
-        .nav-links a { color: white; text-decoration: none; margin-left: 30px; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; opacity: 0.5; transition: 0.3s; cursor: pointer; }
-        .nav-links a:hover { opacity: 1; color: var(--cyan); text-shadow: 0 0 10px var(--cyan); }
-
-        /* 主视图容器 */
-        #viewport { position: relative; z-index: 10; height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; perspective: 2000px; transition: 0.8s ease; }
-
-        .main-title { font-family: 'Syncopate', sans-serif; font-size: 5vw; letter-spacing: 15px; color: white; margin-bottom: 60px; text-align: center; }
-
-        /* 业务板块：时空舱位 */
-        .module-container { display: flex; gap: 30px; transform-style: preserve-3d; }
-        .module-box { 
-            width: 280px; padding: 35px; background: rgba(255, 255, 255, 0.02); 
-            border: 1px solid rgba(0, 243, 255, 0.1); backdrop-filter: blur(15px); 
-            transition: 0.5s cubic-bezier(0.2, 0.8, 0.2, 1); cursor: pointer; text-decoration: none; color: white;
+        /* 导航栏：适配移动端间距 */
+        nav { 
+            position: fixed; top: 0; width: 100%; padding: 20px 30px; 
+            display: flex; justify-content: space-between; align-items: center; 
+            z-index: 100; backdrop-filter: blur(10px);
         }
-        .module-box:hover { border-color: var(--cyan); background: rgba(0, 243, 255, 0.08); transform: translateZ(100px); box-shadow: 0 0 50px rgba(0, 243, 255, 0.2); }
-        .module-header { font-size: 9px; color: var(--purple); letter-spacing: 2px; margin-bottom: 15px; border-bottom: 1px solid rgba(189, 0, 255, 0.3); display: inline-block; }
-        .module-box h2 { font-size: 14px; letter-spacing: 2px; margin-bottom: 12px; }
+        .logo { font-family: 'Syncopate', sans-serif; color: var(--cyan); letter-spacing: 3px; font-size: 12px; text-decoration: none; }
+        .nav-links a { color: white; text-decoration: none; margin-left: 15px; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; opacity: 0.6; cursor: pointer; }
+
+        /* 主视图：手机端取消固定高度，改为最小高度 */
+        #viewport { 
+            position: relative; z-index: 10; 
+            min-height: 100vh; 
+            display: flex; flex-direction: column; justify-content: center; align-items: center; 
+            perspective: 2000px; transition: 0.8s ease;
+            padding: 100px 20px; /* 顶部留出导航位置 */
+        }
+
+        .main-title { 
+            font-family: 'Syncopate', sans-serif; 
+            font-size: 8vw; 
+            letter-spacing: 10px; 
+            color: white; 
+            margin-bottom: 40px; 
+            text-align: center; 
+        }
+
+        /* 核心业务板块：手机端自动纵向堆叠 */
+        .module-container { 
+            display: flex; 
+            gap: 20px; 
+            transform-style: preserve-3d;
+            flex-wrap: wrap; /* 关键：允许折行 */
+            justify-content: center;
+            width: 100%;
+        }
+
+        .module-box { 
+            width: 280px; 
+            padding: 30px; 
+            background: rgba(255, 255, 255, 0.03); 
+            border: 1px solid rgba(0, 243, 255, 0.15); 
+            backdrop-filter: blur(15px); 
+            transition: 0.5s cubic-bezier(0.2, 0.8, 0.2, 1); 
+            cursor: pointer; text-decoration: none; color: white;
+        }
+
+        /* 手机端取消 3D 旋转动画以保证兼容性 */
+        @media (min-width: 769px) {
+            .module-box:hover { border-color: var(--cyan); background: rgba(0, 243, 255, 0.08); transform: translateZ(100px); box-shadow: 0 0 50px rgba(0, 243, 255, 0.2); }
+        }
+
+        @media (max-width: 768px) {
+            .main-title { font-size: 12vw; margin-bottom: 30px; }
+            .module-box { width: 100%; max-width: 340px; } /* 手机端宽度占满 */
+            .nav-links a { margin-left: 10px; font-size: 8px; }
+        }
+
+        .module-header { font-size: 9px; color: var(--purple); letter-spacing: 2px; margin-bottom: 10px; border-bottom: 1px solid rgba(189, 0, 255, 0.3); display: inline-block; }
+        .module-box h2 { font-size: 14px; letter-spacing: 2px; margin-bottom: 10px; }
         .module-box p { font-size: 11px; line-height: 1.6; color: rgba(255,255,255,0.4); }
 
-        /* 白皮书视图 */
+        /* 白皮书：全屏适配 */
         #whitepaper-view { 
             position: fixed; inset: 0; z-index: 200; background: rgba(0,0,0,0.98); 
-            padding: 100px 10%; transform: translateY(100%); transition: 0.8s cubic-bezier(0.19, 1, 0.22, 1); overflow-y: auto; 
+            padding: 80px 5%; transform: translateY(100%); transition: 0.8s cubic-bezier(0.19, 1, 0.22, 1); overflow-y: auto; 
         }
         #whitepaper-view.active { transform: translateY(0); }
-        .paper-content { max-width: 800px; margin: 0 auto; border-left: 1px solid var(--cyan); padding-left: 40px; }
-        .paper-title { font-size: 32px; color: var(--cyan); margin-bottom: 40px; font-family: 'Syncopate'; }
-        .paper-section { margin-bottom: 40px; opacity: 0.8; font-size: 14px; line-height: 1.8; }
-        .close-btn { position: fixed; top: 40px; right: 40px; color: var(--cyan); border: 1px solid var(--cyan); padding: 10px 20px; cursor: pointer; font-size: 10px; z-index: 201; }
+        .paper-content { max-width: 800px; margin: 0 auto; border-left: 2px solid var(--cyan); padding-left: 20px; }
+        .paper-title { font-size: 24px; color: var(--cyan); margin-bottom: 30px; font-family: 'Syncopate'; }
+        .paper-section { margin-bottom: 30px; font-size: 13px; line-height: 1.8; color: #ccc; }
+        .close-btn { position: fixed; top: 20px; right: 20px; color: var(--cyan); border: 1px solid var(--cyan); padding: 8px 15px; cursor: pointer; font-size: 10px; z-index: 201; background: #000; }
 
-        .hud-bottom { position: absolute; bottom: 40px; left: 50px; font-size: 9px; color: rgba(0, 243, 255, 0.3); letter-spacing: 2px; }
-    </style>
-</head>
-<body>
+        .hud-bottom { width: 100%; margin-top: 50px; font-size: 8px; color: rgba(0, 243, 255, 0.3); letter-spacing: 1px; text-align: center; }
 
-    <canvas id="warpCanvas"></canvas>
-    <div class="vignette"></div>
-
-    <nav>
-        <a href="/" class="logo">FLYUN</a>
-        <div class="nav-links">
-            <a onclick="togglePaper()">Whitepaper</a>
-            <a href="#lab">Laboratory</a>
-            <a href="#archive">Archive</a>
-        </div>
-    </nav>
-
-    <div id="viewport">
-        <h1 class="main-title">FLYUN</h1>
-        
-        <div class="module-container">
-            <a class="module-box" data-depth="0.2">
-                <div class="module-header">SEQ_01</div>
-                <h2>PRIVATE_SEQUENCE</h2>
-                <p>AI 感官交互硬件。实时生成独一无二的愉悦算法，探索数字与肉体的边界。</p>
-            </a>
-            <a class="module-box" data-depth="0.4">
-                <div class="module-header">LAB_02</div>
-                <h2>SPATIAL_RESEARCH</h2>
-                <p>虚拟展厅与交互实验室。基于 UX 模型，重构 3D 空间的叙事逻辑与沉浸体验。</p>
-            </a>
-            <a class="module-box" data-depth="0.3">
-                <div class="module-header">ART_03</div>
-                <h2>ALGO_ARTIFACTS</h2>
-                <p>算法造物电商。每一件像素定制品均有独立哈希编号，实现云端造物的物理固化。</p>
-            </a>
-        </div>
-
-        <div class="hud-bottom">
-            SYSTEM_STATUS: WARPING_MODE // FOUNDER: LEOFEIo // ENGINE: GODOT_AI_V4
-        </div>
-    </div>
-
-<div id="whitepaper-view">
-        <div class="close-btn" onclick="togglePaper()">CLOSE_TERMINAL [ESC]</div>
-        <div class="paper-content">
-            <div class="paper-tag">// SECURE_ACCESS // LEVEL_01_AUTHORIZED</div>
-            <h2 class="paper-title">WHITEPAPER 2.0: THE CLOUD MANIFESTO</h2>
-
-            <div class="paper-section">
-                <h3 style="color:var(--purple); margin-bottom:15px;">// 01. 空间智能与感官协议 (MISSION)</h3>
-                <p>在 2026 年，数字世界不再是冰冷的屏幕。Flyun Studio 的核心使命是解构“物理边界”。我们认为，优秀的交互应当是**空间的延伸**与**感官的数字化**。通过 AI 算法，我们正在将虚拟空间的深度信息转化为可感知的物理震动、光效与形态，定义属于未来的“数字生存美学”。</p>
-            </div>
-
-            <div class="paper-section">
-                <h3 style="color:var(--cyan); margin-bottom:15px;">// 02. 商业企划 1.0: 物理固化与私密序列 (PRIVATE_SEQ)</h3>
-                <p>第一阶段，我们聚焦于**极小规模、高定制化**的硬件分发。利用生成式 AI，Flyun 实现了从“像素到实体”的快速转化：</p>
-                <ul style="list-style: none; margin-top: 15px; font-size: 13px; color: rgba(255,255,255,0.7);">
-                    <li style="margin-bottom: 10px;">• <b>算法造物 (Algo-Artifacts):</b> 每一件像素艺术品与数码配件均由用户输入关键词实时生成，确保全球唯一。</li>
-                    <li style="margin-bottom: 10px;">• <b>感官硬件 (Private Sequence):</b> 将 AI 植入情趣与生活硬件，根据生物反馈自适应演化频率。这不只是工具，而是身体的数字伴侣。</li>
-                </ul>
-                <div style="margin-top: 20px; border: 1px solid rgba(0,243,255,0.2); padding: 10px; text-align: center;">
-                    <p style="font-size: 10px; color: var(--purple);">[ CONCEPT_VISUAL: PRIVATE_SEQUENCE_V1 ]</p>
-                    <img src="https://img.js.design/assets/static/767980b1e843285749964585c5316dfc.png" style="width: 100%; opacity: 0.8; margin-top: 10px; filter: grayscale(100%) contrast(120%);">
-                </div>
-            </div>
-
-            <div class="paper-section">
-                <h3 style="color:var(--cyan); margin-bottom:15px;">// 03. 商业企划 2.0: 空间智能与生态链接 (SPATIAL_ECO)</h3>
-                <p>在第二阶段，Flyun Studio 将从“单体造物”转向“空间生态”。我们将毕业论文中的 **Spatial UX** 模型转化为商业 B 端服务：</p>
-                <ul style="list-style: none; margin-top: 15px; font-size: 13px; color: rgba(255,255,255,0.7);">
-                    <li style="margin-bottom: 10px;">• <b>虚拟展厅云 (Virtual Pavilion):</b> 为博物馆与高端品牌提供具备“时空感”的 3D 展示架构，通过 AI 优化观展路径。</li>
-                    <li style="margin-bottom: 10px;">• <b>跨时空同步协议 (Sync-Link):</b> 桥接异地感官。A 空间的动作将实时转化为 B 空间的物理反馈，实现真正的“云端触达”。</li>
-                </ul>
-                <div style="margin-top: 20px; border: 1px solid rgba(0,243,255,0.2); padding: 10px; text-align: center;">
-                    <p style="font-size: 10px; color: var(--purple);">[ ARCHITECTURAL_MAPPING: SPATIAL_UX_LOGIC ]</p>
-                    [Image of a futuristic 3D architectural blueprint of a virtual museum with glowing AI pathfinding nodes]
-                </div>
-            </div>
-
-            <div class="paper-section">
-                <h3>// 04. 稀缺性验证 (REGISTRY)</h3>
-                <p>所有 Flyun 出品的造物均通过 <b>Registry 系统</b> 进行认证。每一件产品都有其不可篡改的哈希编号与链上身份，确保在无限复制的数字时代，拥有 Flyun 的造物即拥有一份独一无二的物理存档。</p>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        const canvas = document.getElementById('warpCanvas');
-        const ctx = canvas.getContext('2d');
-        let stars = [];
-        let speed = 2;
-        let mouseX = 0, mouseY = 0;
-
-        window.onresize = () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; };
-        window.onresize();
-
-        class Star {
-            constructor() { this.reset(); this.z = Math.random() * canvas.width; }
-            reset() { this.x = (Math.random() - 0.5) * canvas.width; this.y = (Math.random() - 0.5) * canvas.height; this.z = canvas.width; this.pz = this.z; }
-            update() {
-                this.pz = this.z;
-                this.z -= speed;
-                if (this.z < 1) this.reset();
-            }
-            show() {
-                ctx.strokeStyle = '#00F3FF';
-                let sx = (this.x / this.z) * canvas.width + canvas.width/2;
-                let sy = (this.y / this.z) * canvas.height + canvas.height/2;
-                let px = (this.x / this.pz) * canvas.width + canvas.width/2;
-                let py = (this.y / this.pz) * canvas.height + canvas.height/2;
-                ctx.beginPath(); ctx.lineWidth = (1 - this.z / canvas.width) * 3;
-                ctx.moveTo(px, py); ctx.lineTo(sx, sy); ctx.stroke();
-            }
-        }
-
-        for (let i = 0; i < 600; i++) stars.push(new Star());
-
-        function draw() {
-            ctx.fillStyle = '#000'; ctx.fillRect(0, 0, canvas.width, canvas.height);
-            ctx.save();
-            ctx.translate(mouseX * 0.1, mouseY * 0.1);
-            stars.forEach(s => { s.update(); s.show(); });
-            ctx.restore();
-            requestAnimationFrame(draw);
-        }
-        draw();
-
-        document.addEventListener('mousemove', (e) => {
-            mouseX = e.clientX - canvas.width / 2;
-            mouseY = e.clientY - canvas.height / 2;
-            if(!document.getElementById('whitepaper-view').classList.contains('active')) {
-                speed = 2 + (Math.abs(mouseX) + Math.abs(mouseY)) / 150;
-            }
-            const boxes = document.querySelectorAll('.module-box');
-            boxes.forEach(box => {
-                const depth = box.getAttribute('data-depth');
-                const rx = (e.clientY - window.innerHeight/2) * -0.05 * depth;
-                const ry = (e.clientX - window.innerWidth/2) * 0.05 * depth;
-                box.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg) translateZ(${depth * 50}px)`;
-            });
-        });
-
-        function togglePaper() {
-            const paper = document.getElementById('whitepaper-view');
-            const viewport = document.getElementById('viewport');
-            paper.classList.toggle('active');
-            if(paper.classList.contains('active')) {
-                viewport.style.opacity = '0.1';
-                viewport.style.transform = 'scale(0.9) translateZ(-500px)';
-                speed = 0.5;
-            } else {
-                viewport.style.opacity = '1';
-                viewport.style.transform = 'scale(1) translateZ(0)';
-                speed = 2;
-            }
-        }
-    </script>
-</body>
-</html>
 
