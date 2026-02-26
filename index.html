@@ -4,16 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FLYUN STUDIO // OBJECTS FROM THE CLOUD</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;700&family=Space+Mono&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --neon-cyan: #00F3FF;
-            --deep-black: #080808;
+            --neon-purple: #BD00FF;
+            --deep-black: #050505;
             --glass: rgba(255, 255, 255, 0.03);
             --border: rgba(0, 243, 255, 0.2);
         }
 
-        * { margin: 0; padding: 0; box-box: border-box; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             background-color: var(--deep-black);
@@ -21,6 +22,15 @@
             font-family: 'Inter', sans-serif;
             overflow-x: hidden;
             line-height: 1.6;
+            cursor: crosshair;
+        }
+
+        /* 动态背景：数据流 */
+        #bg-canvas {
+            position: fixed;
+            top: 0; left: 0;
+            z-index: -1;
+            opacity: 0.3;
         }
 
         /* 动态背景扫描线 */
@@ -28,18 +38,17 @@
             content: "";
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
-                        linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
-            background-size: 100% 2px, 3px 100%;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.2) 50%);
+            background-size: 100% 4px;
             pointer-events: none;
             z-index: 100;
         }
 
-        /* 导航栏 */
+        /* 导航栏设计优化 */
         nav {
             position: fixed;
             top: 0; width: 100%;
-            padding: 30px 50px;
+            padding: 40px 60px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -53,20 +62,42 @@
             letter-spacing: -1px;
             color: var(--neon-cyan);
             text-transform: uppercase;
+            text-shadow: 0 0 10px var(--neon-cyan);
         }
+
+        .nav-links { display: flex; gap: 40px; }
 
         .nav-links a {
             color: white;
             text-decoration: none;
-            margin-left: 30px;
-            font-size: 12px;
-            letter-spacing: 2px;
+            font-family: 'Space Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 3px;
             text-transform: uppercase;
-            opacity: 0.6;
+            opacity: 0.5;
+            transition: 0.4s;
+            position: relative;
+            padding: 5px 0;
+        }
+
+        /* 导航文字交互：电子扫描线 */
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0;
+            width: 0; height: 1px;
+            background: var(--neon-cyan);
+            box-shadow: 0 0 8px var(--neon-cyan);
             transition: 0.3s;
         }
 
-        .nav-links a:hover { opacity: 1; color: var(--neon-cyan); }
+        .nav-links a:hover {
+            opacity: 1;
+            color: var(--neon-cyan);
+            text-shadow: 0 0 8px var(--neon-cyan);
+        }
+
+        .nav-links a:hover::after { width: 100%; }
 
         /* 核心展示区 */
         .hero {
@@ -76,148 +107,228 @@
             justify-content: center;
             align-items: center;
             text-align: center;
-            position: relative;
+            perspective: 1000px;
         }
 
         .hero h1 {
-            font-size: 8vw;
+            font-size: 9vw;
             font-weight: 700;
             letter-spacing: -0.05em;
-            margin-bottom: 10px;
-            background: linear-gradient(to bottom, #fff, #444);
+            line-height: 0.9;
+            margin-bottom: 20px;
+            background: linear-gradient(to bottom, #fff 30%, #444 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            animation: breathe 4s ease-in-out infinite;
+        }
+
+        @keyframes breathe {
+            0%, 100% { transform: translateZ(0px); opacity: 0.9; }
+            50% { transform: translateZ(50px); opacity: 1; }
         }
 
         .hero p {
             font-family: 'Space Mono', monospace;
             color: var(--neon-cyan);
-            letter-spacing: 5px;
-            font-size: 14px;
+            letter-spacing: 8px;
+            font-size: 12px;
             text-transform: uppercase;
+            opacity: 0.7;
         }
 
-        /* 产品 Drop 区域 */
+        /* 磁性卡片容器 */
         .drop-section {
-            padding: 100px 50px;
+            padding: 100px 60px;
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
             gap: 40px;
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
+            perspective: 1500px;
         }
 
         .product-card {
             background: var(--glass);
             border: 1px solid var(--border);
-            padding: 40px;
+            padding: 50px;
             position: relative;
-            transition: 0.5s;
-            cursor: crosshair;
+            transition: box-shadow 0.5s, border-color 0.5s;
+            backdrop-filter: blur(10px);
+            transform-style: preserve-3d;
         }
 
         .product-card:hover {
-            border-color: white;
-            background: rgba(255,255,255,0.05);
+            border-color: var(--neon-cyan);
+            box-shadow: 0 0 30px rgba(0, 243, 255, 0.1);
         }
 
         .product-card h2 {
             font-family: 'Space Mono', monospace;
             font-size: 18px;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
             color: var(--neon-cyan);
+            letter-spacing: 2px;
         }
 
         .product-card p {
             font-size: 13px;
-            opacity: 0.5;
-            margin-bottom: 30px;
+            opacity: 0.4;
+            margin-bottom: 40px;
+            height: 60px;
         }
 
         .buy-btn {
             display: inline-block;
-            padding: 10px 20px;
+            padding: 12px 25px;
             border: 1px solid var(--neon-cyan);
             color: var(--neon-cyan);
             text-decoration: none;
+            font-family: 'Space Mono', monospace;
             font-size: 10px;
             letter-spacing: 2px;
             transition: 0.3s;
+            position: relative;
+            overflow: hidden;
         }
 
         .buy-btn:hover {
             background: var(--neon-cyan);
             color: black;
+            box-shadow: 0 0 20px var(--neon-cyan);
         }
 
-        /* 实验室入口按钮 */
+        /* 实验室按钮升级 */
         .lab-trigger {
-            margin-top: 50px;
-            padding: 20px 40px;
-            background: white;
-            color: black;
+            margin-top: 60px;
+            padding: 20px 50px;
+            background: transparent;
+            border: 1px solid white;
+            color: white;
             text-decoration: none;
             font-weight: 700;
+            font-family: 'Space Mono', monospace;
             text-transform: uppercase;
-            letter-spacing: 3px;
-            transition: 0.3s;
+            letter-spacing: 5px;
+            transition: 0.4s;
+            position: relative;
         }
 
         .lab-trigger:hover {
-            background: var(--neon-cyan);
-            box-shadow: 0 0 30px var(--neon-cyan);
+            background: white;
+            color: black;
+            box-shadow: 0 0 40px rgba(255,255,255,0.4);
+            transform: scale(1.05);
         }
 
         footer {
-            padding: 100px 50px;
-            border-top: 1px solid #222;
+            padding: 80px 60px;
+            border-top: 1px solid rgba(255,255,255,0.05);
             text-align: center;
             font-family: 'Space Mono', monospace;
-            font-size: 10px;
+            font-size: 9px;
             color: #444;
+            letter-spacing: 2px;
         }
     </style>
 </head>
 <body>
 
+    <canvas id="bg-canvas"></canvas>
+
     <nav>
         <div class="logo">FLYUN // STUDIO</div>
         <div class="nav-links">
-            <a href="#">Archive</a>
-            <a href="#">Laboratory</a>
-            <a href="#">Registry</a>
+            <a href="#archive">Archive</a>
+            <a href="#lab">Laboratory</a>
+            <a href="#registry">Registry</a>
         </div>
     </nav>
 
     <div class="hero">
         <p>Experimental Sequence v1.0</p>
         <h1>OBJECTS<br>FROM CLOUD</h1>
-        <a href="#lab" class="lab-trigger">Enter Laboratory</a>
+        <a href="#lab" class="lab-trigger">Start Interaction</a>
     </div>
 
     <div class="drop-section" id="drops">
         <div class="product-card">
             <h2>ALGO_CANVAS [01]</h2>
-            <p>算法生成像素艺术画。每一件作品都由 AI 实时解构你的关键词后物理固化而成。</p>
+            <p>算法生成像素艺术。由 AI 实时解构关键词生成的物理固化艺术品。</p>
             <a href="#" class="buy-btn">REQUEST ACCESS</a>
         </div>
         <div class="product-card">
             <h2>DATA_SKIN [02]</h2>
-            <p>实验性赛博外壳。针对最新数码终端的极简保护方案，带有唯一云端编号。</p>
+            <p>实验性赛博外壳。针对未来终端的保护方案，带有唯一哈希编号。</p>
             <a href="#" class="buy-btn">SOLD OUT</a>
         </div>
         <div class="product-card">
             <h2>SPATIAL_BRUSH [03]</h2>
-            <p>限量的智能生活周边。将极简工业设计与虚拟空间美学融入日常触感。</p>
+            <p>智能生活周边。将极简工业美学融入虚拟与现实的触感边界。</p>
             <a href="#" class="buy-btn">COMING SOON</a>
         </div>
     </div>
 
     <footer>
-        <p>© 2026 FLYUN STUDIO. DESIGNED IN WUHAN. DEPLOYED IN CLOUD.</p>
-        <p>SYSTEM STATUS: OPERATIONAL</p>
+        <p>© 2026 FLYUN STUDIO. DESIGNED BY LEOFEIo. DEPLOYED IN CLOUD.</p>
+        <p>STATUS: OPERATIONAL // CONNECTION: ENCRYPTED</p>
     </footer>
 
+    <script>
+        // 1. 背景流向动效
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function initCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2;
+                this.speedY = Math.random() * 1.5 + 0.5;
+            }
+            update() {
+                this.y += this.speedY;
+                if (this.y > canvas.height) this.y = -10;
+            }
+            draw() {
+                ctx.fillStyle = '#00F3FF';
+                ctx.fillRect(this.x, this.y, this.size, this.size * 10);
+            }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => { p.update(); p.draw(); });
+            requestAnimationFrame(animate);
+        }
+
+        initCanvas();
+        for(let i=0; i<80; i++) particles.push(new Particle());
+        animate();
+
+        // 2. 磁性卡片 3D 效果
+        document.querySelectorAll('.product-card').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const xc = rect.width / 2;
+                const yc = rect.height / 2;
+                const dx = (x - xc) / 10;
+                const dy = (y - yc) / 10;
+                card.style.transform = `rotateY(${dx}deg) rotateX(${-dy}deg)`;
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'rotateY(0) rotateX(0)';
+            });
+        });
+
+        window.addEventListener('resize', initCanvas);
+    </script>
 </body>
 </html>
-
