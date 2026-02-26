@@ -2,29 +2,34 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FLYUN STUDIO // Chronos Warp v2.0</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>FLYUN STUDIO // Chronos Warp v2.2</title>
     <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syncopate:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root { --cyan: #00F3FF; --purple: #BD00FF; --black: #000; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background-color: var(--black); color: white; font-family: 'Space Mono', monospace; overflow: hidden; cursor: crosshair; }
-        canvas { position: fixed; top: 0; left: 0; z-index: 1; }
+        body { background-color: var(--black); color: white; font-family: 'Space Mono', monospace; overflow-x: hidden; }
+        canvas { position: fixed; top: 0; left: 0; z-index: 1; pointer-events: none; }
         .vignette { position: fixed; inset: 0; background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.9) 100%); z-index: 2; pointer-events: none; }
 
         /* 导航栏 */
-        nav { position: fixed; top: 0; width: 100%; padding: 40px; display: flex; justify-content: space-between; align-items: center; z-index: 100; }
-        .logo { font-family: 'Syncopate', sans-serif; color: var(--cyan); letter-spacing: 5px; font-size: 14px; text-decoration: none; }
-        .nav-links a { color: white; text-decoration: none; margin-left: 30px; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; opacity: 0.5; transition: 0.3s; cursor: pointer; }
-        .nav-links a:hover { opacity: 1; color: var(--cyan); text-shadow: 0 0 10px var(--cyan); }
+        nav { position: fixed; top: 0; width: 100%; padding: 30px 40px; display: flex; justify-content: space-between; align-items: center; z-index: 100; backdrop-filter: blur(10px); }
+        .logo-wrap { display: flex; align-items: center; text-decoration: none; }
+        .pixel-logo {
+            width: 24px; height: 16px; background: var(--cyan); margin-right: 12px;
+            clip-path: polygon(20% 40%, 40% 40%, 40% 20%, 60% 20%, 60% 40%, 80% 40%, 80% 80%, 20% 80%);
+            box-shadow: 0 0 10px var(--cyan); animation: pulse 2s infinite;
+        }
+        .logo-text { font-family: 'Syncopate', sans-serif; color: var(--cyan); letter-spacing: 3px; font-size: 14px; }
+        .nav-links a { color: white; text-decoration: none; margin-left: 25px; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; opacity: 0.5; transition: 0.3s; cursor: pointer; }
+        .nav-links a:hover { opacity: 1; color: var(--cyan); }
 
-        /* 主视图容器 */
-        #viewport { position: relative; z-index: 10; height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; perspective: 2000px; transition: 0.8s ease; }
+        /* 主视图 */
+        #viewport { position: relative; z-index: 10; min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; perspective: 2000px; padding: 100px 20px; }
+        .main-title { font-family: 'Syncopate', sans-serif; font-size: 6vw; letter-spacing: 15px; color: white; margin-bottom: 60px; text-align: center; }
 
-        .main-title { font-family: 'Syncopate', sans-serif; font-size: 5vw; letter-spacing: 15px; color: white; margin-bottom: 60px; text-align: center; }
-
-        /* 业务板块：时空舱位 */
-        .module-container { display: flex; gap: 30px; transform-style: preserve-3d; }
+        /* 业务板块 */
+        .module-container { display: flex; gap: 30px; transform-style: preserve-3d; flex-wrap: wrap; justify-content: center; width: 100%; }
         .module-box { 
             width: 280px; padding: 35px; background: rgba(255, 255, 255, 0.02); 
             border: 1px solid rgba(0, 243, 255, 0.1); backdrop-filter: blur(15px); 
@@ -34,130 +39,54 @@
         .module-header { font-size: 9px; color: var(--purple); letter-spacing: 2px; margin-bottom: 15px; border-bottom: 1px solid rgba(189, 0, 255, 0.3); display: inline-block; }
         .module-box h2 { font-size: 14px; letter-spacing: 2px; margin-bottom: 12px; }
         .module-box p { font-size: 11px; line-height: 1.6; color: rgba(255,255,255,0.4); }
-        /* 成员介绍容器 */
-.staff-container {
-    margin-top: 80px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 30px;
-    justify-content: center;
-    width: 100%;
-}
 
-.staff-card {
-    width: 200px;
-    text-align: center;
-    padding: 20px;
-    border: 1px solid rgba(189, 0, 255, 0.2);
-    background: rgba(189, 0, 255, 0.02);
-    transition: 0.4s;
-    position: relative;
-    cursor: help;
-}
+        /* 成员卡片 */
+        .staff-container { margin-top: 80px; display: flex; gap: 30px; justify-content: center; width: 100%; z-index: 10; }
+        .staff-card { width: 200px; text-align: center; padding: 20px; border: 1px solid rgba(189, 0, 255, 0.15); background: rgba(189, 0, 255, 0.02); transition: 0.4s; }
+        .staff-card:hover { border-color: var(--purple); transform: translateY(-5px); box-shadow: 0 0 20px rgba(189, 0, 255, 0.1); }
+        .staff-avatar { 
+            width: 60px; height: 60px; background: #111; border: 1px solid var(--purple); margin: 0 auto 15px;
+            display: flex; align-items: center; justify-content: center; font-family: 'Syncopate'; color: var(--purple);
+            clip-path: polygon(10% 0, 100% 0, 90% 100%, 0 100%);
+        }
 
-.staff-card:hover {
-    border-color: var(--purple);
-    background: rgba(189, 0, 255, 0.1);
-    box-shadow: 0 0 20px rgba(189, 0, 255, 0.2);
-    transform: translateY(-5px);
-}
+        /* 白皮书子页面 */
+        #whitepaper-view { 
+            position: fixed; inset: 0; z-index: 200; background: rgba(0,0,0,0.98); 
+            padding: 100px 10%; transform: translateY(100%); transition: 0.8s cubic-bezier(0.19, 1, 0.22, 1); overflow-y: auto; 
+        }
+        #whitepaper-view.active { transform: translateY(0); }
+        .paper-content { max-width: 900px; margin: 0 auto; border-left: 1px solid var(--cyan); padding-left: 40px; }
+        .paper-title { font-size: 32px; color: var(--cyan); margin-bottom: 40px; font-family: 'Syncopate'; }
+        .paper-section { margin-bottom: 50px; opacity: 0.9; font-size: 14px; line-height: 1.8; }
+        .paper-section h3 { margin-bottom: 15px; letter-spacing: 2px; text-transform: uppercase; }
+        .close-btn { position: fixed; top: 40px; right: 40px; color: var(--cyan); border: 1px solid var(--cyan); padding: 10px 20px; cursor: pointer; font-size: 10px; z-index: 201; background: #000; }
 
-.staff-avatar {
-    width: 80px;
-    height: 80px;
-    background: linear-gradient(45deg, var(--black), #222);
-    border: 1px solid var(--purple);
-    margin: 0 auto 15px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: 'Syncopate';
-    font-size: 24px;
-    color: var(--purple);
-    clip-path: polygon(10% 0, 100% 0, 90% 100%, 0 100%);
-}
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
 
-.staff-info h4 { font-size: 14px; letter-spacing: 2px; color: white; margin-bottom: 5px; }
-.staff-info p { font-size: 9px; color: var(--purple); text-transform: uppercase; letter-spacing: 1px; }
-
-/* 移动端适配 */
-@media (max-width: 768px) {
-    .staff-card { width: 140px; padding: 15px; }
-    .staff-avatar { width: 60px; height: 60px; font-size: 18px; }
-}
-
-        /* 白皮书视图 */
-<div id="whitepaper-view">
-    <div class="close-btn" onclick="togglePaper()">CLOSE_TERMINAL [ESC]</div>
-    <div class="paper-content">
-        <div class="paper-tag">// DECRYPTED_FILE: STRATEGIC_PLAN_2026 //</div>
-        <h2 class="paper-title">WHITEPAPER 2.0: THE CLOUD MANIFESTO</h2>
-
-        <div class="paper-section">
-            <h3>[ MISSION ] 空间智能协议</h3>
-            <p>Flyun Studio 旨在打破“屏幕”作为交互终点的现状。我们认为，2026 年的数字体验应是<b>物理与算法的共振</b>。通过 LEO 架构师提出的 AFE 引擎，我们将云端数据直接转化为人类感官的电讯号。</p>
-        </div>
-
-        <div style="display: flex; gap: 20px; margin: 30px 0;">
-            <div style="flex: 1; border: 1px solid var(--purple); padding: 15px; font-size: 8px;">
-                <p>// MARKET_PENETRATION_CHART</p>
-                <div style="height: 100px; display: flex; align-items: flex-end; gap: 5px; margin-top: 10px;">
-                    <div style="width: 20%; height: 30%; background: var(--purple); opacity: 0.5;"></div>
-                    <div style="width: 20%; height: 50%; background: var(--purple); opacity: 0.7;"></div>
-                    <div style="width: 20%; height: 85%; background: var(--cyan); box-shadow: 0 0 10px var(--cyan);"></div>
-                </div>
-                <p style="margin-top: 10px;">EST. GROWTH +240%</p>
-            </div>
-            <div style="flex: 1; border: 1px solid var(--cyan); padding: 15px; font-size: 8px;">
-                <p>// ALGORITHM_STABILITY_INDEX</p>
-                <div style="height: 100px; border-left: 1px solid #444; border-bottom: 1px solid #444; position: relative; margin-top: 10px;">
-                    <svg viewBox="0 0 100 50" style="fill:none; stroke:var(--cyan); stroke-width:1;">
-                        <path d="M0 45 Q 25 10, 50 35 T 100 5" />
-                    </svg>
-                </div>
-                <p style="margin-top: 10px;">AFE ENGINE V4.02</p>
-            </div>
-        </div>
-
-        <div class="paper-section">
-            <h3>[ PLAN 1.0 ] 硬件分发与定制</h3>
-            <p>通过<b>“云端造物”</b>系列，我们将限量生产具备唯一 Hash 的赛博周边。重点产品包括 [PRIVATE_SEQUENCE] 交互套件，预计在 2026 年 Q3 开启首个 Drop。</p>
-            <div style="margin-top:20px;">
-                <img src="https://img.js.design/assets/static/767980b1e843285749964585c5316dfc.png" style="width:100%; filter: contrast(1.2) brightness(0.8) sepia(100%) hue-rotate(150deg); border: 1px solid var(--cyan);">
-            </div>
-        </div>
-
-        <div class="paper-section">
-            <h3>[ PLAN 2.0 ] 虚拟空间 SAAS</h3>
-            <p>基于 LEO 的毕业设计成果，我们提供虚拟展厅的交互架构。这不仅仅是建模，而是基于 <b>UX 心理学</b>的路径优化系统。目标市场：高端艺术馆、科技品牌旗舰店。</p>
-        </div>
-    </div>
-</div>
-
-        <div class="paper-section">
-            <h3>[ PLAN 1.0 ] 硬件分发与定制</h3>
-            <p>通过<b>“云端造物”</b>系列，我们将限量生产具备唯一 Hash 的赛博周边。重点产品包括 [PRIVATE_SEQUENCE] 交互套件，预计在 2026 年 Q3 开启首个 Drop。</p>
-            <div style="margin-top:20px;">
-                <img src="https://img.js.design/assets/static/767980b1e843285749964585c5316dfc.png" style="width:100%; filter: contrast(1.2) brightness(0.8) sepia(100%) hue-rotate(150deg); border: 1px solid var(--cyan);">
-            </div>
-        </div>
-
-        <div class="paper-section">
-            <h3>[ PLAN 2.0 ] 虚拟空间 SAAS</h3>
-            <p>基于 LEO 的毕业设计成果，我们提供虚拟展厅的交互架构。这不仅仅是建模，而是基于 <b>UX 心理学</b>的路径优化系统。目标市场：高端艺术馆、科技品牌旗舰店。</p>
-        </div>
-    </div>
-</div>
+        @media (max-width: 768px) {
+            .main-title { font-size: 12vw; }
+            .module-container { flex-direction: column; align-items: center; }
+            .module-box { width: 100%; max-width: 320px; }
+            #whitepaper-view { padding: 80px 5%; }
+            .paper-content { padding-left: 20px; }
+        }
+    </style>
+</head>
+<body>
 
     <canvas id="warpCanvas"></canvas>
     <div class="vignette"></div>
 
     <nav>
-        <a href="/" class="logo">FLYUN</a>
+        <a href="/" class="logo-wrap">
+            <div class="pixel-logo"></div>
+            <div class="logo-text">FLYUN</div>
+        </a>
         <div class="nav-links">
             <a onclick="togglePaper()">Whitepaper</a>
-            <a href="#lab">Laboratory</a>
-            <a href="#archive">Archive</a>
+            <a href="#">Lab</a>
+            <a href="#">Archive</a>
         </div>
     </nav>
 
@@ -165,37 +94,76 @@
         <h1 class="main-title">FLYUN</h1>
         
         <div class="module-container">
-            <a class="module-box" data-depth="0.2">
+            <div class="module-box" data-depth="0.2">
                 <div class="module-header">SEQ_01</div>
                 <h2>PRIVATE_SEQUENCE</h2>
                 <p>AI 感官交互硬件。实时生成独一无二的愉悦算法，探索数字与肉体的边界。</p>
-            </a>
-            <a class="module-box" data-depth="0.4">
+            </div>
+            <div class="module-box" data-depth="0.4">
                 <div class="module-header">LAB_02</div>
                 <h2>SPATIAL_RESEARCH</h2>
                 <p>虚拟展厅与交互实验室。基于 UX 模型，重构 3D 空间的叙事逻辑与沉浸体验。</p>
-            </a>
-            <a class="module-box" data-depth="0.3">
+            </div>
+            <div class="module-box" data-depth="0.3">
                 <div class="module-header">ART_03</div>
                 <h2>ALGO_ARTIFACTS</h2>
                 <p>算法造物电商。每一件像素定制品均有独立哈希编号，实现云端造物的物理固化。</p>
-            </a>
+            </div>
         </div>
 
-        <div class="hud-bottom">
-            SYSTEM_STATUS: WARPING_MODE // FOUNDER: LEOFEIo // ENGINE: GODOT_AI_V4
+        <div class="staff-container">
+            <div class="staff-card">
+                <div class="staff-avatar">L</div>
+                <div class="staff-info">
+                    <h4>LEO</h4>
+                    <p>Chief Architect</p>
+                </div>
+            </div>
         </div>
     </div>
 
     <div id="whitepaper-view">
         <div class="close-btn" onclick="togglePaper()">CLOSE_TERMINAL [ESC]</div>
         <div class="paper-content">
-            <h2 class="paper-title">WHITEPAPER 2026</h2>
+            <div style="color:var(--purple); font-size:10px; margin-bottom:10px;">// INTERNAL_DOCUMENT: v2.0</div>
+            <h2 class="paper-title">WHITEPAPER 2.0</h2>
+            
             <div class="paper-section">
-                <h3 style="color:var(--purple); margin-bottom:10px;">// 空间智能与感官协议</h3>
-                <p>Flyun Studio 是一家植根于云端的交互实验室。我们通过 AI 算法将虚拟空间的深度转化为物理层面的触感，旨在通过 Private Sequence 硬件与 Spatial UX 设计，重定义 2026 年的数字生存美学。</p>
+                <h3 style="color:var(--purple);">01. 核心愿景 (MISSION)</h3>
+                <p>Flyun Studio 旨在通过 AI 算法将虚拟空间的深度转化为物理层面的触感。通过 LEO 架构师提出的 AFE 引擎，我们将云端数据直接转化为人类感官的电讯号。</p>
             </div>
+
+            <div style="display: flex; gap: 20px; margin-bottom: 50px; flex-wrap: wrap;">
+                <div style="flex: 1; min-width: 250px; border: 1px solid var(--purple); padding: 20px;">
+                    <p style="font-size: 10px;">// MARKET_GROWTH_ANALYSIS</p>
+                    <div style="height: 100px; display: flex; align-items: flex-end; gap: 10px; margin-top: 15px;">
+                        <div style="flex:1; height: 30%; background: #333;"></div>
+                        <div style="flex:1; height: 60%; background: #555;"></div>
+                        <div style="flex:1; height: 95%; background: var(--cyan); box-shadow: 0 0 15px var(--cyan);"></div>
+                    </div>
+                    <p style="font-size: 10px; margin-top: 10px; color: var(--cyan);">+240% PROJECTED INTEREST</p>
+                </div>
+                <div style="flex: 1; min-width: 250px; border: 1px solid var(--cyan); padding: 20px;">
+                    <p style="font-size: 10px;">// AFE_ALGORITHM_STABILITY</p>
+                    <svg viewBox="0 0 100 40" style="margin-top: 15px; stroke: var(--cyan); fill: none;">
+                        <path d="M0 35 Q 25 5, 50 25 T 100 10" stroke-width="1" />
+                    </svg>
+                    <p style="font-size: 10px; margin-top: 10px;">V4.02 STABLE_RELEASE</p>
+                </div>
             </div>
+
+            <div class="paper-section">
+                <h3 style="color:var(--cyan);">02. 商业企划 1.0 (PLAN_1.0)</h3>
+                <p>聚焦于限量生产具备唯一 Hash 的赛博硬件周边。重点产品 [PRIVATE_SEQUENCE] 预计在 2026 年 Q3 开启首个 Drop。</p>
+                [Image of a futuristic minimalist 3D object on a dark pedestal with neon glowing accents]
+            </div>
+
+            <div class="paper-section">
+                <h3 style="color:var(--cyan);">03. 商业企划 2.0 (PLAN_2.0)</h3>
+                <p>转向虚拟空间 SAAS 服务。利用毕业设计研究成果，为博物馆与科技品牌提供具备“时空感”的 3D 沉浸式展示方案。</p>
+                [Image of a futuristic 3D architectural blueprint of a virtual museum with glowing AI pathfinding nodes]
+            </div>
+        </div>
     </div>
 
     <script>
@@ -271,6 +239,3 @@
     </script>
 </body>
 </html>
-
-
-
