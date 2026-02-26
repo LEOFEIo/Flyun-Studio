@@ -2,254 +2,200 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flyun Studio // Objects from the Cloud</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>FLYUN STUDIO // Chronos Warp v2.3</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syncopate:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --apple-bg: #ffffff;
-            --apple-text: #1d1d1f;
-            --apple-subtext: #86868b;
-            --apple-accent: #007aff;
-            --card-bg: rgba(255, 255, 255, 0.7);
-        }
-
+        :root { --cyan: #00F3FF; --purple: #BD00FF; --black: #000; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background-color: var(--black); color: white; font-family: 'Space Mono', monospace; overflow-x: hidden; }
+        
+        /* 基础层 */
+        canvas { position: fixed; top: 0; left: 0; z-index: 1; pointer-events: none; }
+        .vignette { position: fixed; inset: 0; background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.95) 100%); z-index: 2; pointer-events: none; }
 
-        body {
-            background-color: var(--apple-bg);
-            color: var(--apple-text);
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            line-height: 1.5;
-            -webkit-font-smoothing: antialiased;
-        }
+        /* 导航栏 */
+        nav { position: fixed; top: 0; width: 100%; padding: 25px 40px; display: flex; justify-content: space-between; align-items: center; z-index: 100; backdrop-filter: blur(10px); }
+        .logo-wrap { display: flex; align-items: center; text-decoration: none; z-index: 101; }
+        .pixel-logo { width: 20px; height: 14px; background: var(--cyan); margin-right: 10px; clip-path: polygon(20% 40%, 40% 40%, 40% 20%, 60% 20%, 60% 40%, 80% 40%, 80% 80%, 20% 80%); box-shadow: 0 0 10px var(--cyan); }
+        .logo-text { font-family: 'Syncopate', sans-serif; color: var(--cyan); font-size: 14px; letter-spacing: 2px; }
+        .nav-links a { color: white; text-decoration: none; margin-left: 20px; font-size: 9px; letter-spacing: 2px; opacity: 0.6; cursor: pointer; }
 
-        /* 导航栏：极致毛玻璃 */
-        nav {
-            position: fixed;
-            top: 0; width: 100%;
-            height: 52px;
-            background: rgba(255, 255, 255, 0.8);
-            backdrop-filter: saturate(180%) blur(20px);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 10%;
-            z-index: 1000;
-            border-bottom: 1px solid rgba(0,0,0,0.1);
-        }
+        /* 主视图容器 */
+        #viewport { position: relative; z-index: 10; min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 100px 20px; transition: 0.8s cubic-bezier(0.19, 1, 0.22, 1); }
+        .main-title { font-family: 'Syncopate', sans-serif; font-size: 6vw; letter-spacing: 15px; margin-bottom: 60px; text-align: center; color: #fff; }
 
-        .logo {
-            font-weight: 600;
-            font-size: 18px;
-            text-decoration: none;
-            color: var(--apple-text);
-            letter-spacing: -0.5px;
-        }
+        /* 业务卡片 */
+        .module-container { display: flex; gap: 25px; flex-wrap: wrap; justify-content: center; width: 100%; max-width: 1200px; }
+        .module-box { width: 280px; padding: 30px; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(0, 243, 255, 0.1); backdrop-filter: blur(15px); text-decoration: none; color: white; transition: 0.4s; }
+        .module-box:hover { border-color: var(--cyan); background: rgba(0, 243, 255, 0.08); transform: translateY(-5px); }
+        .module-header { font-size: 8px; color: var(--purple); border-bottom: 1px solid rgba(189, 0, 255, 0.3); margin-bottom: 15px; display: inline-block; }
+        .module-box h2 { font-size: 14px; margin-bottom: 10px; letter-spacing: 1px; }
+        .module-box p { font-size: 11px; line-height: 1.6; color: rgba(255,255,255,0.4); }
 
-        .nav-links a {
-            color: var(--apple-text);
-            text-decoration: none;
-            font-size: 12px;
-            margin-left: 30px;
-            opacity: 0.8;
-            transition: 0.3s;
-        }
+        /* 成员介绍 */
+        .staff-wrap { margin-top: 80px; text-align: center; }
+        .staff-card { width: 180px; padding: 20px; border: 1px solid rgba(189, 0, 255, 0.2); background: rgba(189, 0, 255, 0.02); margin: 0 auto; }
+        .staff-avatar { width: 50px; height: 50px; background: #111; border: 1px solid var(--purple); margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; color: var(--purple); font-family: 'Syncopate'; clip-path: polygon(10% 0, 100% 0, 90% 100%, 0 100%); }
 
-        .nav-links a:hover { opacity: 1; color: var(--apple-accent); }
+        /* 白皮书视图 - 初始位置在屏幕下方 */
+        #whitepaper-view { position: fixed; inset: 0; z-index: 200; background: #000; padding: 80px 10%; transform: translateY(100%); transition: 0.8s cubic-bezier(0.19, 1, 0.22, 1); overflow-y: auto; border-top: 1px solid var(--cyan); }
+        #whitepaper-view.active { transform: translateY(0); }
+        .paper-content { max-width: 800px; margin: 0 auto; border-left: 1px solid var(--cyan); padding-left: 30px; }
+        .paper-title { font-size: 28px; color: var(--cyan); margin-bottom: 30px; font-family: 'Syncopate'; }
+        .paper-section { margin-bottom: 40px; font-size: 13px; line-height: 1.8; color: #999; }
+        .close-btn { position: fixed; top: 30px; right: 30px; color: var(--cyan); border: 1px solid var(--cyan); padding: 10px 20px; cursor: pointer; font-size: 10px; z-index: 205; background: #000; }
 
-        /* 主展区 */
-        section {
-            padding: 120px 10%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-        }
-
-        .hero-title {
-            font-size: 56px;
-            font-weight: 600;
-            letter-spacing: -2px;
-            margin-bottom: 10px;
-        }
-
-        .hero-subtitle {
-            font-size: 24px;
-            color: var(--apple-subtext);
-            font-weight: 400;
-            margin-bottom: 40px;
-        }
-
-        /* 业务卡片：Apple 风格圆角矩形 */
-        .module-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-            width: 100%;
-            max-width: 1100px;
-        }
-
-        .card {
-            background: #f5f5f7;
-            border-radius: 20px;
-            padding: 40px;
-            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            text-decoration: none;
-            color: inherit;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .card:hover { transform: scale(1.02); }
-
-        .card h2 { font-size: 24px; margin-bottom: 15px; font-weight: 600; }
-        .card p { color: var(--apple-subtext); font-size: 15px; }
-
-        /* 成员档案 */
-        .staff-section {
-            background: #fafafa;
-            width: 100%;
-            padding: 80px 10%;
-            margin-top: 50px;
-        }
-
-        .staff-card {
-            background: white;
-            padding: 30px;
-            border-radius: 24px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-            display: inline-block;
-            text-align: center;
-        }
-
-        .avatar {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            background: #eee;
-            margin: 0 auto 15px;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 600;
-            font-size: 24px;
-            color: #ccc;
-        }
-
-        .avatar img { width: 100%; height: 100%; object-fit: cover; }
-
-        /* 白皮书弹出层：Apple 风格 */
-        #paper-overlay {
-            position: fixed;
-            inset: 0;
-            background: white;
-            z-index: 2000;
-            padding: 60px 15%;
-            overflow-y: auto;
-            transform: translateY(100%);
-            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        #paper-overlay.active { transform: translateY(0); }
-
-        .close-btn {
-            position: fixed; top: 20px; right: 20px;
-            background: #f5f5f7; border-radius: 50%;
-            width: 36px; height: 36px; display: flex;
-            align-items: center; justify-content: center;
-            cursor: pointer; font-weight: bold;
-        }
-
-        .paper-content { max-width: 700px; margin: 0 auto; text-align: left; }
-        .paper-content h1 { font-size: 40px; margin-bottom: 40px; letter-spacing: -1px; }
-        .section-title { color: var(--apple-accent); font-size: 14px; font-weight: 600; margin-bottom: 10px; }
+        /* 图表样式 */
+        .chart-box { border: 1px solid rgba(0, 243, 255, 0.2); padding: 15px; margin: 20px 0; }
+        .bar-wrap { height: 60px; display: flex; align-items: flex-end; gap: 5px; margin-top: 10px; }
+        .bar { flex: 1; background: var(--cyan); opacity: 0.3; }
 
         @media (max-width: 768px) {
-            .hero-title { font-size: 40px; }
-            .hero-subtitle { font-size: 20px; }
-            nav { padding: 0 5%; }
+            .main-title { font-size: 12vw; }
+            .module-box { width: 100%; max-width: 340px; }
+            #whitepaper-view { padding: 80px 25px; }
         }
     </style>
 </head>
 <body>
 
-<nav>
-    <a href="#" class="logo">Flyun Studio</a>
-    <div class="nav-links">
-        <a href="javascript:void(0)" onclick="togglePaper()">Whitepaper</a>
-        <a href="#">Lab</a>
-        <a href="#">Archive</a>
-    </div>
-</nav>
+    <canvas id="warpCanvas"></canvas>
+    <div class="vignette"></div>
 
-<section>
-    <h1 class="hero-title">Objects from the Cloud.</h1>
-    <p class="hero-subtitle">Bridging reality and desires with AI.</p>
-    
-    <div class="module-grid">
-        <a href="#" class="card">
-            <h2>Private Sequence</h2>
-            <p>AI-driven sensory hardware. Exploring the boundaries of physical and digital connection.</p>
-        </a>
-        <a href="#" class="card">
-            <h2>Spatial Research</h2>
-            <p>UX-based 3D architecture for virtual pavilions and digital storytelling.</p>
-        </a>
-        <a href="#" class="card">
-            <h2>Algo Artifacts</h2>
-            <p>Algorithmically generated pixel art. Each piece hash-validated for exclusivity.</p>
-        </a>
-    </div>
-
-    <div class="staff-section">
-        <div class="staff-card">
-            <div class="avatar">
-                <img src="https://img.js.design/assets/static/767980b1e843285749964585c5316dfc.png" alt="LEO">
-            </div>
-            <h3 style="font-size: 20px;">LEO</h3>
-            <p style="color: var(--apple-subtext); font-size: 14px;">Chief Architect</p>
+    <nav>
+        <div class="logo-wrap">
+            <div class="pixel-logo"></div>
+            <div class="logo-text">FLYUN</div>
         </div>
-    </div>
-</section>
+        <div class="nav-links">
+            <a onclick="togglePaper()">Whitepaper</a>
+            <a href="#">Lab</a>
+            <a href="#">Archive</a>
+        </div>
+    </nav>
 
-<div id="paper-overlay">
-    <div class="close-btn" onclick="togglePaper()">✕</div>
-    <div class="paper-content">
-        <p class="section-title">INTERNAL_RELEASE // v2.0</p>
-        <h1>Flyun Studio Whitepaper</h1>
+    <div id="viewport">
+        <h1 class="main-title">FLYUN</h1>
         
-        <div style="margin-bottom: 40px;">
-            <h3 style="margin-bottom:10px;">01. Mission</h3>
-            <p style="color:#424245;">Flyun Studio redefines digital aesthetics by turning spatial depth into physical sensations through AI. We believe 2026 is the year of "Sense Computing."</p>
+        <div class="module-container">
+            <div class="module-box">
+                <div class="module-header">SEQ_01</div>
+                <h2>PRIVATE_SEQUENCE</h2>
+                <p>AI 感官交互硬件。实时生成独一无二的愉悦算法，探索数字与肉体的边界。</p>
+            </div>
+            <div class="module-box">
+                <div class="module-header">LAB_02</div>
+                <h2>SPATIAL_RESEARCH</h2>
+                <p>虚拟展厅与交互实验室。基于 UX 模型，重构 3D 空间的叙事逻辑。</p>
+            </div>
+            <div class="module-box">
+                <div class="module-header">ART_03</div>
+                <h2>ALGO_ARTIFACTS</h2>
+                <p>算法造物电商。每一件定制品均有独立哈希编号，实现云端造物的物理固化。</p>
+            </div>
         </div>
 
-        <div style="margin-bottom: 40px;">
-            <h3 style="margin-bottom:10px;">02. Roadmap 1.0</h3>
-            <p style="color:#424245;">Launch of [Private Sequence]. Limited drops of AI-customized physical artifacts with verified hash identities on the cloud.</p>
-        </div>
-        
-        <div style="margin-top: 50px; border-top: 1px solid #eee; padding-top: 30px;">
-            <p class="section-title">MARKET GROWTH</p>
-            <div style="display: flex; align-items: flex-end; gap: 10px; height: 100px; margin-top: 20px;">
-                <div style="flex:1; height:30%; background:#f5f5f7; border-radius: 4px;"></div>
-                <div style="flex:1; height:50%; background:#f5f5f7; border-radius: 4px;"></div>
-                <div style="flex:1; height:100%; background:var(--apple-accent); border-radius: 4px;"></div>
+        <div class="staff-wrap">
+            <div class="staff-card">
+                <div class="staff-avatar">L</div>
+                <h4 style="font-size: 14px; color: #fff;">LEO</h4>
+                <p style="font-size: 9px; color: var(--purple);">CHIEF ARCHITECT</p>
             </div>
-            <p style="font-size: 12px; margin-top: 10px; color: var(--apple-subtext);">Projected interest increase +240%</p>
         </div>
     </div>
-</div>
 
-<script>
-    function togglePaper() {
-        const overlay = document.getElementById('paper-overlay');
-        overlay.classList.toggle('active');
-        document.body.style.overflow = overlay.classList.contains('active') ? 'hidden' : 'auto';
-    }
-</script>
+    <div id="whitepaper-view">
+        <div class="close-btn" onclick="togglePaper()">CLOSE [ESC]</div>
+        <div class="paper-content">
+            <h2 class="paper-title">WHITEPAPER 2.0</h2>
+            
+            <div class="paper-section">
+                <h3 style="color:var(--purple); margin-bottom:10px;">// 01. 空间智能 (MISSION)</h3>
+                <p>Flyun Studio 旨在通过 AI 算法将虚拟空间的深度转化为物理层面的触感。重定义 2026 年的数字生存美学。</p>
+            </div>
 
+            <div class="chart-box">
+                <p style="font-size: 9px; color: var(--cyan);">// MARKET_PROJECTION_2026</p>
+                <div class="bar-wrap">
+                    <div class="bar" style="height: 30%;"></div>
+                    <div class="bar" style="height: 50%;"></div>
+                    <div class="bar" style="height: 90%; opacity: 1; box-shadow: 0 0 10px var(--cyan);"></div>
+                </div>
+            </div>
+
+            <div class="paper-section">
+                <h3 style="color:var(--cyan); margin-bottom:10px;">// 02. 商业企划 1.0</h3>
+                <p>聚焦于限量生产具备唯一 Hash 的赛博硬件。重点产品 [PRIVATE_SEQUENCE] 预计在 Q3 开启首个 Drop。</p>
+                
+            </div>
+
+            <div class="paper-section">
+                <h3 style="color:var(--cyan); margin-bottom:10px;">// 03. 商业企划 2.0</h3>
+                <p>转向 B 端虚拟空间服务。为博物馆与科技品牌提供具备“时空感”的 3D 沉浸式展示方案。</p>
+                
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('warpCanvas');
+        const ctx = canvas.getContext('2d');
+        let stars = [];
+        let speed = 2;
+        let mouseX = 0, mouseY = 0;
+
+        window.onresize = () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; };
+        window.onresize();
+
+        class Star {
+            constructor() { this.reset(); this.z = Math.random() * canvas.width; }
+            reset() { this.x = (Math.random() - 0.5) * canvas.width; this.y = (Math.random() - 0.5) * canvas.height; this.z = canvas.width; }
+            update() {
+                this.z -= speed;
+                if (this.z < 1) this.reset();
+            }
+            show() {
+                ctx.strokeStyle = '#00F3FF';
+                let sx = (this.x / this.z) * canvas.width + canvas.width/2;
+                let sy = (this.y / this.z) * canvas.height + canvas.height/2;
+                ctx.beginPath();
+                ctx.lineWidth = (1 - this.z / canvas.width) * 2;
+                ctx.moveTo(sx, sy);
+                ctx.lineTo(sx + 2, sy + 2); // 简化绘制防止性能冲突
+                ctx.stroke();
+            }
+        }
+
+        for (let i = 0; i < 400; i++) stars.push(new Star());
+
+        function draw() {
+            ctx.fillStyle = '#000'; ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.save();
+            ctx.translate(mouseX * 0.05, mouseY * 0.05);
+            stars.forEach(s => { s.update(); s.show(); });
+            ctx.restore();
+            requestAnimationFrame(draw);
+        }
+        draw();
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX - canvas.width / 2;
+            mouseY = e.clientY - canvas.height / 2;
+        });
+
+        function togglePaper() {
+            const paper = document.getElementById('whitepaper-view');
+            const viewport = document.getElementById('viewport');
+            paper.classList.toggle('active');
+            if(paper.classList.contains('active')) {
+                viewport.style.opacity = '0.1';
+                speed = 0.5;
+            } else {
+                viewport.style.opacity = '1';
+                speed = 2;
+            }
+        }
+    </script>
 </body>
 </html>
