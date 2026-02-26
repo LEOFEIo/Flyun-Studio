@@ -34,6 +34,57 @@
         .module-header { font-size: 9px; color: var(--purple); letter-spacing: 2px; margin-bottom: 15px; border-bottom: 1px solid rgba(189, 0, 255, 0.3); display: inline-block; }
         .module-box h2 { font-size: 14px; letter-spacing: 2px; margin-bottom: 12px; }
         .module-box p { font-size: 11px; line-height: 1.6; color: rgba(255,255,255,0.4); }
+        /* 成员介绍容器 */
+.staff-container {
+    margin-top: 80px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    justify-content: center;
+    width: 100%;
+}
+
+.staff-card {
+    width: 200px;
+    text-align: center;
+    padding: 20px;
+    border: 1px solid rgba(189, 0, 255, 0.2);
+    background: rgba(189, 0, 255, 0.02);
+    transition: 0.4s;
+    position: relative;
+    cursor: help;
+}
+
+.staff-card:hover {
+    border-color: var(--purple);
+    background: rgba(189, 0, 255, 0.1);
+    box-shadow: 0 0 20px rgba(189, 0, 255, 0.2);
+    transform: translateY(-5px);
+}
+
+.staff-avatar {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(45deg, var(--black), #222);
+    border: 1px solid var(--purple);
+    margin: 0 auto 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Syncopate';
+    font-size: 24px;
+    color: var(--purple);
+    clip-path: polygon(10% 0, 100% 0, 90% 100%, 0 100%);
+}
+
+.staff-info h4 { font-size: 14px; letter-spacing: 2px; color: white; margin-bottom: 5px; }
+.staff-info p { font-size: 9px; color: var(--purple); text-transform: uppercase; letter-spacing: 1px; }
+
+/* 移动端适配 */
+@media (max-width: 768px) {
+    .staff-card { width: 140px; padding: 15px; }
+    .staff-avatar { width: 60px; height: 60px; font-size: 18px; }
+}
 
         /* 白皮书视图 */
         #whitepaper-view { 
@@ -173,3 +224,4 @@
     </script>
 </body>
 </html>
+
