@@ -95,5 +95,134 @@
         .close-btn { position: fixed; top: 20px; right: 20px; color: var(--cyan); border: 1px solid var(--cyan); padding: 8px 15px; cursor: pointer; font-size: 10px; z-index: 201; background: #000; }
 
         .hud-bottom { width: 100%; margin-top: 50px; font-size: 8px; color: rgba(0, 243, 255, 0.3); letter-spacing: 1px; text-align: center; }
+    </style>
+</head>
+<body>
 
+    <canvas id="warpCanvas"></canvas>
+    <div class="vignette"></div>
 
+    <nav>
+        <a href="/" class="logo">FLYUN</a>
+        <div class="nav-links">
+            <a onclick="togglePaper()">Whitepaper</a>
+            <a href="#">Lab</a>
+            <a href="#">Archive</a>
+        </div>
+    </nav>
+
+    <div id="viewport">
+        <h1 class="main-title">FLYUN</h1>
+        
+        <div class="module-container">
+            <a class="module-box" data-depth="0.2">
+                <div class="module-header">SEQ_01</div>
+                <h2>PRIVATE_SEQUENCE</h2>
+                <p>AI 感官交互硬件。实时生成独一无二的愉悦算法，探索数字与肉体的边界。</p>
+            </a>
+            <a class="module-box" data-depth="0.4">
+                <div class="module-header">LAB_02</div>
+                <h2>SPATIAL_RESEARCH</h2>
+                <p>虚拟展厅与交互实验室。基于 UX 模型，重构 3D 空间的叙事逻辑与沉浸体验。</p>
+            </a>
+            <a class="module-box" data-depth="0.3">
+                <div class="module-header">ART_03</div>
+                <h2>ALGO_ARTIFACTS</h2>
+                <p>算法造物电商。每一件像素定制品均有独立哈希编号，实现云端造物的物理固化。</p>
+            </a>
+        </div>
+
+        <div class="hud-bottom">
+            SYSTEM_STATUS: WARPING_MODE // FOUNDER: LEOFEIo // ENGINE: FLYUN_AI_V1
+        </div>
+    </div>
+
+    <div id="whitepaper-view">
+        <div class="close-btn" onclick="togglePaper()">CLOSE [ESC]</div>
+        <div class="paper-content">
+            <h2 class="paper-title">WHITEPAPER 2.0</h2>
+            <div class="paper-section">
+                <h3 style="color:var(--purple); margin-bottom:10px;">// 空间智能与感官协议</h3>
+                <p>Flyun Studio 是一家植根于云端的交互实验室。我们通过 AI 算法将虚拟空间的深度转化为物理层面的触感，重定义 2026 年的数字生存美学。</p>
+            </div>
+            <div class="paper-section">
+                <h3 style="color:var(--cyan); margin-bottom:10px;">// 商业企划 1.0 (PRIVATE_SEQ)</h3>
+                <p>第一阶段聚焦于 AI 植入私密硬件。每一台设备根据用户反馈实时演化波形，实现个性化感官定制。通过预售制（Drop）打造品牌稀缺性。</p>
+            </div>
+            <div class="paper-section">
+                <h3 style="color:var(--cyan); margin-bottom:10px;">// 商业企划 2.0 (SPATIAL_ECO)</h3>
+                <p>第二阶段转向 B 端空间服务。利用虚拟展厅云 (Virtual Pavilion) 为品牌提供 3D 沉浸式展示方案，打造跨越物理限制的数字孪生生态。</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('warpCanvas');
+        const ctx = canvas.getContext('2d');
+        let stars = [];
+        let speed = 2;
+        let mouseX = 0, mouseY = 0;
+        const isMobile = window.innerWidth < 769;
+
+        window.onresize = () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; };
+        window.onresize();
+
+        class Star {
+            constructor() { this.reset(); this.z = Math.random() * canvas.width; }
+            reset() { this.x = (Math.random() - 0.5) * canvas.width; this.y = (Math.random() - 0.5) * canvas.height; this.z = canvas.width; this.pz = this.z; }
+            update() {
+                this.pz = this.z;
+                this.z -= speed;
+                if (this.z < 1) this.reset();
+            }
+            show() {
+                ctx.strokeStyle = '#00F3FF';
+                let sx = (this.x / this.z) * canvas.width + canvas.width/2;
+                let sy = (this.y / this.z) * canvas.height + canvas.height/2;
+                let px = (this.x / this.pz) * canvas.width + canvas.width/2;
+                let py = (this.y / this.pz) * canvas.height + canvas.height/2;
+                ctx.beginPath(); ctx.lineWidth = (1 - this.z / canvas.width) * 2;
+                ctx.moveTo(px, py); ctx.lineTo(sx, sy); ctx.stroke();
+            }
+        }
+
+        for (let i = 0; i < (isMobile ? 300 : 600); i++) stars.push(new Star());
+
+        function draw() {
+            ctx.fillStyle = '#000'; ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.save();
+            ctx.translate(mouseX * 0.05, mouseY * 0.05);
+            stars.forEach(s => { s.update(); s.show(); });
+            ctx.restore();
+            requestAnimationFrame(draw);
+        }
+        draw();
+
+        document.addEventListener('mousemove', (e) => {
+            if (isMobile) return;
+            mouseX = e.clientX - canvas.width / 2;
+            mouseY = e.clientY - canvas.height / 2;
+            const boxes = document.querySelectorAll('.module-box');
+            boxes.forEach(box => {
+                const depth = box.getAttribute('data-depth');
+                const rx = (e.clientY - window.innerHeight/2) * -0.05 * depth;
+                const ry = (e.clientX - window.innerWidth/2) * 0.05 * depth;
+                box.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg) translateZ(${depth * 50}px)`;
+            });
+        });
+
+        function togglePaper() {
+            const paper = document.getElementById('whitepaper-view');
+            const viewport = document.getElementById('viewport');
+            paper.classList.toggle('active');
+            if(paper.classList.contains('active')) {
+                viewport.style.opacity = '0.1';
+                speed = 0.5;
+            } else {
+                viewport.style.opacity = '1';
+                speed = 2;
+            }
+        }
+    </script>
+</body>
+</html>
