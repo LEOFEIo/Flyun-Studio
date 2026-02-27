@@ -19,7 +19,8 @@
         .logo-wrap { display: flex; align-items: center; text-decoration: none; z-index: 101; }
         .pixel-logo { width: 20px; height: 14px; background: var(--cyan); margin-right: 10px; clip-path: polygon(20% 40%, 40% 40%, 40% 20%, 60% 20%, 60% 40%, 80% 40%, 80% 80%, 20% 80%); box-shadow: 0 0 10px var(--cyan); }
         .logo-text { font-family: 'Syncopate', sans-serif; color: var(--cyan); font-size: 14px; letter-spacing: 2px; }
-        .nav-links a { color: white; text-decoration: none; margin-left: 20px; font-size: 9px; letter-spacing: 2px; opacity: 0.6; cursor: pointer; }
+        .nav-links a { color: white; text-decoration: none; margin-left: 20px; font-size: 9px; letter-spacing: 2px; opacity: 0.6; cursor: pointer; transition: 0.3s; }
+        .nav-links a:hover { opacity: 1; color: var(--cyan); }
 
         /* 主视图容器 */
         #viewport { position: relative; z-index: 10; min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 100px 20px; transition: 0.8s cubic-bezier(0.19, 1, 0.22, 1); }
@@ -27,27 +28,32 @@
 
         /* 业务卡片 */
         .module-container { display: flex; gap: 25px; flex-wrap: wrap; justify-content: center; width: 100%; max-width: 1200px; }
-        .module-box { width: 280px; padding: 30px; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(0, 243, 255, 0.1); backdrop-filter: blur(15px); text-decoration: none; color: white; transition: 0.4s; }
-        .module-box:hover { border-color: var(--cyan); background: rgba(0, 243, 255, 0.08); transform: translateY(-5px); }
+        .module-box { width: 280px; padding: 30px; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(0, 243, 255, 0.1); backdrop-filter: blur(15px); text-decoration: none; color: white; transition: 0.4s; cursor: pointer; }
+        .module-box:hover { border-color: var(--cyan); background: rgba(0, 243, 255, 0.08); transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0, 243, 255, 0.1); }
         .module-header { font-size: 8px; color: var(--purple); border-bottom: 1px solid rgba(189, 0, 255, 0.3); margin-bottom: 15px; display: inline-block; }
         .module-box h2 { font-size: 14px; margin-bottom: 10px; letter-spacing: 1px; }
         .module-box p { font-size: 11px; line-height: 1.6; color: rgba(255,255,255,0.4); }
 
         /* 成员介绍 */
         .staff-wrap { margin-top: 80px; text-align: center; }
-        .staff-card { width: 180px; padding: 20px; border: 1px solid rgba(189, 0, 255, 0.2); background: rgba(189, 0, 255, 0.02); margin: 0 auto; }
+        .staff-card { width: 180px; padding: 20px; border: 1px solid rgba(189, 0, 255, 0.2); background: rgba(189, 0, 255, 0.02); margin: 0 auto; transition: 0.3s; }
+        .staff-card:hover { border-color: var(--purple); background: rgba(189, 0, 255, 0.05); }
         .staff-avatar { width: 50px; height: 50px; background: #111; border: 1px solid var(--purple); margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; color: var(--purple); font-family: 'Syncopate'; clip-path: polygon(10% 0, 100% 0, 90% 100%, 0 100%); }
 
         /* 白皮书视图 - 初始位置在屏幕下方 */
-        #whitepaper-view { position: fixed; inset: 0; z-index: 200; background: #000; padding: 80px 10%; transform: translateY(100%); transition: 0.8s cubic-bezier(0.19, 1, 0.22, 1); overflow-y: auto; border-top: 1px solid var(--cyan); }
+        #whitepaper-view { position: fixed; inset: 0; z-index: 200; background: #000; padding: 80px 10%; transform: translateY(100%); transition: 0.8s cubic-bezier(0.19, 1, 0.22, 1); overflow-y: auto; border-top: 1px solid var(--cyan); scroll-behavior: smooth; }
         #whitepaper-view.active { transform: translateY(0); }
-        .paper-content { max-width: 800px; margin: 0 auto; border-left: 1px solid var(--cyan); padding-left: 30px; }
+        .paper-content { max-width: 800px; margin: 0 auto; border-left: 1px solid var(--cyan); padding-left: 30px; padding-bottom: 100px; }
         .paper-title { font-size: 28px; color: var(--cyan); margin-bottom: 30px; font-family: 'Syncopate'; }
-        .paper-section { margin-bottom: 40px; font-size: 13px; line-height: 1.8; color: #999; }
-        .close-btn { position: fixed; top: 30px; right: 30px; color: var(--cyan); border: 1px solid var(--cyan); padding: 10px 20px; cursor: pointer; font-size: 10px; z-index: 205; background: #000; }
+        .paper-section { margin-bottom: 40px; font-size: 13px; line-height: 1.8; color: #999; padding-top: 20px; }
+        .paper-section p { margin-bottom: 15px; }
+        .paper-section b { color: #fff; }
+        .close-btn { position: fixed; top: 30px; right: 30px; color: var(--cyan); border: 1px solid var(--cyan); padding: 10px 20px; cursor: pointer; font-size: 10px; z-index: 205; background: #000; transition: 0.3s; }
+        .close-btn:hover { background: var(--cyan); color: #000; }
 
         /* 图表样式 */
-        .chart-box { border: 1px solid rgba(0, 243, 255, 0.2); padding: 15px; margin: 20px 0; }
+        .chart-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin: 30px 0; }
+        .chart-box { border: 1px solid rgba(0, 243, 255, 0.2); padding: 15px; }
         .bar-wrap { height: 60px; display: flex; align-items: flex-end; gap: 5px; margin-top: 10px; }
         .bar { flex: 1; background: var(--cyan); opacity: 0.3; }
 
@@ -79,17 +85,17 @@
         <h1 class="main-title">FLYUN</h1>
         
         <div class="module-container">
-            <div class="module-box">
+            <div class="module-box" onclick="openPaperSection('plan-1')">
                 <div class="module-header">SEQ_01</div>
                 <h2>PRIVATE_SEQUENCE</h2>
                 <p>AI 感官交互硬件。实时生成独一无二的愉悦算法，探索数字与肉体的边界。</p>
             </div>
-            <div class="module-box">
+            <div class="module-box" onclick="openPaperSection('plan-2')">
                 <div class="module-header">LAB_02</div>
                 <h2>SPATIAL_RESEARCH</h2>
                 <p>虚拟展厅与交互实验室。基于 UX 模型，重构 3D 空间的叙事逻辑。</p>
             </div>
-            <div class="module-box">
+            <div class="module-box" onclick="openPaperSection('plan-3')">
                 <div class="module-header">ART_03</div>
                 <h2>ALGO_ARTIFACTS</h2>
                 <p>算法造物电商。每一件定制品均有独立哈希编号，实现云端造物的物理固化。</p>
@@ -108,15 +114,15 @@
    <div id="whitepaper-view">
     <div class="close-btn" onclick="togglePaper()">CLOSE_TERMINAL [ESC]</div>
     <div class="paper-content">
-        <div class="paper-tag">// DECRYPTED_FILE: STRATEGIC_PLAN_2026 // LEVEL_03_AUTH</div>
+        <div class="paper-tag" style="font-size: 10px; color: #666; margin-bottom: 20px;">// DECRYPTED_FILE: STRATEGIC_PLAN_2026 // LEVEL_03_AUTH</div>
         <h2 class="paper-title">WHITEPAPER 3.0: THE CLOUD MANIFESTO</h2>
 
         <div class="paper-section">
-            <h3 style="color:var(--purple);">[ MISSION ] 空间智能协议</h3>
+            <h3 style="color:var(--purple); margin-bottom: 10px;">[ MISSION ] 空间智能协议</h3>
             <p>Flyun Studio 旨在通过 AI 算法将虚拟空间的深度转化为物理层面的触感。基于 LEO 架构师提出的 <b>AFE (Affective Feedback Engine)</b> 引擎，我们正在重新定义数字时代的生存美学。</p>
         </div>
 
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin: 30px 0;">
+        <div class="chart-container">
             <div class="chart-box">
                 <p style="font-size: 8px; color: var(--cyan);">// USER_SENSORY_ENGAGEMENT</p>
                 <div class="bar-wrap">
@@ -125,7 +131,7 @@
                     <div class="bar" style="height: 70%;"></div>
                     <div class="bar" style="height: 95%; opacity: 1; box-shadow: 0 0 15px var(--cyan);"></div>
                 </div>
-                <p style="font-size: 10px; margin-top: 10px;">+320% RETENTION RATE</p>
+                <p style="font-size: 10px; margin-top: 10px; color: #fff;">+320% RETENTION RATE</p>
             </div>
             <div class="chart-box">
                 <p style="font-size: 8px; color: var(--purple);">// ALGO_EFFICIENCY_INDEX</p>
@@ -133,27 +139,29 @@
                     <path d="M0 35 L 20 25 L 40 30 L 60 10 L 80 15 L 100 2" stroke-dasharray="2,1" />
                     <circle cx="100" cy="2" r="2" fill="var(--purple)" />
                 </svg>
-                <p style="font-size: 10px; margin-top: 10px;">v4.8 STABLE NODE</p>
+                <p style="font-size: 10px; margin-top: 10px; color: #fff;">v4.8 STABLE NODE</p>
             </div>
         </div>
 
-        <div class="paper-section">
-            <h3 style="color:var(--cyan);">01. 商业企划 1.0: 物理固化与私密序列</h3>
-            <p><b>核心：</b> 极小规模、高定制化的硬件分发。利用生成式 AI，实现从“像素到
+        <div class="paper-section" id="plan-1">
+            <h3 style="color:var(--cyan); margin-bottom:10px;">// 01. 商业企划: 私密序列 (SEQ_01)</h3>
+            <p><b>核心：</b>极小规模、高定制化的硬件分发。利用生成式 AI，实现从“像素到原子”的降维打击。</p>
+            <p>聚焦于限量生产具备唯一 Hash 的赛博硬件。重点产品 <b>[PRIVATE_SEQUENCE]</b> 预计在 Q3 开启首个 Drop。通过独有的愉悦算法计算，每次交互都将生成不可复制的反馈波形。</p>
+        </div>
 
-            <div class="paper-section">
-                <h3 style="color:var(--cyan); margin-bottom:10px;">// 02. 商业企划 1.0</h3>
-                <p>聚焦于限量生产具备唯一 Hash 的赛博硬件。重点产品 [PRIVATE_SEQUENCE] 预计在 Q3 开启首个 Drop。</p>
-                
-            </div>
+        <div class="paper-section" id="plan-2">
+            <h3 style="color:var(--cyan); margin-bottom:10px;">// 02. 商业企划: 空间研究 (LAB_02)</h3>
+            <p><b>核心：</b>转向 B 端虚拟空间服务，提供具备“时空感”的 3D 沉浸式展示方案。</p>
+            <p>打破传统网页浏览的 2D 束缚，基于最新的 WebGL 与空间计算协议，为博物馆、独立设计师与前卫科技品牌构筑可漫游的数字废墟与纯净展厅。</p>
+        </div>
 
-            <div class="paper-section">
-                <h3 style="color:var(--cyan); margin-bottom:10px;">// 03. 商业企划 2.0</h3>
-                <p>转向 B 端虚拟空间服务。为博物馆与科技品牌提供具备“时空感”的 3D 沉浸式展示方案。</p>
-                
-            </div>
+        <div class="paper-section" id="plan-3">
+            <h3 style="color:var(--cyan); margin-bottom:10px;">// 03. 商业企划: 算法造物 (ART_03)</h3>
+            <p><b>核心：</b>纯数字资产的物理固化交易终端。</p>
+            <p>每一件定制品不仅是一段代码，更是云端意志的物理延伸。结合 3D 打印与 CNC 雕刻技术，确保购买者的每一件实体商品都能在链上追溯到其起源参数。</p>
         </div>
     </div>
+   </div>
 
     <script>
         const canvas = document.getElementById('warpCanvas');
@@ -179,7 +187,7 @@
                 ctx.beginPath();
                 ctx.lineWidth = (1 - this.z / canvas.width) * 2;
                 ctx.moveTo(sx, sy);
-                ctx.lineTo(sx + 2, sy + 2); // 简化绘制防止性能冲突
+                ctx.lineTo(sx + 2, sy + 2); 
                 ctx.stroke();
             }
         }
@@ -201,6 +209,7 @@
             mouseY = e.clientY - canvas.height / 2;
         });
 
+        // 基础切换白皮书开关
         function togglePaper() {
             const paper = document.getElementById('whitepaper-view');
             const viewport = document.getElementById('viewport');
@@ -213,7 +222,37 @@
                 speed = 2;
             }
         }
+
+        // 打开白皮书并平滑滚动到指定模块
+        function openPaperSection(sectionId) {
+            const paper = document.getElementById('whitepaper-view');
+            const viewport = document.getElementById('viewport');
+            
+            // 如果白皮书未打开，先打开它
+            if(!paper.classList.contains('active')) {
+                paper.classList.add('active');
+                viewport.style.opacity = '0.1';
+                speed = 0.5;
+            }
+
+            // 等待动画展开后滚动到对应锚点
+            setTimeout(() => {
+                const target = document.getElementById(sectionId);
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            }, 600);
+        }
+
+        // 按 ESC 键关闭终端
+        document.addEventListener('keydown', (e) => {
+            if(e.key === 'Escape') {
+                const paper = document.getElementById('whitepaper-view');
+                if(paper.classList.contains('active')) {
+                    togglePaper();
+                }
+            }
+        });
     </script>
 </body>
 </html>
-
