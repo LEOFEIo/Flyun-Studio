@@ -214,8 +214,6 @@
             mouseX = e.clientX - canvas.width / 2;
             mouseY = e.clientY - canvas.height / 2;
         });
-
-        // 基础切换白皮书开关
         function togglePaper() {
             const paper = document.getElementById('whitepaper-view');
             const viewport = document.getElementById('viewport');
@@ -228,20 +226,18 @@
                 speed = 2;
             }
         }
-
-        // 打开白皮书并平滑滚动到指定模块
         function openPaperSection(sectionId) {
             const paper = document.getElementById('whitepaper-view');
             const viewport = document.getElementById('viewport');
             
-            // 如果白皮书未打开，先打开它
+    
             if(!paper.classList.contains('active')) {
                 paper.classList.add('active');
                 viewport.style.opacity = '0.1';
                 speed = 0.5;
             }
 
-            // 等待动画展开后滚动到对应锚点
+           
             setTimeout(() => {
                 const target = document.getElementById(sectionId);
                 if (target) {
@@ -250,7 +246,7 @@
             }, 600);
         }
 
-        // 按 ESC 键关闭终端
+    
         document.addEventListener('keydown', (e) => {
             if(e.key === 'Escape') {
                 const paper = document.getElementById('whitepaper-view');
@@ -262,4 +258,5 @@
     </script>
 </body>
 </html>
+
 
