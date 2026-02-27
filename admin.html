@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flyun Studio | Core System</title>
+    <style>
+        /* 赛博极简风格 CSS */
+        body {
+            background-color: #050505;
+            color: #e0e0e0;
+            font-family: 'Courier New', Courier, monospace; /* 程序员等宽字体 */
+            margin: 0;
+            padding: 40px;
+            display: flex;
+            justify-content: center;
+        }
+        .admin-container {
+            width: 100%;
+            max-width: 600px;
+            border: 1px solid #333;
+            padding: 30px;
+            background: #0a0a0a;
+            box-shadow: 0 0 20px rgba(0, 255, 65, 0.05);
+        }
+        .header {
+            border-bottom: 1px solid #00ff41; /* 黑客绿边缘 */
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        .header h1 {
+            color: #00ff41;
+            font-size: 24px;
+            margin: 0;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: #888;
+        }
+        input[type="text"], input[type="number"], textarea {
+            width: 100%;
+            padding: 12px;
+            background-color: #000;
+            border: 1px solid #333;
+            color: #fff;
+            font-family: 'Courier New', Courier, monospace;
+            box-sizing: border-box;
+            transition: border 0.3s;
+        }
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #00ff41; /* 聚焦时亮绿灯 */
+        }
+        textarea {
+            height: 120px;
+            resize: vertical;
+        }
+        button {
+            background-color: #00ff41;
+            color: #000;
+            border: none;
+            padding: 12px 24px;
+            font-weight: bold;
+            font-family: 'Courier New', Courier, monospace;
+            cursor: pointer;
+            width: 100%;
+            text-transform: uppercase;
+            transition: background 0.3s, color 0.3s;
+        }
+        button:hover {
+            background-color: #fff;
+            color: #000;
+        }
+        .status {
+            margin-top: 15px;
+            font-size: 12px;
+            color: #00ff41;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<div class="admin-container">
+    <div class="header">
+        <h1>[ Flyun_Admin_Terminal ]</h1>
+        <p style="font-size: 12px; color: #555;">> Establish connection to main frame...</p>
+    </div>
+
+    <div class="form-group">
+        <label>> Product_Name (产品名称)</label>
+        <input type="text" id="productName" placeholder="e.g. Algorithmic Toothbrush V1">
+    </div>
+
+    <div class="form-group">
+        <label>> Price_USD (售价 - 美元)</label>
+        <input type="number" id="productPrice" placeholder="e.g. 59">
+    </div>
+
+    <div class="form-group">
+        <label>> Manifesto_Text (白皮书/宣传文案更新)</label>
+        <textarea id="manifestoText" placeholder="Enter new manifesto text here..."></textarea>
+    </div>
+
+    <button onclick="saveData()">[ EXECUTE_UPDATE ]</button>
+    
+    <div class="status" id="statusMessage"></div>
+</div>
+
+<script>
+    // 这里是我们下一步要放 Firebase 数据库连接代码的地方
+    // 现在点击按钮只会显示一个虚假的成功提示，让你感受一下交互
+    function saveData() {
+        const btn = document.querySelector('button');
+        const status = document.getElementById('statusMessage');
+        
+        btn.innerText = "[ PROCESSING... ]";
+        
+        setTimeout(() => {
+            btn.innerText = "[ EXECUTE_UPDATE ]";
+            status.innerText = "> SYSTEM_UPDATE_SUCCESSFUL: Data pushed to frontend.";
+            // 3秒后清除提示
+            setTimeout(() => { status.innerText = ""; }, 3000);
+        }, 1000);
+    }
+</script>
+
+</body>
+</html>
