@@ -56,7 +56,6 @@
             background: rgba(255, 255, 255, 0.6); box-shadow: inset 0 2px 10px rgba(0,0,0,0.05);
             font-size: 18px; font-weight: 600; text-align: center; outline: none; transition: 0.3s; box-sizing: border-box;
         }
-
         .ios-26-btn {
             width: 100%; padding: 20px; border-radius: 25px; border: none; background: #1d1d1f; color: white;
             font-size: 17px; font-weight: 700; cursor: pointer; transition: 0.3s; margin-top: 25px;
@@ -69,11 +68,6 @@
             border-radius: var(--radius-max); padding: 25px; margin-bottom: 25px;
             border: 1px solid rgba(255,255,255,0.5); box-shadow: 0 10px 40px rgba(0,0,0,0.02);
         }
-
-        /* 分析看板 */
-        .dashboard { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 25px; }
-        @media (max-width: 900px) { .dashboard { grid-template-columns: 1fr; } }
-        .chart-container { height: 220px; position: relative; }
 
         /* 客户岗位管理 */
         .mgmt-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
@@ -93,9 +87,14 @@
         .field label { font-size: 11px; font-weight: 700; color: #8E8E93; margin-bottom: 5px; margin-left: 10px; }
         .field input, .field select { padding: 14px; border-radius: 15px; border: 1px solid rgba(0,0,0,0.08); background: white; font-size: 16px; outline: none; }
 
-        /* 搜索框样式 */
-        .search-bar-container { display: flex; align-items: center; background: rgba(255,255,255,0.7); padding: 10px 20px; border-radius: 20px; margin-bottom: 20px; border: 1px solid rgba(0,0,0,0.05); }
+        /* 搜索框组 */
+        .search-group { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
+        @media (max-width: 600px) { .search-group { grid-template-columns: 1fr; } }
+        .search-bar-container { display: flex; align-items: center; background: rgba(255,255,255,0.7); padding: 12px 20px; border-radius: 20px; border: 1px solid rgba(0,0,0,0.05); }
         .search-input { flex: 1; border: none; background: transparent; font-size: 15px; outline: none; padding-left: 10px; }
+
+        /* 计算出的日期小字 */
+        .calc-date { display: block; font-size: 11px; color: var(--ios-blue); font-weight: 600; margin-top: 2px; }
 
         /* 底部 Dock */
         .dock {
@@ -136,21 +135,6 @@
         <div id="userDisplay" style="color: #8E8E93; font-weight: 500; margin-top: 5px; font-size: 13px;"></div>
     </header>
 
-    <div class="dashboard">
-        <div class="ios-card">
-            <div style="font-size: 14px; font-weight: 700; margin-bottom: 10px;">人才状态分布</div>
-            <div class="chart-container"><canvas id="chartStatus"></canvas></div>
-        </div>
-        <div class="ios-card">
-            <div style="font-size: 14px; font-weight: 700; margin-bottom: 10px;">学历画像分布</div>
-            <div class="chart-container"><canvas id="chartEdu"></canvas></div>
-        </div>
-        <div class="ios-card">
-            <div style="font-size: 14px; font-weight: 700; margin-bottom: 10px;">项目储备排行</div>
-            <div class="chart-container"><canvas id="chartJob"></canvas></div>
-        </div>
-    </div>
-
     <div class="ios-card">
         <div class="mgmt-grid">
             <div>
@@ -173,7 +157,7 @@
     </div>
 
     <div class="ios-card">
-        <div style="font-size: 15px; font-weight: 700; margin-bottom: 20px;">📝 寻访详情录入 (16环节)</div>
+        <div style="font-size: 15px; font-weight: 700; margin-bottom: 20px;">📝 寻访记录录入 (16环节)</div>
         <div class="form-grid">
             <div class="field"><label>1. 推荐公司 (客户)</label><select id="f1" onchange="filterJobs()"></select></div>
             <div class="field"><label>2. 推荐岗位名称</label><select id="f2"></select></div>
@@ -196,10 +180,16 @@
 
     <div class="ios-card" style="padding:0; overflow:hidden;">
         <div style="padding: 20px 25px 0 25px;">
-            <div class="section-title" style="margin-bottom: 10px;">🔍 智能客户搜索</div>
-            <div class="search-bar-container">
-                <span style="opacity: 0.5;">🔎</span>
-                <input type="text" id="searchInput" class="search-input" placeholder="输入客户公司名称进行实时过滤..." oninput="handleSearch()">
+            <div style="font-size: 15px; font-weight: 700; margin-bottom: 12px; color: #1d1d1f;">🔍 智能筛选与资历分析</div>
+            <div class="search-group">
+                <div class="search-bar-container">
+                    <span>🏢</span>
+                    <input type="text" id="searchComp" class="search-input" placeholder="搜公司..." oninput="handleSearch()">
+                </div>
+                <div class="search-bar-container">
+                    <span>💼</span>
+                    <input type="text" id="searchJob" class="search-input" placeholder="搜岗位..." oninput="handleSearch()">
+                </div>
             </div>
         </div>
         <div style="overflow-x:auto;">
@@ -208,11 +198,12 @@
                     <tr style="background:rgba(0,0,0,0.02);">
                         <th style="padding:20px; text-align:left; font-size:12px; color:#8e8e93;">姓名</th>
                         <th style="text-align:left; font-size:12px; color:#8e8e93;">状态</th>
-                        <th style="text-align:left; font-size:12px; color:#8e8e93;">所属客户</th>
-                        <th style="text-align:left; font-size:12px; color:#8e8e93;">岗位</th>
-                        <th style="text-align:left; font-size:12px; color:#8e8e93;">现公司</th>
+                        <th style="text-align:left; font-size:12px; color:#8e8e93;">所属客户/岗位</th>
+                        <th style="text-align:left; font-size:12px; color:#8e8e93;">出生年 (年龄)</th>
+                        <th style="text-align:left; font-size:12px; color:#8e8e93;">所在地</th>
+                        <th style="text-align:left; font-size:12px; color:#8e8e93;">资历 (入学至今)</th>
                         <th style="text-align:left; font-size:12px; color:#8e8e93;">联系方式</th>
-                        <th style="text-align:left; font-size:12px; color:#8e8e93;">操作</th>
+                        <th style="text-align:left; font-size:12px; color:#8e8e93;">管理</th>
                     </tr>
                 </thead>
                 <tbody id="tableBody"></tbody>
@@ -228,45 +219,40 @@
 </div>
 
 <script>
-    let dbKey = ""; let candidates = []; let treeData = {}; let charts = {};
-    let currentSearchTerm = "";
+    let dbKey = ""; let candidates = []; let treeData = {};
+    const currentYear = new Date().getFullYear();
 
     function login() {
         const p = document.getElementById('sysPass').value;
         if(!p) return;
-        dbKey = "FLY_YUN_26_ENT_V9_" + btoa(p);
+        dbKey = "FLY_YUN_26_DATE_CALC_" + btoa(p);
         document.getElementById('loginOverlay').style.opacity = '0';
         setTimeout(() => {
             document.getElementById('loginOverlay').style.display = 'none';
             document.getElementById('app').style.display = 'block';
             document.getElementById('dock').style.display = 'flex';
-            document.getElementById('userDisplay').innerText = "当前存储空间: " + p;
+            document.getElementById('userDisplay').innerText = "空间密码钥匙: " + p;
             init();
         }, 600);
     }
 
     function init() {
-        // 出生年 1960-2022
-        let y6 = '<option value="">年份</option>';
-        for(let i=1960; i<=2022; i++) y6 += `<option value="${i}">${i}年</option>`;
+        let y6 = '<option value="">出生年</option>';
+        for(let i=1960; i<=2022; i++) y6 += `<option value="${i}">${i}</option>`;
         document.getElementById('f6').innerHTML = y6;
 
-        // 入学年份 1900-2024
         let y14 = '<option value="">入学年份</option>';
-        for(let i=1900; i<=2024; i++) y14 += `<option value="${i}">${i}年</option>`;
+        for(let i=1900; i<=2024; i++) y14 += `<option value="${i}">${i}</option>`;
         document.getElementById('f14').innerHTML = y14;
 
         candidates = JSON.parse(localStorage.getItem(dbKey) || "[]");
         treeData = JSON.parse(localStorage.getItem(dbKey + "_tree") || "{}");
-        
-        refreshManagementUI(); renderTable(); updateCharts();
+        refreshManagementUI(); renderTable();
     }
 
-    // --- 搜索逻辑 ---
+    // --- 搜索过滤 ---
     function handleSearch() {
-        currentSearchTerm = document.getElementById('searchInput').value.trim().toLowerCase();
         renderTable();
-        updateCharts(); // 让图表也根据搜索结果联动
     }
 
     // --- 管理逻辑 ---
@@ -295,10 +281,8 @@
                 </div>
             </div>
         `).join('');
-        const options = '<option value="">-- 选择公司 --</option>' + Object.keys(treeData).map(c => `<option value="${c}">${c}</option>`).join('');
-        compSelect.innerHTML = options;
-        f1.innerHTML = options;
-        filterJobs();
+        const opt = '<option value="">-- 选择公司 --</option>' + Object.keys(treeData).map(c => `<option value="${c}">${c}</option>`).join('');
+        compSelect.innerHTML = opt; f1.innerHTML = opt; filterJobs();
     }
     function filterJobs() {
         const comp = document.getElementById('f1').value;
@@ -308,72 +292,75 @@
         } else { jobSel.innerHTML = '<option value="">请先选公司</option>'; }
     }
 
-    // --- 候选人存取 ---
+    // --- 核心录入与日期计算显示 ---
     function saveCandidate() {
         const row = { id: Date.now() };
         for(let i=1; i<=16; i++) row['f'+i] = document.getElementById('f'+i).value;
-        if(!row.f3 || !row.f1 || !row.f2) return alert("姓名、所属公司和岗位是核心必填");
+        if(!row.f3 || !row.f1 || !row.f2) return alert("姓名和岗位是必填项");
         candidates.push(row);
         localStorage.setItem(dbKey, JSON.stringify(candidates));
-        renderTable(); updateCharts(); alert("录入成功！");
+        renderTable(); alert("录入成功！");
     }
 
     function renderTable() {
-        // 根据搜索项过滤列表
-        const filtered = candidates.filter(i => i.f1.toLowerCase().includes(currentSearchTerm));
-        
-        document.getElementById('tableBody').innerHTML = filtered.map(i => `
-            <tr style="border-bottom:1px solid rgba(0,0,0,0.03);">
-                <td style="padding:15px 20px;"><strong>${i.f3}</strong></td>
-                <td><span class="badge badge-${i.f5}">${i.f5}</span></td>
-                <td>${i.f1}</td><td>${i.f2}</td><td>${i.f10}</td><td>${i.f11}</td>
-                <td><span style="color:red; cursor:pointer; font-weight:700;" onclick="del(${i.id})">移除</span></td>
-            </tr>
-        `).join('');
+        const termComp = document.getElementById('searchComp').value.toLowerCase();
+        const termJob = document.getElementById('searchJob').value.toLowerCase();
+
+        const filtered = candidates.filter(i => 
+            (i.f1.toLowerCase().includes(termComp)) && 
+            (i.f2.toLowerCase().includes(termJob))
+        );
+
+        document.getElementById('tableBody').innerHTML = filtered.map(i => {
+            // 计算年龄
+            const age = i.f6 ? (currentYear - parseInt(i.f6)) : "-";
+            // 计算资历 (自入学年份至今)
+            const seniority = i.f14 ? (currentYear - parseInt(i.f14)) : "-";
+
+            return `
+                <tr style="border-bottom:1px solid rgba(0,0,0,0.03);">
+                    <td style="padding:15px 20px;"><strong>${i.f3}</strong></td>
+                    <td><span class="badge badge-${i.f5}">${i.f5}</span></td>
+                    <td>
+                        <span style="display:block; font-weight:600;">${i.f1}</span>
+                        <span style="font-size:12px; color:#8E8E93;">${i.f2}</span>
+                    </td>
+                    <td>
+                        ${i.f6 || "-"}
+                        <span class="calc-date">${age != "-" ? age + " 岁" : ""}</span>
+                    </td>
+                    <td>${i.f8}</td>
+                    <td>
+                        ${i.f14 || "-"} 入学
+                        <span class="calc-date">${seniority != "-" ? "已发展 " + seniority + " 年" : ""}</span>
+                    </td>
+                    <td>${i.f11}</td>
+                    <td><span style="color:red; cursor:pointer; font-weight:700;" onclick="del(${i.id})">移除</span></td>
+                </tr>
+            `;
+        }).join('');
     }
 
-    function del(id) { if(confirm("确定移除此记录？")) { candidates = candidates.filter(c => c.id !== id); localStorage.setItem(dbKey, JSON.stringify(candidates)); renderTable(); updateCharts(); } }
-
-    function updateCharts() {
-        // 图表也只展示搜索过滤后的数据
-        const filtered = candidates.filter(i => i.f1.toLowerCase().includes(currentSearchTerm));
-        
-        if(filtered.length === 0) {
-            // 如果没数据，清除图表
-            ['chartStatus', 'chartEdu', 'chartJob'].forEach(id => { if(charts[id]) charts[id].destroy(); });
-            return;
-        }
-        
-        const s = { '合适':0, '不合适':0, '正在联系中':0 };
-        const e = { '大专':0, '本科':0, '研究生':0, '博士':0 };
-        const j = {};
-        filtered.forEach(i => { s[i.f5]++; e[i.f13]++; j[i.f1] = (j[i.f1] || 0) + 1; });
-        draw('chartStatus', 'doughnut', Object.keys(s), Object.values(s), ['#34C759','#FF3B30','#FF9500'], true);
-        draw('chartEdu', 'bar', Object.keys(e), Object.values(e), '#007AFF', false);
-        draw('chartJob', 'bar', Object.keys(j), Object.values(j), '#AF52DE', false);
-    }
-
-    function draw(id, type, labels, data, colors, isD) {
-        if(charts[id]) charts[id].destroy();
-        charts[id] = new Chart(document.getElementById(id), {
-            type: type,
-            data: { labels, datasets: [{ data, backgroundColor: colors, borderRadius: isD ? 0 : 10 }] },
-            options: { maintainAspectRatio:false, cutout: isD ? '75%' : 0, plugins:{ legend:{ display:isD, position:'bottom', labels:{ boxWidth:10, font:{size:11} } } }, scales:{ y:{ display:!isD, beginAtZero:true, ticks:{stepSize:1} }, x:{ display:!isD } } }
-        });
-    }
+    function del(id) { if(confirm("确定移除此记录？")) { candidates = candidates.filter(c => c.id !== id); localStorage.setItem(dbKey, JSON.stringify(candidates)); renderTable(); } }
 
     function exportExcel() {
-        // 导出功能也只导出当前搜索过滤后的内容
-        const filtered = candidates.filter(i => i.f1.toLowerCase().includes(currentSearchTerm));
-        if(filtered.length === 0) return alert("没有可导出的数据");
+        const termComp = document.getElementById('searchComp').value.toLowerCase();
+        const termJob = document.getElementById('searchJob').value.toLowerCase();
+        const filtered = candidates.filter(i => i.f1.toLowerCase().includes(termComp) && i.f2.toLowerCase().includes(termJob));
 
-        const h = ["客户公司", "岗位名称", "姓名", "性别", "状态", "出生年", "岗位产品", "目前所在地", "期望所在地", "现公司", "电话/微信", "邮箱", "学历", "入学年份", "学校", "备注"];
+        const h = ["客户公司", "岗位名称", "姓名", "性别", "状态", "出生年", "年龄", "岗位产品", "所在地", "期望地", "现公司", "联系方式", "邮箱", "学历", "入学年份", "资历", "学校", "备注"];
         const s = { fill: { fgColor: { rgb: "007AFF" } }, font: { color: { rgb: "FFFFFF" }, bold: true }, alignment: {horizontal:"center"} };
-        const rows = [ h.map(i => ({v:i, s:s})), ...filtered.map(i => [i.f1, i.f2, i.f3, i.f4, i.f5, i.f6, i.f7, i.f8, i.f9, i.f10, i.f11, i.f12, i.f13, i.f14, i.f15, i.f16]) ];
+        
+        const rows = [ h.map(i => ({v:i, s:s})), ...filtered.map(i => {
+            const age = i.f6 ? (currentYear - parseInt(i.f6)) : "";
+            const seniority = i.f14 ? (currentYear - parseInt(i.f14)) : "";
+            return [i.f1, i.f2, i.f3, i.f4, i.f5, i.f6, age, i.f7, i.f8, i.f9, i.f10, i.f11, i.f12, i.f13, i.f14, seniority, i.f15, i.f16];
+        }) ];
+
         const ws = XLSX.utils.aoa_to_sheet(rows);
         const wb = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(wb, ws, "数据报告");
-        XLSX.writeFile(wb, "FLY_YUN_Pro_Report.xlsx");
+        XLSX.utils.book_append_sheet(wb, ws, "报告");
+        XLSX.writeFile(wb, "FLY_YUN_Pro_DateCalc.xlsx");
     }
 </script>
 </body>
