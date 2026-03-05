@@ -37,3 +37,270 @@
         /* --- 登录层：极简空间 --- */
         #loginOverlay {
             position: fixed; inset: 0; display: flex; justify-content: center; align-items: center;
+            z-index: 10000; background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(60px) saturate(180%);
+            transition: 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+        .login-card {
+            width: 320px; text-align: center;
+        }
+        .app-icon {
+            width: 100px; height: 100px; background: linear-gradient(145deg, #007aff, #0051ff);
+            border-radius: 28px; margin: 0 auto 30px; display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 20px 40px rgba(0,122,255,0.3); color: white; font-size: 40px;
+        }
+
+        /* --- iOS 20 容器 --- */
+        .app-shell { max-width: 1100px; margin: 0 auto; padding: 40px 20px 140px; display: none; }
+        
+        .ios-card {
+            background: var(--ios-card-bg); backdrop-filter: blur(40px) saturate(150%);
+            border-radius: var(--radius-max); padding: 30px; margin-bottom: 30px;
+            border: 1px solid var(--ios-border); box-shadow: 0 15px 45px rgba(0,0,0,0.03);
+            transition: transform 0.3s ease;
+        }
+        .ios-card:hover { transform: translateY(-2px); }
+
+        /* --- 按钮与输入框 --- */
+        .ios-input {
+            background: rgba(255, 255, 255, 0.6); border: none; padding: 16px 20px;
+            border-radius: 18px; font-size: 16px; outline: none; width: 100%; box-sizing: border-box;
+            box-shadow: inset 0 1px 4px rgba(0,0,0,0.03);
+        }
+        .ios-btn {
+            background: #1d1d1f; color: white; border: none; padding: 16px 30px;
+            border-radius: 18px; font-weight: 700; cursor: pointer; transition: 0.2s;
+        }
+        .ios-btn:active { transform: scale(0.96); opacity: 0.8; }
+
+        /* --- 聚合表格层级 --- */
+        .table-container { overflow-x: auto; border-radius: var(--radius-mid); }
+        table { width: 100%; border-collapse: collapse; min-width: 900px; }
+        
+        .group-header td {
+            padding: 18px 25px !important; font-weight: 800; font-size: 17px;
+            color: #000; background: rgba(0,0,0,0.02);
+        }
+        .job-sub-header td {
+            padding: 12px 45px !important; font-weight: 600; font-size: 14px;
+            color: #8e8e93; border-bottom: 1px solid rgba(0,0,0,0.03);
+        }
+        .candidate-row td { padding: 15px 25px; border-bottom: 1px solid rgba(0,0,0,0.02); }
+        .indent-cell { padding-left: 75px !important; }
+
+        .badge {
+            padding: 5px 12px; border-radius: 10px; font-size: 11px; font-weight: 700;
+        }
+        .badge-合适 { background: #34C759; color: #fff; }
+        .badge-正在联系中 { background: #FF9500; color: #fff; }
+        .badge-不合适 { background: #FF3B30; color: #fff; }
+
+        /* --- 底部 Dock (iOS 20 风格) --- */
+        .ios-dock {
+            position: fixed; bottom: 35px; left: 50%; transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.6); backdrop-filter: blur(40px) saturate(200%);
+            padding: 14px; border-radius: 40px; display: flex; gap: 15px;
+            border: 1px solid rgba(255,255,255,0.8); box-shadow: 0 25px 60px rgba(0,0,0,0.1); z-index: 1000;
+        }
+        .dock-icon {
+            width: 54px; height: 54px; border-radius: 18px; border: none;
+            background: white; color: #1d1d1f; font-size: 20px; display: flex;
+            align-items: center; justify-content: center; cursor: pointer; transition: 0.2s;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+        .dock-icon:hover { transform: translateY(-10px) scale(1.1); }
+        .dock-icon.primary { background: var(--ios-accent); color: white; }
+
+        /* 可视化面板 */
+        .dash-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 30px; }
+        @media (max-width: 800px) { .dash-grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+
+<div class="ambient-bg"></div>
+
+<div id="loginOverlay">
+    <div class="login-card">
+        <div class="app-icon"><i class="fas fa-cloud"></i></div>
+        <h1 style="font-size: 32px; font-weight: 800; margin-bottom: 10px;">FLY YUN</h1>
+        <p style="color: #6e6e73; margin-bottom: 40px; font-weight: 500;">寻访空间已就绪</p>
+        <input type="password" id="sysPass" class="ios-input" placeholder="输入访问密钥" style="text-align: center;" onkeydown="if(event.keyCode==13) login()">
+        <button class="ios-btn" style="width: 100%; margin-top: 20px;" onclick="login()">解锁进入</button>
+    </div>
+</div>
+
+<div class="app-shell" id="app">
+    <header style="margin-bottom: 50px;">
+        <h2 style="font-size: 40px; font-weight: 900; letter-spacing: -2px; margin: 0;">寻访概览</h2>
+        <p id="userDisplay" style="color: #8e8e93; font-weight: 600; margin-top: 5px;"></p>
+    </header>
+
+    <div class="dash-grid">
+        <div class="ios-card"><canvas id="chartStatus" height="180"></canvas></div>
+        <div class="ios-card"><canvas id="chartEdu" height="180"></canvas></div>
+        <div class="ios-card"><canvas id="chartJob" height="180"></canvas></div>
+    </div>
+
+    <div class="ios-card">
+        <div style="font-size: 18px; font-weight: 800; margin-bottom: 25px;">快速录入记录</div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
+            <div><label style="font-[11px] font-bold text-[#8e8e93]">客户</label>
+                <select id="f1" class="ios-input" onchange="filterJobs()"></select>
+            </div>
+            <div><label style="font-[11px] font-bold text-[#8e8e93]">岗位</label>
+                <select id="f2" class="ios-input"></select>
+            </div>
+            <div><label style="font-[11px] font-bold text-[#8e8e93]">姓名</label>
+                <input type="text" id="f3" class="ios-input">
+            </div>
+            <div><label style="font-[11px] font-bold text-[#8e8e93]">状态</label>
+                <select id="f5" class="ios-input">
+                    <option value="正在联系中">正在联系中</option>
+                    <option value="合适">合适</option>
+                    <option value="不合适">不合适</option>
+                </select>
+            </div>
+        </div>
+        <div style="margin-top: 20px; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px;">
+            <input type="text" id="f10" class="ios-input" placeholder="现公司">
+            <input type="text" id="f11" class="ios-input" placeholder="联系方式">
+            <select id="f13" class="ios-input"><option value="本科">本科</option><option value="研究生">研究生</option><option value="博士">博士</option></select>
+        </div>
+    </div>
+
+    <div class="ios-card" style="padding: 0; overflow: hidden;">
+        <div style="padding: 30px; display: flex; gap: 15px;">
+            <input type="text" id="sComp" class="ios-input" placeholder="🔍 过滤客户..." oninput="render()">
+            <input type="text" id="sJob" class="ios-input" placeholder="🔍 过滤岗位..." oninput="render()">
+        </div>
+        <div class="table-container">
+            <table>
+                <tbody id="tableBody"></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="ios-dock" id="dock" style="display: none;">
+    <button class="dock-icon primary" onclick="saveRecord()" title="存入空间"><i class="fas fa-plus"></i></button>
+    <button class="dock-icon" onclick="exportExcel()" title="导出 Excel"><i class="fas fa-file-export"></i></button>
+    <button class="dock-icon" onclick="manageTree()" title="客户管理"><i class="fas fa-sitemap"></i></button>
+    <div style="width: 1px; height: 30px; background: rgba(0,0,0,0.1); align-self: center;"></div>
+    <button class="dock-icon" style="color: #FF3B30;" onclick="location.reload()" title="锁定退出"><i class="fas fa-lock"></i></button>
+</div>
+
+<script>
+    let dbKey = ""; let candidates = []; let treeData = {}; let charts = {};
+    const curY = new Date().getFullYear();
+
+    function login() {
+        const p = document.getElementById('sysPass').value;
+        if(!p) return;
+        dbKey = "FLY_YUN_iOS20_" + btoa(p);
+        document.getElementById('loginOverlay').style.opacity = '0';
+        document.getElementById('loginOverlay').style.transform = 'scale(1.2)';
+        setTimeout(() => {
+            document.getElementById('loginOverlay').style.display = 'none';
+            document.getElementById('app').style.display = 'block';
+            document.getElementById('dock').style.display = 'flex';
+            document.getElementById('userDisplay').innerText = "ID: " + p.slice(0,3) + "****";
+            init();
+        }, 600);
+    }
+
+    function init() {
+        candidates = JSON.parse(localStorage.getItem(dbKey) || "[]");
+        treeData = JSON.parse(localStorage.getItem(dbKey + "_tree") || {"示例公司": ["高级产品经理", "架构师"]});
+        refreshSelects(); render(); updateCharts();
+    }
+
+    function refreshSelects() {
+        const opt = '<option value="">选择客户</option>' + Object.keys(treeData).map(c => `<option value="${c}">${c}</option>`).join('');
+        document.getElementById('f1').innerHTML = opt;
+        filterJobs();
+    }
+
+    function filterJobs() {
+        const c = document.getElementById('f1').value;
+        document.getElementById('f2').innerHTML = (c && treeData[c]) ? treeData[c].map(j => `<option value="${j}">${j}</option>`).join('') : '<option value="">先选公司</option>';
+    }
+
+    function saveRecord() {
+        const row = { id: Date.now(), f1: document.getElementById('f1').value, f2: document.getElementById('f2').value, f3: document.getElementById('f3').value, f5: document.getElementById('f5').value, f10: document.getElementById('f10').value, f11: document.getElementById('f11').value, f13: document.getElementById('f13').value };
+        if(!row.f3 || !row.f1) return alert("姓名与客户是必备项");
+        candidates.push(row);
+        localStorage.setItem(dbKey, JSON.stringify(candidates));
+        document.getElementById('f3').value = "";
+        render(); updateCharts();
+    }
+
+    // --- 核心聚合渲染 ---
+    function render() {
+        const sc = document.getElementById('sComp').value.toLowerCase();
+        const sj = document.getElementById('sJob').value.toLowerCase();
+        
+        const filtered = candidates.filter(i => i.f1.toLowerCase().includes(sc) && i.f2.toLowerCase().includes(sj));
+        const grouped = {};
+        filtered.forEach(item => {
+            if (!grouped[item.f1]) grouped[item.f1] = {};
+            if (!grouped[item.f1][item.f2]) grouped[item.f1][item.f2] = [];
+            grouped[item.f1][item.f2].push(item);
+        });
+
+        let html = "";
+        for (const comp in grouped) {
+            html += `<tr class="group-header"><td colspan="5">🏢 ${comp}</td></tr>`;
+            for (const job in grouped[comp]) {
+                html += `<tr class="job-sub-header"><td colspan="5">└─ ${job}</td></tr>`;
+                grouped[comp][job].forEach(i => {
+                    html += `<tr class="candidate-row">
+                        <td class="indent-cell" style="font-weight:700;">${i.f3}</td>
+                        <td><span class="badge badge-${i.f5}">${i.f5}</span></td>
+                        <td style="color:#8e8e93;">${i.f10 || '-'}</td>
+                        <td style="font-family:monospace;">${i.f11}</td>
+                        <td style="text-align:right;"><button style="border:none; background:none; color:#ff3b30; cursor:pointer;" onclick="del(${i.id})"><i class="fas fa-trash-alt"></i></button></td>
+                    </tr>`;
+                });
+            }
+        }
+        document.getElementById('tableBody').innerHTML = html || '<tr><td colspan="5" style="text-align:center;padding:50px;color:#8e8e93;">无活跃寻访记录</td></tr>';
+    }
+
+    function del(id) { if(confirm("移除记录？")) { candidates = candidates.filter(x => x.id !== id); localStorage.setItem(dbKey, JSON.stringify(candidates)); render(); updateCharts(); } }
+
+    function updateCharts() {
+        const s = { '合适':0, '不合适':0, '正在联系中':0 };
+        candidates.forEach(i => { if(s[i.f5]!==undefined) s[i.f5]++; });
+        draw('chartStatus', 'doughnut', Object.keys(s), Object.values(s), ['#34C759','#FF3B30','#FF9500']);
+    }
+
+    function draw(id, type, labels, data, colors) {
+        if(charts[id]) charts[id].destroy();
+        charts[id] = new Chart(document.getElementById(id), {
+            type: type,
+            data: { labels, datasets: [{ data, backgroundColor: colors, borderWeight: 0 }] },
+            options: { maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { usePointStyle: true, boxWidth: 6, font: { size: 11, weight: 600 } } } }, cutout: '70%' }
+        });
+    }
+
+    function exportExcel() {
+        const ws = XLSX.utils.json_to_sheet(candidates);
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "FlyunReport");
+        XLSX.writeFile(wb, "Flyun_iOS20_Export.xlsx");
+    }
+
+    function manageTree() {
+        const name = prompt("输入新公司名称:");
+        if(name) {
+            const jobs = prompt("输入岗位(逗号分隔):");
+            if(jobs) {
+                treeData[name] = jobs.split(',').map(s => s.trim());
+                localStorage.setItem(dbKey + "_tree", JSON.stringify(treeData));
+                refreshSelects();
+            }
+        }
+    }
+</script>
+</body>
+</html>
