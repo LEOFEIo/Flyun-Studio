@@ -66,4 +66,364 @@
         .job-tag { display: inline-block; background: white; padding: 5px 10px; border-radius: 8px; margin: 3px; font-size: 12px; }
 
         /* 底部 Dock */
-        .dock { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+        .dock { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: rgba(255,255,255,0.75); backdrop-filter: blur(35px); padding: 12px 25px; border-radius: 35px; display: flex; gap: 15px; border: 1px solid rgba(255,255,255,0.5); box-shadow: 0 20px 50px rgba(0,0,0,0.1); z-index: 999; }
+        .dock-btn { border: none; padding: 14px 25px; border-radius: 20px; font-weight: 700; font-size: 14px; cursor: pointer; }
+        .btn-blue { background: #007AFF; color: white; }
+        .btn-green { background: #34C759; color: white; }
+        .badge { padding: 4px 10px; border-radius: 8px; font-size: 11px; font-weight: 700; }
+        .badge-合适 { background: #D2F9D8; color: #1E6726; }
+        .badge-不合适 { background: #FFE5E5; color: #D32F2F; }
+        .badge-正在联系中 { background: #FFF4D2; color: #8A6D1F; }
+    </style>
+</head>
+<body>
+
+<div class="liquid-bg"></div>
+
+<div id="loginOverlay">
+    <div class="spatial-card">
+        <h1 id="mainTitle">FLY YUN</h1>
+        <p id="mainSub">生成您自己的存储空间</p>
+        <input type="password" id="sysPass" class="ios-26-input" placeholder="输入访问密码" onkeydown="if(event.keyCode==13) handleLogin()">
+        <button class="ios-26-btn" onclick="handleLogin()">进入空间 / 解锁</button>
+        <div class="admin-link" onclick="toggleAdminView()">超级管理中心</div>
+    </div>
+</div>
+
+<div id="adminPanel">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+        <h2 style="font-size:32px; font-weight:900; color:var(--admin-purple);">MASTER ADMIN</h2>
+        <button class="btn-search" style="background:#000" onclick="location.reload()">退出后台</button>
+    </div>
+    <div class="ios-card">
+        <div style="font-weight:700; margin-bottom:20px;">📦 全局存储空间清单</div>
+        <table class="admin-table">
+            <thead>
+                <tr><th>空间标识 (密码)</th><th>候选人数</th><th>操作</th></tr>
+            </thead>
+            <tbody id="adminTableBody"></tbody>
+        </table>
+    </div>
+    <div class="ios-card" style="background:#FFE5E5;">
+        <div style="color:var(--ios-red); font-weight:700;">⚠️ 危险操作区域</div>
+        <p style="font-size:12px; color:#555;">抹除操作将彻底清空当前浏览器中所有用户的寻访数据，不可恢复。</p>
+        <button class="dock-btn" style="background:var(--ios-red); color:white;" onclick="dangerClearAll()">抹除所有空间数据</button>
+    </div>
+</div>
+
+<div class="app-shell" id="app">
+    <header style="margin-bottom: 40px; padding: 0 10px;">
+        <h2 style="font-size: 34px; font-weight: 900; letter-spacing: -2px; margin: 0;">FLY YUN</h2>
+        <div id="userDisplay" style="color: #8E8E93; font-weight: 500; margin-top: 5px; font-size: 12px;"></div>
+    </header>
+
+    <div class="dashboard" id="dashboardSection">
+        <div class="ios-card">
+            <div style="font-size: 13px; font-weight: 700; margin-bottom: 10px;">寻访状态分布</div>
+            <div class="chart-container"><canvas id="chartStatus"></canvas></div>
+        </div>
+        <div class="ios-card">
+            <div style="font-size: 13px; font-weight: 700; margin-bottom: 10px;">学历背景分析</div>
+            <div class="chart-container"><canvas id="chartEdu"></canvas></div>
+        </div>
+        <div class="ios-card">
+            <div style="font-size: 13px; font-weight: 700; margin-bottom: 10px;">项目人才分布</div>
+            <div class="chart-container"><canvas id="chartJob"></canvas></div>
+        </div>
+    </div>
+
+    <div class="ios-card">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+            <div>
+                <div style="font-size: 15px; font-weight: 700; margin-bottom: 15px;">🏢 客户管理</div>
+                <div style="display:flex; gap:10px;">
+                    <input type="text" id="newComp" class="search-input" style="background:white" placeholder="新公司名称...">
+                    <button class="btn-search" onclick="addComp()">添加</button>
+                </div>
+            </div>
+            <div>
+                <div style="font-size: 15px; font-weight: 700; margin-bottom: 15px;">💼 岗位管理</div>
+                <div style="display:flex; gap:10px;">
+                    <select id="compSelect" class="search-input" style="background:white"><option value="">选择公司</option></select>
+                    <input type="text" id="newJob" class="search-input" style="background:white" placeholder="岗位名称...">
+                    <button class="btn-search" onclick="addJob()">添加</button>
+                </div>
+            </div>
+        </div>
+        <div id="treeDisplay" style="margin-top:20px;"></div>
+    </div>
+
+    <div class="ios-card">
+        <div style="font-size: 15px; font-weight: 700; margin-bottom: 20px;">📝 候选人详情录入</div>
+        <div class="form-grid">
+            <div class="field"><label>1. 推荐公司</label><select id="f1" onchange="filterJobs()"></select></div>
+            <div class="field"><label>2. 推荐岗位名称</label><select id="f2"></select></div>
+            <div class="field"><label>3. 姓名</label><input type="text" id="f3"></div>
+            <div class="field"><label>4. 性别</label><select id="f4"><option value="男">男</option><option value="女">女</option></select></div>
+            <div class="field"><label>5. 状态</label><select id="f5"><option value="正在联系中">正在联系中</option><option value="合适">合适</option><option value="不合适">不合适</option></select></div>
+            <div class="field"><label>6. 出生年份</label><select id="f6"></select></div>
+            <div class="field"><label>7. 岗位产品</label><input type="text" id="f7"></div>
+            <div class="field"><label>8. 目前所在地</label><input type="text" id="f8"></div>
+            <div class="field"><label>9. 期望所在地</label><input type="text" id="f9"></div>
+            <div class="field"><label>10. 现公司</label><input type="text" id="f10"></div>
+            <div class="field"><label>11. 电话/微信号</label><input type="text" id="f11"></div>
+            <div class="field"><label>12. 邮箱</label><input type="text" id="f12"></div>
+            <div class="field"><label>13. 学历</label><select id="f13"><option value="大专">大专</option><option value="本科">本科</option><option value="研究生">研究生</option><option value="博士">博士</option></select></div>
+            <div class="field"><label>14. 入学年份</label><select id="f14"></select></div>
+            <div class="field"><label>15. 学校</label><input type="text" id="f15"></div>
+            <div class="field"><label>16. 备注</label><input type="text" id="f16"></div>
+        </div>
+    </div>
+
+    <div class="ios-card" style="padding:0; overflow:hidden;">
+        <div style="padding: 25px 25px 0 25px;">
+            <div style="font-size: 15px; font-weight: 700; margin-bottom: 15px;">🔍 智能多维搜索 (带资历分析)</div>
+            <div class="search-row">
+                <div class="search-field">
+                    <label>搜人</label>
+                    <div class="search-action-group">
+                        <input type="text" id="sName" class="search-input" placeholder="输入姓名...">
+                        <button class="btn-search" onclick="doSearch()">搜索</button>
+                    </div>
+                </div>
+                <div class="search-field">
+                    <label>搜公司</label>
+                    <div class="search-action-group">
+                        <input type="text" id="sComp" class="search-input" placeholder="公司名称...">
+                        <button class="btn-search" onclick="doSearch()">搜索</button>
+                    </div>
+                </div>
+                <div class="search-field">
+                    <label>搜岗位</label>
+                    <div class="search-action-group">
+                        <input type="text" id="sJob" class="search-input" placeholder="岗位名称...">
+                        <button class="btn-search" onclick="doSearch()">搜索</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="overflow-x:auto;">
+            <table style="width:100%; border-collapse:collapse; min-width:1400px;">
+                <thead>
+                    <tr style="background:rgba(0,0,0,0.02);">
+                        <th style="padding:20px; text-align:left; font-size:12px; color:#8e8e93;">姓名</th>
+                        <th style="text-align:left; font-size:12px; color:#8e8e93;">状态</th>
+                        <th style="text-align:left; font-size:12px; color:#8e8e93;">所属客户/岗位</th>
+                        <th style="text-align:left; font-size:12px; color:#8e8e93;">出生年 (年龄)</th>
+                        <th style="text-align:left; font-size:12px; color:#8e8e93;">学历 (资历)</th>
+                        <th style="text-align:left; font-size:12px; color:#8e8e93;">联系方式</th>
+                        <th style="text-align:left; font-size:12px; color:#8e8e93;">操作</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody"></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="dock" id="dock" style="display:none">
+    <button class="dock-btn btn-blue" onclick="save()">✅ 存入名单</button>
+    <button class="dock-btn btn-green" onclick="exportExcel()">📊 导出 Excel</button>
+    <button class="dock-btn" style="background:#E5E5EA;" onclick="location.reload()">🔒 退出</button>
+</div>
+
+<script>
+    let dbKey = ""; let candidates = []; let treeData = {}; let charts = {};
+    const curY = new Date().getFullYear();
+    const MASTER_KEY = "FLY999"; // 超级管理员密钥
+    let isAdminView = false;
+
+    // --- 超级管理中心切换 ---
+    function toggleAdminView() {
+        isAdminView = !isAdminView;
+        const title = document.getElementById('mainTitle');
+        const sub = document.getElementById('mainSub');
+        if(isAdminView) {
+            title.innerText = "ADMIN 后台";
+            title.style.color = "var(--admin-purple)";
+            sub.innerText = "请输入超级管理员密钥";
+        } else {
+            title.innerText = "FLY YUN";
+            title.style.color = "#1d1d1f";
+            sub.innerText = "生成您自己的存储空间";
+        }
+    }
+
+    function handleLogin() {
+        const p = document.getElementById('sysPass').value;
+        if(!p) return;
+
+        if(isAdminView) {
+            if(p === MASTER_KEY) {
+                document.getElementById('loginOverlay').style.display = 'none';
+                document.getElementById('adminPanel').style.display = 'block';
+                renderAdminPanel();
+            } else {
+                alert("超级密钥错误");
+            }
+        } else {
+            // 用户登录
+            dbKey = "FLY_DB_V11_" + btoa(p);
+            // 自动注册空间到名单中
+            registerSpace(p);
+            document.getElementById('loginOverlay').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('loginOverlay').style.display = 'none';
+                document.getElementById('app').style.display = 'block';
+                document.getElementById('dock').style.display = 'flex';
+                document.getElementById('userDisplay').innerText = "当前空间: " + p;
+                initUserApp();
+            }, 600);
+        }
+    }
+
+    // --- 管理员逻辑：注册空间 ---
+    function registerSpace(pass) {
+        let spaces = JSON.parse(localStorage.getItem("FLY_SPACES_REGISTRY") || "[]");
+        if(!spaces.includes(pass)) {
+            spaces.push(pass);
+            localStorage.setItem("FLY_SPACES_REGISTRY", JSON.stringify(spaces));
+        }
+    }
+
+    function renderAdminPanel() {
+        const spaces = JSON.parse(localStorage.getItem("FLY_SPACES_REGISTRY") || "[]");
+        const tbody = document.getElementById('adminTableBody');
+        tbody.innerHTML = spaces.map(pass => {
+            const key = "FLY_DB_V11_" + btoa(pass);
+            const count = JSON.parse(localStorage.getItem(key) || "[]").length;
+            return `
+                <tr>
+                    <td><span style="font-weight:700; color:var(--admin-purple)">${pass}</span></td>
+                    <td>${count} 人</td>
+                    <td><button onclick="deleteUserSpace('${pass}')" style="color:red; border:none; background:none; cursor:pointer;">删除空间</button></td>
+                </tr>
+            `;
+        }).join('');
+    }
+
+    function deleteUserSpace(pass) {
+        if(confirm(`确定永久销毁空间 [${pass}] 吗？`)) {
+            const key = "FLY_DB_V11_" + btoa(pass);
+            const treeKey = key + "_tree";
+            localStorage.removeItem(key);
+            localStorage.removeItem(treeKey);
+            let spaces = JSON.parse(localStorage.getItem("FLY_SPACES_REGISTRY") || "[]");
+            spaces = spaces.filter(s => s !== pass);
+            localStorage.setItem("FLY_SPACES_REGISTRY", JSON.stringify(spaces));
+            renderAdminPanel();
+        }
+    }
+
+    function dangerClearAll() {
+        if(confirm("警告：此操作将清空所有用户数据！确定吗？")) {
+            localStorage.clear();
+            location.reload();
+        }
+    }
+
+    // --- 用户原有逻辑 ---
+    function initUserApp() {
+        let y6 = ''; for(let i=1960; i<=2022; i++) y6 += `<option value="${i}">${i}</option>`;
+        document.getElementById('f6').innerHTML = '<option value="">年份</option>' + y6;
+        let y14 = ''; for(let i=1900; i<=2024; i++) y14 += `<option value="${i}">${i}</option>`;
+        document.getElementById('f14').innerHTML = '<option value="">入学年</option>' + y14;
+        
+        candidates = JSON.parse(localStorage.getItem(dbKey) || "[]");
+        treeData = JSON.parse(localStorage.getItem(dbKey + "_tree") || "{}");
+        refreshMgmt(); render(); updateCharts();
+    }
+
+    function doSearch() { render(); updateCharts(); }
+
+    function addComp() {
+        const c = document.getElementById('newComp').value.trim();
+        if(c && !treeData[c]) { treeData[c] = []; saveTree(); document.getElementById('newComp').value = ""; refreshMgmt(); }
+    }
+    function addJob() {
+        const c = document.getElementById('compSelect').value;
+        const j = document.getElementById('newJob').value.trim();
+        if(c && j && !treeData[c].includes(j)) { treeData[c].push(j); saveTree(); document.getElementById('newJob').value = ""; refreshMgmt(); }
+    }
+    function saveTree() { localStorage.setItem(dbKey + "_tree", JSON.stringify(treeData)); }
+    function removeComp(c) { if(confirm(`移除客户“${c}”？`)) { delete treeData[c]; saveTree(); refreshMgmt(); } }
+    function removeJob(c, j) { treeData[c] = treeData[c].filter(x => x !== j); saveTree(); refreshMgmt(); }
+
+    function refreshMgmt() {
+        document.getElementById('treeDisplay').innerHTML = Object.keys(treeData).map(c => `
+            <div class="tree-node">
+                <div class="comp-header">${c} <span style="color:red;cursor:pointer" onclick="removeComp('${c}')">移除</span></div>
+                <div>${treeData[c].map(j => `<span class="job-tag">${j}<span style="color:red;margin-left:5px;cursor:pointer" onclick="removeJob('${c}','${j}')">×</span></span>`).join('')}</div>
+            </div>
+        `).join('');
+        const opt = '<option value="">-- 选择公司 --</option>' + Object.keys(treeData).map(c => `<option value="${c}">${c}</option>`).join('');
+        document.getElementById('compSelect').innerHTML = opt;
+        document.getElementById('f1').innerHTML = opt;
+        filterJobs();
+    }
+    function filterJobs() {
+        const c = document.getElementById('f1').value;
+        document.getElementById('f2').innerHTML = (c && treeData[c]) ? '<option value="">-- 选择岗位 --</option>' + treeData[c].map(j => `<option value="${j}">${j}</option>`).join('') : '<option value="">先选公司</option>';
+    }
+
+    function save() {
+        const row = { id: Date.now() };
+        for(let i=1; i<=16; i++) row['f'+i] = document.getElementById('f'+i).value;
+        if(!row.f3 || !row.f1 || !row.f2) return alert("姓名、公司和岗位是必填项");
+        candidates.push(row);
+        localStorage.setItem(dbKey, JSON.stringify(candidates));
+        render(); updateCharts(); alert("录入成功");
+    }
+
+    function render() {
+        const n = document.getElementById('sName').value.toLowerCase();
+        const c = document.getElementById('sComp').value.toLowerCase();
+        const j = document.getElementById('sJob').value.toLowerCase();
+        const filtered = candidates.filter(i => i.f3.toLowerCase().includes(n) && i.f1.toLowerCase().includes(c) && i.f2.toLowerCase().includes(j));
+        document.getElementById('tableBody').innerHTML = filtered.map(i => {
+            const age = i.f6 ? (curY - parseInt(i.f6)) : "-";
+            const exp = i.f14 ? (curY - parseInt(i.f14)) : "-";
+            return `<tr><td><strong>${i.f3}</strong></td><td><span class="badge badge-${i.f5}">${i.f5}</span></td><td><div style="font-weight:700">${i.f1}</div><div style="font-size:12px; color:#8E8E93">${i.f2}</div></td><td>${i.f6 || "-"}<span class="calc-info">${age != "-" ? age + " 岁" : ""}</span></td><td>${i.f13}<span class="calc-info">${exp != "-" ? "资历 " + exp + " 年" : ""}</span></td><td>${i.f11}</td><td><span style="color:red; cursor:pointer;" onclick="del(${i.id})">移除</span></td></tr>`;
+        }).join('');
+    }
+
+    function del(id) { if(confirm("移除记录？")) { candidates = candidates.filter(x => x.id !== id); localStorage.setItem(dbKey, JSON.stringify(candidates)); render(); updateCharts(); } }
+
+    function updateCharts() {
+        const n = document.getElementById('sName').value.toLowerCase();
+        const c = document.getElementById('sComp').value.toLowerCase();
+        const j = document.getElementById('sJob').value.toLowerCase();
+        const filtered = candidates.filter(i => i.f3.toLowerCase().includes(n) && i.f1.toLowerCase().includes(c) && i.f2.toLowerCase().includes(j));
+        if(filtered.length === 0) { ['chartStatus', 'chartEdu', 'chartJob'].forEach(id => { if(charts[id]) charts[id].destroy(); }); return; }
+        const s = {'合适':0,'不合适':0,'正在联系中':0}, e = {'大专':0,'本科':0,'研究生':0,'博士':0}, jb = {};
+        filtered.forEach(i => { s[i.f5]++; e[i.f13]++; jb[i.f1] = (jb[i.f1] || 0) + 1; });
+        draw('chartStatus', 'doughnut', Object.keys(s), Object.values(s), ['#34C759','#FF3B30','#FF9500'], true);
+        draw('chartEdu', 'bar', Object.keys(e), Object.values(e), '#007AFF', false);
+        draw('chartJob', 'bar', Object.keys(jb), Object.values(jb), '#AF52DE', false);
+    }
+
+    function draw(id, type, labels, data, colors, isD) {
+        if(charts[id]) charts[id].destroy();
+        charts[id] = new Chart(document.getElementById(id), {
+            type: type, data: { labels, datasets: [{ data, backgroundColor: colors, borderRadius: isD ? 0 : 10 }] },
+            options: { maintainAspectRatio:false, cutout: isD ? '75%' : 0, plugins:{ legend:{ display:isD, position:'bottom', labels:{ boxWidth:10, font:{size:10} } } }, scales:{ y:{ display:!isD, beginAtZero:true, ticks:{stepSize:1} }, x:{ display:!isD } } }
+        });
+    }
+
+    function exportExcel() {
+        const n = document.getElementById('sName').value.toLowerCase();
+        const c = document.getElementById('sComp').value.toLowerCase();
+        const j = document.getElementById('sJob').value.toLowerCase();
+        const filtered = candidates.filter(i => i.f3.toLowerCase().includes(n) && i.f1.toLowerCase().includes(c) && i.f2.toLowerCase().includes(j));
+        if(filtered.length === 0) return alert("无可导出数据");
+        const h = ["客户", "岗位", "姓名", "性别", "状态", "出生年", "年龄", "产品", "所在地", "现公司", "联系方式", "学历", "入学年", "资历", "学校", "备注"];
+        const s = { fill: { fgColor: { rgb: "007AFF" } }, font: { color: { rgb: "FFFFFF" }, bold: true } };
+        const rows = [ h.map(x => ({v:x, s:s})), ...filtered.map(i => [i.f1, i.f2, i.f3, i.f4, i.f5, i.f6, i.f6?(curY-parseInt(i.f6)):"", i.f7, i.f8, i.f10, i.f11, i.f13, i.f14, i.f14?(curY-parseInt(i.f14)):"", i.f15, i.f16]) ];
+        const ws = XLSX.utils.aoa_to_sheet(rows);
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "报告");
+        XLSX.writeFile(wb, "FLY_YUN_Report.xlsx");
+    }
+</script>
+</body>
+</html>
