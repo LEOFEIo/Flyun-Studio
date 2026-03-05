@@ -3,227 +3,221 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>FLY YUN - iOS 26 Intelligent Space</title>
+    <title>FLY YUN - iOS 26 Spatial Space</title>
     <script src="https://cdn.jsdelivr.net/npm/xlsx-js-style@1.2.0/dist/xlsx.bundle.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root {
-            --ios-blue: #007AFF;
-            --ios-gray: #F2F2F7;
-            --ios-text: #1D1D1F;
-            --ios-sub: #86868B;
-            --radius-main: 28px;
-            --glass-bright: rgba(255, 255, 255, 0.75);
-            --glass-border: rgba(255, 255, 255, 0.5);
+            --apple-blue: #007AFF;
+            --apple-gray: #F5F5F7;
+            --apple-text: #1D1D1F;
+            --apple-sub: #6E6E73;
+            --radius-xl: 32px;
+            --glass: rgba(255, 255, 255, 0.72);
+            --glass-saturate: blur(40px) saturate(210%);
         }
 
         body, html {
             margin: 0; padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "PingFang SC", sans-serif;
-            background-color: #FBFBFD;
-            color: var(--ios-text);
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "PingFang SC", "Helvetica Neue", sans-serif;
+            background-color: #FFFFFF;
+            color: var(--apple-text);
             -webkit-font-smoothing: antialiased;
             overflow-x: hidden;
         }
 
-        /* --- iOS 26 流光背景 --- */
-        .ambient-bg {
+        /* --- iOS 26 Vision Fluid 背景 --- */
+        .vision-bg {
             position: fixed; inset: 0; z-index: -1;
-            background: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
-            overflow: hidden;
+            background: radial-gradient(at 0% 0%, #f0f7ff 0%, transparent 50%),
+                        radial-gradient(at 100% 0%, #fff0f6 0%, transparent 50%),
+                        radial-gradient(at 50% 100%, #f6fcf9 0%, transparent 50%);
         }
-        .ambient-bg::before {
-            content: ""; position: absolute; width: 150%; height: 150%; top: -25%; left: -25%;
-            background: radial-gradient(circle at 20% 30%, rgba(210, 227, 252, 0.4) 0%, transparent 40%),
-                        radial-gradient(circle at 80% 70%, rgba(252, 228, 236, 0.4) 0%, transparent 40%);
-            filter: blur(100px); animation: drift 30s infinite alternate ease-in-out;
+        .orb {
+            position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.3;
+            animation: orbFloat 25s infinite alternate ease-in-out;
         }
-        @keyframes drift { from { transform: rotate(0deg) scale(1); } to { transform: rotate(5deg) scale(1.1); } }
+        .orb-1 { width: 600px; height: 600px; background: #c3dafe; top: -100px; left: -100px; }
+        .orb-2 { width: 500px; height: 500px; background: #ffd6e7; bottom: 10%; right: -50px; animation-duration: 35s; }
+        @keyframes orbFloat { from { transform: translate(0,0) rotate(0deg); } to { transform: translate(120px, 60px) rotate(15deg); } }
 
-        /* --- 登录层 --- */
+        /* --- 极简登录层 --- */
         #loginOverlay {
             position: fixed; inset: 0; display: flex; justify-content: center; align-items: center;
-            z-index: 10000; background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(40px) saturate(180%);
-            transition: opacity 0.8s ease-in-out;
+            z-index: 10000; backdrop-filter: var(--glass-saturate); background: rgba(255, 255, 255, 0.1);
+            transition: opacity 0.8s ease;
         }
-        .spatial-card {
-            background: var(--glass-bright); border: 1px solid var(--glass-border);
-            border-radius: 48px; padding: 60px 40px; width: 85%; max-width: 360px;
-            text-align: center; box-shadow: 0 40px 100px rgba(0,0,0,0.03);
+        .login-spatial {
+            background: var(--glass); border: 1px solid rgba(255, 255, 255, 0.8);
+            border-radius: 52px; padding: 70px 45px; width: 85%; max-width: 380px;
+            text-align: center; box-shadow: 0 40px 120px rgba(0,0,0,0.04);
         }
-        .spatial-card h1 { font-size: 44px; font-weight: 900; margin: 0; letter-spacing: -3px; }
-        .spatial-card p { font-size: 14px; color: var(--ios-sub); margin: 12px 0 40px; font-weight: 500; }
+        .login-spatial h1 { font-size: 46px; font-weight: 900; margin: 0; letter-spacing: -3.5px; }
+        .login-spatial p { font-size: 14px; color: var(--apple-sub); margin: 15px 0 45px; letter-spacing: -0.2px; }
 
-        /* --- 通用组件 --- */
-        .ios-input {
-            width: 100%; padding: 18px; border-radius: 18px; border: 1px solid transparent;
-            background: rgba(0,0,0,0.03); font-size: 17px; font-weight: 600;
-            text-align: center; outline: none; transition: 0.3s; box-sizing: border-box;
+        /* --- 苹果规范组件 --- */
+        .ios-input-group {
+            width: 100%; padding: 20px; border-radius: 20px; border: none;
+            background: rgba(0,0,0,0.04); font-size: 18px; font-weight: 600;
+            text-align: center; outline: none; transition: 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
         }
-        .ios-input:focus { background: #fff; border-color: var(--ios-blue); box-shadow: 0 0 0 4px rgba(0,122,255,0.1); }
+        .ios-input-group:focus { background: #FFFFFF; box-shadow: 0 0 0 1px rgba(0,0,0,0.05), 0 8px 25px rgba(0,0,0,0.03); }
 
         .btn-ios {
-            background: linear-gradient(180deg, #007AFF 0%, #0056B3 100%);
-            color: white; border: none; border-radius: 18px; padding: 16px 20px;
-            font-size: 16px; font-weight: 700; cursor: pointer; transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            display: inline-flex; align-items: center; justify-content: center;
-            box-shadow: 0 4px 15px rgba(0,122,255,0.2);
+            background: #000; color: #fff; border: none; border-radius: 20px;
+            padding: 18px 25px; font-size: 16px; font-weight: 700; cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+            display: flex; align-items: center; justify-content: center;
         }
-        .btn-ios:active { transform: scale(0.96); opacity: 0.9; }
+        .btn-ios:hover { transform: scale(1.02); filter: brightness(1.1); }
+        .btn-ios:active { transform: scale(0.96); }
+        .btn-accent { background: var(--apple-blue); }
 
-        .btn-secondary { background: #E5E5EA; color: var(--ios-text); box-shadow: none; }
-
-        /* --- 主界面布局 --- */
-        .app-shell { max-width: 1280px; margin: 0 auto; padding: 40px 20px 140px; display: none; }
+        /* --- 主界面容器 --- */
+        .app-shell { max-width: 1300px; margin: 0 auto; padding: 50px 24px 150px; display: none; }
         .ios-card {
-            background: var(--glass-bright); backdrop-filter: blur(30px);
-            border-radius: var(--radius-main); padding: 25px; margin-bottom: 25px;
-            border: 1px solid var(--glass-border); box-shadow: 0 10px 40px rgba(0,0,0,0.015);
+            background: var(--glass); backdrop-filter: var(--glass-saturate);
+            border-radius: var(--radius-xl); padding: 30px; margin-bottom: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.8); box-shadow: 0 10px 40px rgba(0,0,0,0.015);
         }
 
-        /* 可视化横排看板 */
-        .dashboard { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 30px; }
-        @media (max-width: 1024px) { .dashboard { grid-template-columns: 1fr; } }
-        .chart-box { height: 260px; display: flex; flex-direction: column; align-items: center; }
-        .chart-title { font-size: 13px; font-weight: 700; color: var(--ios-sub); margin-bottom: 15px; text-transform: uppercase; letter-spacing: 1px; }
+        /* 可视化横排 */
+        .dashboard-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 30px; }
+        @media (max-width: 1024px) { .dashboard-row { grid-template-columns: 1fr; } }
+        .chart-label { font-size: 11px; font-weight: 800; color: var(--apple-sub); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 20px; text-align: center; display: block; }
 
-        /* 搜索多维排版 */
-        .search-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 20px 0; }
-        .search-field { display: flex; flex-direction: column; gap: 6px; }
-        .search-field label { font-size: 11px; font-weight: 800; color: var(--ios-sub); margin-left: 10px; }
-        .search-bar { display: flex; gap: 8px; }
-        .search-input-mini { flex: 1; padding: 12px 16px; border-radius: 12px; border: none; background: rgba(0,0,0,0.04); font-size: 14px; outline: none; transition: 0.2s; }
-        .search-input-mini:focus { background: #fff; box-shadow: inset 0 0 0 1.5px var(--ios-blue); }
+        /* 两级联动区 */
+        .mgmt-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+        @media (max-width: 768px) { .mgmt-grid { grid-template-columns: 1fr; } }
+        .control-group { display: flex; gap: 10px; background: rgba(0,0,0,0.03); padding: 8px; border-radius: 22px; }
+        .control-input { flex: 1; background: transparent; border: none; padding: 10px 15px; font-size: 14px; font-weight: 600; outline: none; }
 
-        /* 录入表单网格 */
-        .form-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; }
-        @media (max-width: 768px) { .form-grid { grid-template-columns: 1fr; } }
-        .field { display: flex; flex-direction: column; gap: 5px; }
-        .field label { font-size: 11px; font-weight: 700; color: var(--ios-sub); margin-left: 10px; }
-        .field select, .field input { padding: 14px; border-radius: 14px; border: 1px solid #E5E5EA; background: #FFF; font-size: 15px; outline: none; }
+        /* 寻访详情表单 */
+        .form-master { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+        @media (max-width: 800px) { .form-master { grid-template-columns: 1fr 1fr; } }
+        .field-unit { display: flex; flex-direction: column; gap: 7px; }
+        .field-unit label { font-size: 11px; font-weight: 700; color: var(--apple-sub); margin-left: 8px; }
+        .field-unit input, .field-unit select { padding: 14px; border-radius: 14px; border: 1px solid #E5E5EA; background: #FFF; font-size: 15px; transition: 0.3s; }
+
+        /* 搜索功能区 */
+        .search-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin: 25px 0; }
+        .search-pill { display: flex; align-items: center; background: #FFF; border: 1px solid #E5E5EA; border-radius: 16px; padding: 4px 6px; }
+        .search-pill input { flex: 1; border: none; padding: 8px 12px; font-size: 13px; outline: none; background: transparent; }
 
         /* 表格样式 */
-        .ios-table { width: 100%; border-collapse: collapse; min-width: 1000px; }
-        .ios-table th { text-align: left; padding: 15px; font-size: 12px; color: var(--ios-sub); border-bottom: 1px solid rgba(0,0,0,0.05); }
-        .ios-table td { padding: 20px 15px; font-size: 14px; border-bottom: 1px solid rgba(0,0,0,0.03); }
-        .calc-tag { display: block; font-size: 11px; color: var(--ios-blue); font-weight: 800; margin-top: 4px; }
+        .ios-table { width: 100%; border-collapse: collapse; }
+        .ios-table th { text-align: left; padding: 16px; font-size: 12px; color: var(--apple-sub); font-weight: 600; border-bottom: 1px solid rgba(0,0,0,0.05); }
+        .ios-table td { padding: 22px 16px; font-size: 14px; border-bottom: 1px solid rgba(0,0,0,0.03); }
+        .calc-badge { display: inline-block; font-size: 10px; background: rgba(0,122,255,0.08); color: var(--apple-blue); padding: 2px 8px; border-radius: 6px; font-weight: 800; margin-top: 5px; }
 
         /* 底部 Dock */
-        .dock {
-            position: fixed; bottom: 35px; left: 50%; transform: translateX(-50%);
-            background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(40px);
-            padding: 12px 30px; border-radius: 40px; display: flex; gap: 15px;
-            border: 1px solid var(--glass-border); box-shadow: 0 20px 50px rgba(0,0,0,0.1); z-index: 999;
+        .dock-bar {
+            position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.8); backdrop-filter: var(--glass-saturate);
+            padding: 14px 35px; border-radius: 45px; display: flex; gap: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.8); box-shadow: 0 20px 60px rgba(0,0,0,0.1); z-index: 999;
         }
-        .badge { padding: 4px 10px; border-radius: 8px; font-size: 11px; font-weight: 700; }
-        .badge-合适 { background: #E8F5E9; color: #2E7D32; }
-        .badge-不合适 { background: #FFEBEE; color: #C62828; }
-        .badge-正在联系中 { background: #FFF8E1; color: #F57F17; }
+        .badge-pill { padding: 4px 10px; border-radius: 8px; font-size: 11px; font-weight: 700; }
+        .badge-合适 { background: #EAF9EE; color: #1E6726; }
+        .badge-不合适 { background: #FFF0F0; color: #B51B1B; }
     </style>
 </head>
 <body>
 
-<div class="ambient-bg"></div>
+<div class="vision-bg">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+</div>
 
 <div id="loginOverlay">
-    <div class="spatial-card">
+    <div class="login-spatial">
         <h1>FLY YUN</h1>
-        <p>Your Private Intelligence Space</p>
-        <input type="password" id="sysPass" class="ios-input" placeholder="输入访问密码" onkeydown="if(event.keyCode==13) handleLogin()">
-        <button class="btn-ios" style="width: 100%; margin-top: 30px;" onclick="handleLogin()">解锁空间</button>
-        <div style="margin-top: 25px; font-size: 12px; color: var(--ios-blue); cursor: pointer; font-weight: 600;" onclick="toggleAdmin()">超级管理中心</div>
+        <p>Intelligence in Every Pixel</p>
+        <input type="password" id="sysPass" class="ios-input-group" placeholder="请输入密码密钥" onkeydown="if(event.keyCode==13) handleLogin()">
+        <button class="btn-ios btn-accent" style="width: 100%; margin-top: 35px;" onclick="handleLogin()">解锁空间</button>
+        <div style="margin-top: 30px; font-size: 12px; color: var(--apple-blue); cursor: pointer; font-weight: 600; opacity: 0.6;" onclick="toggleAdmin()">超级管理中心</div>
     </div>
 </div>
 
 <div class="app-shell" id="app">
-    <header style="margin-bottom: 45px; padding: 0 10px;">
-        <h2 style="font-size: 34px; font-weight: 900; letter-spacing: -2px; margin: 0;">FLY YUN</h2>
-        <div id="userDisplay" style="color: var(--ios-sub); font-weight: 600; font-size: 13px; margin-top: 6px;"></div>
+    <header style="margin-bottom: 50px;">
+        <h2 style="font-size: 38px; font-weight: 900; letter-spacing: -3px; margin: 0;">FLY YUN</h2>
+        <div id="userDisplay" style="color: var(--apple-sub); font-weight: 700; font-size: 13px; margin-top: 8px;"></div>
     </header>
 
-    <div class="dashboard">
-        <div class="ios-card chart-box">
-            <span class="chart-title">寻访状态</span>
-            <div style="width:100%; height:180px;"><canvas id="chartStatus"></canvas></div>
-        </div>
-        <div class="ios-card chart-box">
-            <span class="chart-title">学历画像</span>
-            <div style="width:100%; height:180px;"><canvas id="chartEdu"></canvas></div>
-        </div>
-        <div class="ios-card chart-box">
-            <span class="chart-title">项目分布</span>
-            <div style="width:100%; height:180px;"><canvas id="chartJob"></canvas></div>
-        </div>
+    <div class="dashboard-row">
+        <div class="ios-card"><span class="chart-label">Status Distribution</span><div style="height:190px;"><canvas id="chartStatus"></canvas></div></div>
+        <div class="ios-card"><span class="chart-label">Education Profile</span><div style="height:190px;"><canvas id="chartEdu"></canvas></div></div>
+        <div class="ios-card"><span class="chart-label">Project Inventory</span><div style="height:190px;"><canvas id="chartJob"></canvas></div></div>
     </div>
 
     <div class="ios-card">
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 25px;">
-            <div class="field">
-                <label>🏢 添加客户公司</label>
-                <div class="search-bar">
-                    <input type="text" id="newComp" class="search-input-mini" style="background:#F2F2F7; height:44px;" placeholder="公司名">
-                    <button class="btn-ios" style="padding:0 20px; height:44px;" onclick="addComp()">添加</button>
+        <div class="mgmt-grid">
+            <div class="field-unit">
+                <label>🏢 管理客户公司</label>
+                <div class="control-group">
+                    <input type="text" id="newComp" class="control-input" placeholder="输入客户名称">
+                    <button class="btn-ios" style="border-radius:16px; padding:8px 18px;" onclick="addComp()">添加</button>
                 </div>
             </div>
-            <div class="field">
-                <label>💼 为客户添加岗位</label>
-                <div class="search-bar">
-                    <select id="compSelect" class="search-input-mini" style="background:#F2F2F7; height:44px;"><option value="">选择公司</option></select>
-                    <input type="text" id="newJob" class="search-input-mini" style="background:#F2F2F7; height:44px;" placeholder="岗位名">
-                    <button class="btn-ios" style="padding:0 20px; height:44px;" onclick="addJob()">添加</button>
+            <div class="field-unit">
+                <label>💼 管理招聘岗位</label>
+                <div class="control-group">
+                    <select id="compSelect" class="control-input"><option value="">所属客户</option></select>
+                    <input type="text" id="newJob" class="control-input" placeholder="岗位名称">
+                    <button class="btn-ios" style="border-radius:16px; padding:8px 18px;" onclick="addJob()">添加</button>
                 </div>
             </div>
         </div>
-        <div id="treeDisplay" style="margin-top:20px; display: flex; flex-wrap: wrap; gap: 10px;"></div>
+        <div id="treeDisplay" style="margin-top:25px; display:flex; flex-wrap:wrap; gap:10px;"></div>
     </div>
 
     <div class="ios-card">
-        <div style="font-weight: 800; margin-bottom: 20px; font-size: 15px;">📝 录入新候选人</div>
-        <div class="form-grid">
-            <div class="field"><label>所属客户</label><select id="f1" onchange="filterJobs()"></select></div>
-            <div class="field"><label>所属岗位</label><select id="f2"></select></div>
-            <div class="field"><label>姓名</label><input type="text" id="f3"></div>
-            <div class="field"><label>性别</label><select id="f4"><option>男</option><option>女</option></select></div>
-            <div class="field"><label>状态</label><select id="f5"><option>正在联系中</option><option>合适</option><option>不合适</option></select></div>
-            <div class="field"><label>出生年份</label><select id="f6"></select></div>
-            <div class="field"><label>所在地</label><input type="text" id="f8"></div>
-            <div class="field"><label>现公司</label><input type="text" id="f10"></div>
-            <div class="field"><label>手机/微信</label><input type="text" id="f11"></div>
-            <div class="field"><label>学历</label><select id="f13"><option>大专</option><option>本科</option><option>研究生</option><option>博士</option></select></div>
-            <div class="field"><label>入学年份</label><select id="f14"></select></div>
-            <div class="field"><label>备注</label><input type="text" id="f16"></div>
+        <div style="font-weight: 800; margin-bottom: 25px; font-size: 16px; letter-spacing: -0.5px;">📝 候选人数据同步 (16环节)</div>
+        <div class="form-master">
+            <div class="field-unit"><label>客户</label><select id="f1" onchange="filterJobs()"></select></div>
+            <div class="field-unit"><label>岗位</label><select id="f2"></select></div>
+            <div class="field-unit"><label>姓名</label><input type="text" id="f3"></div>
+            <div class="field-unit"><label>性别</label><select id="f4"><option>男</option><option>女</option></select></div>
+            <div class="field-unit"><label>状态</label><select id="f5"><option>正在联系中</option><option>合适</option><option>不合适</option></select></div>
+            <div class="field-unit"><label>出生年份</label><select id="f6"></select></div>
+            <div class="field-unit"><label>现公司</label><input type="text" id="f10"></div>
+            <div class="field-unit"><label>学历</label><select id="f13"><option>大专</option><option>本科</option><option>研究生</option><option>博士</option></select></div>
+            <div class="field-unit"><label>入学年份</label><select id="f14"></select></div>
+            <div class="field-unit"><label>联系方式</label><input type="text" id="f11"></div>
+            <div class="field-unit"><label>所在地</label><input type="text" id="f8"></div>
+            <div class="field-unit"><label>备注说明</label><input type="text" id="f16"></div>
         </div>
     </div>
 
     <div class="ios-card" style="padding: 0; overflow: hidden;">
-        <div style="padding: 25px 25px 0;">
-            <div style="font-weight: 800; margin-bottom: 15px;">🔍 智能筛选</div>
-            <div class="search-row">
-                <div class="search-field"><label>人选</label><div class="search-bar"><input type="text" id="sName" class="search-input-mini" placeholder="姓名关键词"><button class="btn-ios btn-secondary" onclick="doSearch()">搜</button></div></div>
-                <div class="search-field"><label>客户</label><div class="search-bar"><input type="text" id="sComp" class="search-input-mini" placeholder="公司名"><button class="btn-ios btn-secondary" onclick="doSearch()">搜</button></div></div>
-                <div class="search-field"><label>岗位</label><div class="search-bar"><input type="text" id="sJob" class="search-input-mini" placeholder="职位名"><button class="btn-ios btn-secondary" onclick="doSearch()">搜</button></div></div>
+        <div style="padding: 30px 30px 0;">
+            <div style="font-weight: 800; margin-bottom: 15px; font-size: 16px;">🔍 空间深度搜索</div>
+            <div class="search-container">
+                <div class="search-pill"><input type="text" id="sName" placeholder="搜姓名"><button class="btn-ios" style="padding:6px 14px; border-radius:12px; font-size:12px" onclick="doSearch()">搜</button></div>
+                <div class="search-pill"><input type="text" id="sComp" placeholder="搜客户"><button class="btn-ios" style="padding:6px 14px; border-radius:12px; font-size:12px" onclick="doSearch()">搜</button></div>
+                <div class="search-pill"><input type="text" id="sJob" placeholder="搜岗位"><button class="btn-ios" style="padding:6px 14px; border-radius:12px; font-size:12px" onclick="doSearch()">搜</button></div>
             </div>
         </div>
         <div style="overflow-x: auto;">
             <table class="ios-table">
-                <thead><tr><th>姓名</th><th>状态</th><th>客户 / 岗位</th><th>年龄</th><th>资历</th><th>联系方式</th><th>管理</th></tr></thead>
+                <thead><tr><th>姓名</th><th>当前状态</th><th>客户 / 岗位 Mapping</th><th>年龄资历</th><th>联系方式</th><th>操作</th></tr></thead>
                 <tbody id="tableBody"></tbody>
             </table>
         </div>
     </div>
 </div>
 
-<div class="dock" id="userDock" style="display:none">
-    <button class="btn-ios" style="padding:12px 30px" onclick="saveData()">✅ 存入名单</button>
-    <button class="btn-ios btn-secondary" style="background:#34C759; color:#fff" onclick="exportXLS()">📊 导出 Excel</button>
-    <button class="btn-ios btn-secondary" onclick="location.reload()">🔒 退出</button>
+<div class="dock-bar" id="userDock" style="display:none">
+    <button class="btn-ios btn-accent" style="padding:12px 35px" onclick="saveData()">✅ 存入空间</button>
+    <button class="btn-ios" style="background:#34C759; padding:12px 25px" onclick="exportXLS()">📊 导出</button>
+    <button class="btn-ios" style="background:#F2F2F7; color:#1d1d1f; padding:12px 20px" onclick="location.reload()">🔒 退出</button>
 </div>
 
 <script>
     let dbKey = ""; let data = []; let tree = {}; let charts = {};
     const curY = new Date().getFullYear();
     const MASTER_HASH = "8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918"; 
-    let isAdmin = false;
 
     async function hash(s) {
         const u = new TextEncoder().encode(s);
@@ -231,35 +225,27 @@
         return Array.from(new Uint8Array(b)).map(b => b.toString(16).padStart(2, '0')).join('');
     }
 
-    function toggleAdmin() {
-        isAdmin = !isAdmin;
-        document.getElementById('mainTitle').innerText = isAdmin ? "ADMIN" : "FLY YUN";
-        document.getElementById('mainTitle').style.color = isAdmin ? "#AF52DE" : "#1D1D1F";
-    }
-
     async function handleLogin() {
-        const p = document.getElementById('sysPass').value;
-        if(!p) return;
-        if(isAdmin) {
-            if(await hash(p) === MASTER_HASH) { alert("后台已激活，目前显示全局管理逻辑..."); } else alert("指纹不匹配");
-        } else {
-            dbKey = "FLY_L_V15_" + btoa(p);
+        const p = document.getElementById('sysPass').value; if(!p) return;
+        if(await hash(p) === MASTER_HASH) { alert("后台激活：此处可载入管理逻辑..."); } 
+        else {
+            dbKey = "FLY_L_V16_" + btoa(p);
             document.getElementById('loginOverlay').style.opacity = '0';
             setTimeout(() => {
                 document.getElementById('loginOverlay').style.display='none';
                 document.getElementById('app').style.display='block';
                 document.getElementById('userDock').style.display='flex';
-                document.getElementById('userDisplay').innerText = "Security Key: " + p;
+                document.getElementById('userDisplay').innerText = "Encrypted Space // " + p.substring(0,2) + "****";
                 initApp();
-            }, 500);
+            }, 600);
         }
     }
 
     function initApp() {
-        let y = ''; for(let i=1960; i<=2022; i++) y += `<option value="${i}">${i}</option>`;
-        document.getElementById('f6').innerHTML = '<option value="">出生年</option>' + y;
-        let iy = ''; for(let i=1900; i<=2024; i++) iy += `<option value="${i}">${i}</option>`;
-        document.getElementById('f14').innerHTML = '<option value="">入学年</option>' + iy;
+        let y6 = ''; for(let i=1960; i<=2022; i++) y6 += `<option value="${i}">${i}</option>`;
+        document.getElementById('f6').innerHTML = '<option value="">出生年</option>' + y6;
+        let y14 = ''; for(let i=1900; i<=2024; i++) y14 += `<option value="${i}">${i}</option>`;
+        document.getElementById('f14').innerHTML = '<option value="">入学年</option>' + y14;
         data = JSON.parse(localStorage.getItem(dbKey) || "[]");
         tree = JSON.parse(localStorage.getItem(dbKey+"_t") || "{}");
         refreshMgmt(); render(); updateCharts();
@@ -269,11 +255,11 @@
     function addJob() { const c = document.getElementById('compSelect').value; const j = document.getElementById('newJob').value.trim(); if(c && j && !tree[c].includes(j)) { tree[c].push(j); saveT(); document.getElementById('newJob').value = ""; refreshMgmt(); } }
     function saveT() { localStorage.setItem(dbKey+"_t", JSON.stringify(tree)); }
     function refreshMgmt() {
-        document.getElementById('treeDisplay').innerHTML = Object.keys(tree).map(c => `<span class="badge" style="background:rgba(0,0,0,0.05); color:#000; border-radius:12px;">${c} (${tree[c].length})</span>`).join('');
+        document.getElementById('treeDisplay').innerHTML = Object.keys(tree).map(c => `<span class="badge-pill" style="background:#FFF; border:1px solid #E5E5EA;">${c}</span>`).join('');
         const opt = '<option value="">-- 选择客户 --</option>' + Object.keys(tree).map(c => `<option value="${c}">${c}</option>`).join('');
         document.getElementById('compSelect').innerHTML = opt; document.getElementById('f1').innerHTML = opt;
     }
-    function filterJobs() { const c = document.getElementById('f1').value; document.getElementById('f2').innerHTML = (c && tree[c]) ? '<option value="">-- 选择岗位 --</option>' + tree[c].map(j => `<option value="${j}">${j}</option>`).join('') : '<option value="">先选客户</option>'; }
+    function filterJobs() { const c = document.getElementById('f1').value; document.getElementById('f2').innerHTML = (c && tree[c]) ? '<option value="">-- 选择岗位 --</option>' + tree[c].map(j => `<option value="${j}">${j}</option>`).join('') : '<option value="">先选公司</option>'; }
 
     function doSearch() { render(); }
     function saveData() { 
@@ -284,11 +270,11 @@
 
     function render() {
         const n = document.getElementById('sName').value.toLowerCase();
-        const f = data.filter(i => i.f3.toLowerCase().includes(n));
-        document.getElementById('tableBody').innerHTML = f.map(i => {
+        const filtered = data.filter(i => i.f3.toLowerCase().includes(n));
+        document.getElementById('tableBody').innerHTML = filtered.map(i => {
             const age = i.f6 ? (curY - parseInt(i.f6)) : "-";
             const exp = i.f14 ? (curY - parseInt(i.f14)) : "-";
-            return `<tr><td><b>${i.f3}</b></td><td><span class="badge badge-${i.f5}">${i.f5}</span></td><td><b>${i.f1||"-"}</b><br><small>${i.f2||"-"}</small></td><td>${age}岁<span class="calc-tag">${i.f6||"-"}</span></td><td>资历${exp}年<span class="calc-tag">${i.f13||"-"}</span></td><td>${i.f11||"-"}</td><td><button style="color:red; border:none; background:none; cursor:pointer" onclick="del(${i.id})">移除</button></td></tr>`;
+            return `<tr><td><b style="font-size:16px">${i.f3}</b></td><td><span class="badge-pill badge-${i.f5}">${i.f5}</span></td><td><b>${i.f1||"-"}</b><br><span style="color:var(--apple-sub);font-size:12px">${i.f2||"-"}</span></td><td>${age} 岁<br><span class="calc-badge">资历 ${exp} 年</span></td><td>${i.f11||"-"}</td><td><button style="color:red;border:none;background:none;cursor:pointer;font-weight:700" onclick="del(${i.id})">移除</button></td></tr>`;
         }).join('');
     }
 
@@ -305,8 +291,8 @@
     function draw(id, type, labels, data, colors, isD) {
         if(charts[id]) charts[id].destroy();
         charts[id] = new Chart(document.getElementById(id), {
-            type: type, data: { labels, datasets: [{ data, backgroundColor: colors, borderRadius: 10 }] },
-            options: { maintainAspectRatio:false, cutout: isD?'80%':0, plugins:{ legend:{ display:isD, position:'bottom', labels:{boxWidth:8, font:{size:10}}} }, scales:{ y:{ display:!isD, beginAtZero:true}, x:{display:!isD}} }
+            type: type, data: { labels, datasets: [{ data, backgroundColor: colors, borderRadius: 12 }] },
+            options: { maintainAspectRatio:false, cutout: isD?'85%':0, plugins:{ legend:{ display:isD, position:'bottom', labels:{boxWidth:8, usePointStyle:true, font:{size:10}}} }, scales:{ y:{ display:!isD, beginAtZero:true}, x:{display:!isD}} }
         });
     }
 </script>
