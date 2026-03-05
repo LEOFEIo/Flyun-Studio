@@ -2,140 +2,171 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <title>RecruitMaster AI - 猎头话术生产力工具</title>
+    <title>RecruitMaster Pro - 猎头新手提效利器</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .card-active { border: 2px solid #3b82f6; background-color: #eff6ff; }
+        @keyframes pulse-soft { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+        .generating { animation: pulse-soft 1.5s infinite; }
+    </style>
 </head>
-<body class="bg-gray-100 min-h-screen pb-10">
+<body class="bg-gray-50 min-h-screen">
 
-    <nav class="bg-slate-900 text-white p-4 mb-8 shadow-md">
-        <div class="container mx-auto flex justify-between items-center">
-            <span class="text-xl font-bold italic"><i class="fas fa-bolt text-yellow-400 mr-2"></i>RecruitMaster AI</span>
-            <span class="text-xs opacity-60">专业猎头工作台 v1.1</span>
+    <header class="bg-white border-b px-6 py-4 flex justify-between items-center sticky top-0 z-50">
+        <div class="flex items-center gap-2">
+            <div class="bg-blue-600 text-white p-2 rounded-lg"><i class="fas fa-user-tie"></i></div>
+            <h1 class="text-xl font-bold text-gray-800">RecruitMaster <span class="text-blue-600">Pro</span></h1>
         </div>
-    </nav>
+        <div class="flex gap-4">
+            <span class="text-sm text-gray-500 hover:text-blue-600 cursor-pointer"><i class="fas fa-book-open mr-1"></i> 新手教学</span>
+            <span class="text-sm text-gray-500 hover:text-blue-600 cursor-pointer"><i class="fas fa-cog"></i> 设置</span>
+        </div>
+    </header>
 
-    <div class="container mx-auto px-4 grid grid-cols-1 lg:grid-cols-12 gap-6">
+    <main class="container mx-auto px-4 py-8 grid grid-cols-12 gap-8">
         
-        <div class="lg:col-span-5 space-y-4">
-            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
-                <h3 class="font-bold text-gray-700 mb-3 flex items-center">
-                    <i class="fas fa-keyboard mr-2 text-blue-500"></i> 第一步：粘贴岗位 JD
-                </h3>
-                <textarea id="jdInput" class="w-full p-4 h-64 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-sm leading-relaxed" 
-                    placeholder="请将公司的招聘要求粘贴在这里...&#10;例如：招聘Java开发，5年经验，熟悉Spring Cloud，坐标上海，薪资30-50K..."></textarea>
+        <div class="col-span-12 lg:col-span-5 space-y-6">
+            
+            <div class="bg-white rounded-2xl shadow-sm p-6 border border-gray-100">
+                <label class="block text-sm font-bold text-gray-700 mb-3">1. 粘贴岗位 JD 或职位亮点</label>
+                <textarea id="jdInput" class="w-full p-4 h-48 border border-gray-200 rounded-xl focus:ring-4 focus:ring-blue-100 outline-none text-sm transition-all" 
+                    placeholder="例如：阿里P7 Java开发，Base杭州，做核心交易系统，年包80-100W..."></textarea>
                 
-                <div class="mt-4">
-                    <label class="block text-sm font-medium text-gray-600 mb-2">选择沟通目标</label>
-                    <div class="grid grid-cols-3 gap-2">
-                        <button onclick="setStyle('warm')" id="btn-warm" class="style-btn border p-2 rounded text-xs bg-blue-50 border-blue-500 text-blue-700">热情(微信)</button>
-                        <button onclick="setStyle('pro')" id="btn-pro" class="style-btn border p-2 rounded text-xs bg-white text-gray-600 hover:bg-gray-50">专业(LinkedIn)</button>
-                        <button onclick="setStyle('short')" id="btn-short" class="style-btn border p-2 rounded text-xs bg-white text-gray-600 hover:bg-gray-50">极简(短信)</button>
+                <div class="mt-4 grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="text-xs text-gray-400 block mb-1">目标人群</label>
+                        <select id="targetUser" class="w-full p-2 border rounded-lg text-sm bg-gray-50">
+                            <option value="tech">技术大牛</option>
+                            <option value="manager">中高管</option>
+                            <option value="junior">初级潜力股</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="text-xs text-gray-400 block mb-1">行业类型</label>
+                        <select id="industry" class="w-full p-2 border rounded-lg text-sm bg-gray-50">
+                            <option value="internet">互联网/AI</option>
+                            <option value="finance">金融科技</option>
+                            <option value="manufacturing">新能源/制造</option>
+                        </select>
                     </div>
                 </div>
 
-                <button onclick="startGenerate()" class="w-full mt-6 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg flex justify-center items-center gap-2 transition-all">
-                    <i class="fas fa-magic"></i> 立即生成猎头话术
+                <button onclick="handleMagic()" class="w-full mt-6 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold py-4 rounded-xl shadow-lg hover:scale-[1.02] active:scale-95 transition-all flex justify-center items-center gap-2">
+                    <i class="fas fa-wand-magic-sparkles"></i> AI 智能生成全套方案
                 </button>
             </div>
+
+            <div class="bg-white rounded-2xl shadow-sm p-6 border border-gray-100">
+                <h3 class="font-bold text-gray-700 mb-4 flex items-center justify-between">
+                    <span><i class="fas fa-search-plus mr-2 text-indigo-500"></i>搜人指令 (Boolean)</span>
+                    <span class="text-[10px] bg-indigo-100 text-indigo-600 px-2 py-0.5 rounded">支持 LinkedIn/脉脉</span>
+                </h3>
+                <div class="space-y-3">
+                    <input id="mustHave" type="text" class="w-full p-3 border rounded-lg text-xs" placeholder="必须包含的技能 (如: Java, AWS)">
+                    <input id="notHave" type="text" class="w-full p-3 border rounded-lg text-xs" placeholder="排除的关键词 (如: 实习, 兼职)">
+                    <div id="booleanOutput" class="p-3 bg-slate-800 text-yellow-400 text-[10px] font-mono rounded-lg break-all hidden"></div>
+                </div>
+            </div>
         </div>
 
-        <div class="lg:col-span-7">
-            <div id="loading" class="hidden flex flex-col items-center justify-center py-20 bg-white rounded-xl border border-dashed border-gray-300">
-                <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mb-4"></div>
-                <p class="text-gray-500 text-sm">AI 正在深度解析 JD 核心卖点...</p>
+        <div class="col-span-12 lg:col-span-7">
+            
+            <div id="welcomeScreen" class="h-full min-h-[500px] flex flex-col items-center justify-center bg-gray-50 border-2 border-dashed rounded-3xl opacity-60">
+                <i class="fas fa-paper-plane text-5xl text-blue-200 mb-4"></i>
+                <p class="text-gray-400">点击左侧生成按钮，查看全套猎头话术</p>
             </div>
 
-            <div id="resultArea" class="hidden space-y-4">
-                <div class="flex justify-between items-center">
-                    <h3 class="font-bold text-gray-800">生成结果</h3>
-                    <button onclick="copyAll()" class="text-blue-600 text-sm hover:underline"><i class="fas fa-copy"></i> 全部复制</button>
+            <div id="resultContainer" class="hidden space-y-6">
+                <div class="bg-white p-6 rounded-2xl shadow-sm border-l-8 border-blue-500">
+                    <div class="flex justify-between items-start mb-4">
+                        <span class="bg-blue-100 text-blue-700 text-xs px-3 py-1 rounded-full font-bold">破冰邀请 (微信/IM)</span>
+                        <button onclick="copy('iceBreaker')" class="text-gray-400 hover:text-blue-600"><i class="fas fa-copy"></i></button>
+                    </div>
+                    <p id="iceBreaker" class="text-gray-700 text-sm leading-relaxed"></p>
                 </div>
 
-                <div class="bg-white p-5 rounded-xl shadow-sm border-l-4 border-blue-500 group relative">
-                    <div class="text-xs text-gray-400 mb-2 uppercase tracking-wider font-semibold">首轮沟通邀请 (Openings)</div>
-                    <div id="output1" class="text-gray-700 text-sm leading-relaxed whitespace-pre-wrap"></div>
-                    <button class="absolute top-4 right-4 text-gray-300 group-hover:text-blue-500 transition-colors"><i class="fas fa-clone"></i></button>
+                <div class="bg-white p-6 rounded-2xl shadow-sm border-l-8 border-orange-400">
+                    <div class="flex justify-between items-start mb-4">
+                        <span class="bg-orange-100 text-orange-700 text-xs px-3 py-1 rounded-full font-bold">谈资预设 (如何说服他)</span>
+                    </div>
+                    <div id="sellingPoints" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        </div>
                 </div>
 
-                <div class="bg-white p-5 rounded-xl shadow-sm border-l-4 border-emerald-500 group relative">
-                    <div class="text-xs text-gray-400 mb-2 uppercase tracking-wider font-semibold">职位核心卖点总结 (Pitch Points)</div>
-                    <div id="output2" class="text-gray-700 text-sm leading-relaxed whitespace-pre-wrap"></div>
-                </div>
-
-                <div class="bg-slate-800 p-5 rounded-xl shadow-sm text-white">
-                    <div class="text-xs text-slate-400 mb-2">推荐布尔搜索指令 (Boolean Search)</div>
-                    <code id="booleanResult" class="text-yellow-400 text-xs break-all"></code>
+                <div class="bg-slate-900 p-6 rounded-2xl shadow-xl text-white">
+                    <div class="flex justify-between items-start mb-4">
+                        <span class="bg-emerald-500 text-white text-[10px] px-3 py-1 rounded-full font-bold uppercase">面试助攻 (提成保障)</span>
+                        <button onclick="copy('interviewTips')" class="text-slate-400 hover:text-white"><i class="fas fa-copy"></i></button>
+                    </div>
+                    <p id="interviewTips" class="text-slate-300 text-xs italic leading-relaxed"></p>
                 </div>
             </div>
 
-            <div id="emptyState" class="flex flex-col items-center justify-center h-full min-h-[400px] bg-gray-50 rounded-xl border-2 border-dashed border-gray-200">
-                <img src="https://cdn-icons-png.flaticon.com/512/2026/2026528.png" class="w-16 h-16 opacity-20 mb-4" alt="">
-                <p class="text-gray-400 text-sm">暂无生成内容，请在左侧输入 JD</p>
-            </div>
         </div>
-    </div>
+    </main>
 
     <script>
-        let currentStyle = 'warm';
+        function handleMagic() {
+            const jd = document.getElementById('jdInput').value;
+            if(!jd) return alert("请先输入职位信息！");
 
-        function setStyle(s) {
-            currentStyle = s;
-            document.querySelectorAll('.style-btn').forEach(btn => {
-                btn.className = 'style-btn border p-2 rounded text-xs bg-white text-gray-600';
-            });
-            document.getElementById('btn-' + s).className = 'style-btn border p-2 rounded text-xs bg-blue-50 border-blue-500 text-blue-700';
-        }
+            // UI 切换
+            document.getElementById('welcomeScreen').classList.add('hidden');
+            const resultArea = document.getElementById('resultContainer');
+            resultArea.classList.remove('hidden');
+            resultArea.classList.add('generating');
 
-        function startGenerate() {
-            const input = document.getElementById('jdInput').value;
-            if(!input || input.length < 10) {
-                alert("JD 太短了，请多提供一些职位信息以便 AI 分析！");
-                return;
-            }
-
-            // UI 交互
-            document.getElementById('emptyState').classList.add('hidden');
-            document.getElementById('resultArea').classList.add('hidden');
-            document.getElementById('loading').classList.remove('hidden');
-
-            // 模拟 1秒 延迟
             setTimeout(() => {
-                generateContent(input);
-                document.getElementById('loading').classList.add('hidden');
-                document.getElementById('resultArea').classList.remove('hidden');
-            }, 1000);
+                resultArea.classList.remove('generating');
+                processData(jd);
+            }, 800);
         }
 
-        function generateContent(text) {
-            // 1. 简单的关键词提取模拟
-            const techKeywords = text.match(/[a-zA-Z]+/g) || ["关键技能"];
-            const location = text.includes("上海") ? "上海" : (text.includes("北京") ? "北京" : "核心城市");
-            const topSkill = techKeywords[0];
+        function processData(text) {
+            const industry = document.getElementById('industry').value;
+            const target = document.getElementById('targetUser').value;
 
-            // 2. 话术模板库
-            const templates = {
-                warm: `[候选人姓名] 您好，我是这边的猎头助手。关注到您在 ${topSkill} 领域的深厚积淀，目前有一家 ${location} 的明星企业正在物色核心人选。
-这个岗位的核心亮点在于【技术自由度高+千万级项目实战】，薪资上浮空间非常可观 (30%+)。不知近期是否愿意花 2 分钟沟通下岗位详情？`,
-                pro: `Dear [Name],
-我是专注于 ${location} 市场的资深猎头。目前我司受客户委托，寻找一位优秀的【${topSkill} 专家】。
-该机会隶属公司核心业务线，直接汇报给业务负责人。鉴于您在过往项目中展现出的技术领导力，我认为该机会与您的职业曲线高度契合。期待您的回复以获取详细 JD。`,
-                short: `【急聘】${location} 知名企业招 ${topSkill}，50K+，期权激励，核心业务。有看新机会的想法吗？回复 1 详聊。`
-            };
+            // 1. 生成破冰话术
+            const ice = `【${industry === 'internet' ? '核心项目' : '高薪直聘'}】您好，我是关注 ${industry} 领域的顾问。最近受一家头部公司委托招募 [核心成员]。
+我看过您在 [当前领域] 的背景，非常契合这个岗位的需求：
+🚀 亮点：业务正处于爆发期，能直接参与核心决策。
+💰 待遇：除了具有竞争力的 Base，还有丰厚的年终激励。
+不知您这周是否有 5 分钟方便电话同步下职位详情？`;
+            document.getElementById('iceBreaker').innerText = ice;
 
-            // 3. 渲染结果
-            document.getElementById('output1').innerText = templates[currentStyle];
-            document.getElementById('output2').innerText = `1. 行业地位：对标行业头部企业，项目含金量高\n2. 薪酬结构：Base 高，包含 [年底双薪/年终奖] \n3. 团队氛围：扁平化管理，${topSkill} 技术氛围浓厚\n4. 地理优势：坐标 ${location} 核心地段。`;
+            // 2. 动态生成痛点分析 (猎头新手的底气)
+            const points = [
+                { title: "针对职级", desc: "该职位比他现岗高一级，解决“升职难”痛点。" },
+                { title: "针对业务", desc: "这是公司S级核心业务，不用担心被裁员。" },
+                { title: "针对技术", desc: "有机会和前大厂技术总监共事，学习空间极大。" },
+                { title: "针对地域", desc: "提供全额搬家补贴，解决异地入职顾虑。" }
+            ];
             
-            // 4. 生成布尔搜索
-            const uniqueSkills = [...new Set(techKeywords)].slice(0, 3);
-            document.getElementById('booleanResult').innerText = `("${uniqueSkills.join('" AND "')}") AND ("${location}") NOT "实习"`;
+            let pointsHtml = '';
+            points.forEach(p => {
+                pointsHtml += `<div class="bg-orange-50 p-3 rounded-lg border border-orange-100">
+                    <div class="text-xs font-bold text-orange-800">${p.title}</div>
+                    <div class="text-[11px] text-orange-600 mt-1">${p.desc}</div>
+                </div>`;
+            });
+            document.getElementById('sellingPoints').innerHTML = pointsHtml;
+
+            // 3. 面试辅导 (新手最容易忽略的部分)
+            const tips = `“候选人你好，明天的面试建议重点突出您在 [JD 关键词] 方面的项目落地经验。据我了解，该面试官比较看重‘底层逻辑’和‘抗压性’。面试前建议去官网再看下他们的最新产品规划...”`;
+            document.getElementById('interviewTips').innerText = tips;
+
+            // 4. 布尔逻辑
+            const must = document.getElementById('mustHave').value || "关键技能";
+            const avoid = document.getElementById('notHave').value || "实习";
+            document.getElementById('booleanOutput').innerText = `("${must.replace(/[,，]/g, '" AND "')}") NOT ("${avoid}")`;
+            document.getElementById('booleanOutput').classList.remove('hidden');
         }
 
-        function copyAll() {
-            const text = document.getElementById('output1').innerText;
+        function copy(id) {
+            const text = document.getElementById(id).innerText;
             navigator.clipboard.writeText(text);
-            alert("第一份话术已复制到剪贴板！");
+            alert("已复制到剪贴板，快去发送给候选人吧！");
         }
     </script>
 </body>
