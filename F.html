@@ -1,70 +1,160 @@
-<div class="bg-white rounded-2xl shadow-sm border p-6 mt-6">
-    <h3 class="font-bold text-lg mb-4 flex items-center gap-2">
-        <i class="fas fa-chart-radar text-blue-600"></i> 岗位情报站 (Baidu Insight)
-    </h3>
-    <div class="flex gap-3 mb-6">
-        <input id="jobSearchInput" type="text" class="flex-1 p-3 border-2 border-slate-100 rounded-xl focus:border-blue-400 outline-none text-sm" placeholder="输入目标岗位，如：架构师、直播运营...">
-        <button onclick="searchAndAnalyze()" class="bg-slate-800 hover:bg-black text-white px-6 py-3 rounded-xl font-bold transition flex items-center gap-2">
-            <i class="fas fa-search"></i> 搜索并分析
-        </button>
-    </div>
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>飞云 Pro - 猎头全能增效工作站</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @keyframes cloudFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+        .logo-cloud { animation: cloudFloat 3s ease-in-out infinite; background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%); }
+        .sidebar-item:hover { background: #f1f5f9; color: #2563eb; }
+        .sidebar-item.active { background: #eff6ff; color: #2563eb; border-right: 4px solid #2563eb; }
+        .glass { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px); }
+    </style>
+</head>
+<body class="bg-slate-50 min-h-screen flex text-slate-800 font-sans">
 
-    <div id="analysisResult" class="hidden border-t pt-4">
-        <div class="flex items-center justify-between mb-4">
-            <span class="text-xs font-bold text-slate-400">百度实时检索：<span id="targetJobName" class="text-blue-600"></span></span>
-            <span class="text-[10px] bg-green-100 text-green-600 px-2 py-1 rounded">已提取最高频关键词</span>
+    <aside class="w-72 bg-white border-r flex flex-col sticky top-0 h-screen hidden lg:flex">
+        <div class="p-8 flex items-center gap-3 border-b">
+            <div class="logo-cloud text-white p-2.5 rounded-2xl shadow-lg"><i class="fas fa-cloud text-xl"></i></div>
+            <div class="leading-tight">
+                <span class="text-2xl font-black tracking-tighter">飞云 <span class="text-blue-600">Flyun</span></span>
+                <p class="text-[9px] text-slate-400 font-bold uppercase tracking-widest">Next-Gen Recruitment</p>
+            </div>
         </div>
         
-        <div class="flex flex-wrap gap-2 mb-4" id="keywordTags">
+        <nav class="flex-1 p-6 space-y-2 overflow-y-auto">
+            <div class="text-[11px] font-bold text-slate-400 uppercase px-4 mb-3">工作核心</div>
+            <a href="#" class="sidebar-item active flex items-center gap-3 px-4 py-3.5 rounded-2xl transition font-bold">
+                <i class="fas fa-wand-sparkles"></i> AI 话术助手
+            </a>
+            <a href="#" class="sidebar-item flex items-center gap-3 px-4 py-3.5 rounded-2xl transition font-medium text-slate-500">
+                <i class="fas fa-id-badge"></i> 简历脱敏美化
+            </a>
+            <a href="#" class="sidebar-item flex items-center gap-3 px-4 py-3.5 rounded-2xl transition font-medium text-slate-500">
+                <i class="fas fa-comments-dollar"></i> 面试谈资库
+            </a>
+            
+            <div class="text-[11px] font-bold text-slate-400 uppercase px-4 mb-3 mt-10">人脉运营</div>
+            <a href="#" class="sidebar-item flex items-center gap-3 px-4 py-3.5 rounded-2xl transition font-medium text-slate-500">
+                <i class="fas fa-bell"></i> 候选人唤醒
+            </a>
+            <a href="#" class="sidebar-item flex items-center gap-3 px-4 py-3.5 rounded-2xl transition font-medium text-slate-500">
+                <i class="fas fa-handshake"></i> 转介绍生成器
+            </a>
+        </nav>
+
+        <div class="p-6 border-t bg-slate-50">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold">L</div>
+                <div>
+                    <p class="text-sm font-bold text-slate-800">Leo Xu</p>
+                    <p class="text-[10px] text-slate-400 italic">资深猎头合伙人</p>
+                </div>
+            </div>
+            <button class="w-full py-2.5 bg-white border border-slate-200 rounded-xl text-xs font-bold shadow-sm hover:shadow-md transition">个人中心</button>
+        </div>
+    </aside>
+
+    <main class="flex-1 overflow-y-auto custom-scrollbar h-screen">
+        
+        <div class="h-20 bg-white/80 backdrop-blur-md sticky top-0 z-10 border-b px-8 flex justify-between items-center">
+            <h2 class="text-lg font-bold">AI 生产力工作台</h2>
+            <div class="flex gap-4">
+                <div class="flex items-center bg-slate-100 rounded-xl px-4 py-2 border border-transparent focus-within:border-blue-300">
+                    <i class="fas fa-search text-slate-400 mr-2 text-sm"></i>
+                    <input type="text" placeholder="输入岗位或人名..." class="bg-transparent border-none outline-none text-xs w-48">
+                </div>
+                <button class="bg-blue-600 text-white px-5 py-2 rounded-xl text-xs font-bold shadow-lg shadow-blue-200 hover:bg-blue-700 transition">新增职位</button>
+            </div>
+        </div>
+
+        <div class="p-8 space-y-8 max-w-6xl mx-auto">
+            
+            <div class="grid grid-cols-12 gap-6">
+                <div class="col-span-12 lg:col-span-7 bg-white p-8 rounded-[2rem] shadow-sm border border-slate-100">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="font-black text-xl flex items-center gap-3">
+                            <span class="w-2 h-8 bg-blue-600 rounded-full"></span> JD 智能智造
+                        </h3>
+                        <div class="flex gap-2">
+                            <span class="px-3 py-1 bg-slate-100 rounded-full text-[10px] font-bold text-slate-500 uppercase">Flyun Engine v3.0</span>
+                        </div>
+                    </div>
+                    
+                    <textarea id="jdInput" class="w-full h-48 bg-slate-50 rounded-2xl p-5 text-sm border-2 border-transparent focus:border-blue-100 focus:bg-white outline-none transition-all mb-4" 
+                        placeholder="在此粘贴岗位 JD，飞云将为你解析核心标签..."></textarea>
+                    
+                    <div class="grid grid-cols-2 gap-4">
+                        <button onclick="analyzeJob()" class="py-4 bg-slate-900 text-white rounded-2xl font-bold flex items-center justify-center gap-2 hover:bg-black transition shadow-xl">
+                            <i class="fas fa-microscope"></i> 解析画像
+                        </button>
+                        <button onclick="generateScript()" class="py-4 bg-blue-600 text-white rounded-2xl font-bold flex items-center justify-center gap-2 hover:bg-blue-700 transition shadow-xl shadow-blue-100">
+                            <i class="fas fa-comment-dots"></i> 生成勾搭文案
+                        </button>
+                    </div>
+                </div>
+
+                <div class="col-span-12 lg:col-span-5 bg-white p-8 rounded-[2rem] shadow-sm border border-slate-100">
+                    <h3 class="font-bold text-lg mb-4 flex items-center gap-2 text-slate-700">
+                        <i class="fas fa-shield-halved text-emerald-500"></i> 简历脱敏预览
+                    </h3>
+                    <div class="border-2 border-dashed border-slate-200 rounded-2xl p-6 flex flex-col items-center justify-center h-56 group hover:border-blue-400 transition cursor-pointer">
+                        <i class="fas fa-cloud-arrow-up text-3xl text-slate-300 group-hover:text-blue-500 transition mb-3"></i>
+                        <p class="text-xs text-slate-400 font-medium">拖入 PDF/Word 简历</p>
+                        <p class="text-[10px] text-slate-300 mt-1 uppercase font-bold tracking-widest">自动隐去联系方式/姓名</p>
+                    </div>
+                    <div class="mt-4 p-4 bg-emerald-50 rounded-xl border border-emerald-100">
+                        <p class="text-[11px] text-emerald-700 leading-relaxed font-medium">
+                            <i class="fas fa-check-circle mr-1"></i> 飞云助手已开启“隐私模式”，生成的推荐报告将自动隐去候选人敏感信息。
+                        </p>
+                    </div>
+                </div>
             </div>
 
-        <div class="bg-blue-50 p-4 rounded-xl border border-blue-100">
-            <p class="text-xs text-blue-800 leading-relaxed">
-                <i class="fas fa-lightbulb mr-1"></i> <b>飞云建议：</b> 
-                该岗位的候选人非常看重 <span id="topKeyword" class="font-bold underline"></span>。
-                建议在话术中重点突出这方面的项目背景。
-            </p>
+            <div id="interviewKit" class="hidden animate-in slide-in-from-bottom duration-500">
+                <div class="bg-slate-900 rounded-[2.5rem] p-10 text-white overflow-hidden relative shadow-2xl">
+                    <i class="fas fa-lightbulb absolute -right-10 -top-10 text-[15rem] text-white/5 rotate-12"></i>
+                    <h3 class="text-2xl font-black mb-8">面试提分锦囊 <span class="text-blue-400">Interview Boost</span></h3>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <div class="space-y-4">
+                            <div class="text-blue-400 font-bold uppercase tracking-widest text-[11px]">第一回合：个人优势</div>
+                            <p id="tip1" class="text-sm text-slate-300 leading-relaxed italic"></p>
+                        </div>
+                        <div class="space-y-4 border-l border-slate-700 pl-8">
+                            <div class="text-emerald-400 font-bold uppercase tracking-widest text-[11px]">第二回合：避坑指南</div>
+                            <p id="tip2" class="text-sm text-slate-300 leading-relaxed italic"></p>
+                        </div>
+                        <div class="space-y-4 border-l border-slate-700 pl-8">
+                            <div class="text-orange-400 font-bold uppercase tracking-widest text-[11px]">终极话术：反问环节</div>
+                            <p id="tip3" class="text-sm text-slate-300 leading-relaxed italic"></p>
+                        </div>
+                    </div>
+                    <button class="mt-10 px-6 py-2 bg-white/10 hover:bg-white/20 rounded-full text-xs font-bold border border-white/20 transition">一键发送给候选人</button>
+                </div>
+            </div>
+
         </div>
-    </div>
-</div>
+    </main>
 
-<script>
-    function searchAndAnalyze() {
-        const job = document.getElementById('jobSearchInput').value;
-        if (!job) return alert("请先输入岗位名称！");
+    <script>
+        function analyzeJob() {
+            const jd = document.getElementById('jdInput').value;
+            if(!jd) return alert("请先输入 JD 内容");
+            
+            document.getElementById('interviewKit').classList.remove('hidden');
+            
+            // 模拟分析逻辑
+            document.getElementById('tip1').innerText = "“候选人您好，明天的面试重点突出您在 [复杂系统开发] 的经验，这家公司非常看重处理过亿级流量的背景。”";
+            document.getElementById('tip2').innerText = "“注意：该面试官不喜欢过于浮夸的表达，回答时请务必带上具体的数据指标，保持谦逊专业。”";
+            document.getElementById('tip3').innerText = "“面试结束前可以问：‘您对该岗位未来一年的核心期待是什么？’这能体现你的目标感。”";
+        }
 
-        // 1. 模拟打开百度搜索（新标签页打开）
-        // 这里的搜索词增加了“招聘要求”，能更精准地触发 JD 相关的搜索结果
-        const baiduUrl = `https://www.baidu.com/s?wd=${encodeURIComponent(job + " 招聘要求 关键词")}`;
-        window.open(baiduUrl, '_blank');
-
-        // 2. 模拟分析逻辑（展示 UI）
-        document.getElementById('analysisResult').classList.remove('hidden');
-        document.getElementById('targetJobName').innerText = job;
-
-        // 3. 根据岗位名称模拟“高频词”输出
-        // 在实际开发中，这里可以对接后端爬虫或者大模型 API 进行实时分析
-        const mockDatabase = {
-            "Java": ["Spring Cloud", "高并发", "分布式架构", "微服务", "JVM调优"],
-            "产品经理": ["用户增长", "数据分析", "原型设计", "竞品调研", "敏捷开发"],
-            "销售": ["获客能力", "资源储备", "业绩达成", "商务谈判", "客情维护"],
-            "default": ["核心技术", "项目经验", "团队管理", "沟通能力", "抗压性"]
-        };
-
-        const keywords = mockDatabase[job] || mockDatabase["default"];
-        const tagContainer = document.getElementById('keywordTags');
-        tagContainer.innerHTML = ''; // 清空旧标签
-
-        keywords.forEach((word, index) => {
-            const span = document.createElement('span');
-            // 频率最高的词变大变亮
-            const opacity = 1 - (index * 0.15);
-            span.className = `px-3 py-1 bg-blue-600 text-white text-xs rounded-full shadow-sm`;
-            span.style.opacity = opacity;
-            span.innerHTML = `<i class="fas fa-fire-alt mr-1 text-orange-300"></i> ${word}`;
-            tagContainer.appendChild(span);
-        });
-
-        document.getElementById('topKeyword').innerText = keywords[0];
-    }
-</script>
+        function generateScript() {
+            alert("飞云助手正在后台生成 3 套差异化话术，请稍后在侧边栏‘话术库’中查看。");
+        }
+    </script>
+</body>
+</html>
