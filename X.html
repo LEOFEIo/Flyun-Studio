@@ -322,4 +322,91 @@
         document.getElementById('adminTableBody').innerHTML = l.map(p => {
             const k = "FLY_L_V12_" + btoa(p);
             const c = JSON.parse(localStorage.getItem(k) || "[]").length;
-            return `<tr><td><b>${p}</b></td><td>${c} 人</td><td><button onclick="delSpace('${p}')" style="color:red;border:none;background:none;cursor:pointer">删除
+            return `<tr><td><b>${p}</b></td><td>${c} 人</td><td><button onclick="delSpace('${p}')" style="color:red;border:none;background:none;cursor:pointer">删除</button></td></tr>`;
+        }).join('');
+    }
+
+    function delSpace(p) {
+        if(confirm(`永久销毁 [${p}] 空间？`)) {
+            const k = "FLY_L_V12_" + btoa(p);
+            localStorage.removeItem(k); localStorage.removeItem(k+"_t");
+            let l = JSON.parse(localStorage.getItem("FLY_REG_L") || "[]").filter(x => x !== p);
+            localStorage.setItem("FLY_REG_L", JSON.stringify(l)); renderAdmin();
+        }
+    }
+
+    function dangerClearAll() { if(confirm("抹除所有用户数据？")) { localStorage.clear(); location.reload(); } }
+
+    function initApp() {
+        let y6 = ''; for(let i=1960; i<=2022; i++) y6 += `<option value="${i}">${i}</option>`;
+        document.getElementById('f6').innerHTML = '<option value="">年份</option>' + y6;
+        let y14 = ''; for(let i=1900; i<=2024; i++) y14 += `<option value="${i}">${i}</option>`;
+        document.getElementById('f14').innerHTML = '<option value="">入学年</option>' + y14;
+        data = JSON.parse(localStorage.getItem(dbKey) || "[]");
+        tree = JSON.parse(localStorage.getItem(dbKey+"_t") || "{}");
+        refreshMgmt(); render(); updateCharts();
+    }
+
+    function addComp() { const v = document.getElementById('newComp').value.trim(); if(v && !tree[v]) { tree[v] = []; saveT(); document.getElementById('newComp').value = ""; refreshMgmt(); } }
+    function addJob() { const c = document.getElementById('compSelect').value; const j = document.getElementById('newJob').value.trim(); if(c && j && !tree[c].includes(j)) { tree[c].push(j); saveT(); document.getElementById('newJob').value = ""; refreshMgmt(); } }
+    function saveT() { localStorage.setItem(dbKey+"_t", JSON.stringify(tree)); }
+    function removeComp(c) { if(confirm(`移除客户“${c}”？`)) { delete tree[c]; saveT(); refreshMgmt(); } }
+
+    function refreshMgmt() {
+        document.getElementById('treeDisplay').innerHTML = Object.keys(tree).map(c => `<div class="tree-node"><div class="comp-header">${c} <span style="color:red;cursor:pointer" onclick="removeComp('${c}')">移除</span></div><div>${tree[c].map(j => `<span class="job-chip">${j}</span>`).join('')}</div></div>`).join('');
+        const opt = '<option value="">-- 选择客户 --</option>' + Object.keys(tree).map(c => `<option value="${c}">${c}</option>`).join('');
+        document.getElementById('compSelect').innerHTML = opt; document.getElementById('f1').innerHTML = opt; filterJobs();
+    }
+    function filterJobs() { const c = document.getElementById('f1').value; document.getElementById('f2').innerHTML = (c && tree[c]) ? '<option value="">-- 选择岗位 --</option>' + tree[c].map(j => `<option value="${j}">${j}</option>`).join('') : '<option value="">先选公司</option>'; }
+
+    function doSearch() { render(); updateCharts(); }
+
+    function saveData() {
+        const row = { id: Date.now() }; for(let i=1; i<=16; i++) row['f'+i] = document.getElementById('f'+i).value;
+        if(!row.f3 || !row.f1 || !row.f2) return alert("姓名、客户和岗位必填");
+        data.push(row); localStorage.setItem(dbKey, JSON.stringify(data));
+        render(); updateCharts(); alert("录入成功");
+    }
+
+    function render() {
+        const n = document.getElementById('sName').value.toLowerCase();
+        const c = document.getElementById('sComp').value.toLowerCase();
+        const j = document.getElementById('sJob').value.toLowerCase();
+        const filtered = data.filter(i => i.f3.toLowerCase().includes(n) && i.f1.toLowerCase().includes(c) && i.f2.toLowerCase().includes(j));
+        document.getElementById('tableBody').innerHTML = filtered.map(i => {
+            const age = i.f6 ? (curY - parseInt(i.f6)) : "-";
+            const exp = i.f14 ? (curY - parseInt(i.f14)) : "-";
+            return `<tr><td><strong>${i.f3}</strong></td><td><span class="badge badge-${i.f5}">${i.f5}</span></td><td><div style="font-weight:700">${i.f1}</div><div style="font-size:12px;color:var(--text-sub)">${i.f2}</div></td><td>${i.f6||"-"}<span class="calc-sub">${age!="-"?age+" 岁":""}</span></td><td>${i.f13}<span class="calc-sub">${exp!="-"?"资历 "+exp+" 年":""}</span></td><td>${i.f10}</td><td><span style="color:red;cursor:pointer" onclick="del(${i.id})">移除</span></td></tr>`;
+        }).join('');
+    }
+
+    function del(id) { if(confirm("移除记录？")) { data = data.filter(x => x.id !== id); localStorage.setItem(dbKey, JSON.stringify(data)); render(); updateCharts(); } }
+
+    function updateCharts() {
+        const filtered = data;
+        if(filtered.length === 0) return;
+        const s = {'合适':0,'不合适':0,'正在联系中':0}, e = {'大专':0,'本科':0,'研究生':0,'博士':0}, jb = {};
+        filtered.forEach(i => { s[i.f5]++; e[i.f13]++; jb[i.f1] = (jb[i.f1] || 0) + 1; });
+        draw('chartStatus', 'doughnut', Object.keys(s), Object.values(s), ['#34C759','#FF3B30','#FF9500'], true);
+        draw('chartEdu', 'bar', Object.keys(e), Object.values(e), '#007AFF', false);
+        draw('chartJob', 'bar', Object.keys(jb), Object.values(jb), '#AF52DE', false);
+    }
+
+    function draw(id, type, labels, data, colors, isD) {
+        if(charts[id]) charts[id].destroy();
+        charts[id] = new Chart(document.getElementById(id), {
+            type: type, data: { labels, datasets: [{ data, backgroundColor: colors, borderRadius: 10 }] },
+            options: { maintainAspectRatio:false, cutout: isD?'75%':0, plugins:{ legend:{ display:isD, position:'bottom', labels:{boxWidth:10, font:{size:10}} } }, scales:{ y:{ display:!isD, beginAtZero:true, ticks:{stepSize:1} }, x:{ display:!isD } } }
+        });
+    }
+
+    function exportXLS() {
+        const h = ["客户", "岗位", "姓名", "性别", "状态", "出生年", "年龄", "产品", "所在地", "现公司", "手机/微信", "学历", "入学年", "资历", "备注"];
+        const s = { fill: { fgColor: { rgb: "007AFF" } }, font: { color: { rgb: "FFFFFF" }, bold: true } };
+        const rows = [ h.map(x => ({v:x, s:s})), ...data.map(i => [i.f1, i.f2, i.f3, i.f4, i.f5, i.f6, i.f6?(curY-parseInt(i.f6)):"", i.f7, i.f8, i.f10, i.f11, i.f13, i.f14, i.f14?(curY-parseInt(i.f14)):"", i.f16]) ];
+        const ws = XLSX.utils.aoa_to_sheet(rows); const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "寻访报告"); XLSX.writeFile(wb, "FLY_YUN_Report.xlsx");
+    }
+</script>
+</body>
+</html>
