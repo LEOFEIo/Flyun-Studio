@@ -2,261 +2,281 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>FLYUN STUDIO // Chronos Warp v2.3</title>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syncopate:wght@400;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FLYUN // SPATIAL INTELLIGENCE 2026</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800;900&display=swap" rel="stylesheet">
     <style>
-        :root { --cyan: #00F3FF; --purple: #BD00FF; --black: #000; }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background-color: var(--black); color: white; font-family: 'Space Mono', monospace; overflow-x: hidden; }
-        
-        /* 基础层 */
-        canvas { position: fixed; top: 0; left: 0; z-index: 1; pointer-events: none; }
-        .vignette { position: fixed; inset: 0; background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.95) 100%); z-index: 2; pointer-events: none; }
+        :root {
+            --apple-blue: #0071e3;
+            --glass: rgba(0, 0, 0, 0.5);
+            --border: rgba(255, 255, 255, 0.15);
+            --ease: cubic-bezier(0.2, 0, 0, 1);
+        }
 
-        /* 导航栏 */
-        nav { position: fixed; top: 0; width: 100%; padding: 25px 40px; display: flex; justify-content: space-between; align-items: center; z-index: 100; backdrop-filter: blur(10px); }
-        .logo-wrap { display: flex; align-items: center; text-decoration: none; z-index: 101; }
-        .pixel-logo { width: 20px; height: 14px; background: var(--cyan); margin-right: 10px; clip-path: polygon(20% 40%, 40% 40%, 40% 20%, 60% 20%, 60% 40%, 80% 40%, 80% 80%, 20% 80%); box-shadow: 0 0 10px var(--cyan); }
-        .logo-text { font-family: 'Syncopate', sans-serif; color: var(--cyan); font-size: 14px; letter-spacing: 2px; }
-        .nav-links a { color: white; text-decoration: none; margin-left: 20px; font-size: 9px; letter-spacing: 2px; opacity: 0.6; cursor: pointer; transition: 0.3s; }
-        .nav-links a:hover { opacity: 1; color: var(--cyan); }
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+        body { 
+            background-color: #000; 
+            color: #fff; 
+            font-family: 'Inter', -apple-system, sans-serif;
+            overflow-x: hidden;
+        }
 
-        /* 主视图容器 */
-        #viewport { position: relative; z-index: 10; min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 100px 20px; transition: 0.8s cubic-bezier(0.19, 1, 0.22, 1); }
-        .main-title { font-family: 'Syncopate', sans-serif; font-size: 6vw; letter-spacing: 15px; margin-bottom: 60px; text-align: center; color: #fff; }
+        /* 沉浸式视差背景 */
+        #bg-container {
+            position: fixed;
+            top: -10%; left: -10%;
+            width: 120%; height: 120%;
+            background: url('http://googleusercontent.com/image_generation_content/0') no-repeat center center;
+            background-size: cover;
+            z-index: -1;
+            filter: brightness(0.65) contrast(1.1);
+            transition: transform 0.1s linear;
+        }
 
-        /* 业务卡片 */
-        .module-container { display: flex; gap: 25px; flex-wrap: wrap; justify-content: center; width: 100%; max-width: 1200px; }
-        .module-box { width: 280px; padding: 30px; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(0, 243, 255, 0.1); backdrop-filter: blur(15px); text-decoration: none; color: white; transition: 0.4s; cursor: pointer; }
-        .module-box:hover { border-color: var(--cyan); background: rgba(0, 243, 255, 0.08); transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0, 243, 255, 0.1); }
-        .module-header { font-size: 8px; color: var(--purple); border-bottom: 1px solid rgba(189, 0, 255, 0.3); margin-bottom: 15px; display: inline-block; }
-        .module-box h2 { font-size: 14px; margin-bottom: 10px; letter-spacing: 1px; }
-        .module-box p { font-size: 11px; line-height: 1.6; color: rgba(255,255,255,0.4); }
+        /* 顶部毛玻璃导航 */
+        nav {
+            position: fixed; top: 0; width: 100%; height: 48px;
+            background: rgba(0, 0, 0, 0.3); backdrop-filter: blur(20px) saturate(180%);
+            z-index: 9999; display: flex; justify-content: center;
+            border-bottom: 1px solid var(--border);
+        }
+        .nav-content { width: 100%; max-width: 1200px; display: flex; justify-content: space-between; align-items: center; padding: 0 30px; }
+        .nav-logo { font-weight: 800; font-size: 18px; letter-spacing: 2px; }
+        .nav-links a { color: #fff; text-decoration: none; font-size: 12px; opacity: 0.6; margin-left: 30px; letter-spacing: 1px; transition: 0.3s; cursor: pointer; }
+        .nav-links a:hover { opacity: 1; color: var(--apple-blue); }
 
-        /* 成员介绍 */
-        .staff-wrap { margin-top: 80px; text-align: center; }
-        .staff-card { width: 180px; padding: 20px; border: 1px solid rgba(189, 0, 255, 0.2); background: rgba(189, 0, 255, 0.02); margin: 0 auto; transition: 0.3s; }
-        .staff-card:hover { border-color: var(--purple); background: rgba(189, 0, 255, 0.05); }
-        .staff-avatar { width: 50px; height: 50px; background: #111; border: 1px solid var(--purple); margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; color: var(--purple); font-family: 'Syncopate'; clip-path: polygon(10% 0, 100% 0, 90% 100%, 0 100%); }
+        /* Hero 巨幕区域 */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            perspective: 2000px;
+        }
 
-        /* 名言引用 */
-        .quote-text { position: absolute; bottom: 40px; font-size: 9px; color: rgba(255, 255, 255, 0.2); letter-spacing: 2px; text-transform: uppercase; text-align: center; pointer-events: none; }
+        .hero-title {
+            font-size: clamp(120px, 25vw, 400px); /* 字体再次放大 */
+            font-weight: 900;
+            letter-spacing: -0.07em;
+            line-height: 0.8;
+            background: linear-gradient(180deg, #fff 40%, rgba(255,255,255,0.1) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            transform-style: preserve-3d;
+            transition: transform 0.2s var(--ease);
+            user-select: none;
+        }
 
-        /* 白皮书视图 */
-        #whitepaper-view { position: fixed; inset: 0; z-index: 200; background: #000; padding: 80px 10%; transform: translateY(100%); transition: 0.8s cubic-bezier(0.19, 1, 0.22, 1); overflow-y: auto; border-top: 1px solid var(--cyan); scroll-behavior: smooth; }
-        #whitepaper-view.active { transform: translateY(0); }
-        .paper-content { max-width: 800px; margin: 0 auto; border-left: 1px solid var(--cyan); padding-left: 30px; padding-bottom: 100px; }
-        .paper-title { font-size: 28px; color: var(--cyan); margin-bottom: 30px; font-family: 'Syncopate'; }
-        .paper-section { margin-bottom: 40px; font-size: 13px; line-height: 1.8; color: #999; padding-top: 20px; }
-        .paper-section p { margin-bottom: 15px; }
-        .paper-section b { color: #fff; }
-        .close-btn { position: fixed; top: 30px; right: 30px; color: var(--cyan); border: 1px solid var(--cyan); padding: 10px 20px; cursor: pointer; font-size: 10px; z-index: 205; background: #000; transition: 0.3s; }
-        .close-btn:hover { background: var(--cyan); color: #000; }
+        .hero-subtitle {
+            font-size: 14px;
+            font-weight: 400;
+            letter-spacing: 8px;
+            color: rgba(255,255,255,0.5);
+            margin-top: 20px;
+            text-transform: uppercase;
+        }
 
-        /* 图表样式 */
-        .chart-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin: 30px 0; }
-        .chart-box { border: 1px solid rgba(0, 243, 255, 0.2); padding: 15px; }
-        .bar-wrap { height: 60px; display: flex; align-items: flex-end; gap: 5px; margin-top: 10px; }
-        .bar { flex: 1; background: var(--cyan); opacity: 0.3; }
+        /* 核心业务板块：Bento 布局 */
+        .bento-section {
+            padding: 0 20px 100px;
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            position: relative;
+            z-index: 10;
+        }
 
-        @media (max-width: 768px) {
-            .main-title { font-size: 12vw; }
-            .module-box { width: 100%; max-width: 340px; }
-            #whitepaper-view { padding: 80px 25px; }
-            .quote-text { font-size: 8px; bottom: 20px; padding: 0 20px; }
+        .bento-card {
+            background: var(--glass);
+            backdrop-filter: blur(40px);
+            border: 1px solid var(--border);
+            border-radius: 32px;
+            min-height: 520px;
+            padding: 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            transition: 0.8s var(--ease);
+            cursor: pointer;
+        }
+
+        .bento-card:hover {
+            background: rgba(255,255,255,0.08);
+            border-color: rgba(255,255,255,0.4);
+            transform: translateY(-10px) scale(1.01);
+        }
+
+        .card-tag { color: var(--apple-blue); font-size: 13px; font-weight: 700; margin-bottom: 10px; letter-spacing: 1px; }
+        .card-title { font-size: 42px; font-weight: 700; margin-bottom: 20px; letter-spacing: -0.02em; }
+        .card-desc { font-size: 19px; color: rgba(255,255,255,0.5); line-height: 1.5; max-width: 380px; }
+
+        /* 白皮书视图层 */
+        #paper-view {
+            position: fixed; inset: 0; background: #fff; color: #1d1d1f; z-index: 10000;
+            transform: translateY(100%); transition: 0.8s cubic-bezier(0.4, 0, 0, 1);
+            padding: 100px 10%; overflow-y: auto;
+        }
+        #paper-view.active { transform: translateY(0); }
+        .close-btn { position: fixed; top: 40px; right: 40px; cursor: pointer; padding: 10px 20px; background: #f5f5f7; border-radius: 20px; font-size: 14px; font-weight: 600; transition: 0.3s; }
+        .close-btn:hover { background: #e8e8ed; }
+
+        .paper-content { max-width: 720px; margin: 0 auto; }
+        .paper-content h2 { font-size: 56px; font-weight: 800; margin-bottom: 40px; letter-spacing: -0.04em; }
+        .paper-section { margin-bottom: 60px; border-top: 1px solid #d2d2d7; padding-top: 40px; }
+        .paper-section h3 { font-size: 26px; font-weight: 700; margin-bottom: 20px; }
+        .paper-section p { font-size: 18px; line-height: 1.7; color: #424245; margin-bottom: 20px; }
+
+        /* 品牌脚注 */
+        footer {
+            padding: 120px 20px 60px;
+            text-align: center;
+            background: transparent;
+        }
+        .footer-brand {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+        .powered-by {
+            font-size: 14px;
+            color: rgba(255,255,255,0.4);
+            letter-spacing: 3px;
+            font-weight: 400;
+        }
+        .powered-by span {
+            color: #fff;
+            font-weight: 800;
+            letter-spacing: 5px;
+        }
+        .footer-line { width: 30px; height: 1px; background: rgba(255,255,255,0.2); }
+
+        @media (max-width: 900px) {
+            .bento-section { grid-template-columns: 1fr; }
+            .hero-title { font-size: 100px; }
+            .bento-card { min-height: 450px; padding: 40px; }
         }
     </style>
 </head>
 <body>
 
-    <canvas id="warpCanvas"></canvas>
-    <div class="vignette"></div>
+    <div id="bg-container"></div>
 
     <nav>
-        <div class="logo-wrap">
-            <div class="pixel-logo"></div>
-            <div class="logo-text">FLYUN</div>
-        </div>
-        <div class="nav-links">
-            <a onclick="togglePaper()">Whitepaper</a>
-            <a href="#">Lab</a>
-            <a href="#">Archive</a>
+        <div class="nav-content">
+            <div class="nav-logo">FLYUN</div>
+            <div class="nav-links">
+                <a onclick="togglePaper()">WHITEPAPER</a>
+                <a href="#">STUDIO</a>
+                <a href="#">LABS</a>
+            </div>
         </div>
     </nav>
 
-    <div id="viewport">
-        <h1 class="main-title">FLYUN</h1>
-        
-        <div class="module-container">
-            <div class="module-box" onclick="openPaperSection('plan-1')">
-                <div class="module-header">SEQ_01</div>
-                <h2>PRIVATE_SEQUENCE</h2>
-                <p>AI 感官交互硬件。实时生成独一无二的愉悦算法，探索数字与肉体的边界。</p>
-            </div>
-            <div class="module-box" onclick="openPaperSection('plan-2')">
-                <div class="module-header">LAB_02</div>
-                <h2>SPATIAL_RESEARCH</h2>
-                <p>虚拟展厅与交互实验室。基于 UX 模型，重构 3D 空间的叙事逻辑。</p>
-            </div>
-            <div class="module-box" onclick="openPaperSection('plan-3')">
-                <div class="module-header">ART_03</div>
-                <h2>ALGO_ARTIFACTS</h2>
-                <p>算法造物电商。每一件定制品均有独立哈希编号，实现云端造物的物理固化。</p>
-            </div>
-        </div>
-
-        <div class="staff-wrap">
-            <div class="staff-card">
-                <div class="staff-avatar">L</div>
-                <h4 style="font-size: 14px; color: #fff;">LEO</h4>
-                <p style="font-size: 9px; color: var(--purple);">CHIEF ARCHITECT</p>
-            </div>
-        </div>
-
-        <div class="quote-text">> "I could either watch it happen or be a part of it." // E.MUSK</div>
+    <div class="hero">
+        <h1 class="hero-title" id="parallax-title">FLYUN</h1>
+        <p class="hero-subtitle">Chronos Warp v2.3 // Sensing the Future</p>
     </div>
 
-   <div id="whitepaper-view">
-    <div class="close-btn" onclick="togglePaper()">CLOSE_TERMINAL [ESC]</div>
-    <div class="paper-content">
-        <div class="paper-tag" style="font-size: 10px; color: #666; margin-bottom: 20px;">// DECRYPTED_FILE: STRATEGIC_PLAN_2026 // LEVEL_03_AUTH</div>
-        <h2 class="paper-title">WHITEPAPER 3.0: THE CLOUD MANIFESTO</h2>
-
-        <div class="paper-section">
-            <h3 style="color:var(--purple); margin-bottom: 10px;">[ MISSION ] 空间智能协议</h3>
-            <p>Flyun Studio 旨在通过 AI 算法将虚拟空间的深度转化为物理层面的触感。基于 LEO 架构师提出的 <b>AFE (Affective Feedback Engine)</b> 引擎，我们正在重新定义数字时代的生存美学。</p>
+    <div class="bento-section">
+        <div class="bento-card" onclick="openPaper('plan-1')">
+            <span class="card-tag">MISSION_01</span>
+            <h3 class="card-title">Private Sequence</h3>
+            <p class="card-desc">AI 感官交互硬件。实时生成独一无二的愉悦算法，探索数字与肉体的边界。</p>
         </div>
 
-        <div class="chart-container">
-            <div class="chart-box">
-                <p style="font-size: 8px; color: var(--cyan);">// USER_SENSORY_ENGAGEMENT</p>
-                <div class="bar-wrap">
-                    <div class="bar" style="height: 20%;"></div>
-                    <div class="bar" style="height: 45%;"></div>
-                    <div class="bar" style="height: 70%;"></div>
-                    <div class="bar" style="height: 95%; opacity: 1; box-shadow: 0 0 15px var(--cyan);"></div>
-                </div>
-                <p style="font-size: 10px; margin-top: 10px; color: #fff;">+320% RETENTION RATE</p>
-            </div>
-            <div class="chart-box">
-                <p style="font-size: 8px; color: var(--purple);">// ALGO_EFFICIENCY_INDEX</p>
-                <svg viewBox="0 0 100 40" style="margin-top: 10px; stroke: var(--purple); fill: none; stroke-width: 1.5;">
-                    <path d="M0 35 L 20 25 L 40 30 L 60 10 L 80 15 L 100 2" stroke-dasharray="2,1" />
-                    <circle cx="100" cy="2" r="2" fill="var(--purple)" />
-                </svg>
-                <p style="font-size: 10px; margin-top: 10px; color: #fff;">v4.8 STABLE NODE</p>
-            </div>
+        <div class="bento-card" style="background: #f5f5f7; color: #000;" onclick="openPaper('plan-2')">
+            <span class="card-tag">LAB_02</span>
+            <h3 class="card-title">Spatial Research</h3>
+            <p class="card-desc" style="color: #86868b;">虚拟展厅与交互实验室。基于 UX 模型，重构 3D 空间的叙事逻辑。</p>
         </div>
 
-        <div class="paper-section" id="plan-1">
-            <h3 style="color:var(--cyan); margin-bottom:10px;">// 01. 商业企划: 私密序列 (SEQ_01)</h3>
-            <p><b>核心：</b>极小规模、高定制化的硬件分发。利用生成式 AI，实现从“像素到原子”的降维打击。</p>
-            <p>聚焦于限量生产具备唯一 Hash 的赛博硬件。重点产品 <b>[PRIVATE_SEQUENCE]</b> 预计在 Q3 开启首个 Drop。通过独有的愉悦算法计算，每次交互都将生成不可复制的反馈波形。</p>
+        <div class="bento-card" onclick="openPaper('plan-3')">
+            <span class="card-tag">TRADE_03</span>
+            <h3 class="card-title">Algo Artifacts</h3>
+            <p class="card-desc">算法造物电商。每一件定制品均有独立哈希编号，实现云端造物的物理固化。</p>
         </div>
 
-        <div class="paper-section" id="plan-2">
-            <h3 style="color:var(--cyan); margin-bottom:10px;">// 02. 商业企划: 空间研究 (LAB_02)</h3>
-            <p><b>核心：</b>转向 B 端虚拟空间服务，提供具备“时空感”的 3D 沉浸式展示方案。</p>
-            <p>打破传统网页浏览的 2D 束缚，基于最新的 WebGL 与空间计算协议，为博物馆、独立设计师与前卫科技品牌构筑可漫游的数字废墟与纯净展厅。</p>
-        </div>
-
-        <div class="paper-section" id="plan-3">
-            <h3 style="color:var(--cyan); margin-bottom:10px;">// 03. 商业企划: 算法造物 (ART_03)</h3>
-            <p><b>核心：</b>纯数字资产的物理固化交易终端。</p>
-            <p>每一件定制品不仅是一段代码，更是云端意志的物理延伸。结合 3D 打印与 CNC 雕刻技术，确保购买者的每一件实体商品都能在链上追溯到其起源参数。</p>
+        <div class="bento-card" style="background: linear-gradient(180deg, #1d1d1f 0%, #000 100%);" onclick="togglePaper()">
+            <span class="card-tag">REPORT</span>
+            <h3 class="card-title">Manifesto 3.0</h3>
+            <p class="card-desc">深度解析 AFE (Affective Feedback Engine) 引擎核心协议与未来战略。</p>
         </div>
     </div>
-   </div>
+
+    <footer>
+        <div class="footer-brand">
+            <div class="footer-line"></div>
+            <p class="powered-by">Powered by <span>FLYUN STUDIO</span></p>
+            <p style="font-size: 10px; color: rgba(255,255,255,0.2); margin-top: 10px;">"I COULD EITHER WATCH IT HAPPEN OR BE A PART OF IT." // E. MUSK</p>
+        </div>
+    </footer>
+
+    <div id="paper-view">
+        <div class="close-btn" onclick="togglePaper()">CLOSE_TERMINAL [✕]</div>
+        <div class="paper-content">
+            <p style="color: var(--apple-blue); font-weight: 700; margin-bottom: 10px;">STRATEGIC_PLAN_2026</p>
+            <h2>THE CLOUD MANIFESTO</h2>
+            
+            <div class="paper-section">
+                <h3>[ MISSION ] 空间智能协议</h3>
+                <p>Flyun Studio 旨在通过 AI 算法将虚拟空间的深度转化为物理层面的触感。基于 LEO 架构师提出的 <b>AFE (Affective Feedback Engine)</b> 引擎，我们正在重新定义数字时代的生存美学。</p>
+            </div>
+
+            <div class="paper-section" id="plan-1">
+                <h3>01. 私密序列 (SEQ_01)</h3>
+                <p>利用生成式 AI 实现“从像素到原子”的降维打击。聚焦限量生产的 Hash 硬件，每次交互生成不可复制的反馈波形。</p>
+            </div>
+
+            <div class="paper-section" id="plan-2">
+                <h3>02. 空间研究 (LAB_02)</h3>
+                <p>基于 WebGL 与空间计算协议，为博物馆及前卫品牌构筑可漫游的数字废墟与虚拟展厅。</p>
+            </div>
+
+            <div class="paper-section" id="plan-3">
+                <h3>03. 算法造物 (ART_03)</h3>
+                <p>结合 3D 打印与 CNC 技术，让云端意志物理固化。每一件实体商品均可在链上追溯其起源参数。</p>
+            </div>
+        </div>
+    </div>
 
     <script>
-        const canvas = document.getElementById('warpCanvas');
-        const ctx = canvas.getContext('2d');
-        let stars = [];
-        let speed = 2;
-        let mouseX = 0, mouseY = 0;
+        const bg = document.getElementById('bg-container');
+        const title = document.getElementById('parallax-title');
 
-        window.onresize = () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; };
-        window.onresize();
+        // 视差与光影交互
+        window.addEventListener('mousemove', (e) => {
+            const x = (e.clientX / window.innerWidth - 0.5);
+            const y = (e.clientY / window.innerHeight - 0.5);
 
-        class Star {
-            constructor() { this.reset(); this.z = Math.random() * canvas.width; }
-            reset() { this.x = (Math.random() - 0.5) * canvas.width; this.y = (Math.random() - 0.5) * canvas.height; this.z = canvas.width; }
-            update() {
-                this.z -= speed;
-                if (this.z < 1) this.reset();
-            }
-            show() {
-                ctx.strokeStyle = '#00F3FF';
-                let sx = (this.x / this.z) * canvas.width + canvas.width/2;
-                let sy = (this.y / this.z) * canvas.height + canvas.height/2;
-                ctx.beginPath();
-                ctx.lineWidth = (1 - this.z / canvas.width) * 2;
-                ctx.moveTo(sx, sy);
-                ctx.lineTo(sx + 2, sy + 2); 
-                ctx.stroke();
-            }
-        }
+            // 背景图平滑随动
+            bg.style.transform = `translate(${x * 40}px, ${y * 40}px) scale(1.05)`;
 
-        for (let i = 0; i < 400; i++) stars.push(new Star());
-
-        function draw() {
-            ctx.fillStyle = '#000'; ctx.fillRect(0, 0, canvas.width, canvas.height);
-            ctx.save();
-            ctx.translate(mouseX * 0.05, mouseY * 0.05);
-            stars.forEach(s => { s.update(); s.show(); });
-            ctx.restore();
-            requestAnimationFrame(draw);
-        }
-        draw();
-
-        document.addEventListener('mousemove', (e) => {
-            mouseX = e.clientX - canvas.width / 2;
-            mouseY = e.clientY - canvas.height / 2;
-        });
-        function togglePaper() {
-            const paper = document.getElementById('whitepaper-view');
-            const viewport = document.getElementById('viewport');
-            paper.classList.toggle('active');
-            if(paper.classList.contains('active')) {
-                viewport.style.opacity = '0.1';
-                speed = 0.5;
-            } else {
-                viewport.style.opacity = '1';
-                speed = 2;
-            }
-        }
-        function openPaperSection(sectionId) {
-            const paper = document.getElementById('whitepaper-view');
-            const viewport = document.getElementById('viewport');
+            // 标题 3D 偏转
+            title.style.transform = `rotateY(${x * 50}deg) rotateX(${-y * 50}deg) translateZ(100px)`;
             
-    
-            if(!paper.classList.contains('active')) {
-                paper.classList.add('active');
-                viewport.style.opacity = '0.1';
-                speed = 0.5;
-            }
+            // 动态渐变光影
+            const angle = Math.atan2(y, x) * 180 / Math.PI;
+            title.style.backgroundImage = `linear-gradient(${angle}deg, #fff 30%, #444 100%)`;
+        });
 
-           
+        function togglePaper() {
+            const paper = document.getElementById('paper-view');
+            paper.classList.toggle('active');
+            document.body.style.overflow = paper.classList.contains('active') ? 'hidden' : 'auto';
+        }
+
+        function openPaper(id) {
+            togglePaper();
             setTimeout(() => {
-                const target = document.getElementById(sectionId);
-                if (target) {
-                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
+                const el = document.getElementById(id);
+                if(el) el.scrollIntoView({ behavior: 'smooth' });
             }, 600);
         }
-
-    
-        document.addEventListener('keydown', (e) => {
-            if(e.key === 'Escape') {
-                const paper = document.getElementById('whitepaper-view');
-                if(paper.classList.contains('active')) {
-                    togglePaper();
-                }
-            }
-        });
     </script>
 </body>
 </html>
-
-
