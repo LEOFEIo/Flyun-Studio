@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <link rel="icon" href="favicon.png" type="image/png">
-<link rel="apple-touch-icon" href="favicon.png"> 
+    <link rel="icon" href="favicon.png" type="image/png">
+    <link rel="apple-touch-icon" href="favicon.png"> 
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FLYUN // SPATIAL INTELLIGENCE 2026</title>
@@ -28,17 +29,18 @@
             position: fixed;
             top: -10%; left: -10%;
             width: 120%; height: 120%;
-            background: url('http://googleusercontent.com/image_generation_content/0') no-repeat center center;
+            /* 建议背景图使用深色调以配合整体 UI */
+            background: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.2)), url('http://googleusercontent.com/image_generation_content/0') no-repeat center center;
             background-size: cover;
             z-index: -1;
-            filter: brightness(0.65) contrast(1.1);
+            filter: brightness(0.6) contrast(1.2);
             transition: transform 0.1s linear;
         }
 
         /* 顶部毛玻璃导航 */
         nav {
             position: fixed; top: 0; width: 100%; height: 48px;
-            background: rgba(0, 0, 0, 0.3); backdrop-filter: blur(20px) saturate(180%);
+            background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(25px) saturate(180%);
             z-index: 9999; display: flex; justify-content: center;
             border-bottom: 1px solid var(--border);
         }
@@ -59,7 +61,7 @@
         }
 
         .hero-title {
-            font-size: clamp(120px, 25vw, 400px); /* 字体再次放大 */
+            font-size: clamp(100px, 20vw, 360px);
             font-weight: 900;
             letter-spacing: -0.07em;
             line-height: 0.8;
@@ -87,7 +89,7 @@
             margin: 0 auto;
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
+            gap: 24px;
             position: relative;
             z-index: 10;
         }
@@ -102,17 +104,17 @@
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
-            transition: 0.8s var(--ease);
+            transition: 0.6s var(--ease);
             cursor: pointer;
         }
 
         .bento-card:hover {
-            background: rgba(255,255,255,0.08);
-            border-color: rgba(255,255,255,0.4);
-            transform: translateY(-10px) scale(1.01);
+            background: rgba(255,255,255,0.06);
+            border-color: rgba(255,255,255,0.3);
+            transform: translateY(-8px);
         }
 
-        .card-tag { color: var(--apple-blue); font-size: 13px; font-weight: 700; margin-bottom: 10px; letter-spacing: 1px; }
+        .card-tag { color: var(--apple-blue); font-size: 13px; font-weight: 700; margin-bottom: 12px; letter-spacing: 1px; }
         .card-title { font-size: 42px; font-weight: 700; margin-bottom: 20px; letter-spacing: -0.02em; }
         .card-desc { font-size: 19px; color: rgba(255,255,255,0.5); line-height: 1.5; max-width: 380px; }
 
@@ -136,7 +138,6 @@
         footer {
             padding: 120px 20px 60px;
             text-align: center;
-            background: transparent;
         }
         .footer-brand {
             display: flex;
@@ -146,9 +147,8 @@
         }
         .powered-by {
             font-size: 14px;
-            color: rgba(255,255,255,0.4);
+            color: rgba(255,255,255,0.3);
             letter-spacing: 3px;
-            font-weight: 400;
         }
         .powered-by span {
             color: #fff;
@@ -159,8 +159,8 @@
 
         @media (max-width: 900px) {
             .bento-section { grid-template-columns: 1fr; }
-            .hero-title { font-size: 100px; }
-            .bento-card { min-height: 450px; padding: 40px; }
+            .hero-title { font-size: 80px; }
+            .bento-card { min-height: 400px; padding: 40px; }
         }
     </style>
 </head>
@@ -226,7 +226,7 @@
             
             <div class="paper-section">
                 <h3>[ MISSION ] 空间智能协议</h3>
-                <p>Flyun Studio 旨在通过 AI 算法将虚拟空间的深度转化为物理层面的触感。基于 LEO 架构师提出的 <b>AFE (Affective Feedback Engine)</b> 引擎，我们正在重新定义数字时代的生存美学。</p>
+                <p>Flyun Studio 旨在通过 AI 算法将虚拟空间的深度转化为物理层面的触感。基于 <b>AFE (Affective Feedback Engine)</b> 引擎，我们正在重新定义数字时代的生存美学。</p>
             </div>
 
             <div class="paper-section" id="plan-1">
@@ -256,10 +256,10 @@
             const y = (e.clientY / window.innerHeight - 0.5);
 
             // 背景图平滑随动
-            bg.style.transform = `translate(${x * 40}px, ${y * 40}px) scale(1.05)`;
+            bg.style.transform = `translate(${x * 30}px, ${y * 30}px) scale(1.05)`;
 
             // 标题 3D 偏转
-            title.style.transform = `rotateY(${x * 50}deg) rotateX(${-y * 50}deg) translateZ(100px)`;
+            title.style.transform = `rotateY(${x * 40}deg) rotateX(${-y * 40}deg) translateZ(50px)`;
             
             // 动态渐变光影
             const angle = Math.atan2(y, x) * 180 / Math.PI;
@@ -282,4 +282,3 @@
     </script>
 </body>
 </html>
-
