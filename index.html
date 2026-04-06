@@ -4,16 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Leo Xu - UX Designer & Explorer</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%231d1d1f'/><text x='50' y='50' font-family='sans-serif' font-size='40' font-weight='bold' fill='%23ffffff' text-anchor='middle' dominant-baseline='central'>LX</text></svg>">
+    
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
+            var(--apple-bg): #000000;
             --apple-bg: #000000;
-            --apple-card: #1d1d1f;
+            --apple-card: rgba(29, 29, 31, 0.7);
             --apple-text-main: #f5f5f7;
             --apple-text-muted: #86868b;
             --apple-blue: #2997ff;
             --apple-border: rgba(255, 255, 255, 0.1);
             --ease: cubic-bezier(0.25, 0.1, 0.25, 1);
+            
+            --glow-color: rgba(41, 151, 255, 0.4);
+            --orb-1-color: rgba(41, 151, 255, 0.3);
+            --orb-2-color: rgba(94, 92, 230, 0.3);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
@@ -21,162 +28,163 @@
         body { 
             background-color: var(--apple-bg); 
             color: var(--apple-text-main); 
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             overflow-x: hidden;
+            transition: background-color 0.3s ease;
         }
 
-        /* 导航栏 - 苹果经典的毛玻璃效果 */
+        /* 动态背景系统 */
+        #interactive-bg {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: -1; overflow: hidden; pointer-events: none;
+        }
+        .bg-noise {
+            position: absolute; inset: -50%; width: 200%; height: 200%;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            opacity: 0.04; mix-blend-mode: overlay;
+        }
+        .cursor-glow {
+            position: absolute; width: 600px; height: 600px;
+            background: radial-gradient(circle, var(--glow-color) 0%, rgba(0,0,0,0) 60%);
+            border-radius: 50%; transform: translate(-50%, -50%);
+            filter: blur(60px); opacity: 0; transition: opacity 0.5s ease;
+            will-change: transform;
+        }
+        .ambient-orb { position: absolute; border-radius: 50%; filter: blur(100px); animation: floatOrb 20s infinite alternate ease-in-out; }
+        .orb-1 { width: 50vw; height: 50vw; background: var(--orb-1-color); top: -10%; left: -10%; }
+        .orb-2 { width: 40vw; height: 40vw; background: var(--orb-2-color); bottom: -10%; right: -10%; animation-delay: -5s; animation-direction: alternate-reverse; }
+
+        @keyframes floatOrb {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(10%, 15%) scale(1.2); }
+        }
+
+        /* 导航栏 */
         nav {
             position: fixed; top: 0; width: 100%; height: 52px;
-            background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(20px) saturate(180%);
-            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(30px) saturate(180%);
+            -webkit-backdrop-filter: blur(30px) saturate(180%);
             z-index: 1000; display: flex; justify-content: center;
             border-bottom: 1px solid var(--apple-border);
         }
-        
-        .nav-content { 
-            width: 100%; max-width: 1200px; display: flex; justify-content: space-between; align-items: center; padding: 0 20px; 
-        }
-        
+        .nav-content { width: 100%; max-width: 1200px; display: flex; justify-content: space-between; align-items: center; padding: 0 20px; }
         .nav-logo { font-weight: 600; font-size: 15px; letter-spacing: -0.5px; }
         .nav-links { display: flex; align-items: center; gap: 24px; }
         .nav-links a { color: var(--apple-text-main); text-decoration: none; font-size: 12px; opacity: 0.8; transition: opacity 0.3s; cursor: pointer; }
         .nav-links a:hover { opacity: 1; }
-        
-        /* 隐藏的编辑触发器 */
         .admin-trigger { cursor: pointer; opacity: 0.5; transition: 0.3s; font-size: 14px;}
         .admin-trigger:hover { opacity: 1; color: var(--apple-blue); }
 
         /* Hero 区域 */
-        .hero {
-            padding: 160px 20px 80px;
-            text-align: center;
-            max-width: 900px;
-            margin: 0 auto;
-        }
+        .hero { padding: 180px 20px 80px; text-align: center; max-width: 900px; margin: 0 auto; position: relative; }
+        .hero-title { font-size: clamp(48px, 8vw, 80px); font-weight: 700; letter-spacing: -0.04em; line-height: 1.05; margin-bottom: 24px; }
+        .hero-subtitle { font-size: clamp(16px, 3vw, 20px); font-weight: 400; color: var(--apple-text-muted); line-height: 1.5; max-width: 600px; margin: 0 auto; }
 
-        .hero-title {
-            font-size: clamp(48px, 8vw, 80px);
-            font-weight: 700;
-            letter-spacing: -0.04em;
-            line-height: 1.05;
-            margin-bottom: 24px;
+        .global-tools {
+            display: none; position: absolute; top: 120px; left: 50%; transform: translateX(-50%);
+            background: rgba(255,255,255,0.1); backdrop-filter: blur(20px);
+            padding: 10px 20px; border-radius: 30px; border: 1px solid var(--apple-border);
+            align-items: center; gap: 15px; z-index: 100;
         }
+        body.edit-mode .global-tools { display: flex; }
 
-        .hero-subtitle {
-            font-size: clamp(18px, 3vw, 24px);
-            font-weight: 400;
-            color: var(--apple-text-muted);
-            line-height: 1.5;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        /* 苹果 Bento (便当盒) 网格布局 */
+        /* Bento Grid 布局 */
         .bento-grid {
-            padding: 0 20px 100px;
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            grid-auto-rows: 380px;
-            gap: 20px;
+            padding: 0 20px 100px; max-width: 1200px; margin: 0 auto;
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
+            grid-auto-rows: minmax(380px, auto);
         }
 
         .bento-card {
-            background: var(--apple-card);
-            border-radius: 28px;
-            padding: 40px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
+            background: var(--apple-card); backdrop-filter: blur(20px); border: 1px solid var(--apple-border);
+            border-radius: 28px; padding: 40px; display: flex; flex-direction: column; justify-content: space-between;
+            position: relative; transition: transform 0.4s var(--ease), background 0.3s ease, border-color 0.3s ease;
             overflow: hidden;
-            position: relative;
-            transition: transform 0.4s var(--ease);
         }
+        .bento-card:hover { transform: scale(1.02); border-color: rgba(255,255,255,0.3); }
 
-        .bento-card:hover {
-            transform: scale(1.02);
-        }
-
-        /* 跨列设置 */
+        /* 跨列配置 */
         .card-large { grid-column: span 2; }
-        .card-full { grid-column: span 3; height: auto; min-height: 300px; }
+        .card-full { grid-column: span 3; flex-direction: row; padding: 0; min-height: 400px;}
+        .card-full .card-img-wrapper { width: 60%; height: 100%; }
+        .card-full .card-media-content { width: 40%; padding: 50px; justify-content: center; }
 
-        .card-category { font-size: 12px; font-weight: 600; color: var(--apple-text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; }
+        /* 媒体图文卡片 */
+        .card-media { padding: 0; }
+        .card-img-wrapper { width: 100%; height: 50%; overflow: hidden; position: relative; background: #222; }
+        .card-img-wrapper img { width: 100%; height: 100%; object-fit: cover; transition: 0.3s; }
+        .card-media-content { padding: 30px; height: 50%; display: flex; flex-direction: column; justify-content: flex-start; }
+
+        .card-category { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; opacity: 0.7;}
         .card-title { font-size: 28px; font-weight: 600; margin-bottom: 16px; letter-spacing: -0.02em; line-height: 1.2;}
-        .card-desc { font-size: 16px; color: var(--apple-text-muted); line-height: 1.5; }
+        .card-desc { font-size: 16px; line-height: 1.5; opacity: 0.8; }
 
-        /* 特殊卡片视觉 */
-        .card-ai { background: linear-gradient(145deg, #1d1d1f 0%, #2a2a2d 100%); }
-        .card-auto { background: #f5f5f7; color: #1d1d1f; }
-        .card-auto .card-category { color: #86868b; }
-        .card-auto .card-desc { color: #515154; }
+        .card-auto { background: rgba(245, 245, 247, 0.9); color: #1d1d1f; }
 
-        /* 底部 */
+        /* 工具栏 */
+        .card-tools {
+            position: absolute; top: 16px; right: 16px; z-index: 10;
+            background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2); border-radius: 30px;
+            padding: 6px 12px; display: none; align-items: center; gap: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+        body.edit-mode .bento-card:hover .card-tools { display: flex; }
+        
+        input[type="color"] { -webkit-appearance: none; border: none; width: 22px; height: 22px; border-radius: 50%; cursor: pointer; padding: 0; background: transparent; }
+        input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; }
+        input[type="color"]::-webkit-color-swatch { border: 1px solid rgba(255,255,255,0.4); border-radius: 50%; }
+        
+        .tool-icon { font-size: 14px; cursor: pointer; opacity: 0.8; transition: 0.2s; }
+        .tool-icon:hover { opacity: 1; transform: scale(1.1); }
+        .tool-label { font-size: 11px; color: #fff; margin-right: -6px; opacity: 0.9; font-weight: 500;}
+
+        #hidden-file-input { display: none; }
         footer { border-top: 1px solid var(--apple-border); padding: 40px 20px; text-align: center; color: var(--apple-text-muted); font-size: 12px; }
 
-        /* 密码输入 Modal */
-        #auth-modal {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.6); backdrop-filter: blur(10px);
-            display: flex; justify-content: center; align-items: center;
-            z-index: 2000; opacity: 0; pointer-events: none; transition: 0.3s;
-        }
+        /* Modal & UI Feedback */
+        #auth-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(15px); display: flex; justify-content: center; align-items: center; z-index: 2000; opacity: 0; pointer-events: none; transition: 0.3s; }
         #auth-modal.active { opacity: 1; pointer-events: all; }
-        
-        .modal-content {
-            background: rgba(30, 30, 32, 0.8);
-            border: 1px solid var(--apple-border);
-            border-radius: 20px; padding: 40px; width: 320px; text-align: center;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
-            transform: translateY(20px); transition: 0.4s var(--ease);
-        }
+        .modal-content { background: rgba(30, 30, 32, 0.8); border: 1px solid var(--apple-border); border-radius: 24px; padding: 40px; width: 340px; text-align: center; transform: translateY(20px); transition: 0.4s var(--ease); box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
         #auth-modal.active .modal-content { transform: translateY(0); }
+        .modal-content h3 { margin-bottom: 24px; font-weight: 600; font-size: 20px; color: #fff;}
+        .modal-content input { width: 100%; padding: 14px 16px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.3); color: #fff; font-size: 14px; margin-bottom: 24px; outline: none; transition: 0.2s;}
+        .modal-content input:focus { border-color: var(--apple-blue); box-shadow: 0 0 0 3px rgba(41, 151, 255, 0.2); }
+        .modal-btn { background: var(--apple-blue); color: #fff; border: none; padding: 14px 20px; border-radius: 12px; font-size: 15px; font-weight: 600; cursor: pointer; width: 100%; transition: 0.2s;}
+        .modal-btn:hover { background: #0077ed; }
+        .close-modal { margin-top: 20px; font-size: 13px; color: var(--apple-text-muted); cursor: pointer; }
 
-        .modal-content h3 { margin-bottom: 20px; font-weight: 500; font-size: 18px; }
-        .modal-content input {
-            width: 100%; padding: 12px 16px; border-radius: 10px; border: none;
-            background: rgba(255,255,255,0.1); color: #fff; font-size: 14px; margin-bottom: 20px;
-            outline: none; font-family: inherit;
-        }
-        .modal-content input:focus { background: rgba(255,255,255,0.15); box-shadow: 0 0 0 2px var(--apple-blue); }
-        .modal-btn {
-            background: var(--apple-blue); color: #fff; border: none; padding: 10px 20px;
-            border-radius: 20px; font-size: 14px; font-weight: 500; cursor: pointer; width: 100%;
-        }
-        .close-modal { margin-top: 15px; font-size: 12px; color: var(--apple-text-muted); cursor: pointer; }
-
-        /* 编辑模式下的 UI 反馈 */
-        .editable { transition: 0.3s; }
-        body.edit-mode .editable {
-            outline: 2px dashed rgba(41, 151, 255, 0.5);
-            outline-offset: 4px;
-            border-radius: 4px;
-        }
-        body.edit-mode .editable:focus {
-            outline: 2px solid var(--apple-blue);
-            background: rgba(41, 151, 255, 0.1);
-        }
+        body.edit-mode .editable { outline: 1px dashed rgba(255, 255, 255, 0.3); outline-offset: 4px; border-radius: 4px; transition: 0.3s;}
+        body.edit-mode .editable:focus { outline: 2px solid var(--apple-blue); background: rgba(41, 151, 255, 0.1); }
         
-        /* 浮动保存提示 */
         #save-toast {
             position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%) translateY(100px);
-            background: var(--apple-text-main); color: var(--apple-bg); padding: 12px 24px;
-            border-radius: 30px; font-weight: 600; font-size: 14px; z-index: 1000;
-            transition: transform 0.4s var(--ease); box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-            cursor: pointer; display: none;
+            background: #fff; color: #000; padding: 14px 28px;
+            border-radius: 30px; font-weight: 600; font-size: 15px; z-index: 1000;
+            transition: transform 0.4s var(--ease); box-shadow: 0 10px 30px rgba(0,0,0,0.3); cursor: pointer; display: none;
         }
         body.edit-mode #save-toast { display: block; transform: translateX(-50%) translateY(0); }
 
         @media (max-width: 900px) {
-            .bento-grid { grid-template-columns: 1fr; grid-auto-rows: auto; }
+            .bento-grid { grid-template-columns: 1fr; }
             .card-large, .card-full { grid-column: span 1; }
+            .card-full { flex-direction: column; }
+            .card-full .card-img-wrapper, .card-full .card-media-content { width: 100%; }
             .hero-title { font-size: 40px; }
+            .cursor-glow { display: none; }
         }
     </style>
 </head>
 <body>
+
+    <div id="interactive-bg">
+        <div class="bg-noise"></div>
+        <div class="ambient-orb orb-1"></div>
+        <div class="ambient-orb orb-2"></div>
+        <div class="cursor-glow" id="cursorGlow"></div>
+    </div>
+
+    <input type="file" id="hidden-file-input" accept="image/*">
 
     <nav>
         <div class="nav-content">
@@ -184,123 +192,206 @@
             <div class="nav-links">
                 <a href="#work">Work</a>
                 <a href="#about">About</a>
-                <span class="admin-trigger" onclick="openAuthModal()">🔒</span>
+                <span class="admin-trigger" onclick="openAuthModal()" title="Admin Login">🔒</span>
             </div>
         </div>
     </nav>
 
     <div class="hero">
-        <h1 class="hero-title editable" data-id="h-title">Designing intelligent<br>spaces and systems.</h1>
-        <p class="hero-subtitle editable" data-id="h-sub">我是许云飞 (Leo)，一名专注用户体验与空间交互的设计师。致力于通过极简的逻辑连接物理空间与数字世界。</p>
+        <div class="global-tools">
+            <span class="tool-label">页面底色</span>
+            <input type="color" onchange="document.body.style.backgroundColor = this.value" value="#000000">
+            <span class="tool-label" style="margin-left: 10px;">追光色</span>
+            <input type="color" onchange="updateGlowColor(this.value)" value="#2997ff">
+        </div>
+        <h1 class="hero-title editable">Designing intelligent<br>spaces and systems.</h1>
+        <p class="hero-subtitle editable">我是许云飞 (Leo)，一名专注用户体验与空间交互的设计师。致力于通过极简的逻辑连接物理空间与数字世界。</p>
     </div>
 
     <div class="bento-grid" id="work">
         <div class="bento-card card-large">
+            <div class="card-tools">
+                <span class="tool-label">底色</span><input type="color" onchange="updateCardStyle(this, 'background')" value="#1d1d1f">
+                <span class="tool-label">文字</span><input type="color" onchange="updateCardStyle(this, 'color')" value="#ffffff">
+            </div>
             <div>
-                <div class="card-category editable" data-id="c1-cat">UX Research & Thesis</div>
-                <h3 class="card-title editable" data-id="c1-title">虚拟展厅的 3D 叙事逻辑重构</h3>
-                <p class="card-desc editable" data-id="c1-desc">以江汉大学历史馆为例，探索基于用户体验模型的虚拟空间交互设计。将物理世界的厚重感转化为数字维度的流畅体验。</p>
+                <div class="card-category editable">UX Research & Thesis</div>
+                <h3 class="card-title editable">虚拟展厅的 3D 叙事逻辑重构</h3>
+                <p class="card-desc editable">以江汉大学历史馆为例，探索基于用户体验模型的虚拟空间交互设计。将物理世界的厚重感转化为数字维度的流畅体验。</p>
             </div>
         </div>
 
-        <div class="bento-card card-ai">
-            <div>
-                <div class="card-category editable" data-id="c2-cat">AI Agents</div>
-                <h3 class="card-title editable" data-id="c2-title">本地大模型与效率工作流</h3>
-                <p class="card-desc editable" data-id="c2-desc">基于 Ollama 与 Cursor，构建极简主义下的开发与生产力辅助系统。</p>
+        <div class="bento-card card-media">
+            <div class="card-tools">
+                <span class="tool-label">底色</span><input type="color" onchange="updateCardStyle(this, 'background')" value="#1d1d1f">
+                <span class="tool-label">文字</span><input type="color" onchange="updateCardStyle(this, 'color')" value="#ffffff">
+                <span class="tool-icon" onclick="triggerImgUpload(this)" title="更换图片">🖼️</span>
+            </div>
+            <div class="card-img-wrapper">
+                <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=1000&auto=format&fit=crop" alt="Game Dev" class="dynamic-img">
+            </div>
+            <div class="card-media-content">
+                <div class="card-category editable">Indie Game Dev</div>
+                <h3 class="card-title editable" style="font-size: 22px;">独立游戏开发</h3>
+                <p class="card-desc editable" style="font-size: 14px;">在 Unity 引擎中解构类似 Celeste 的手感与机制。</p>
             </div>
         </div>
 
         <div class="bento-card card-auto">
+            <div class="card-tools">
+                <span class="tool-label">底色</span><input type="color" onchange="updateCardStyle(this, 'background')" value="#f5f5f7">
+                <span class="tool-label">文字</span><input type="color" onchange="updateCardStyle(this, 'color')" value="#1d1d1f">
+            </div>
             <div>
-                <div class="card-category editable" data-id="c3-cat">Industry Insight</div>
-                <h3 class="card-title editable" data-id="c3-title">汽车生态与高端人才洞见</h3>
-                <p class="card-desc editable" data-id="c3-desc">通过猎头视角深潜新能源与智能网联汽车行业，把握科技制造领域的最前沿商业脉动与组织架构演变。</p>
+                <div class="card-category editable" style="color:#86868b;">Industry Insight</div>
+                <h3 class="card-title editable">汽车生态洞见</h3>
+                <p class="card-desc editable" style="color:#515154;">通过猎头视角深潜智能网联汽车行业，把握科技制造最前沿的组织架构演变。</p>
             </div>
         </div>
 
         <div class="bento-card">
+            <div class="card-tools">
+                <span class="tool-label">底色</span><input type="color" onchange="updateCardStyle(this, 'background')" value="#1d1d1f">
+                <span class="tool-label">文字</span><input type="color" onchange="updateCardStyle(this, 'color')" value="#ffffff">
+            </div>
             <div>
-                <div class="card-category editable" data-id="c4-cat">Aeroyun Studio</div>
-                <h3 class="card-title editable" data-id="c4-title">独立开发与跨界造物</h3>
-                <p class="card-desc editable" data-id="c4-desc">作为 INTJ 的个人实验田。涵盖从独立游戏机制研究到跨境商业模式的探索实践。</p>
+                <div class="card-category editable">AI Agents</div>
+                <h3 class="card-title editable">本地模型与工作流</h3>
+                <p class="card-desc editable">基于 Ollama 与 Cursor，构建极简主义下的生产力辅助系统。</p>
+            </div>
+        </div>
+
+        <div class="bento-card card-media">
+            <div class="card-tools">
+                <span class="tool-label">底色</span><input type="color" onchange="updateCardStyle(this, 'background')" value="#1d1d1f">
+                <span class="tool-label">文字</span><input type="color" onchange="updateCardStyle(this, 'color')" value="#ffffff">
+                <span class="tool-icon" onclick="triggerImgUpload(this)" title="更换图片">🖼️</span>
+            </div>
+            <div class="card-img-wrapper">
+                <img src="https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=1000&auto=format&fit=crop" alt="Investment" class="dynamic-img">
+            </div>
+            <div class="card-media-content">
+                <div class="card-category editable">Finance & Logic</div>
+                <h3 class="card-title editable" style="font-size: 22px;">投资与复利法则</h3>
+                <p class="card-desc editable" style="font-size: 14px;">从财务模型到个人资产负债表管理，用理性构建增长引擎。</p>
+            </div>
+        </div>
+
+        <div class="bento-card card-media card-full">
+            <div class="card-tools" style="top: 20px; right: 20px;">
+                <span class="tool-label">底色</span><input type="color" onchange="updateCardStyle(this, 'background')" value="#1d1d1f">
+                <span class="tool-label">文字</span><input type="color" onchange="updateCardStyle(this, 'color')" value="#ffffff">
+                <span class="tool-icon" onclick="triggerImgUpload(this)" title="更换图片">🖼️</span>
+            </div>
+            <div class="card-img-wrapper">
+                <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop" alt="Aeroyun Studio" class="dynamic-img">
+            </div>
+            <div class="card-media-content">
+                <div class="card-category editable">Aeroyun Studio</div>
+                <h3 class="card-title editable" style="font-size: 36px; margin-bottom: 24px;">探索数字与商业的边界。</h3>
+                <p class="card-desc editable">作为 INTJ 的个人实验田。这里记录了从独立跨境商业模式的探索实践，到前沿 AI 技术的落地尝试。系统化地输出价值，保持对未知的敏感度。</p>
             </div>
         </div>
     </div>
 
     <footer>
-        <p class="editable" data-id="footer-text">© 2026 Xu Yunfei. Designed with precision.</p>
+        <p class="editable">© 2026 Xu Yunfei. Designed with precision.</p>
     </footer>
 
     <div id="auth-modal">
         <div class="modal-content">
             <h3>进入编辑模式</h3>
-            <input type="password" id="admin-pwd" placeholder="输入访问密码" onkeypress="handleEnter(event)">
-            <button class="modal-btn" onclick="verifyPwd()">验证</button>
+            <input type="password" id="admin-pwd" placeholder="输入密码 (leo)" onkeypress="handleEnter(event)">
+            <button class="modal-btn" onclick="verifyPwd()">解锁权限</button>
             <div class="close-modal" onclick="closeAuthModal()">取消</div>
         </div>
     </div>
 
-    <div id="save-toast" onclick="saveContent()">💾 保存更改并退出编辑</div>
+    <div id="save-toast" onclick="saveContent()">💾 保存并退出编辑</div>
 
     <script>
-        // 设定的演示密码
         const ADMIN_PWD = "leo"; 
+        
+        // --- 鼠标光晕追随 ---
+        const cursorGlow = document.getElementById('cursorGlow');
+        let timeout;
+        document.addEventListener('mousemove', (e) => {
+            cursorGlow.style.transform = `translate(${e.clientX}px, ${e.clientY}px) translate(-50%, -50%)`;
+            cursorGlow.style.opacity = '1';
+            clearTimeout(timeout);
+            timeout = setTimeout(() => { cursorGlow.style.opacity = '0'; }, 2000);
+        });
 
+        // --- 编辑与图片替换 ---
         const modal = document.getElementById('auth-modal');
         const pwdInput = document.getElementById('admin-pwd');
-        const editableElements = document.querySelectorAll('.editable');
+        const fileInput = document.getElementById('hidden-file-input');
+        let currentImgTarget = null; 
 
-        function openAuthModal() {
-            modal.classList.add('active');
-            pwdInput.value = '';
-            setTimeout(() => pwdInput.focus(), 100);
-        }
-
-        function closeAuthModal() {
-            modal.classList.remove('active');
-        }
-
-        function handleEnter(e) {
-            if (e.key === 'Enter') verifyPwd();
-        }
+        function openAuthModal() { modal.classList.add('active'); pwdInput.value = ''; setTimeout(() => pwdInput.focus(), 100); }
+        function closeAuthModal() { modal.classList.remove('active'); }
+        function handleEnter(e) { if (e.key === 'Enter') verifyPwd(); }
 
         function verifyPwd() {
             if (pwdInput.value === ADMIN_PWD) {
                 closeAuthModal();
                 enableEditMode();
             } else {
-                alert('密码错误，权限拒绝。');
+                alert('密码错误。');
                 pwdInput.value = '';
             }
         }
 
         function enableEditMode() {
             document.body.classList.add('edit-mode');
-            editableElements.forEach(el => {
+            document.querySelectorAll('.editable').forEach(el => {
                 el.setAttribute('contenteditable', 'true');
-                // 禁用默认的回车换行，保持 Apple 排版整洁
                 el.addEventListener('keydown', (e) => {
-                    if (e.key === 'Enter') {
-                        e.preventDefault();
-                        el.blur(); 
-                    }
+                    if (e.key === 'Enter') { e.preventDefault(); el.blur(); }
                 });
             });
         }
 
         function saveContent() {
-            // 这里可以接入后端 API 或 LocalStorage。目前仅做纯前端状态切换。
             document.body.classList.remove('edit-mode');
-            editableElements.forEach(el => {
-                el.setAttribute('contenteditable', 'false');
-                // 提取修改后的内容进行本地存储演示
-                const id = el.getAttribute('data-id');
-                const newText = el.innerText;
-                console.log(`Saved [${id}]: ${newText}`);
-            });
-            alert('页面内容已保存！(控制台可查看日志)');
+            document.querySelectorAll('.editable').forEach(el => el.setAttribute('contenteditable', 'false'));
+            alert('页面已保存！');
         }
+
+        function updateGlowColor(hex) {
+            const r = parseInt(hex.slice(1, 3), 16), g = parseInt(hex.slice(3, 5), 16), b = parseInt(hex.slice(5, 7), 16);
+            document.documentElement.style.setProperty('--glow-color', `rgba(${r}, ${g}, ${b}, 0.4)`);
+        }
+
+        function updateCardStyle(inputElement, property) {
+            const card = inputElement.closest('.bento-card');
+            if (card) {
+                if (property === 'background') {
+                    const hex = inputElement.value;
+                    const r = parseInt(hex.slice(1, 3), 16), g = parseInt(hex.slice(3, 5), 16), b = parseInt(hex.slice(5, 7), 16);
+                    card.style.backgroundColor = `rgba(${r}, ${g}, ${b}, 0.7)`;
+                } else {
+                    card.style.color = inputElement.value;
+                    card.querySelectorAll('.editable').forEach(el => el.style.color = inputElement.value);
+                }
+            }
+        }
+
+        function triggerImgUpload(btnElement) {
+            const card = btnElement.closest('.bento-card');
+            const img = card.querySelector('.dynamic-img');
+            if (img) { currentImgTarget = img; fileInput.click(); }
+        }
+
+        fileInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file && currentImgTarget) {
+                const reader = new FileReader();
+                reader.onload = function(event) { currentImgTarget.src = event.target.result; };
+                reader.readAsDataURL(file);
+            }
+            this.value = ''; 
+        });
     </script>
 </body>
 </html>
