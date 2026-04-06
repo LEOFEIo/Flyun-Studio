@@ -9,7 +9,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            var(--apple-bg): #000000;
             --apple-bg: #000000;
             --apple-card: rgba(29, 29, 31, 0.7);
             --apple-text-main: #f5f5f7;
@@ -79,6 +78,23 @@
         .hero { padding: 180px 20px 80px; text-align: center; max-width: 900px; margin: 0 auto; position: relative; }
         .hero-title { font-size: clamp(48px, 8vw, 80px); font-weight: 700; letter-spacing: -0.04em; line-height: 1.05; margin-bottom: 24px; }
         .hero-subtitle { font-size: clamp(16px, 3vw, 20px); font-weight: 400; color: var(--apple-text-muted); line-height: 1.5; max-width: 600px; margin: 0 auto; }
+
+        /* 联系按钮设计 */
+        .contact-badge {
+            display: inline-flex; align-items: center; gap: 8px;
+            margin-top: 32px; padding: 10px 24px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 40px; color: var(--apple-text-main);
+            text-decoration: none; font-size: 14px; font-weight: 500;
+            backdrop-filter: blur(20px); transition: all 0.3s var(--ease);
+        }
+        .contact-badge:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+        .contact-icon { font-size: 16px; opacity: 0.8; }
 
         .global-tools {
             display: none; position: absolute; top: 120px; left: 50%; transform: translateX(-50%);
@@ -192,6 +208,7 @@
             <div class="nav-links">
                 <a href="#work">Work</a>
                 <a href="#about">About</a>
+                <a href="mailto:supkefly@gmail.com">Contact</a>
                 <span class="admin-trigger" onclick="openAuthModal()" title="Admin Login">🔒</span>
             </div>
         </div>
@@ -200,19 +217,22 @@
     <div class="hero">
         <div class="global-tools">
             <span class="tool-label">页面底色</span>
-            <input type="color" onchange="document.body.style.backgroundColor = this.value" value="#000000">
+            <input type="color" id="bg-color-picker" onchange="document.body.style.backgroundColor = this.value" value="#000000">
             <span class="tool-label" style="margin-left: 10px;">追光色</span>
-            <input type="color" onchange="updateGlowColor(this.value)" value="#2997ff">
+            <input type="color" id="glow-color-picker" onchange="updateGlowColor(this.value)" value="#2997ff">
         </div>
         <h1 class="hero-title editable">Designing intelligent<br>spaces and systems.</h1>
-        <p class="hero-subtitle editable">我是许云飞 (Leo)，一名专注用户体验与空间交互的设计师。致力于通过极简的逻辑连接物理空间与数字世界。</p>
+        <p class="hero-subtitle editable">我是LEO X，一名专注用户体验与空间交互的设计师。致力于通过极简的逻辑连接物理空间与数字世界。</p>
+        <a href="mailto:supkefly@gmail.com" class="contact-badge">
+            <span class="contact-icon">✉️</span> supkefly@gmail.com
+        </a>
     </div>
 
     <div class="bento-grid" id="work">
         <div class="bento-card card-large">
             <div class="card-tools">
-                <span class="tool-label">底色</span><input type="color" onchange="updateCardStyle(this, 'background')" value="#1d1d1f">
-                <span class="tool-label">文字</span><input type="color" onchange="updateCardStyle(this, 'color')" value="#ffffff">
+                <span class="tool-label">底色</span><input type="color" class="card-bg-picker" onchange="updateCardStyle(this, 'background')" value="#1d1d1f">
+                <span class="tool-label">文字</span><input type="color" class="card-text-picker" onchange="updateCardStyle(this, 'color')" value="#ffffff">
             </div>
             <div>
                 <div class="card-category editable">UX Research & Thesis</div>
@@ -223,8 +243,8 @@
 
         <div class="bento-card card-media">
             <div class="card-tools">
-                <span class="tool-label">底色</span><input type="color" onchange="updateCardStyle(this, 'background')" value="#1d1d1f">
-                <span class="tool-label">文字</span><input type="color" onchange="updateCardStyle(this, 'color')" value="#ffffff">
+                <span class="tool-label">底色</span><input type="color" class="card-bg-picker" onchange="updateCardStyle(this, 'background')" value="#1d1d1f">
+                <span class="tool-label">文字</span><input type="color" class="card-text-picker" onchange="updateCardStyle(this, 'color')" value="#ffffff">
                 <span class="tool-icon" onclick="triggerImgUpload(this)" title="更换图片">🖼️</span>
             </div>
             <div class="card-img-wrapper">
@@ -239,8 +259,8 @@
 
         <div class="bento-card card-auto">
             <div class="card-tools">
-                <span class="tool-label">底色</span><input type="color" onchange="updateCardStyle(this, 'background')" value="#f5f5f7">
-                <span class="tool-label">文字</span><input type="color" onchange="updateCardStyle(this, 'color')" value="#1d1d1f">
+                <span class="tool-label">底色</span><input type="color" class="card-bg-picker" onchange="updateCardStyle(this, 'background')" value="#f5f5f7">
+                <span class="tool-label">文字</span><input type="color" class="card-text-picker" onchange="updateCardStyle(this, 'color')" value="#1d1d1f">
             </div>
             <div>
                 <div class="card-category editable" style="color:#86868b;">Industry Insight</div>
@@ -251,8 +271,8 @@
 
         <div class="bento-card">
             <div class="card-tools">
-                <span class="tool-label">底色</span><input type="color" onchange="updateCardStyle(this, 'background')" value="#1d1d1f">
-                <span class="tool-label">文字</span><input type="color" onchange="updateCardStyle(this, 'color')" value="#ffffff">
+                <span class="tool-label">底色</span><input type="color" class="card-bg-picker" onchange="updateCardStyle(this, 'background')" value="#1d1d1f">
+                <span class="tool-label">文字</span><input type="color" class="card-text-picker" onchange="updateCardStyle(this, 'color')" value="#ffffff">
             </div>
             <div>
                 <div class="card-category editable">AI Agents</div>
@@ -263,8 +283,8 @@
 
         <div class="bento-card card-media">
             <div class="card-tools">
-                <span class="tool-label">底色</span><input type="color" onchange="updateCardStyle(this, 'background')" value="#1d1d1f">
-                <span class="tool-label">文字</span><input type="color" onchange="updateCardStyle(this, 'color')" value="#ffffff">
+                <span class="tool-label">底色</span><input type="color" class="card-bg-picker" onchange="updateCardStyle(this, 'background')" value="#1d1d1f">
+                <span class="tool-label">文字</span><input type="color" class="card-text-picker" onchange="updateCardStyle(this, 'color')" value="#ffffff">
                 <span class="tool-icon" onclick="triggerImgUpload(this)" title="更换图片">🖼️</span>
             </div>
             <div class="card-img-wrapper">
@@ -273,14 +293,14 @@
             <div class="card-media-content">
                 <div class="card-category editable">Finance & Logic</div>
                 <h3 class="card-title editable" style="font-size: 22px;">投资与复利法则</h3>
-                <p class="card-desc editable" style="font-size: 14px;">从财务模型到个人资产负债表管理，用理性构建增长引擎。</p>
+                <p class="card-desc editable" style="font-size: 14px;">从财务模型到个人资产管理，用理性构建增长引擎。</p>
             </div>
         </div>
 
         <div class="bento-card card-media card-full">
             <div class="card-tools" style="top: 20px; right: 20px;">
-                <span class="tool-label">底色</span><input type="color" onchange="updateCardStyle(this, 'background')" value="#1d1d1f">
-                <span class="tool-label">文字</span><input type="color" onchange="updateCardStyle(this, 'color')" value="#ffffff">
+                <span class="tool-label">底色</span><input type="color" class="card-bg-picker" onchange="updateCardStyle(this, 'background')" value="#1d1d1f">
+                <span class="tool-label">文字</span><input type="color" class="card-text-picker" onchange="updateCardStyle(this, 'color')" value="#ffffff">
                 <span class="tool-icon" onclick="triggerImgUpload(this)" title="更换图片">🖼️</span>
             </div>
             <div class="card-img-wrapper">
@@ -311,6 +331,7 @@
 
     <script>
         const ADMIN_PWD = "leo"; 
+        const STORAGE_KEY = "leo_portfolio_saved_data";
         
         // --- 鼠标光晕追随 ---
         const cursorGlow = document.getElementById('cursorGlow');
@@ -320,6 +341,47 @@
             cursorGlow.style.opacity = '1';
             clearTimeout(timeout);
             timeout = setTimeout(() => { cursorGlow.style.opacity = '0'; }, 2000);
+        });
+
+        // --- 页面加载时恢复数据 ---
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedDataString = localStorage.getItem(STORAGE_KEY);
+            if (savedDataString) {
+                const data = JSON.parse(savedDataString);
+
+                // 恢复文字
+                if (data.texts) {
+                    document.querySelectorAll('.editable').forEach((el, index) => {
+                        if (data.texts[index] !== undefined) el.innerHTML = data.texts[index];
+                    });
+                }
+
+                // 恢复图片
+                if (data.images) {
+                    document.querySelectorAll('.dynamic-img').forEach((el, index) => {
+                        if (data.images[index]) el.src = data.images[index];
+                    });
+                }
+
+                // 恢复卡片颜色
+                if (data.cards) {
+                    document.querySelectorAll('.bento-card').forEach((el, index) => {
+                        if (data.cards[index]) {
+                            if (data.cards[index].bg) el.style.backgroundColor = data.cards[index].bg;
+                            if (data.cards[index].color) {
+                                el.style.color = data.cards[index].color;
+                                el.querySelectorAll('.editable').forEach(child => child.style.color = data.cards[index].color);
+                            }
+                        }
+                    });
+                }
+
+                // 恢复全局颜色
+                if (data.global) {
+                    if (data.global.bodyBg) document.body.style.backgroundColor = data.global.bodyBg;
+                    if (data.global.glowColor) document.documentElement.style.setProperty('--glow-color', data.global.glowColor);
+                }
+            }
         });
 
         // --- 编辑与图片替换 ---
@@ -352,10 +414,42 @@
             });
         }
 
+        // --- 核心：保存数据到本地 ---
         function saveContent() {
             document.body.classList.remove('edit-mode');
             document.querySelectorAll('.editable').forEach(el => el.setAttribute('contenteditable', 'false'));
-            alert('页面已保存！');
+            
+            const dataToSave = {
+                texts: [],
+                images: [],
+                cards: [],
+                global: {}
+            };
+
+            // 提取文字
+            document.querySelectorAll('.editable').forEach(el => dataToSave.texts.push(el.innerHTML));
+            
+            // 提取图片 src
+            document.querySelectorAll('.dynamic-img').forEach(el => dataToSave.images.push(el.src));
+
+            // 提取卡片样式
+            document.querySelectorAll('.bento-card').forEach(el => {
+                dataToSave.cards.push({
+                    bg: el.style.backgroundColor,
+                    color: el.style.color
+                });
+            });
+
+            // 提取全局样式
+            dataToSave.global.bodyBg = document.body.style.backgroundColor;
+            dataToSave.global.glowColor = document.documentElement.style.getPropertyValue('--glow-color').trim();
+
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(dataToSave));
+                alert('页面已成功保存！\n(数据已永久存在你当前的浏览器中)');
+            } catch (e) {
+                alert('保存失败：您上传的图片尺寸过大，超出了浏览器本地存储空间的限制。请压缩图片后重试。');
+            }
         }
 
         function updateGlowColor(hex) {
