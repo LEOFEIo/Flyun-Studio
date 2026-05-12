@@ -12,24 +12,31 @@ href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
 <style>
 
 :root{
---bg:#f7f9fc;
---card:rgba(255,255,255,.75);
---border:rgba(10,132,255,.08);
 
---text:#0f172a;
+--bg:#edf4ff;
+--bg2:#f8fbff;
+
+--card:rgba(255,255,255,.72);
+
+--border:rgba(255,255,255,.55);
+
+--text:#081120;
 --muted:#64748b;
 
 --blue:#0A84FF;
---cyan:#3cf2ff;
+--cyan:#3CF2FF;
+--purple:#7c3aed;
 
---glow:rgba(10,132,255,.08);
+--shadow:
+0 20px 60px rgba(15,23,42,.08);
 
 --ease:cubic-bezier(.22,.61,.36,1);
+
 }
 
 *{
@@ -43,222 +50,390 @@ scroll-behavior:smooth;
 }
 
 body{
+
+font-family:'Inter',sans-serif;
+
 background:
 linear-gradient(
 135deg,
-#f8fbff 0%,
-#eef5ff 50%,
-#f7fafc 100%
+#f7fbff 0%,
+#edf5ff 35%,
+#f7faff 100%
 );
 
 color:var(--text);
 
-font-family:'Space Grotesk',sans-serif;
-
 overflow-x:hidden;
 
--webkit-font-smoothing:antialiased;
+min-height:100vh;
 }
 
-/* =========================
+/* ===================================
 BACKGROUND
-========================= */
+=================================== */
 
-#network{
+.dynamic-bg{
+
 position:fixed;
 inset:0;
+
+z-index:-5;
+
+overflow:hidden;
+}
+
+.blob{
+
+position:absolute;
+
+border-radius:50%;
+
+filter:blur(90px);
+
+opacity:.45;
+
+animation:float 18s infinite ease-in-out;
+}
+
+.blob1{
+width:600px;
+height:600px;
+background:#93c5fd;
+top:-120px;
+left:-100px;
+}
+
+.blob2{
+width:500px;
+height:500px;
+background:#c4b5fd;
+right:-120px;
+top:100px;
+animation-delay:4s;
+}
+
+.blob3{
+width:500px;
+height:500px;
+background:#67e8f9;
+bottom:-180px;
+left:30%;
+animation-delay:8s;
+}
+
+@keyframes float{
+
+0%{
+transform:translate(0,0) scale(1);
+}
+
+50%{
+transform:translate(40px,-60px) scale(1.12);
+}
+
+100%{
+transform:translate(0,0) scale(1);
+}
+
+}
+
+.grid-bg{
+
+position:fixed;
+inset:0;
+
+z-index:-4;
+
+background-image:
+
+linear-gradient(
+rgba(255,255,255,.6) 1px,
+transparent 1px
+),
+
+linear-gradient(
+90deg,
+rgba(255,255,255,.6) 1px,
+transparent 1px
+);
+
+background-size:60px 60px;
+
+mask-image:
+linear-gradient(to bottom,
+rgba(0,0,0,.8),
+transparent);
+
+opacity:.4;
+}
+
+#particles{
+
+position:fixed;
+inset:0;
+
 z-index:-3;
 }
 
-.bg-gradient{
+/* ===================================
+CURSOR
+=================================== */
+
+.cursor{
+
 position:fixed;
-inset:0;
-z-index:-2;
 
-background:
-radial-gradient(circle at 20% 20%, rgba(10,132,255,.08), transparent 35%),
-radial-gradient(circle at 80% 30%, rgba(120,180,255,.10), transparent 35%),
-radial-gradient(circle at 50% 80%, rgba(255,255,255,.7), transparent 45%);
-}
+width:24px;
+height:24px;
 
-.noise{
-position:fixed;
-inset:-50%;
-width:200%;
-height:200%;
-z-index:-1;
+border:2px solid rgba(10,132,255,.5);
 
-opacity:.02;
-
-background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-
-animation:noiseMove 8s linear infinite;
-}
-
-@keyframes noiseMove{
-0%{transform:translate(0,0);}
-25%{transform:translate(-5%,-10%);}
-50%{transform:translate(10%,5%);}
-75%{transform:translate(-15%,10%);}
-100%{transform:translate(0,0);}
-}
-
-.cursor-glow{
-position:fixed;
-width:700px;
-height:700px;
 border-radius:50%;
+
 pointer-events:none;
-z-index:-1;
-
-background:
-radial-gradient(circle,
-rgba(10,132,255,.12),
-transparent 60%);
-
-filter:blur(70px);
 
 transform:translate(-50%,-50%);
+
+transition:
+width .25s,
+height .25s,
+background .25s;
+
+z-index:9999;
 }
 
-/* =========================
+.cursor-dot{
+
+position:fixed;
+
+width:6px;
+height:6px;
+
+background:var(--blue);
+
+border-radius:50%;
+
+pointer-events:none;
+
+transform:translate(-50%,-50%);
+
+z-index:9999;
+}
+
+/* ===================================
 NAV
-========================= */
+=================================== */
 
 nav{
+
 position:fixed;
-top:0;
-width:100%;
-height:72px;
+
+top:18px;
+left:50%;
+
+transform:translateX(-50%);
+
+width:calc(100% - 40px);
+max-width:1380px;
+
+height:74px;
 
 z-index:1000;
 
+background:
+rgba(255,255,255,.68);
+
 backdrop-filter:blur(30px);
 
-background:rgba(255,255,255,.72);
+border:
+1px solid rgba(255,255,255,.7);
 
-border-bottom:1px solid rgba(255,255,255,.4);
+border-radius:26px;
 
-box-shadow:0 8px 30px rgba(15,23,42,.04);
+box-shadow:
+0 10px 40px rgba(15,23,42,.08);
 
 transition:.4s;
 }
 
 .nav-inner{
-max-width:1400px;
-height:100%;
 
-margin:auto;
+height:100%;
 
 display:flex;
 align-items:center;
 justify-content:space-between;
 
-padding:0 40px;
+padding:0 28px;
 }
 
 .logo{
+
 font-size:15px;
-font-weight:700;
+font-weight:800;
+
 letter-spacing:2px;
 
-color:#0f172a;
+display:flex;
+align-items:center;
+gap:12px;
+}
+
+.logo-icon{
+
+width:38px;
+height:38px;
+
+border-radius:14px;
+
+background:
+linear-gradient(
+135deg,
+#0A84FF,
+#3CF2FF
+);
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+color:white;
+
+font-weight:700;
+
+box-shadow:
+0 10px 20px rgba(10,132,255,.25);
 }
 
 .nav-links{
+
 display:flex;
-gap:40px;
+gap:12px;
 }
 
 .nav-links a{
-color:var(--muted);
+
+height:44px;
+
+padding:0 18px;
+
+border-radius:14px;
+
+display:flex;
+align-items:center;
+justify-content:center;
+
 text-decoration:none;
-font-size:13px;
+
+color:#475569;
+
+font-size:14px;
+font-weight:600;
 
 transition:.3s;
 }
 
 .nav-links a:hover{
+
+background:white;
+
 color:var(--blue);
+
+transform:translateY(-2px);
 }
 
-/* =========================
+/* ===================================
 HERO
-========================= */
+=================================== */
 
 .hero{
+
 min-height:100vh;
 
 display:flex;
 align-items:center;
 justify-content:center;
 
-position:relative;
+padding:180px 30px 120px;
 
-padding:200px 30px 140px;
+position:relative;
 }
 
 .hero-content{
-max-width:1200px;
+
+max-width:1250px;
+
 text-align:center;
 }
 
-.hero-label{
+.hero-badge{
+
 display:inline-flex;
 align-items:center;
 gap:10px;
 
-padding:10px 18px;
+padding:12px 20px;
 
-border:1px solid rgba(10,132,255,.08);
+background:
+rgba(255,255,255,.72);
 
-border-radius:40px;
+border:
+1px solid rgba(255,255,255,.8);
 
-background:rgba(255,255,255,.7);
+border-radius:999px;
 
-color:#64748b;
-
-font-size:12px;
-letter-spacing:1px;
+backdrop-filter:blur(20px);
 
 margin-bottom:40px;
 
-backdrop-filter:blur(20px);
+font-size:13px;
+
+font-weight:600;
+
+color:#475569;
 }
 
-.dot{
+.live-dot{
+
 width:8px;
 height:8px;
+
 border-radius:50%;
 
 background:#00d26a;
 
-box-shadow:0 0 15px #00d26a;
+box-shadow:
+0 0 14px #00d26a;
 
 animation:pulse 1.5s infinite;
 }
 
 @keyframes pulse{
+
 0%{opacity:1;}
-50%{opacity:.3;}
+50%{opacity:.35;}
 100%{opacity:1;}
+
 }
 
 .hero h1{
-font-size:clamp(60px,9vw,120px);
 
-line-height:1;
+font-size:
+clamp(62px,9vw,130px);
 
-letter-spacing:-.06em;
+line-height:.95;
 
-font-weight:700;
+letter-spacing:-.07em;
 
-margin-bottom:40px;
+font-weight:800;
 
-background:linear-gradient(
+margin-bottom:34px;
+
+background:
+linear-gradient(
 180deg,
-#0f172a 0%,
-#1e3a8a 70%,
+#081120 0%,
+#0A84FF 60%,
 #64748b 100%
 );
 
@@ -267,35 +442,36 @@ background:linear-gradient(
 }
 
 .hero p{
-max-width:920px;
-
-margin:auto;
-
-color:var(--muted);
 
 font-size:24px;
 
 line-height:1.7;
 
-letter-spacing:-.02em;
+max-width:980px;
+
+margin:auto;
+
+color:#475569;
 }
 
-.hero-buttons{
+.hero-actions{
+
 margin-top:60px;
 
 display:flex;
-gap:20px;
-
 justify-content:center;
+gap:18px;
+
 flex-wrap:wrap;
 }
 
 .btn{
-height:58px;
+
+height:60px;
 
 padding:0 34px;
 
-border-radius:50px;
+border-radius:18px;
 
 display:flex;
 align-items:center;
@@ -303,14 +479,45 @@ justify-content:center;
 
 text-decoration:none;
 
-transition:.4s var(--ease);
+font-weight:700;
 
-font-size:15px;
-font-weight:600;
+transition:.35s var(--ease);
+
+position:relative;
+
+overflow:hidden;
+}
+
+.btn::before{
+
+content:"";
+
+position:absolute;
+
+inset:0;
+
+background:
+linear-gradient(
+120deg,
+transparent,
+rgba(255,255,255,.5),
+transparent
+);
+
+transform:translateX(-120%);
+
+transition:1s;
+}
+
+.btn:hover::before{
+
+transform:translateX(120%);
 }
 
 .btn-primary{
-background:linear-gradient(
+
+background:
+linear-gradient(
 135deg,
 #0A84FF,
 #2563eb
@@ -319,167 +526,209 @@ background:linear-gradient(
 color:white;
 
 box-shadow:
-0 10px 40px rgba(10,132,255,.2);
+0 20px 40px rgba(10,132,255,.25);
 }
 
 .btn-primary:hover{
-transform:translateY(-3px) scale(1.03);
+
+transform:
+translateY(-4px)
+scale(1.02);
 }
 
 .btn-secondary{
-border:1px solid rgba(10,132,255,.08);
+
+background:
+rgba(255,255,255,.75);
+
 color:#0f172a;
-background:rgba(255,255,255,.7);
+
+border:
+1px solid rgba(255,255,255,.8);
 
 backdrop-filter:blur(20px);
 }
 
 .btn-secondary:hover{
+
 background:white;
+
+transform:translateY(-4px);
 }
 
-/* =========================
-LIVE STATUS
-========================= */
+/* ===================================
+STATUS
+=================================== */
 
-.status-bar{
-display:flex;
-gap:20px;
-justify-content:center;
+.status-grid{
 
-margin-top:80px;
+display:grid;
 
-flex-wrap:wrap;
+grid-template-columns:
+repeat(3,1fr);
+
+gap:22px;
+
+margin-top:90px;
 }
 
 .status-card{
-min-width:220px;
 
-padding:28px;
+padding:30px;
 
-border-radius:26px;
+border-radius:28px;
 
-background:rgba(255,255,255,.72);
+background:
+rgba(255,255,255,.68);
 
-border:1px solid rgba(255,255,255,.6);
+backdrop-filter:blur(24px);
 
-backdrop-filter:blur(30px);
+border:
+1px solid rgba(255,255,255,.75);
 
-box-shadow:
-0 10px 40px rgba(15,23,42,.05);
+box-shadow:var(--shadow);
 
 transition:.4s;
 }
 
 .status-card:hover{
-transform:translateY(-6px);
+
+transform:
+translateY(-8px)
+rotateX(4deg);
 }
 
-.status-value{
-font-size:40px;
-font-weight:700;
+.status-number{
 
-margin-bottom:8px;
+font-size:52px;
 
-color:#0A84FF;
+font-weight:800;
+
+color:var(--blue);
+
+margin-bottom:10px;
 }
 
-.status-label{
-font-size:13px;
-color:var(--muted);
+.status-text{
+
+font-size:14px;
+
+color:#64748b;
 }
 
-/* =========================
+/* ===================================
 SECTION
-========================= */
+=================================== */
 
 section{
+
 padding:120px 30px;
 }
 
 .container{
+
 max-width:1400px;
+
 margin:auto;
 }
 
 .section-title{
-font-size:60px;
-line-height:1;
-margin-bottom:20px;
 
-letter-spacing:-.05em;
+font-size:64px;
+
+line-height:1;
+
+letter-spacing:-.06em;
+
+margin-bottom:24px;
 }
 
 .section-desc{
-color:var(--muted);
-font-size:20px;
 
-max-width:700px;
+font-size:21px;
 
-line-height:1.7;
+line-height:1.8;
+
+max-width:760px;
+
+color:#64748b;
 
 margin-bottom:70px;
 }
 
-/* =========================
-BENTO
-========================= */
+/* ===================================
+GRID
+=================================== */
 
 .grid{
+
 display:grid;
-grid-template-columns:repeat(3,1fr);
+
+grid-template-columns:
+repeat(3,1fr);
+
 gap:24px;
 }
 
 .card{
+
 min-height:380px;
 
 padding:40px;
 
-border-radius:32px;
+border-radius:34px;
 
 position:relative;
 
 overflow:hidden;
 
-background:var(--card);
-
-border:1px solid var(--border);
+background:
+rgba(255,255,255,.65);
 
 backdrop-filter:blur(30px);
 
-transition:.5s var(--ease);
-
-transform-style:preserve-3d;
+border:
+1px solid rgba(255,255,255,.8);
 
 box-shadow:
-0 20px 50px rgba(15,23,42,.05);
+0 20px 60px rgba(15,23,42,.06);
+
+transition:.45s var(--ease);
+
+cursor:pointer;
 }
 
 .card:hover{
-border-color:rgba(10,132,255,.2);
+
+transform:
+translateY(-10px)
+scale(1.02);
+
 box-shadow:
-0 30px 80px rgba(10,132,255,.08);
-}
-
-.card.large{
-grid-column:span 2;
-}
-
-.card.full{
-grid-column:span 3;
+0 30px 80px rgba(10,132,255,.12);
 }
 
 .card::before{
+
 content:"";
 
 position:absolute;
-inset:0;
+
+width:300px;
+height:300px;
 
 background:
-radial-gradient(circle at var(--x) var(--y),
-rgba(10,132,255,.12),
-transparent 40%);
+radial-gradient(
+circle,
+rgba(10,132,255,.14),
+transparent 70%
+);
+
+top:var(--y);
+left:var(--x);
+
+transform:
+translate(-50%,-50%);
 
 opacity:0;
 
@@ -487,199 +736,266 @@ transition:.4s;
 }
 
 .card:hover::before{
+
 opacity:1;
 }
 
-.card-category{
-color:#64748b;
+.large{
+grid-column:span 2;
+}
+
+.full{
+grid-column:span 3;
+}
+
+.card-tag{
 
 font-size:12px;
+
 letter-spacing:2px;
 
-margin-bottom:18px;
-
 text-transform:uppercase;
+
+color:#64748b;
+
+margin-bottom:20px;
 }
 
 .card-title{
+
 font-size:38px;
 
 line-height:1.1;
 
-margin-bottom:24px;
+letter-spacing:-.05em;
 
-letter-spacing:-.04em;
+margin-bottom:24px;
 }
 
 .card-desc{
-color:var(--muted);
-
-line-height:1.8;
 
 font-size:16px;
+
+line-height:1.9;
+
+color:#64748b;
 }
 
-/* =========================
-SEARCH CONSOLE
-========================= */
+/* ===================================
+CONSOLE
+=================================== */
 
 .console{
+
 padding:40px;
 
-border-radius:32px;
+border-radius:38px;
 
-background:rgba(255,255,255,.72);
+background:
+rgba(255,255,255,.68);
 
-border:1px solid rgba(255,255,255,.8);
+border:
+1px solid rgba(255,255,255,.85);
 
 backdrop-filter:blur(30px);
 
 box-shadow:
-0 20px 60px rgba(15,23,42,.05);
+0 20px 60px rgba(15,23,42,.08);
+}
+
+.search-box{
+
+position:relative;
 }
 
 .console-input{
+
 width:100%;
-height:72px;
+height:78px;
 
 border:none;
 outline:none;
 
-background:white;
+padding:0 28px;
 
-border-radius:22px;
+padding-left:70px;
 
-padding:0 24px;
-
-color:#0f172a;
+border-radius:24px;
 
 font-size:18px;
 
-border:1px solid rgba(10,132,255,.08);
+background:white;
+
+border:
+1px solid rgba(10,132,255,.08);
 
 transition:.3s;
 }
 
 .console-input:focus{
+
 border-color:#0A84FF;
+
 box-shadow:
 0 0 0 6px rgba(10,132,255,.08);
 }
 
+.search-icon{
+
+position:absolute;
+
+left:24px;
+top:50%;
+
+transform:translateY(-50%);
+
+font-size:20px;
+}
+
 .results{
+
 margin-top:30px;
 
 display:grid;
-grid-template-columns:repeat(3,1fr);
+
+grid-template-columns:
+repeat(3,1fr);
+
 gap:20px;
 }
 
 .result-card{
+
 padding:24px;
 
 border-radius:24px;
 
 background:white;
 
-border:1px solid rgba(10,132,255,.08);
+border:
+1px solid rgba(10,132,255,.08);
 
-transition:.4s;
+transition:.35s;
 
 box-shadow:
-0 10px 30px rgba(15,23,42,.03);
+0 10px 30px rgba(15,23,42,.04);
 }
 
 .result-card:hover{
-transform:translateY(-5px);
+
+transform:translateY(-6px);
 }
 
 .result-company{
+
 font-size:13px;
+
 color:#64748b;
 
-margin-bottom:12px;
+margin-bottom:14px;
 }
 
 .result-role{
+
 font-size:24px;
+
+font-weight:700;
 
 margin-bottom:18px;
 }
 
 .match{
+
 display:inline-flex;
 
 padding:8px 14px;
 
-border-radius:30px;
+border-radius:999px;
 
-background:rgba(10,132,255,.1);
+background:
+rgba(10,132,255,.1);
 
 color:#0A84FF;
 
 font-size:12px;
+
+font-weight:700;
 }
 
-/* =========================
+/* ===================================
 FOOTER
-========================= */
+=================================== */
 
 footer{
+
 padding:100px 30px;
+
 text-align:center;
 
 color:#64748b;
 }
 
-/* =========================
+/* ===================================
 REVEAL
-========================= */
+=================================== */
 
 .reveal{
+
 opacity:0;
-transform:translateY(60px);
+
+transform:
+translateY(60px);
+
 transition:1s var(--ease);
 }
 
 .reveal.active{
+
 opacity:1;
-transform:translateY(0);
+
+transform:
+translateY(0);
 }
 
-/* =========================
+/* ===================================
 RESPONSIVE
-========================= */
+=================================== */
 
 @media(max-width:1100px){
 
-.grid{
+.grid,
+.results,
+.status-grid{
+
 grid-template-columns:1fr;
 }
 
-.card.large,
-.card.full{
+.large,
+.full{
+
 grid-column:span 1;
 }
 
-.results{
-grid-template-columns:1fr;
+.section-title{
+
+font-size:44px;
 }
 
 .hero h1{
-font-size:58px;
+
+font-size:60px;
 }
 
 .hero p{
+
 font-size:18px;
 }
 
-.section-title{
-font-size:42px;
-}
-
 .nav-links{
+
 display:none;
 }
+
 }
 
 </style>
@@ -687,88 +1003,119 @@ display:none;
 
 <body>
 
-<canvas id="network"></canvas>
+<div class="dynamic-bg">
 
-<div class="bg-gradient"></div>
-<div class="noise"></div>
-<div class="cursor-glow" id="glow"></div>
+<div class="blob blob1"></div>
+<div class="blob blob2"></div>
+<div class="blob blob3"></div>
+
+</div>
+
+<div class="grid-bg"></div>
+
+<canvas id="particles"></canvas>
+
+<div class="cursor"></div>
+<div class="cursor-dot"></div>
 
 <nav>
+
 <div class="nav-inner">
 
 <div class="logo">
-⚡ LEO 智能人才系统
+
+<div class="logo-icon">
+L
+</div>
+
+LEO OS
+
 </div>
 
 <div class="nav-links">
+
+<a href="#hero">首页</a>
 <a href="#intelligence">人才架构</a>
-<a href="#architecture">智能系统</a>
 <a href="#console">智能搜索</a>
-<a href="#networking">高端网络</a>
+<a href="#network">高端网络</a>
+<a href="#contact">联系我</a>
+
 </div>
 
 </div>
+
 </nav>
 
-<section class="hero">
+<section class="hero" id="hero">
 
 <div class="hero-content reveal">
 
-<div class="hero-label">
-<div class="dot"></div>
+<div class="hero-badge">
+
+<div class="live-dot"></div>
+
 AI EXECUTIVE INTELLIGENCE SYSTEM ONLINE
+
 </div>
 
 <h1 id="typing"></h1>
 
 <p>
-在新能源、自动驾驶与 AGI 的交汇点，
-构建 AI 时代的人才 intelligence infrastructure。
-不仅是猎头，而是未来组织升级的智能连接系统。
+
+在自动驾驶、AGI 与智能制造的交汇点，
+构建下一代 AI 人才基础设施。
+不仅是猎头，更是 AI 时代的人才 intelligence network。
+
 </p>
 
-<div class="hero-buttons">
+<div class="hero-actions">
 
-<a href="mailto:supkefly@gmail.com" class="btn btn-primary">
-立即建立连接
-</a>
-
-<a href="#console" class="btn btn-secondary">
+<a href="#console" class="btn btn-primary">
 进入智能搜索系统
 </a>
 
+<a href="mailto:supkefly@gmail.com" class="btn btn-secondary">
+建立联系
+</a>
+
 </div>
 
-<div class="status-bar">
+<div class="status-grid">
 
 <div class="status-card">
-<div class="status-value" data-count="128">
+
+<div class="status-number" data-count="128">
 0
 </div>
 
-<div class="status-label">
+<div class="status-text">
 活跃岗位搜索
 </div>
+
 </div>
 
 <div class="status-card">
-<div class="status-value" data-count="93">
+
+<div class="status-number" data-count="93">
 0
 </div>
 
-<div class="status-label">
+<div class="status-text">
 智能匹配精度
 </div>
+
 </div>
 
 <div class="status-card">
-<div class="status-value" data-count="2800">
+
+<div class="status-number" data-count="2800">
 0
 </div>
 
-<div class="status-label">
+<div class="status-text">
 AI 人才节点
 </div>
+
 </div>
 
 </div>
@@ -788,9 +1135,10 @@ AI 人才情报架构
 </h2>
 
 <p class="section-desc">
-从自动驾驶到 AGI，
+
 基于技术路线、组织架构与产业链的深度 Mapping，
-构建下一代人才 intelligence graph。
+持续追踪 AI 与新能源领域核心技术人才流向。
+
 </p>
 
 </div>
@@ -799,27 +1147,30 @@ AI 人才情报架构
 
 <div class="card large reveal">
 
-<div class="card-category">
+<div class="card-tag">
 AUTONOMOUS SYSTEM
 </div>
 
 <div class="card-title">
-智能驾驶与整车智能化
+智能驾驶与端到端架构
 </div>
 
 <div class="card-desc">
-深度覆盖 ADS、
+
+覆盖 ADS、
 BEV、
 Occupancy Network、
+世界模型、
 端到端自动驾驶、
-EEA 架构与智能座舱技术演进。
+EEA 与智能整车架构。
+
 </div>
 
 </div>
 
 <div class="card reveal">
 
-<div class="card-category">
+<div class="card-tag">
 FOUNDATION MODEL
 </div>
 
@@ -828,56 +1179,60 @@ AGI 与多模态
 </div>
 
 <div class="card-desc">
+
 LLM、
 Agent、
 世界模型、
+推理优化、
 RLHF、
-AI Infra、
-推理优化与下一代 AI 架构。
+AI Infra。
+
 </div>
 
 </div>
 
 <div class="card reveal">
 
-<div class="card-category">
+<div class="card-tag">
 AI MAPPING OS
 </div>
 
 <div class="card-title">
-人才图谱系统
+智能人才图谱
 </div>
 
 <div class="card-desc">
-结合本地 LLM、
-知识图谱与行业关系网络，
-构建智能化人才 Mapping 系统。
+
+基于知识图谱与本地 AI，
+构建下一代人才搜索系统。
+
 </div>
 
 </div>
 
 <div class="card reveal">
 
-<div class="card-category">
+<div class="card-tag">
 EXECUTIVE NETWORK
 </div>
 
 <div class="card-title">
-隐形技术圈层
+高端技术圈层
 </div>
 
 <div class="card-desc">
+
 长期深耕 AI、
-智驾、
 机器人、
-新能源与科技高管生态网络。
+新能源与科技高管生态。
+
 </div>
 
 </div>
 
 <div class="card full reveal">
 
-<div class="card-category">
+<div class="card-tag">
 INDUSTRY INTELLIGENCE
 </div>
 
@@ -886,10 +1241,11 @@ Mapping the human infrastructure behind AI.
 </div>
 
 <div class="card-desc">
+
 企业真正需要的，
-已经不再是传统 JD 匹配。
-而是理解技术演化、
-组织升级与产业趋势的人才 intelligence system。
+已经不是传统 JD 匹配，
+而是理解技术演进与组织升级的人才 intelligence system。
+
 </div>
 
 </div>
@@ -907,17 +1263,25 @@ Mapping the human infrastructure behind AI.
 <div class="reveal">
 
 <h2 class="section-title">
-AI 智能搜索控制台
+AI 智能搜索系统
 </h2>
 
 <p class="section-desc">
+
 输入技术方向，
 模拟 AI 人才 intelligence 搜索。
+
 </p>
 
 </div>
 
 <div class="console reveal">
+
+<div class="search-box">
+
+<div class="search-icon">
+⌘
+</div>
 
 <input
 type="text"
@@ -926,48 +1290,56 @@ id="searchInput"
 placeholder="输入技术方向，例如：autonomous / multimodal / embodied AI"
 />
 
+</div>
+
 <div class="results" id="results">
 
 <div class="result-card">
+
 <div class="result-company">
-AI Infra
+Tesla AP
 </div>
 
 <div class="result-role">
-Foundation Model Architect
+Planning Architect
 </div>
 
 <div class="match">
-匹配度 97%
+匹配度 98%
 </div>
+
 </div>
 
 <div class="result-card">
+
 <div class="result-company">
-Autonomous Driving
+OpenAI
 </div>
 
 <div class="result-role">
-Occupancy Network Lead
+Agent Engineer
+</div>
+
+<div class="match">
+匹配度 96%
+</div>
+
+</div>
+
+<div class="result-card">
+
+<div class="result-company">
+Figure AI
+</div>
+
+<div class="result-role">
+Robotics AI Lead
 </div>
 
 <div class="match">
 匹配度 94%
 </div>
-</div>
 
-<div class="result-card">
-<div class="result-company">
-Embodied AI
-</div>
-
-<div class="result-role">
-Robotics Planning Expert
-</div>
-
-<div class="match">
-匹配度 91%
-</div>
 </div>
 
 </div>
@@ -978,7 +1350,7 @@ Robotics Planning Expert
 
 </section>
 
-<footer>
+<footer id="contact">
 
 © 2026 LEO OS ｜ AI时代的人才智能操作系统
 
@@ -986,56 +1358,90 @@ Robotics Planning Expert
 
 <script>
 
-/* =========================
-TYPING EFFECT
-========================= */
+/* ===================================
+TYPING
+=================================== */
 
 const text =
 "构建下一代 AI 人才基础设施";
 
-const typingEl =
+const typing =
 document.getElementById("typing");
 
 let i = 0;
 
-function typing(){
+function type(){
 
 if(i < text.length){
 
-typingEl.innerHTML += text.charAt(i);
+typing.innerHTML += text.charAt(i);
 
 i++;
 
-setTimeout(typing,50);
+setTimeout(type,45);
 
 }
+
 }
 
-typing();
+type();
 
-/* =========================
-CURSOR GLOW
-========================= */
+/* ===================================
+CURSOR
+=================================== */
 
-const glow =
-document.getElementById('glow');
+const cursor =
+document.querySelector('.cursor');
+
+const dot =
+document.querySelector('.cursor-dot');
 
 document.addEventListener('mousemove',(e)=>{
 
-glow.style.left =
+cursor.style.left =
 e.clientX + 'px';
 
-glow.style.top =
+cursor.style.top =
+e.clientY + 'px';
+
+dot.style.left =
+e.clientX + 'px';
+
+dot.style.top =
 e.clientY + 'px';
 
 });
 
-/* =========================
-NETWORK BACKGROUND
-========================= */
+document.querySelectorAll('a,.card,.btn')
+.forEach(el=>{
+
+el.addEventListener('mouseenter',()=>{
+
+cursor.style.width='60px';
+cursor.style.height='60px';
+
+cursor.style.background=
+'rgba(10,132,255,.08)';
+
+});
+
+el.addEventListener('mouseleave',()=>{
+
+cursor.style.width='24px';
+cursor.style.height='24px';
+
+cursor.style.background='transparent';
+
+});
+
+});
+
+/* ===================================
+PARTICLES
+=================================== */
 
 const canvas =
-document.getElementById("network");
+document.getElementById("particles");
 
 const ctx =
 canvas.getContext("2d");
@@ -1048,16 +1454,20 @@ window.innerHeight;
 
 const particles = [];
 
-for(let i=0;i<120;i++){
+for(let i=0;i<90;i++){
 
 particles.push({
 
 x:Math.random()*canvas.width,
 y:Math.random()*canvas.height,
 
-vx:(Math.random()-.5)*0.3,
-vy:(Math.random()-.5)*0.3
+vx:(Math.random()-.5)*0.5,
+vy:(Math.random()-.5)*0.5,
+
+r:Math.random()*2+1
+
 });
+
 }
 
 function animate(){
@@ -1085,13 +1495,13 @@ ctx.beginPath();
 ctx.arc(
 p.x,
 p.y,
-1.5,
+p.r,
 0,
 Math.PI*2
 );
 
 ctx.fillStyle =
-"rgba(10,132,255,.35)";
+"rgba(10,132,255,.25)";
 
 ctx.fill();
 
@@ -1116,18 +1526,22 @@ ctx.strokeStyle =
 })`;
 
 ctx.stroke();
+
 }
+
 });
+
 });
 
 requestAnimationFrame(animate);
+
 }
 
 animate();
 
-/* =========================
-CARD MAGNETIC EFFECT
-========================= */
+/* ===================================
+CARD INTERACTION
+=================================== */
 
 document.querySelectorAll('.card')
 .forEach(card=>{
@@ -1160,33 +1574,31 @@ const centerY =
 rect.height/2;
 
 const rotateX =
-(y-centerY)/25;
+(y-centerY)/18;
 
 const rotateY =
--(x-centerX)/25;
+-(x-centerX)/18;
 
 card.style.transform = `
 perspective(1200px)
 rotateX(${rotateX}deg)
 rotateY(${rotateY}deg)
-scale(1.02)
+translateY(-8px)
 `;
-});
-
-card.addEventListener(
-'mouseleave',
-()=>{
-
-card.style.transform =
-'';
 
 });
 
+card.addEventListener('mouseleave',()=>{
+
+card.style.transform='';
+
 });
 
-/* =========================
+});
+
+/* ===================================
 REVEAL
-========================= */
+=================================== */
 
 const observer =
 new IntersectionObserver((entries)=>{
@@ -1198,6 +1610,7 @@ if(entry.isIntersecting){
 entry.target.classList.add(
 'active'
 );
+
 }
 
 });
@@ -1210,12 +1623,12 @@ document
 .querySelectorAll('.reveal')
 .forEach(el=>observer.observe(el));
 
-/* =========================
+/* ===================================
 COUNTER
-========================= */
+=================================== */
 
 document.querySelectorAll(
-'.status-value'
+'.status-number'
 ).forEach(counter=>{
 
 const target =
@@ -1225,50 +1638,42 @@ let count = 0;
 
 const update = ()=>{
 
-count += Math.ceil(
-target/60
-);
+count += Math.ceil(target/60);
 
 if(count > target)
 count = target;
 
-counter.innerText =
-count;
+counter.innerText = count;
 
 if(count < target){
 
-requestAnimationFrame(
-update
-);
+requestAnimationFrame(update);
 
 }
+
 }
 
 update();
 
 });
 
-/* =========================
-REALTIME DATA
-========================= */
-
 setInterval(()=>{
 
-document.querySelectorAll('.status-value')
+document.querySelectorAll('.status-number')
 .forEach(el=>{
 
 let base=+el.dataset.count;
 
-el.innerText=
-base+Math.floor(Math.random()*8);
+el.innerText =
+base + Math.floor(Math.random()*8);
 
 });
 
 },1800);
 
-/* =========================
-SEARCH CONSOLE
-========================= */
+/* ===================================
+SEARCH
+=================================== */
 
 const searchInput =
 document.getElementById(
@@ -1302,13 +1707,18 @@ embodied:[
 
 };
 
-searchInput.addEventListener('input',(e)=>{
+searchInput.addEventListener(
+'input',
+(e)=>{
 
-const value=e.target.value.toLowerCase();
+const value =
+e.target.value.toLowerCase();
 
-results.innerHTML=`
+results.innerHTML = `
 <div class="result-card">
-<div class="result-role">AI Intelligence 搜索中...</div>
+<div class="result-role">
+AI Intelligence 搜索中...
+</div>
 </div>
 `;
 
@@ -1318,17 +1728,19 @@ results.innerHTML='';
 
 let found=false;
 
-Object.keys(database).forEach(key=>{
+Object.keys(database)
+.forEach(key=>{
 
 if(value.includes(key)){
 
 found=true;
 
-database[key].forEach(item=>{
+database[key]
+.forEach(item=>{
 
-results.innerHTML+=`
+results.innerHTML += `
 
-<div class="result-card reveal active">
+<div class="result-card">
 
 <div class="result-company">
 ${item[0]}
@@ -1345,6 +1757,7 @@ ${item[1]}
 </div>
 
 `;
+
 });
 
 }
@@ -1353,16 +1766,16 @@ ${item[1]}
 
 if(!found){
 
-results.innerHTML=`
+results.innerHTML = `
 
-<div class="result-card reveal active">
+<div class="result-card">
 
 <div class="result-company">
 LEO Intelligence
 </div>
 
 <div class="result-role">
-未找到直接映射，正在扩展人才图谱...
+正在扩展人才图谱...
 </div>
 
 <div class="match">
@@ -1372,35 +1785,47 @@ LEO Intelligence
 </div>
 
 `;
+
 }
 
-},600);
+},500);
 
 });
 
-/* =========================
-NAV SCROLL EFFECT
-========================= */
+/* ===================================
+NAV SCROLL
+=================================== */
 
-window.addEventListener('scroll',()=>{
+window.addEventListener(
+'scroll',
+()=>{
 
-const nav=document.querySelector('nav');
+const nav =
+document.querySelector('nav');
 
-if(window.scrollY>60){
+if(window.scrollY > 40){
 
-nav.style.background='rgba(255,255,255,.88)';
-nav.style.backdropFilter='blur(40px)';
+nav.style.background =
+'rgba(255,255,255,.82)';
+
+nav.style.transform =
+'translateX(-50%) scale(.98)';
 
 }else{
 
-nav.style.background='rgba(255,255,255,.72)';
+nav.style.background =
+'rgba(255,255,255,.68)';
+
+nav.style.transform =
+'translateX(-50%) scale(1)';
+
 }
 
 });
 
-/* =========================
+/* ===================================
 RESIZE
-========================= */
+=================================== */
 
 window.addEventListener(
 'resize',
@@ -1413,6 +1838,11 @@ canvas.height =
 window.innerHeight;
 
 });
+
+</script>
+
+</body>
+</html>
 
 </script>
 
