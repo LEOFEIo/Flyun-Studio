@@ -4,7 +4,10 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-<title>LEO OS — Executive Intelligence System</title>
+<title>LEO OS｜AI 人才智能系统</title>
+
+<link rel="icon" type="image/svg+xml"
+href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 128 128'%3E%3Crect rx='28' width='128' height='128' fill='%230A84FF'/%3E%3Cpath d='M38 32v64h52v-12H52V32z' fill='white'/%3E%3C/svg%3E">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -14,37 +17,47 @@
 <style>
 
 :root{
-    --bg:#020202;
-    --card:rgba(18,18,18,.55);
-    --border:rgba(255,255,255,.08);
+--bg:#f7f9fc;
+--card:rgba(255,255,255,.75);
+--border:rgba(10,132,255,.08);
 
-    --text:#f5f5f7;
-    --muted:#8d8d92;
+--text:#0f172a;
+--muted:#64748b;
 
-    --blue:#0A84FF;
-    --cyan:#3cf2ff;
+--blue:#0A84FF;
+--cyan:#3cf2ff;
 
-    --glow:rgba(10,132,255,.18);
+--glow:rgba(10,132,255,.08);
 
-    --ease:cubic-bezier(.22,.61,.36,1);
+--ease:cubic-bezier(.22,.61,.36,1);
 }
 
 *{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
+margin:0;
+padding:0;
+box-sizing:border-box;
 }
 
 html{
-    scroll-behavior:smooth;
+scroll-behavior:smooth;
 }
 
 body{
-    background:var(--bg);
-    color:var(--text);
-    font-family:'Space Grotesk',sans-serif;
-    overflow-x:hidden;
-    -webkit-font-smoothing:antialiased;
+background:
+linear-gradient(
+135deg,
+#f8fbff 0%,
+#eef5ff 50%,
+#f7fafc 100%
+);
+
+color:var(--text);
+
+font-family:'Space Grotesk',sans-serif;
+
+overflow-x:hidden;
+
+-webkit-font-smoothing:antialiased;
 }
 
 /* =========================
@@ -52,61 +65,60 @@ BACKGROUND
 ========================= */
 
 #network{
-    position:fixed;
-    inset:0;
-    z-index:-3;
+position:fixed;
+inset:0;
+z-index:-3;
 }
 
 .bg-gradient{
-    position:fixed;
-    inset:0;
-    z-index:-2;
+position:fixed;
+inset:0;
+z-index:-2;
 
-    background:
-    radial-gradient(circle at 20% 20%, rgba(10,132,255,.12), transparent 30%),
-    radial-gradient(circle at 80% 30%, rgba(255,255,255,.06), transparent 30%),
-    radial-gradient(circle at 50% 80%, rgba(0,140,255,.08), transparent 40%),
-    #000;
+background:
+radial-gradient(circle at 20% 20%, rgba(10,132,255,.08), transparent 35%),
+radial-gradient(circle at 80% 30%, rgba(120,180,255,.10), transparent 35%),
+radial-gradient(circle at 50% 80%, rgba(255,255,255,.7), transparent 45%);
 }
 
 .noise{
-    position:fixed;
-    inset:-50%;
-    width:200%;
-    height:200%;
-    z-index:-1;
+position:fixed;
+inset:-50%;
+width:200%;
+height:200%;
+z-index:-1;
 
-    opacity:.03;
+opacity:.02;
 
-    background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 
-    animation:noiseMove 8s linear infinite;
+animation:noiseMove 8s linear infinite;
 }
 
 @keyframes noiseMove{
-    0%{transform:translate(0,0);}
-    25%{transform:translate(-5%,-10%);}
-    50%{transform:translate(10%,5%);}
-    75%{transform:translate(-15%,10%);}
-    100%{transform:translate(0,0);}
+0%{transform:translate(0,0);}
+25%{transform:translate(-5%,-10%);}
+50%{transform:translate(10%,5%);}
+75%{transform:translate(-15%,10%);}
+100%{transform:translate(0,0);}
 }
 
 .cursor-glow{
-    position:fixed;
-    width:700px;
-    height:700px;
-    border-radius:50%;
-    pointer-events:none;
-    z-index:-1;
+position:fixed;
+width:700px;
+height:700px;
+border-radius:50%;
+pointer-events:none;
+z-index:-1;
 
-    background:
-    radial-gradient(circle,
-    rgba(10,132,255,.15),
-    transparent 60%);
+background:
+radial-gradient(circle,
+rgba(10,132,255,.12),
+transparent 60%);
 
-    filter:blur(70px);
+filter:blur(70px);
 
-    transform:translate(-50%,-50%);
+transform:translate(-50%,-50%);
 }
 
 /* =========================
@@ -114,55 +126,60 @@ NAV
 ========================= */
 
 nav{
-    position:fixed;
-    top:0;
-    width:100%;
-    height:70px;
+position:fixed;
+top:0;
+width:100%;
+height:72px;
 
-    z-index:1000;
+z-index:1000;
 
-    backdrop-filter:blur(30px);
-    background:rgba(0,0,0,.45);
+backdrop-filter:blur(30px);
 
-    border-bottom:1px solid rgba(255,255,255,.05);
+background:rgba(255,255,255,.72);
+
+border-bottom:1px solid rgba(255,255,255,.4);
+
+box-shadow:0 8px 30px rgba(15,23,42,.04);
+
+transition:.4s;
 }
 
 .nav-inner{
-    max-width:1400px;
-    height:100%;
+max-width:1400px;
+height:100%;
 
-    margin:auto;
+margin:auto;
 
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
+display:flex;
+align-items:center;
+justify-content:space-between;
 
-    padding:0 40px;
+padding:0 40px;
 }
 
 .logo{
-    font-size:14px;
-    font-weight:700;
-    letter-spacing:2px;
+font-size:15px;
+font-weight:700;
+letter-spacing:2px;
 
-    color:white;
+color:#0f172a;
 }
 
 .nav-links{
-    display:flex;
-    gap:40px;
+display:flex;
+gap:40px;
 }
 
 .nav-links a{
-    color:var(--muted);
-    text-decoration:none;
-    font-size:13px;
+color:var(--muted);
+text-decoration:none;
+font-size:13px;
 
-    transition:.3s;
+transition:.3s;
 }
 
 .nav-links a:hover{
-    color:white;
+color:var(--blue);
 }
 
 /* =========================
@@ -170,144 +187,155 @@ HERO
 ========================= */
 
 .hero{
-    min-height:100vh;
+min-height:100vh;
 
-    display:flex;
-    align-items:center;
-    justify-content:center;
+display:flex;
+align-items:center;
+justify-content:center;
 
-    position:relative;
+position:relative;
 
-    padding:200px 30px 140px;
+padding:200px 30px 140px;
 }
 
 .hero-content{
-    max-width:1200px;
-    text-align:center;
+max-width:1200px;
+text-align:center;
 }
 
 .hero-label{
-    display:inline-flex;
-    align-items:center;
-    gap:10px;
+display:inline-flex;
+align-items:center;
+gap:10px;
 
-    padding:10px 18px;
+padding:10px 18px;
 
-    border:1px solid rgba(255,255,255,.08);
+border:1px solid rgba(10,132,255,.08);
 
-    border-radius:40px;
+border-radius:40px;
 
-    background:rgba(255,255,255,.03);
+background:rgba(255,255,255,.7);
 
-    color:#9ca3af;
+color:#64748b;
 
-    font-size:12px;
-    letter-spacing:1px;
+font-size:12px;
+letter-spacing:1px;
 
-    margin-bottom:40px;
+margin-bottom:40px;
+
+backdrop-filter:blur(20px);
 }
 
 .dot{
-    width:8px;
-    height:8px;
-    border-radius:50%;
+width:8px;
+height:8px;
+border-radius:50%;
 
-    background:#00ff99;
+background:#00d26a;
 
-    box-shadow:0 0 15px #00ff99;
+box-shadow:0 0 15px #00d26a;
 
-    animation:pulse 1.5s infinite;
+animation:pulse 1.5s infinite;
 }
 
 @keyframes pulse{
-    0%{opacity:1;}
-    50%{opacity:.3;}
-    100%{opacity:1;}
+0%{opacity:1;}
+50%{opacity:.3;}
+100%{opacity:1;}
 }
 
 .hero h1{
-    font-size:clamp(60px,9vw,130px);
+font-size:clamp(60px,9vw,120px);
 
-    line-height:.95;
+line-height:1;
 
-    letter-spacing:-.06em;
+letter-spacing:-.06em;
 
-    font-weight:700;
+font-weight:700;
 
-    margin-bottom:40px;
+margin-bottom:40px;
 
-    background:linear-gradient(
-    180deg,
-    #fff 0%,
-    #cfcfcf 50%,
-    #666 100%
-    );
+background:linear-gradient(
+180deg,
+#0f172a 0%,
+#1e3a8a 70%,
+#64748b 100%
+);
 
-    -webkit-background-clip:text;
-    -webkit-text-fill-color:transparent;
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
 }
 
 .hero p{
-    max-width:900px;
+max-width:920px;
 
-    margin:auto;
+margin:auto;
 
-    color:var(--muted);
+color:var(--muted);
 
-    font-size:24px;
+font-size:24px;
 
-    line-height:1.6;
+line-height:1.7;
 
-    letter-spacing:-.02em;
+letter-spacing:-.02em;
 }
 
 .hero-buttons{
-    margin-top:60px;
+margin-top:60px;
 
-    display:flex;
-    gap:20px;
+display:flex;
+gap:20px;
 
-    justify-content:center;
-    flex-wrap:wrap;
+justify-content:center;
+flex-wrap:wrap;
 }
 
 .btn{
-    height:58px;
+height:58px;
 
-    padding:0 34px;
+padding:0 34px;
 
-    border-radius:50px;
+border-radius:50px;
 
-    display:flex;
-    align-items:center;
-    justify-content:center;
+display:flex;
+align-items:center;
+justify-content:center;
 
-    text-decoration:none;
+text-decoration:none;
 
-    transition:.4s var(--ease);
+transition:.4s var(--ease);
 
-    font-size:15px;
-    font-weight:600;
+font-size:15px;
+font-weight:600;
 }
 
 .btn-primary{
-    background:white;
-    color:black;
+background:linear-gradient(
+135deg,
+#0A84FF,
+#2563eb
+);
+
+color:white;
+
+box-shadow:
+0 10px 40px rgba(10,132,255,.2);
 }
 
 .btn-primary:hover{
-    transform:translateY(-3px) scale(1.03);
-    box-shadow:0 10px 50px rgba(255,255,255,.15);
+transform:translateY(-3px) scale(1.03);
 }
 
 .btn-secondary{
-    border:1px solid rgba(255,255,255,.08);
-    color:white;
-    background:rgba(255,255,255,.03);
+border:1px solid rgba(10,132,255,.08);
+color:#0f172a;
+background:rgba(255,255,255,.7);
+
+backdrop-filter:blur(20px);
 }
 
 .btn-secondary:hover{
-    background:rgba(255,255,255,.08);
+background:white;
 }
 
 /* =========================
@@ -315,39 +343,50 @@ LIVE STATUS
 ========================= */
 
 .status-bar{
-    display:flex;
-    gap:20px;
-    justify-content:center;
+display:flex;
+gap:20px;
+justify-content:center;
 
-    margin-top:80px;
+margin-top:80px;
 
-    flex-wrap:wrap;
+flex-wrap:wrap;
 }
 
 .status-card{
-    min-width:220px;
+min-width:220px;
 
-    padding:24px;
+padding:28px;
 
-    border-radius:24px;
+border-radius:26px;
 
-    background:rgba(255,255,255,.03);
+background:rgba(255,255,255,.72);
 
-    border:1px solid rgba(255,255,255,.06);
+border:1px solid rgba(255,255,255,.6);
 
-    backdrop-filter:blur(20px);
+backdrop-filter:blur(30px);
+
+box-shadow:
+0 10px 40px rgba(15,23,42,.05);
+
+transition:.4s;
+}
+
+.status-card:hover{
+transform:translateY(-6px);
 }
 
 .status-value{
-    font-size:38px;
-    font-weight:700;
+font-size:40px;
+font-weight:700;
 
-    margin-bottom:8px;
+margin-bottom:8px;
+
+color:#0A84FF;
 }
 
 .status-label{
-    font-size:13px;
-    color:var(--muted);
+font-size:13px;
+color:var(--muted);
 }
 
 /* =========================
@@ -355,31 +394,31 @@ SECTION
 ========================= */
 
 section{
-    padding:120px 30px;
+padding:120px 30px;
 }
 
 .container{
-    max-width:1400px;
-    margin:auto;
+max-width:1400px;
+margin:auto;
 }
 
 .section-title{
-    font-size:60px;
-    line-height:1;
-    margin-bottom:20px;
+font-size:60px;
+line-height:1;
+margin-bottom:20px;
 
-    letter-spacing:-.05em;
+letter-spacing:-.05em;
 }
 
 .section-desc{
-    color:var(--muted);
-    font-size:20px;
+color:var(--muted);
+font-size:20px;
 
-    max-width:700px;
+max-width:700px;
 
-    line-height:1.6;
+line-height:1.7;
 
-    margin-bottom:70px;
+margin-bottom:70px;
 }
 
 /* =========================
@@ -387,103 +426,97 @@ BENTO
 ========================= */
 
 .grid{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:24px;
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:24px;
 }
 
 .card{
-    min-height:380px;
+min-height:380px;
 
-    padding:40px;
+padding:40px;
 
-    border-radius:32px;
+border-radius:32px;
 
-    position:relative;
+position:relative;
 
-    overflow:hidden;
+overflow:hidden;
 
-    background:var(--card);
+background:var(--card);
 
-    border:1px solid var(--border);
+border:1px solid var(--border);
 
-    backdrop-filter:blur(30px);
+backdrop-filter:blur(30px);
 
-    transition:.5s var(--ease);
+transition:.5s var(--ease);
 
-    transform-style:preserve-3d;
+transform-style:preserve-3d;
+
+box-shadow:
+0 20px 50px rgba(15,23,42,.05);
 }
 
 .card:hover{
-    border-color:rgba(255,255,255,.15);
+border-color:rgba(10,132,255,.2);
+box-shadow:
+0 30px 80px rgba(10,132,255,.08);
 }
 
 .card.large{
-    grid-column:span 2;
+grid-column:span 2;
 }
 
 .card.full{
-    grid-column:span 3;
+grid-column:span 3;
 }
 
 .card::before{
-    content:"";
+content:"";
 
-    position:absolute;
-    inset:0;
+position:absolute;
+inset:0;
 
-    background:
-    radial-gradient(circle at var(--x) var(--y),
-    rgba(255,255,255,.08),
-    transparent 40%);
+background:
+radial-gradient(circle at var(--x) var(--y),
+rgba(10,132,255,.12),
+transparent 40%);
 
-    opacity:0;
+opacity:0;
 
-    transition:.4s;
+transition:.4s;
 }
 
 .card:hover::before{
-    opacity:1;
+opacity:1;
 }
 
 .card-category{
-    color:#8f8f94;
+color:#64748b;
 
-    font-size:12px;
-    letter-spacing:2px;
+font-size:12px;
+letter-spacing:2px;
 
-    margin-bottom:18px;
+margin-bottom:18px;
 
-    text-transform:uppercase;
+text-transform:uppercase;
 }
 
 .card-title{
-    font-size:38px;
+font-size:38px;
 
-    line-height:1.1;
+line-height:1.1;
 
-    margin-bottom:24px;
+margin-bottom:24px;
 
-    letter-spacing:-.04em;
+letter-spacing:-.04em;
 }
 
 .card-desc{
-    color:var(--muted);
+color:var(--muted);
 
-    line-height:1.7;
+line-height:1.8;
 
-    font-size:16px;
-}
-
-.card-image{
-    position:absolute;
-    right:-80px;
-    bottom:-80px;
-
-    width:340px;
-    opacity:.15;
-
-    filter:blur(0px);
+font-size:16px;
 }
 
 /* =========================
@@ -491,80 +524,100 @@ SEARCH CONSOLE
 ========================= */
 
 .console{
-    padding:40px;
+padding:40px;
 
-    border-radius:32px;
+border-radius:32px;
 
-    background:rgba(255,255,255,.03);
+background:rgba(255,255,255,.72);
 
-    border:1px solid rgba(255,255,255,.08);
+border:1px solid rgba(255,255,255,.8);
 
-    backdrop-filter:blur(30px);
+backdrop-filter:blur(30px);
+
+box-shadow:
+0 20px 60px rgba(15,23,42,.05);
 }
 
 .console-input{
-    width:100%;
-    height:70px;
+width:100%;
+height:72px;
 
-    border:none;
-    outline:none;
+border:none;
+outline:none;
 
-    background:rgba(0,0,0,.5);
+background:white;
 
-    border-radius:20px;
+border-radius:22px;
 
-    padding:0 24px;
+padding:0 24px;
 
-    color:white;
+color:#0f172a;
 
-    font-size:18px;
+font-size:18px;
 
-    border:1px solid rgba(255,255,255,.08);
+border:1px solid rgba(10,132,255,.08);
+
+transition:.3s;
+}
+
+.console-input:focus{
+border-color:#0A84FF;
+box-shadow:
+0 0 0 6px rgba(10,132,255,.08);
 }
 
 .results{
-    margin-top:30px;
+margin-top:30px;
 
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:20px;
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:20px;
 }
 
 .result-card{
-    padding:24px;
+padding:24px;
 
-    border-radius:20px;
+border-radius:24px;
 
-    background:rgba(255,255,255,.03);
+background:white;
 
-    border:1px solid rgba(255,255,255,.06);
+border:1px solid rgba(10,132,255,.08);
+
+transition:.4s;
+
+box-shadow:
+0 10px 30px rgba(15,23,42,.03);
+}
+
+.result-card:hover{
+transform:translateY(-5px);
 }
 
 .result-company{
-    font-size:13px;
-    color:#9ca3af;
+font-size:13px;
+color:#64748b;
 
-    margin-bottom:12px;
+margin-bottom:12px;
 }
 
 .result-role{
-    font-size:24px;
+font-size:24px;
 
-    margin-bottom:18px;
+margin-bottom:18px;
 }
 
 .match{
-    display:inline-flex;
+display:inline-flex;
 
-    padding:8px 14px;
+padding:8px 14px;
 
-    border-radius:30px;
+border-radius:30px;
 
-    background:rgba(10,132,255,.15);
+background:rgba(10,132,255,.1);
 
-    color:#79b8ff;
+color:#0A84FF;
 
-    font-size:12px;
+font-size:12px;
 }
 
 /* =========================
@@ -572,10 +625,10 @@ FOOTER
 ========================= */
 
 footer{
-    padding:100px 30px;
-    text-align:center;
+padding:100px 30px;
+text-align:center;
 
-    color:#666;
+color:#64748b;
 }
 
 /* =========================
@@ -583,14 +636,14 @@ REVEAL
 ========================= */
 
 .reveal{
-    opacity:0;
-    transform:translateY(60px);
-    transition:1s var(--ease);
+opacity:0;
+transform:translateY(60px);
+transition:1s var(--ease);
 }
 
 .reveal.active{
-    opacity:1;
-    transform:translateY(0);
+opacity:1;
+transform:translateY(0);
 }
 
 /* =========================
@@ -599,30 +652,34 @@ RESPONSIVE
 
 @media(max-width:1100px){
 
-    .grid{
-        grid-template-columns:1fr;
-    }
+.grid{
+grid-template-columns:1fr;
+}
 
-    .card.large,
-    .card.full{
-        grid-column:span 1;
-    }
+.card.large,
+.card.full{
+grid-column:span 1;
+}
 
-    .results{
-        grid-template-columns:1fr;
-    }
+.results{
+grid-template-columns:1fr;
+}
 
-    .hero h1{
-        font-size:60px;
-    }
+.hero h1{
+font-size:58px;
+}
 
-    .hero p{
-        font-size:18px;
-    }
+.hero p{
+font-size:18px;
+}
 
-    .section-title{
-        font-size:42px;
-    }
+.section-title{
+font-size:42px;
+}
+
+.nav-links{
+display:none;
+}
 }
 
 </style>
@@ -637,289 +694,293 @@ RESPONSIVE
 <div class="cursor-glow" id="glow"></div>
 
 <nav>
-    <div class="nav-inner">
+<div class="nav-inner">
 
-        <div class="logo">
-            LEO OS
-        </div>
+<div class="logo">
+⚡ LEO 智能人才系统
+</div>
 
-        <div class="nav-links">
-            <a href="#intelligence">Intelligence</a>
-            <a href="#architecture">Architecture</a>
-            <a href="#console">Search</a>
-            <a href="#networking">Network</a>
-        </div>
+<div class="nav-links">
+<a href="#intelligence">人才架构</a>
+<a href="#architecture">智能系统</a>
+<a href="#console">智能搜索</a>
+<a href="#networking">高端网络</a>
+</div>
 
-    </div>
+</div>
 </nav>
 
 <section class="hero">
 
-    <div class="hero-content reveal">
+<div class="hero-content reveal">
 
-        <div class="hero-label">
-            <div class="dot"></div>
-            EXECUTIVE INTELLIGENCE SYSTEM ONLINE
-        </div>
+<div class="hero-label">
+<div class="dot"></div>
+AI EXECUTIVE INTELLIGENCE SYSTEM ONLINE
+</div>
 
-        <h1 id="typing"></h1>
+<h1 id="typing"></h1>
 
-        <p>
-            在新能源与人工智能的交汇点，
-            构建下一代战略级人才 intelligence network。
-            不只是猎头，而是 AI 时代的人才基础设施。
-        </p>
+<p>
+在新能源、自动驾驶与 AGI 的交汇点，
+构建 AI 时代的人才 intelligence infrastructure。
+不仅是猎头，而是未来组织升级的智能连接系统。
+</p>
 
-        <div class="hero-buttons">
+<div class="hero-buttons">
 
-            <a href="mailto:supkefly@gmail.com" class="btn btn-primary">
-                Initiate Contact
-            </a>
+<a href="mailto:supkefly@gmail.com" class="btn btn-primary">
+立即建立连接
+</a>
 
-            <a href="#console" class="btn btn-secondary">
-                Open Search Console
-            </a>
+<a href="#console" class="btn btn-secondary">
+进入智能搜索系统
+</a>
 
-        </div>
+</div>
 
-        <div class="status-bar">
+<div class="status-bar">
 
-            <div class="status-card">
-                <div class="status-value" data-count="128">
-                    0
-                </div>
+<div class="status-card">
+<div class="status-value" data-count="128">
+0
+</div>
 
-                <div class="status-label">
-                    Active Searches
-                </div>
-            </div>
+<div class="status-label">
+活跃岗位搜索
+</div>
+</div>
 
-            <div class="status-card">
-                <div class="status-value" data-count="93">
-                    0
-                </div>
+<div class="status-card">
+<div class="status-value" data-count="93">
+0
+</div>
 
-                <div class="status-label">
-                    Matching Accuracy
-                </div>
-            </div>
+<div class="status-label">
+智能匹配精度
+</div>
+</div>
 
-            <div class="status-card">
-                <div class="status-value" data-count="2800">
-                    0
-                </div>
+<div class="status-card">
+<div class="status-value" data-count="2800">
+0
+</div>
 
-                <div class="status-label">
-                    AI Talent Nodes
-                </div>
-            </div>
+<div class="status-label">
+AI 人才节点
+</div>
+</div>
 
-        </div>
+</div>
 
-    </div>
+</div>
 
 </section>
 
 <section id="intelligence">
 
-    <div class="container">
+<div class="container">
 
-        <div class="reveal">
-            <h2 class="section-title">
-                Talent Intelligence Architecture
-            </h2>
+<div class="reveal">
 
-            <p class="section-desc">
-                从自动驾驶到 AGI，
-                基于产业链、技术路线与组织结构的深度 Mapping，
-                构建未来 AI 人才流向模型。
-            </p>
-        </div>
+<h2 class="section-title">
+AI 人才情报架构
+</h2>
 
-        <div class="grid">
+<p class="section-desc">
+从自动驾驶到 AGI，
+基于技术路线、组织架构与产业链的深度 Mapping，
+构建下一代人才 intelligence graph。
+</p>
 
-            <div class="card large reveal">
+</div>
 
-                <div class="card-category">
-                    AUTONOMOUS SYSTEMS
-                </div>
+<div class="grid">
 
-                <div class="card-title">
-                    智能驾驶与整车架构
-                </div>
+<div class="card large reveal">
 
-                <div class="card-desc">
-                    深度覆盖 ADS、BEV、
-                    Occupancy Network、
-                    EEA 架构与整车智能化演进路径。
-                    持续追踪顶级自动驾驶人才流向。
-                </div>
+<div class="card-category">
+AUTONOMOUS SYSTEM
+</div>
 
-            </div>
+<div class="card-title">
+智能驾驶与整车智能化
+</div>
 
-            <div class="card reveal">
+<div class="card-desc">
+深度覆盖 ADS、
+BEV、
+Occupancy Network、
+端到端自动驾驶、
+EEA 架构与智能座舱技术演进。
+</div>
 
-                <div class="card-category">
-                    FOUNDATION MODELS
-                </div>
+</div>
 
-                <div class="card-title">
-                    AGI
-                </div>
+<div class="card reveal">
 
-                <div class="card-desc">
-                    多模态、
-                    Agent、
-                    RLHF、
-                    世界模型、
-                    AI Infra。
-                </div>
+<div class="card-category">
+FOUNDATION MODEL
+</div>
 
-            </div>
+<div class="card-title">
+AGI 与多模态
+</div>
 
-            <div class="card reveal">
+<div class="card-desc">
+LLM、
+Agent、
+世界模型、
+RLHF、
+AI Infra、
+推理优化与下一代 AI 架构。
+</div>
 
-                <div class="card-category">
-                    SEARCH SYSTEM
-                </div>
+</div>
 
-                <div class="card-title">
-                    AI Mapping OS
-                </div>
+<div class="card reveal">
 
-                <div class="card-desc">
-                    基于本地 LLM +
-                    知识图谱 +
-                    人才关系网络，
-                    构建智能化人才搜索系统。
-                </div>
+<div class="card-category">
+AI MAPPING OS
+</div>
 
-            </div>
+<div class="card-title">
+人才图谱系统
+</div>
 
-            <div class="card reveal">
+<div class="card-desc">
+结合本地 LLM、
+知识图谱与行业关系网络，
+构建智能化人才 Mapping 系统。
+</div>
 
-                <div class="card-category">
-                    EXECUTIVE NETWORK
-                </div>
+</div>
 
-                <div class="card-title">
-                    隐形技术圈层
-                </div>
+<div class="card reveal">
 
-                <div class="card-desc">
-                    长期深耕 AI、
-                    智驾、
-                    智能制造与科技高管网络。
-                </div>
+<div class="card-category">
+EXECUTIVE NETWORK
+</div>
 
-            </div>
+<div class="card-title">
+隐形技术圈层
+</div>
 
-            <div class="card full reveal">
+<div class="card-desc">
+长期深耕 AI、
+智驾、
+机器人、
+新能源与科技高管生态网络。
+</div>
 
-                <div class="card-category">
-                    INDUSTRY INTELLIGENCE
-                </div>
+</div>
 
-                <div class="card-title">
-                    Mapping the human infrastructure behind AI.
-                </div>
+<div class="card full reveal">
 
-                <div class="card-desc">
-                    企业真正需要的，
-                    不再是传统 JD 匹配。
-                    而是理解技术演化、
-                    组织升级与产业趋势的人才 intelligence system。
-                </div>
+<div class="card-category">
+INDUSTRY INTELLIGENCE
+</div>
 
-            </div>
+<div class="card-title">
+Mapping the human infrastructure behind AI.
+</div>
 
-        </div>
+<div class="card-desc">
+企业真正需要的，
+已经不再是传统 JD 匹配。
+而是理解技术演化、
+组织升级与产业趋势的人才 intelligence system。
+</div>
 
-    </div>
+</div>
+
+</div>
+
+</div>
 
 </section>
 
 <section id="console">
 
-    <div class="container">
+<div class="container">
 
-        <div class="reveal">
+<div class="reveal">
 
-            <h2 class="section-title">
-                AI Search Console
-            </h2>
+<h2 class="section-title">
+AI 智能搜索控制台
+</h2>
 
-            <p class="section-desc">
-                输入技术方向，
-                模拟人才 intelligence 搜索。
-            </p>
+<p class="section-desc">
+输入技术方向，
+模拟 AI 人才 intelligence 搜索。
+</p>
 
-        </div>
+</div>
 
-        <div class="console reveal">
+<div class="console reveal">
 
-            <input
-                type="text"
-                class="console-input"
-                id="searchInput"
-                placeholder="Search talent domains... e.g. autonomous driving / multimodal / embodied AI"
-            >
+<input
+type="text"
+class="console-input"
+id="searchInput"
+placeholder="输入技术方向，例如：autonomous / multimodal / embodied AI"
+/>
 
-            <div class="results" id="results">
+<div class="results" id="results">
 
-                <div class="result-card">
-                    <div class="result-company">
-                        AI Infrastructure
-                    </div>
+<div class="result-card">
+<div class="result-company">
+AI Infra
+</div>
 
-                    <div class="result-role">
-                        Foundation Model Architect
-                    </div>
+<div class="result-role">
+Foundation Model Architect
+</div>
 
-                    <div class="match">
-                        Match Score 97%
-                    </div>
-                </div>
+<div class="match">
+匹配度 97%
+</div>
+</div>
 
-                <div class="result-card">
-                    <div class="result-company">
-                        Autonomous Driving
-                    </div>
+<div class="result-card">
+<div class="result-company">
+Autonomous Driving
+</div>
 
-                    <div class="result-role">
-                        Occupancy Network Lead
-                    </div>
+<div class="result-role">
+Occupancy Network Lead
+</div>
 
-                    <div class="match">
-                        Match Score 94%
-                    </div>
-                </div>
+<div class="match">
+匹配度 94%
+</div>
+</div>
 
-                <div class="result-card">
-                    <div class="result-company">
-                        Embodied Intelligence
-                    </div>
+<div class="result-card">
+<div class="result-company">
+Embodied AI
+</div>
 
-                    <div class="result-role">
-                        Robotics Planning Expert
-                    </div>
+<div class="result-role">
+Robotics Planning Expert
+</div>
 
-                    <div class="match">
-                        Match Score 91%
-                    </div>
-                </div>
+<div class="match">
+匹配度 91%
+</div>
+</div>
 
-            </div>
+</div>
 
-        </div>
+</div>
 
-    </div>
+</div>
 
 </section>
 
 <footer>
 
-    © 2026 LEO OS — Executive Intelligence Infrastructure
+© 2026 LEO OS ｜ AI时代的人才智能操作系统
 
 </footer>
 
@@ -930,7 +991,7 @@ TYPING EFFECT
 ========================= */
 
 const text =
-"Engineering the future workforce of intelligence.";
+"构建下一代 AI 人才基础设施";
 
 const typingEl =
 document.getElementById("typing");
@@ -939,15 +1000,15 @@ let i = 0;
 
 function typing(){
 
-    if(i < text.length){
+if(i < text.length){
 
-        typingEl.innerHTML += text.charAt(i);
+typingEl.innerHTML += text.charAt(i);
 
-        i++;
+i++;
 
-        setTimeout(typing,40);
+setTimeout(typing,50);
 
-    }
+}
 }
 
 typing();
@@ -961,11 +1022,11 @@ document.getElementById('glow');
 
 document.addEventListener('mousemove',(e)=>{
 
-    glow.style.left =
-    e.clientX + 'px';
+glow.style.left =
+e.clientX + 'px';
 
-    glow.style.top =
-    e.clientY + 'px';
+glow.style.top =
+e.clientY + 'px';
 
 });
 
@@ -989,78 +1050,77 @@ const particles = [];
 
 for(let i=0;i<120;i++){
 
-    particles.push({
+particles.push({
 
-        x:Math.random()*canvas.width,
-        y:Math.random()*canvas.height,
+x:Math.random()*canvas.width,
+y:Math.random()*canvas.height,
 
-        vx:(Math.random()-.5)*0.3,
-        vy:(Math.random()-.5)*0.3
-    });
+vx:(Math.random()-.5)*0.3,
+vy:(Math.random()-.5)*0.3
+});
 }
 
 function animate(){
 
-    ctx.clearRect(
-        0,
-        0,
-        canvas.width,
-        canvas.height
-    );
+ctx.clearRect(
+0,
+0,
+canvas.width,
+canvas.height
+);
 
-    particles.forEach(p=>{
+particles.forEach(p=>{
 
-        p.x += p.vx;
-        p.y += p.vy;
+p.x += p.vx;
+p.y += p.vy;
 
-        if(p.x<0 || p.x>canvas.width)
-            p.vx *= -1;
+if(p.x<0 || p.x>canvas.width)
+p.vx *= -1;
 
-        if(p.y<0 || p.y>canvas.height)
-            p.vy *= -1;
+if(p.y<0 || p.y>canvas.height)
+p.vy *= -1;
 
-        ctx.beginPath();
+ctx.beginPath();
 
-        ctx.arc(
-            p.x,
-            p.y,
-            1.5,
-            0,
-            Math.PI*2
-        );
+ctx.arc(
+p.x,
+p.y,
+1.5,
+0,
+Math.PI*2
+);
 
-        ctx.fillStyle =
-        "rgba(255,255,255,.5)";
+ctx.fillStyle =
+"rgba(10,132,255,.35)";
 
-        ctx.fill();
+ctx.fill();
 
-        particles.forEach(other=>{
+particles.forEach(other=>{
 
-            const dx = p.x-other.x;
-            const dy = p.y-other.y;
+const dx = p.x-other.x;
+const dy = p.y-other.y;
 
-            const dist =
-            Math.sqrt(dx*dx+dy*dy);
+const dist =
+Math.sqrt(dx*dx+dy*dy);
 
-            if(dist < 120){
+if(dist < 120){
 
-                ctx.beginPath();
+ctx.beginPath();
 
-                ctx.moveTo(p.x,p.y);
-                ctx.lineTo(other.x,other.y);
+ctx.moveTo(p.x,p.y);
+ctx.lineTo(other.x,other.y);
 
-                ctx.strokeStyle =
-                `rgba(10,132,255,${
-                    1-dist/120
-                })`;
+ctx.strokeStyle =
+`rgba(10,132,255,${
+1-dist/120
+})`;
 
-                ctx.stroke();
-            }
-        });
+ctx.stroke();
+}
+});
+});
 
-    });
-
-    requestAnimationFrame(animate);
+requestAnimationFrame(animate);
 }
 
 animate();
@@ -1072,55 +1132,55 @@ CARD MAGNETIC EFFECT
 document.querySelectorAll('.card')
 .forEach(card=>{
 
-    card.addEventListener('mousemove',(e)=>{
+card.addEventListener('mousemove',(e)=>{
 
-        const rect =
-        card.getBoundingClientRect();
+const rect =
+card.getBoundingClientRect();
 
-        const x =
-        e.clientX - rect.left;
+const x =
+e.clientX - rect.left;
 
-        const y =
-        e.clientY - rect.top;
+const y =
+e.clientY - rect.top;
 
-        card.style.setProperty(
-            '--x',
-            `${x}px`
-        );
+card.style.setProperty(
+'--x',
+`${x}px`
+);
 
-        card.style.setProperty(
-            '--y',
-            `${y}px`
-        );
+card.style.setProperty(
+'--y',
+`${y}px`
+);
 
-        const centerX =
-        rect.width/2;
+const centerX =
+rect.width/2;
 
-        const centerY =
-        rect.height/2;
+const centerY =
+rect.height/2;
 
-        const rotateX =
-        (y-centerY)/20;
+const rotateX =
+(y-centerY)/25;
 
-        const rotateY =
-        -(x-centerX)/20;
+const rotateY =
+-(x-centerX)/25;
 
-        card.style.transform = `
-        perspective(1200px)
-        rotateX(${rotateX}deg)
-        rotateY(${rotateY}deg)
-        scale(1.02)
-        `;
-    });
+card.style.transform = `
+perspective(1200px)
+rotateX(${rotateX}deg)
+rotateY(${rotateY}deg)
+scale(1.02)
+`;
+});
 
-    card.addEventListener(
-        'mouseleave',
-        ()=>{
+card.addEventListener(
+'mouseleave',
+()=>{
 
-        card.style.transform =
-        '';
+card.style.transform =
+'';
 
-    });
+});
 
 });
 
@@ -1131,19 +1191,19 @@ REVEAL
 const observer =
 new IntersectionObserver((entries)=>{
 
-    entries.forEach(entry=>{
+entries.forEach(entry=>{
 
-        if(entry.isIntersecting){
+if(entry.isIntersecting){
 
-            entry.target.classList.add(
-                'active'
-            );
-        }
+entry.target.classList.add(
+'active'
+);
+}
 
-    });
+});
 
 },{
-    threshold:.15
+threshold:.15
 });
 
 document
@@ -1158,35 +1218,53 @@ document.querySelectorAll(
 '.status-value'
 ).forEach(counter=>{
 
-    const target =
-    +counter.dataset.count;
+const target =
++counter.dataset.count;
 
-    let count = 0;
+let count = 0;
 
-    const update = ()=>{
+const update = ()=>{
 
-        count += Math.ceil(
-            target/60
-        );
+count += Math.ceil(
+target/60
+);
 
-        if(count > target)
-            count = target;
+if(count > target)
+count = target;
 
-        counter.innerText =
-        count;
+counter.innerText =
+count;
 
-        if(count < target){
+if(count < target){
 
-            requestAnimationFrame(
-                update
-            );
+requestAnimationFrame(
+update
+);
 
-        }
-    }
+}
+}
 
-    update();
+update();
 
 });
+
+/* =========================
+REALTIME DATA
+========================= */
+
+setInterval(()=>{
+
+document.querySelectorAll('.status-value')
+.forEach(el=>{
+
+let base=+el.dataset.count;
+
+el.innerText=
+base+Math.floor(Math.random()*8);
+
+});
+
+},1800);
 
 /* =========================
 SEARCH CONSOLE
@@ -1204,90 +1282,119 @@ document.getElementById(
 
 const database = {
 
-    autonomous:[
-        ['Tesla AP','Planning Architect','98%'],
-        ['Huawei ADS','Perception Lead','95%'],
-        ['Momenta','BEV Engineer','94%']
-    ],
+autonomous:[
+['Tesla AP','Planning Architect','98%'],
+['Huawei ADS','Perception Lead','95%'],
+['Momenta','BEV Engineer','94%']
+],
 
-    multimodal:[
-        ['OpenAI','Multimodal Researcher','97%'],
-        ['Google DeepMind','Vision-Language Scientist','95%'],
-        ['Anthropic','Agent Engineer','93%']
-    ],
+multimodal:[
+['OpenAI','Multimodal Researcher','97%'],
+['Google DeepMind','Vision-Language Scientist','95%'],
+['Anthropic','Agent Engineer','93%']
+],
 
-    embodied:[
-        ['Figure AI','Robotics AI Lead','96%'],
-        ['Tesla Optimus','Motion Planning','94%'],
-        ['Unitree','Embodied RL Engineer','91%']
-    ]
+embodied:[
+['Figure AI','Robotics AI Lead','96%'],
+['Tesla Optimus','Motion Planning','94%'],
+['Unitree','Embodied RL Engineer','91%']
+]
+
 };
 
-searchInput.addEventListener(
-'input',
-(e)=>{
+searchInput.addEventListener('input',(e)=>{
 
-    const value =
-    e.target.value.toLowerCase();
+const value=e.target.value.toLowerCase();
 
-    results.innerHTML = '';
+results.innerHTML=`
+<div class="result-card">
+<div class="result-role">AI Intelligence 搜索中...</div>
+</div>
+`;
 
-    let found = false;
+setTimeout(()=>{
 
-    Object.keys(database)
-    .forEach(key=>{
+results.innerHTML='';
 
-        if(value.includes(key)){
+let found=false;
 
-            found = true;
+Object.keys(database).forEach(key=>{
 
-            database[key]
-            .forEach(item=>{
+if(value.includes(key)){
 
-                results.innerHTML += `
+found=true;
 
-                <div class="result-card">
+database[key].forEach(item=>{
 
-                    <div class="result-company">
-                        ${item[0]}
-                    </div>
+results.innerHTML+=`
 
-                    <div class="result-role">
-                        ${item[1]}
-                    </div>
+<div class="result-card reveal active">
 
-                    <div class="match">
-                        Match Score ${item[2]}
-                    </div>
+<div class="result-company">
+${item[0]}
+</div>
 
-                </div>
-                `;
-            });
-        }
-    });
+<div class="result-role">
+${item[1]}
+</div>
 
-    if(!found){
+<div class="match">
+匹配度 ${item[2]}
+</div>
 
-        results.innerHTML = `
+</div>
 
-        <div class="result-card">
+`;
+});
 
-            <div class="result-company">
-                Intelligence System
-            </div>
+}
 
-            <div class="result-role">
-                No direct mapping found.
-            </div>
+});
 
-            <div class="match">
-                Expanding network...
-            </div>
+if(!found){
 
-        </div>
+results.innerHTML=`
 
-        `;
-    }
+<div class="result-card reveal active">
+
+<div class="result-company">
+LEO Intelligence
+</div>
+
+<div class="result-role">
+未找到直接映射，正在扩展人才图谱...
+</div>
+
+<div class="match">
+深度搜索中
+</div>
+
+</div>
+
+`;
+}
+
+},600);
+
+});
+
+/* =========================
+NAV SCROLL EFFECT
+========================= */
+
+window.addEventListener('scroll',()=>{
+
+const nav=document.querySelector('nav');
+
+if(window.scrollY>60){
+
+nav.style.background='rgba(255,255,255,.88)';
+nav.style.backdropFilter='blur(40px)';
+
+}else{
+
+nav.style.background='rgba(255,255,255,.72)';
+}
 
 });
 
@@ -1299,11 +1406,11 @@ window.addEventListener(
 'resize',
 ()=>{
 
-    canvas.width =
-    window.innerWidth;
+canvas.width =
+window.innerWidth;
 
-    canvas.height =
-    window.innerHeight;
+canvas.height =
+window.innerHeight;
 
 });
 
