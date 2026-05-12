@@ -3,1848 +3,525 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-
 <title>LEO OS｜AI 人才智能系统</title>
-
-<link rel="icon" type="image/svg+xml"
-href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 128 128'%3E%3Crect rx='28' width='128' height='128' fill='%230A84FF'/%3E%3Cpath d='M38 32v64h52v-12H52V32z' fill='white'/%3E%3C/svg%3E">
-
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 128 128'%3E%3Crect rx='28' width='128' height='128' fill='%230A84FF'/%3E%3Cpath d='M38 32v64h52v-12H52V32z' fill='white'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-
 <style>
-
-:root{
-
---bg:#edf4ff;
---bg2:#f8fbff;
-
---card:rgba(255,255,255,.72);
-
---border:rgba(255,255,255,.55);
-
---text:#081120;
---muted:#64748b;
-
---blue:#0A84FF;
---cyan:#3CF2FF;
---purple:#7c3aed;
-
---shadow:
-0 20px 60px rgba(15,23,42,.08);
-
---ease:cubic-bezier(.22,.61,.36,1);
-
-}
-
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-}
-
-html{
-scroll-behavior:smooth;
-}
-
-body{
-
-font-family:'Inter',sans-serif;
-
-background:
-linear-gradient(
-135deg,
-#f7fbff 0%,
-#edf5ff 35%,
-#f7faff 100%
-);
-
-color:var(--text);
-
-overflow-x:hidden;
-
-min-height:100vh;
-}
-
-/* ===================================
-BACKGROUND
-=================================== */
-
-.dynamic-bg{
-
-position:fixed;
-inset:0;
-
-z-index:-5;
-
-overflow:hidden;
-}
-
-.blob{
-
-position:absolute;
-
-border-radius:50%;
-
-filter:blur(90px);
-
-opacity:.45;
-
-animation:float 18s infinite ease-in-out;
-}
-
-.blob1{
-width:600px;
-height:600px;
-background:#93c5fd;
-top:-120px;
-left:-100px;
-}
-
-.blob2{
-width:500px;
-height:500px;
-background:#c4b5fd;
-right:-120px;
-top:100px;
-animation-delay:4s;
-}
-
-.blob3{
-width:500px;
-height:500px;
-background:#67e8f9;
-bottom:-180px;
-left:30%;
-animation-delay:8s;
-}
-
-@keyframes float{
-
-0%{
-transform:translate(0,0) scale(1);
-}
-
-50%{
-transform:translate(40px,-60px) scale(1.12);
-}
-
-100%{
-transform:translate(0,0) scale(1);
-}
-
-}
-
-.grid-bg{
-
-position:fixed;
-inset:0;
-
-z-index:-4;
-
-background-image:
-
-linear-gradient(
-rgba(255,255,255,.6) 1px,
-transparent 1px
-),
-
-linear-gradient(
-90deg,
-rgba(255,255,255,.6) 1px,
-transparent 1px
-);
-
-background-size:60px 60px;
-
-mask-image:
-linear-gradient(to bottom,
-rgba(0,0,0,.8),
-transparent);
-
-opacity:.4;
-}
-
-#particles{
-
-position:fixed;
-inset:0;
-
-z-index:-3;
-}
-
-/* ===================================
-CURSOR
-=================================== */
-
-.cursor{
-
-position:fixed;
-
-width:24px;
-height:24px;
-
-border:2px solid rgba(10,132,255,.5);
-
-border-radius:50%;
-
-pointer-events:none;
-
-transform:translate(-50%,-50%);
-
-transition:
-width .25s,
-height .25s,
-background .25s;
-
-z-index:9999;
-}
-
-.cursor-dot{
-
-position:fixed;
-
-width:6px;
-height:6px;
-
-background:var(--blue);
-
-border-radius:50%;
-
-pointer-events:none;
-
-transform:translate(-50%,-50%);
-
-z-index:9999;
-}
-
-/* ===================================
-NAV
-=================================== */
-
-nav{
-
-position:fixed;
-
-top:18px;
-left:50%;
-
-transform:translateX(-50%);
-
-width:calc(100% - 40px);
-max-width:1380px;
-
-height:74px;
-
-z-index:1000;
-
-background:
-rgba(255,255,255,.68);
-
-backdrop-filter:blur(30px);
-
-border:
-1px solid rgba(255,255,255,.7);
-
-border-radius:26px;
-
-box-shadow:
-0 10px 40px rgba(15,23,42,.08);
-
-transition:.4s;
-}
-
-.nav-inner{
-
-height:100%;
-
-display:flex;
-align-items:center;
-justify-content:space-between;
-
-padding:0 28px;
-}
-
-.logo{
-
-font-size:15px;
-font-weight:800;
-
-letter-spacing:2px;
-
-display:flex;
-align-items:center;
-gap:12px;
-}
-
-.logo-icon{
-
-width:38px;
-height:38px;
-
-border-radius:14px;
-
-background:
-linear-gradient(
-135deg,
-#0A84FF,
-#3CF2FF
-);
-
-display:flex;
-align-items:center;
-justify-content:center;
-
-color:white;
-
-font-weight:700;
-
-box-shadow:
-0 10px 20px rgba(10,132,255,.25);
-}
-
-.nav-links{
-
-display:flex;
-gap:12px;
-}
-
-.nav-links a{
-
-height:44px;
-
-padding:0 18px;
-
-border-radius:14px;
-
-display:flex;
-align-items:center;
-justify-content:center;
-
-text-decoration:none;
-
-color:#475569;
-
-font-size:14px;
-font-weight:600;
-
-transition:.3s;
-}
-
-.nav-links a:hover{
-
-background:white;
-
-color:var(--blue);
-
-transform:translateY(-2px);
-}
-
-/* ===================================
-HERO
-=================================== */
-
-.hero{
-
-min-height:100vh;
-
-display:flex;
-align-items:center;
-justify-content:center;
-
-padding:180px 30px 120px;
-
-position:relative;
-}
-
-.hero-content{
-
-max-width:1250px;
-
-text-align:center;
-}
-
-.hero-badge{
-
-display:inline-flex;
-align-items:center;
-gap:10px;
-
-padding:12px 20px;
-
-background:
-rgba(255,255,255,.72);
-
-border:
-1px solid rgba(255,255,255,.8);
-
-border-radius:999px;
-
-backdrop-filter:blur(20px);
-
-margin-bottom:40px;
-
-font-size:13px;
-
-font-weight:600;
-
-color:#475569;
-}
-
-.live-dot{
-
-width:8px;
-height:8px;
-
-border-radius:50%;
-
-background:#00d26a;
-
-box-shadow:
-0 0 14px #00d26a;
-
-animation:pulse 1.5s infinite;
-}
-
-@keyframes pulse{
-
-0%{opacity:1;}
-50%{opacity:.35;}
-100%{opacity:1;}
-
-}
-
-.hero h1{
-
-font-size:
-clamp(62px,9vw,130px);
-
-line-height:.95;
-
-letter-spacing:-.07em;
-
-font-weight:800;
-
-margin-bottom:34px;
-
-background:
-linear-gradient(
-180deg,
-#081120 0%,
-#0A84FF 60%,
-#64748b 100%
-);
-
--webkit-background-clip:text;
--webkit-text-fill-color:transparent;
-}
-
-.hero p{
-
-font-size:24px;
-
-line-height:1.7;
-
-max-width:980px;
-
-margin:auto;
-
-color:#475569;
-}
-
-.hero-actions{
-
-margin-top:60px;
-
-display:flex;
-justify-content:center;
-gap:18px;
-
-flex-wrap:wrap;
-}
-
-.btn{
-
-height:60px;
-
-padding:0 34px;
-
-border-radius:18px;
-
-display:flex;
-align-items:center;
-justify-content:center;
-
-text-decoration:none;
-
-font-weight:700;
-
-transition:.35s var(--ease);
-
-position:relative;
-
-overflow:hidden;
-}
-
-.btn::before{
-
-content:"";
-
-position:absolute;
-
-inset:0;
-
-background:
-linear-gradient(
-120deg,
-transparent,
-rgba(255,255,255,.5),
-transparent
-);
-
-transform:translateX(-120%);
-
-transition:1s;
-}
-
-.btn:hover::before{
-
-transform:translateX(120%);
-}
-
-.btn-primary{
-
-background:
-linear-gradient(
-135deg,
-#0A84FF,
-#2563eb
-);
-
-color:white;
-
-box-shadow:
-0 20px 40px rgba(10,132,255,.25);
-}
-
-.btn-primary:hover{
-
-transform:
-translateY(-4px)
-scale(1.02);
-}
-
-.btn-secondary{
-
-background:
-rgba(255,255,255,.75);
-
-color:#0f172a;
-
-border:
-1px solid rgba(255,255,255,.8);
-
-backdrop-filter:blur(20px);
-}
-
-.btn-secondary:hover{
-
-background:white;
-
-transform:translateY(-4px);
-}
-
-/* ===================================
-STATUS
-=================================== */
-
-.status-grid{
-
-display:grid;
-
-grid-template-columns:
-repeat(3,1fr);
-
-gap:22px;
-
-margin-top:90px;
-}
-
-.status-card{
-
-padding:30px;
-
-border-radius:28px;
-
-background:
-rgba(255,255,255,.68);
-
-backdrop-filter:blur(24px);
-
-border:
-1px solid rgba(255,255,255,.75);
-
-box-shadow:var(--shadow);
-
-transition:.4s;
-}
-
-.status-card:hover{
-
-transform:
-translateY(-8px)
-rotateX(4deg);
-}
-
-.status-number{
-
-font-size:52px;
-
-font-weight:800;
-
-color:var(--blue);
-
-margin-bottom:10px;
-}
-
-.status-text{
-
-font-size:14px;
-
-color:#64748b;
-}
-
-/* ===================================
-SECTION
-=================================== */
-
-section{
-
-padding:120px 30px;
-}
-
-.container{
-
-max-width:1400px;
-
-margin:auto;
-}
-
-.section-title{
-
-font-size:64px;
-
-line-height:1;
-
-letter-spacing:-.06em;
-
-margin-bottom:24px;
-}
-
-.section-desc{
-
-font-size:21px;
-
-line-height:1.8;
-
-max-width:760px;
-
-color:#64748b;
-
-margin-bottom:70px;
-}
-
-/* ===================================
-GRID
-=================================== */
-
-.grid{
-
-display:grid;
-
-grid-template-columns:
-repeat(3,1fr);
-
-gap:24px;
-}
-
-.card{
-
-min-height:380px;
-
-padding:40px;
-
-border-radius:34px;
-
-position:relative;
-
-overflow:hidden;
-
-background:
-rgba(255,255,255,.65);
-
-backdrop-filter:blur(30px);
-
-border:
-1px solid rgba(255,255,255,.8);
-
-box-shadow:
-0 20px 60px rgba(15,23,42,.06);
-
-transition:.45s var(--ease);
-
-cursor:pointer;
-}
-
-.card:hover{
-
-transform:
-translateY(-10px)
-scale(1.02);
-
-box-shadow:
-0 30px 80px rgba(10,132,255,.12);
-}
-
-.card::before{
-
-content:"";
-
-position:absolute;
-
-width:300px;
-height:300px;
-
-background:
-radial-gradient(
-circle,
-rgba(10,132,255,.14),
-transparent 70%
-);
-
-top:var(--y);
-left:var(--x);
-
-transform:
-translate(-50%,-50%);
-
-opacity:0;
-
-transition:.4s;
-}
-
-.card:hover::before{
-
-opacity:1;
-}
-
-.large{
-grid-column:span 2;
-}
-
-.full{
-grid-column:span 3;
-}
-
-.card-tag{
-
-font-size:12px;
-
-letter-spacing:2px;
-
-text-transform:uppercase;
-
-color:#64748b;
-
-margin-bottom:20px;
-}
-
-.card-title{
-
-font-size:38px;
-
-line-height:1.1;
-
-letter-spacing:-.05em;
-
-margin-bottom:24px;
-}
-
-.card-desc{
-
-font-size:16px;
-
-line-height:1.9;
-
-color:#64748b;
-}
-
-/* ===================================
-CONSOLE
-=================================== */
-
-.console{
-
-padding:40px;
-
-border-radius:38px;
-
-background:
-rgba(255,255,255,.68);
-
-border:
-1px solid rgba(255,255,255,.85);
-
-backdrop-filter:blur(30px);
-
-box-shadow:
-0 20px 60px rgba(15,23,42,.08);
-}
-
-.search-box{
-
-position:relative;
-}
-
-.console-input{
-
-width:100%;
-height:78px;
-
-border:none;
-outline:none;
-
-padding:0 28px;
-
-padding-left:70px;
-
-border-radius:24px;
-
-font-size:18px;
-
-background:white;
-
-border:
-1px solid rgba(10,132,255,.08);
-
-transition:.3s;
-}
-
-.console-input:focus{
-
-border-color:#0A84FF;
-
-box-shadow:
-0 0 0 6px rgba(10,132,255,.08);
-}
-
-.search-icon{
-
-position:absolute;
-
-left:24px;
-top:50%;
-
-transform:translateY(-50%);
-
-font-size:20px;
-}
-
-.results{
-
-margin-top:30px;
-
-display:grid;
-
-grid-template-columns:
-repeat(3,1fr);
-
-gap:20px;
-}
-
-.result-card{
-
-padding:24px;
-
-border-radius:24px;
-
-background:white;
-
-border:
-1px solid rgba(10,132,255,.08);
-
-transition:.35s;
-
-box-shadow:
-0 10px 30px rgba(15,23,42,.04);
-}
-
-.result-card:hover{
-
-transform:translateY(-6px);
-}
-
-.result-company{
-
-font-size:13px;
-
-color:#64748b;
-
-margin-bottom:14px;
-}
-
-.result-role{
-
-font-size:24px;
-
-font-weight:700;
-
-margin-bottom:18px;
-}
-
-.match{
-
-display:inline-flex;
-
-padding:8px 14px;
-
-border-radius:999px;
-
-background:
-rgba(10,132,255,.1);
-
-color:#0A84FF;
-
-font-size:12px;
-
-font-weight:700;
-}
-
-/* ===================================
-FOOTER
-=================================== */
-
-footer{
-
-padding:100px 30px;
-
-text-align:center;
-
-color:#64748b;
-}
-
-/* ===================================
-REVEAL
-=================================== */
-
-.reveal{
-
-opacity:0;
-
-transform:
-translateY(60px);
-
-transition:1s var(--ease);
-}
-
-.reveal.active{
-
-opacity:1;
-
-transform:
-translateY(0);
-}
-
-/* ===================================
-RESPONSIVE
-=================================== */
-
-@media(max-width:1100px){
-
-.grid,
-.results,
-.status-grid{
-
-grid-template-columns:1fr;
-}
-
-.large,
-.full{
-
-grid-column:span 1;
-}
-
-.section-title{
-
-font-size:44px;
-}
-
-.hero h1{
-
-font-size:60px;
-}
-
-.hero p{
-
-font-size:18px;
-}
-
-.nav-links{
-
-display:none;
-}
-
+:root {
+    --bg: #edf4ff;
+    --card: rgba(255,255,255,.72);
+    --border: rgba(255,255,255,.55);
+    --text: #081120;
+    --muted: #64748b;
+    --blue: #0A84FF;
+    --cyan: #3CF2FF;
+    --purple: #7c3aed;
+    --shadow: 0 20px 60px rgba(15,23,42,.08);
+    --ease: cubic-bezier(.22,.61,.36,1);
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body {
+    font-family:'Inter',sans-serif;
+    background: linear-gradient(135deg, #f7fbff 0%, #edf5ff 35%, #f7faff 100%);
+    color:var(--text);
+    overflow-x:hidden;
+    min-height:100vh;
+}
+
+/* Background */
+.dynamic-bg { position:fixed; inset:0; z-index:-5; overflow:hidden; }
+.blob { position:absolute; border-radius:50%; filter:blur(90px); opacity:.4; animation:float 18s infinite ease-in-out; }
+.blob1 { width:600px; height:600px; background:#93c5fd; top:-120px; left:-100px; }
+.blob2 { width:500px; height:500px; background:#c4b5fd; right:-120px; top:100px; animation-delay:4s; }
+.blob3 { width:500px; height:500px; background:#67e8f9; bottom:-180px; left:30%; animation-delay:8s; }
+@keyframes float { 0%{ transform:translate(0,0) scale(1); } 50%{ transform:translate(40px,-60px) scale(1.12); } 100%{ transform:translate(0,0) scale(1); } }
+.grid-bg { position:fixed; inset:0; z-index:-4; background-image: linear-gradient(rgba(255,255,255,.6) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.6) 1px, transparent 1px); background-size:60px 60px; mask-image:linear-gradient(to bottom, rgba(0,0,0,.8), transparent); opacity:.4; }
+#particles { position:fixed; inset:0; z-index:-3; }
+
+/* Cursor */
+.cursor { position:fixed; width:24px; height:24px; border:2px solid rgba(10,132,255,.5); border-radius:50%; pointer-events:none; transform:translate(-50%,-50%); transition: width .25s, height .25s, background .25s; z-index:9999; }
+.cursor-dot { position:fixed; width:6px; height:6px; background:var(--blue); border-radius:50%; pointer-events:none; transform:translate(-50%,-50%); z-index:9999; }
+
+/* Nav */
+nav { position:fixed; top:18px; left:50%; transform:translateX(-50%); width:calc(100% - 40px); max-width:1380px; height:74px; z-index:1000; background:rgba(255,255,255,.68); backdrop-filter:blur(30px); border:1px solid rgba(255,255,255,.7); border-radius:26px; box-shadow:0 10px 40px rgba(15,23,42,.08); transition:.4s; }
+.nav-inner { height:100%; display:flex; align-items:center; justify-content:space-between; padding:0 28px; }
+.logo { font-size:15px; font-weight:800; letter-spacing:2px; display:flex; align-items:center; gap:12px; }
+.logo-icon { width:38px; height:38px; border-radius:14px; background:linear-gradient(135deg, #0A84FF, #3CF2FF); display:flex; align-items:center; justify-content:center; color:white; font-weight:700; box-shadow:0 10px 20px rgba(10,132,255,.25); }
+.nav-links { display:flex; gap:12px; }
+.nav-links a { height:44px; padding:0 18px; border-radius:14px; display:flex; align-items:center; justify-content:center; text-decoration:none; color:#475569; font-size:14px; font-weight:600; transition:.3s; }
+.nav-links a:hover { background:white; color:var(--blue); transform:translateY(-2px); }
+.nav-links a.active { background:rgba(10,132,255,.08); color:var(--blue); }
+
+/* Mobile Nav */
+.hamburger { display:none; width:44px; height:44px; border-radius:12px; border:none; background:rgba(10,132,255,.06); cursor:pointer; flex-direction:column; align-items:center; justify-content:center; gap:5px; }
+.hamburger span { width:20px; height:2px; background:var(--blue); border-radius:2px; transition:.3s; }
+.hamburger.open span:nth-child(1) { transform:rotate(45deg) translate(5px,5px); }
+.hamburger.open span:nth-child(2) { opacity:0; }
+.hamburger.open span:nth-child(3) { transform:rotate(-45deg) translate(5px,-5px); }
+
+/* Hero */
+.hero { min-height:100vh; display:flex; align-items:center; justify-content:center; padding:180px 30px 120px; position:relative; }
+.hero-content { max-width:1250px; text-align:center; }
+.hero-badge { display:inline-flex; align-items:center; gap:10px; padding:12px 24px; background:rgba(255,255,255,.72); border:1px solid rgba(255,255,255,.8); border-radius:999px; backdrop-filter:blur(20px); margin-bottom:40px; font-size:13px; font-weight:600; color:#475569; }
+.live-dot { width:8px; height:8px; border-radius:50%; background:#00d26a; box-shadow:0 0 14px #00d26a; animation:pulse 1.5s infinite; }
+@keyframes pulse { 0%{opacity:1;} 50%{opacity:.35;} 100%{opacity:1;} }
+.hero h1 { font-size:clamp(48px,8vw,120px); line-height:.95; letter-spacing:-.07em; font-weight:800; margin-bottom:34px; background:linear-gradient(180deg, #081120 0%, #0A84FF 60%, #64748b 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; min-height:1.2em; }
+.hero p { font-size:22px; line-height:1.8; max-width:900px; margin:auto; color:#475569; }
+.hero-actions { margin-top:55px; display:flex; justify-content:center; gap:18px; flex-wrap:wrap; }
+
+/* Buttons */
+.btn { height:60px; padding:0 34px; border-radius:18px; display:flex; align-items:center; justify-content:center; text-decoration:none; font-weight:700; font-size:15px; transition:.35s var(--ease); position:relative; overflow:hidden; }
+.btn::before { content:""; position:absolute; inset:0; background:linear-gradient(120deg, transparent, rgba(255,255,255,.5), transparent); transform:translateX(-120%); transition:1s; }
+.btn:hover::before { transform:translateX(120%); }
+.btn-primary { background:linear-gradient(135deg, #0A84FF, #2563eb); color:white; box-shadow:0 20px 40px rgba(10,132,255,.25); }
+.btn-primary:hover { transform:translateY(-4px) scale(1.02); box-shadow:0 25px 50px rgba(10,132,255,.3); }
+.btn-secondary { background:rgba(255,255,255,.75); color:#0f172a; border:1px solid rgba(255,255,255,.8); backdrop-filter:blur(20px); }
+.btn-secondary:hover { background:white; transform:translateY(-4px); }
+
+/* Status Grid */
+.status-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:22px; margin-top:80px; }
+.status-card { padding:30px; border-radius:28px; background:rgba(255,255,255,.68); backdrop-filter:blur(24px); border:1px solid rgba(255,255,255,.75); box-shadow:var(--shadow); transition:.4s; }
+.status-card:hover { transform:translateY(-8px); box-shadow:0 30px 70px rgba(10,132,255,.12); }
+.status-number { font-size:48px; font-weight:800; color:var(--blue); margin-bottom:8px; }
+.status-label { font-size:13px; color:#64748b; font-weight:500; }
+
+/* Section */
+section { padding:120px 30px; }
+.container { max-width:1400px; margin:auto; }
+.section-header { margin-bottom:60px; }
+.section-title { font-size:clamp(38px,5vw,64px); line-height:1.1; letter-spacing:-.06em; margin-bottom:20px; }
+.section-desc { font-size:20px; line-height:1.8; max-width:760px; color:#64748b; }
+
+/* Cards Grid */
+.grid { display:grid; grid-template-columns:repeat(3,1fr); gap:24px; }
+.card { min-height:360px; padding:40px; border-radius:34px; position:relative; overflow:hidden; background:rgba(255,255,255,.65); backdrop-filter:blur(30px); border:1px solid rgba(255,255,255,.8); box-shadow:0 20px 60px rgba(15,23,42,.06); transition:.45s var(--ease); cursor:pointer; }
+.card:hover { transform:translateY(-10px) scale(1.01); box-shadow:0 30px 80px rgba(10,132,255,.12); }
+.card::before { content:""; position:absolute; width:300px; height:300px; background:radial-gradient(circle, rgba(10,132,255,.14), transparent 70%); top:var(--y); left:var(--x); transform:translate(-50%,-50%); opacity:0; transition:.4s; }
+.card:hover::before { opacity:1; }
+.large { grid-column:span 2; }
+.full { grid-column:span 3; }
+.card-tag { font-size:11px; letter-spacing:2px; text-transform:uppercase; color:var(--blue); margin-bottom:18px; font-weight:700; padding:6px 14px; background:rgba(10,132,255,.06); border-radius:8px; display:inline-block; }
+.card-title { font-size:34px; line-height:1.15; letter-spacing:-.04em; margin-bottom:20px; font-weight:800; }
+.card-desc { font-size:15px; line-height:1.9; color:#64748b; }
+
+/* Console */
+.console { padding:40px; border-radius:34px; background:rgba(255,255,255,.68); border:1px solid rgba(255,255,255,.85); backdrop-filter:blur(30px); box-shadow:0 20px 60px rgba(15,23,42,.08); }
+.search-box { position:relative; }
+.console-input { width:100%; height:72px; border:none; outline:none; padding:0 28px 0 65px; border-radius:22px; font-size:17px; font-family:'Inter',sans-serif; background:white; border:2px solid rgba(10,132,255,.06); transition:.3s; }
+.console-input:focus { border-color:#0A84FF; box-shadow:0 0 0 6px rgba(10,132,255,.08); }
+.search-icon { position:absolute; left:22px; top:50%; transform:translateY(-50%); font-size:20px; color:var(--blue); }
+.results { margin-top:28px; display:grid; grid-template-columns:repeat(3,1fr); gap:18px; }
+.result-card { padding:26px; border-radius:22px; background:white; border:1px solid rgba(10,132,255,.06); transition:.35s; box-shadow:0 10px 30px rgba(15,23,42,.04); }
+.result-card:hover { transform:translateY(-6px); box-shadow:0 20px 40px rgba(10,132,255,.1); }
+.result-company { font-size:12px; color:#64748b; margin-bottom:12px; font-weight:600; letter-spacing:1px; text-transform:uppercase; }
+.result-role { font-size:22px; font-weight:700; margin-bottom:16px; }
+.match { display:inline-flex; padding:8px 14px; border-radius:999px; background:rgba(10,132,255,.08); color:#0A84FF; font-size:12px; font-weight:700; }
+
+/* Footer */
+footer { padding:80px 30px 50px; text-align:center; border-top:1px solid rgba(10,132,255,.06); }
+.footer-inner { max-width:1200px; margin:auto; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:20px; }
+.footer-brand { font-size:14px; font-weight:700; color:var(--text); }
+.footer-links { display:flex; gap:24px; }
+.footer-links a { color:#64748b; text-decoration:none; font-size:13px; font-weight:500; transition:.3s; }
+.footer-links a:hover { color:var(--blue); }
+.footer-copy { width:100%; text-align:center; margin-top:30px; font-size:12px; color:#94a3b8; }
+
+/* Reveal */
+.reveal { opacity:0; transform:translateY(50px); transition:1s var(--ease); }
+.reveal.active { opacity:1; transform:translateY(0); }
+
+/* Responsive */
+@media(max-width:1100px) {
+    .grid, .results, .status-grid { grid-template-columns:1fr; }
+    .large, .full { grid-column:span 1; }
+    .section-title { font-size:38px; }
+    .hero h1 { font-size:48px; }
+    .hero p { font-size:17px; }
+    .nav-links { display:none; position:fixed; top:100px; left:50%; transform:translateX(-50%); width:calc(100% - 40px); background:rgba(255,255,255,.95); backdrop-filter:blur(30px); border-radius:20px; flex-direction:column; padding:20px; gap:8px; box-shadow:0 20px 60px rgba(15,23,42,.12); border:1px solid rgba(255,255,255,.8); }
+    .nav-links.open { display:flex; }
+    .nav-links a { justify-content:flex-start; padding:14px 20px; }
+    .hamburger { display:flex; }
+    .hero-actions { flex-direction:column; align-items:center; }
+    .footer-inner { flex-direction:column; text-align:center; }
 }
-
 </style>
 </head>
-
 <body>
 
 <div class="dynamic-bg">
-
-<div class="blob blob1"></div>
-<div class="blob blob2"></div>
-<div class="blob blob3"></div>
-
+    <div class="blob blob1"></div>
+    <div class="blob blob2"></div>
+    <div class="blob blob3"></div>
 </div>
-
 <div class="grid-bg"></div>
-
 <canvas id="particles"></canvas>
-
 <div class="cursor"></div>
 <div class="cursor-dot"></div>
 
 <nav>
-
-<div class="nav-inner">
-
-<div class="logo">
-
-<div class="logo-icon">
-L
-</div>
-
-LEO OS
-
-</div>
-
-<div class="nav-links">
-
-<a href="#hero">首页</a>
-<a href="#intelligence">人才架构</a>
-<a href="#console">智能搜索</a>
-<a href="#network">高端网络</a>
-<a href="#contact">联系我</a>
-
-</div>
-
-</div>
-
+    <div class="nav-inner">
+        <div class="logo">
+            <div class="logo-icon">L</div>
+            LEO OS
+        </div>
+        <div class="nav-links" id="navLinks">
+            <a href="#hero">首页</a>
+            <a href="#intelligence">人才架构</a>
+            <a href="#console">智能搜索</a>
+            <a href="#contact">联系我</a>
+        </div>
+        <button class="hamburger" id="hamburger" onclick="toggleMobileNav()">
+            <span></span><span></span><span></span>
+        </button>
+    </div>
 </nav>
 
 <section class="hero" id="hero">
-
-<div class="hero-content reveal">
-
-<div class="hero-badge">
-
-<div class="live-dot"></div>
-
-AI EXECUTIVE INTELLIGENCE SYSTEM ONLINE
-
-</div>
-
-<h1 id="typing"></h1>
-
-<p>
-
-在自动驾驶、AGI 与智能制造的交汇点，
-构建下一代 AI 人才基础设施。
-不仅是猎头，更是 AI 时代的人才 intelligence network。
-
-</p>
-
-<div class="hero-actions">
-
-<a href="#console" class="btn btn-primary">
-进入智能搜索系统
-</a>
-
-<a href="mailto:supkefly@gmail.com" class="btn btn-secondary">
-建立联系
-</a>
-
-</div>
-
-<div class="status-grid">
-
-<div class="status-card">
-
-<div class="status-number" data-count="128">
-0
-</div>
-
-<div class="status-text">
-活跃岗位搜索
-</div>
-
-</div>
-
-<div class="status-card">
-
-<div class="status-number" data-count="93">
-0
-</div>
-
-<div class="status-text">
-智能匹配精度
-</div>
-
-</div>
-
-<div class="status-card">
-
-<div class="status-number" data-count="2800">
-0
-</div>
-
-<div class="status-text">
-AI 人才节点
-</div>
-
-</div>
-
-</div>
-
-</div>
-
+    <div class="hero-content reveal">
+        <div class="hero-badge">
+            <div class="live-dot"></div>
+            AI EXECUTIVE INTELLIGENCE SYSTEM ONLINE
+        </div>
+        <h1 id="typing"></h1>
+        <p>在自动驾驶、AGI 与智能制造的交汇点，构建下一代 AI 人才基础设施。不仅是猎头，更是 AI 时代的人才 Intelligence Network。</p>
+        <div class="hero-actions">
+            <a href="#console" class="btn btn-primary">进入智能搜索系统</a>
+            <a href="mailto:supkefly@gmail.com" class="btn btn-secondary">建立联系</a>
+        </div>
+        <div class="status-grid">
+            <div class="status-card">
+                <div class="status-number" data-count="128">0</div>
+                <div class="status-label">活跃岗位搜索</div>
+            </div>
+            <div class="status-card">
+                <div class="status-number" data-count="93" data-suffix="%">0</div>
+                <div class="status-label">智能匹配精度</div>
+            </div>
+            <div class="status-card">
+                <div class="status-number" data-count="2800" data-suffix="+">0</div>
+                <div class="status-label">AI 人才节点</div>
+            </div>
+        </div>
+    </div>
 </section>
-
 <section id="intelligence">
-
-<div class="container">
-
-<div class="reveal">
-
-<h2 class="section-title">
-AI 人才情报架构
-</h2>
-
-<p class="section-desc">
-
-基于技术路线、组织架构与产业链的深度 Mapping，
-持续追踪 AI 与新能源领域核心技术人才流向。
-
-</p>
-
-</div>
-
-<div class="grid">
-
-<div class="card large reveal">
-
-<div class="card-tag">
-AUTONOMOUS SYSTEM
-</div>
-
-<div class="card-title">
-智能驾驶与端到端架构
-</div>
-
-<div class="card-desc">
-
-覆盖 ADS、
-BEV、
-Occupancy Network、
-世界模型、
-端到端自动驾驶、
-EEA 与智能整车架构。
-
-</div>
-
-</div>
-
-<div class="card reveal">
-
-<div class="card-tag">
-FOUNDATION MODEL
-</div>
-
-<div class="card-title">
-AGI 与多模态
-</div>
-
-<div class="card-desc">
-
-LLM、
-Agent、
-世界模型、
-推理优化、
-RLHF、
-AI Infra。
-
-</div>
-
-</div>
-
-<div class="card reveal">
-
-<div class="card-tag">
-AI MAPPING OS
-</div>
-
-<div class="card-title">
-智能人才图谱
-</div>
-
-<div class="card-desc">
-
-基于知识图谱与本地 AI，
-构建下一代人才搜索系统。
-
-</div>
-
-</div>
-
-<div class="card reveal">
-
-<div class="card-tag">
-EXECUTIVE NETWORK
-</div>
-
-<div class="card-title">
-高端技术圈层
-</div>
-
-<div class="card-desc">
-
-长期深耕 AI、
-机器人、
-新能源与科技高管生态。
-
-</div>
-
-</div>
-
-<div class="card full reveal">
-
-<div class="card-tag">
-INDUSTRY INTELLIGENCE
-</div>
-
-<div class="card-title">
-Mapping the human infrastructure behind AI.
-</div>
-
-<div class="card-desc">
-
-企业真正需要的，
-已经不是传统 JD 匹配，
-而是理解技术演进与组织升级的人才 intelligence system。
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
+    <div class="container">
+        <div class="section-header reveal">
+            <h2 class="section-title">AI 人才情报架构</h2>
+            <p class="section-desc">基于技术路线、组织架构与产业链的深度 Mapping，持续追踪 AI 与新能源领域核心技术人才流向。</p>
+        </div>
+        <div class="grid">
+            <div class="card large reveal">
+                <div class="card-tag">AUTONOMOUS SYSTEM</div>
+                <div class="card-title">智能驾驶与端到端架构</div>
+                <div class="card-desc">覆盖 ADS、BEV、Occupancy Network、世界模型、端到端自动驾驶、EEA 与智能整车架构。</div>
+            </div>
+            <div class="card reveal">
+                <div class="card-tag">FOUNDATION MODEL</div>
+                <div class="card-title">AGI 与多模态</div>
+                <div class="card-desc">LLM、Agent、世界模型、推理优化、RLHF、AI Infra。</div>
+            </div>
+            <div class="card reveal">
+                <div class="card-tag">AI MAPPING OS</div>
+                <div class="card-title">智能人才图谱</div>
+                <div class="card-desc">基于知识图谱与本地 AI，构建下一代人才搜索系统。</div>
+            </div>
+            <div class="card reveal">
+                <div class="card-tag">EXECUTIVE NETWORK</div>
+                <div class="card-title">高端技术圈层</div>
+                <div class="card-desc">长期深耕 AI、机器人、新能源与科技高管生态。</div>
+            </div>
+            <div class="card full reveal">
+                <div class="card-tag">INDUSTRY INTELLIGENCE</div>
+                <div class="card-title">Mapping the human infrastructure behind AI.</div>
+                <div class="card-desc">企业真正需要的，已经不是传统 JD 匹配，而是理解技术演进与组织升级的人才 intelligence system。</div>
+            </div>
+        </div>
+    </div>
 </section>
 
 <section id="console">
-
-<div class="container">
-
-<div class="reveal">
-
-<h2 class="section-title">
-AI 智能搜索系统
-</h2>
-
-<p class="section-desc">
-
-输入技术方向，
-模拟 AI 人才 intelligence 搜索。
-
-</p>
-
-</div>
-
-<div class="console reveal">
-
-<div class="search-box">
-
-<div class="search-icon">
-⌘
-</div>
-
-<input
-type="text"
-class="console-input"
-id="searchInput"
-placeholder="输入技术方向，例如：autonomous / multimodal / embodied AI"
-/>
-
-</div>
-
-<div class="results" id="results">
-
-<div class="result-card">
-
-<div class="result-company">
-Tesla AP
-</div>
-
-<div class="result-role">
-Planning Architect
-</div>
-
-<div class="match">
-匹配度 98%
-</div>
-
-</div>
-
-<div class="result-card">
-
-<div class="result-company">
-OpenAI
-</div>
-
-<div class="result-role">
-Agent Engineer
-</div>
-
-<div class="match">
-匹配度 96%
-</div>
-
-</div>
-
-<div class="result-card">
-
-<div class="result-company">
-Figure AI
-</div>
-
-<div class="result-role">
-Robotics AI Lead
-</div>
-
-<div class="match">
-匹配度 94%
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
+    <div class="container">
+        <div class="section-header reveal">
+            <h2 class="section-title">AI 智能搜索系统</h2>
+            <p class="section-desc">输入技术方向，模拟 AI 人才 intelligence 搜索。</p>
+        </div>
+        <div class="console reveal">
+            <div class="search-box">
+                <div class="search-icon">⌘</div>
+                <input type="text" class="console-input" id="searchInput" placeholder="输入技术方向，例如：autonomous / multimodal / embodied AI" />
+            </div>
+            <div class="results" id="results">
+                <div class="result-card">
+                    <div class="result-company">Tesla AP</div>
+                    <div class="result-role">Planning Architect</div>
+                    <div class="match">匹配度 98%</div>
+                </div>
+                <div class="result-card">
+                    <div class="result-company">OpenAI</div>
+                    <div class="result-role">Agent Engineer</div>
+                    <div class="match">匹配度 96%</div>
+                </div>
+                <div class="result-card">
+                    <div class="result-company">Figure AI</div>
+                    <div class="result-role">Robotics AI Lead</div>
+                    <div class="match">匹配度 94%</div>
+                </div>
+            </div>
+        </div>
+    </div>
 </section>
 
 <footer id="contact">
-
-© 2026 LEO OS ｜ AI时代的人才智能操作系统
-
+    <div class="footer-inner">
+        <div class="footer-brand">LEO OS</div>
+        <div class="footer-links">
+            <a href="mailto:supkefly@gmail.com">Email</a>
+            <a href="#">GitHub</a>
+            <a href="#">Twitter</a>
+        </div>
+        <div class="footer-copy">© 2026 LEO OS｜AI 时代的人才智能操作系统</div>
+    </div>
 </footer>
 
 <script>
-
-/* ===================================
-TYPING
-=================================== */
-
-const text =
-"构建下一代 AI 人才基础设施";
-
-const typing =
-document.getElementById("typing");
-
+/* Typing Effect */
+const text = "构建下一代 AI 人才基础设施";
+const typing = document.getElementById("typing");
 let i = 0;
-
-function type(){
-
-if(i < text.length){
-
-typing.innerHTML += text.charAt(i);
-
-i++;
-
-setTimeout(type,45);
-
+function type() {
+    if (i < text.length) {
+        typing.innerHTML += text.charAt(i);
+        i++;
+        setTimeout(type, 50);
+    } else {
+        typing.style.borderRight = 'none';
+    }
 }
-
-}
-
 type();
 
-/* ===================================
-CURSOR
-=================================== */
+/* Custom Cursor */
+const cursor = document.querySelector('.cursor');
+const dot = document.querySelector('.cursor-dot');
+let cursorX = 0, cursorY = 0, dotX = 0, dotY = 0;
 
-const cursor =
-document.querySelector('.cursor');
-
-const dot =
-document.querySelector('.cursor-dot');
-
-document.addEventListener('mousemove',(e)=>{
-
-cursor.style.left =
-e.clientX + 'px';
-
-cursor.style.top =
-e.clientY + 'px';
-
-dot.style.left =
-e.clientX + 'px';
-
-dot.style.top =
-e.clientY + 'px';
-
+document.addEventListener('mousemove', (e) => {
+    cursorX = e.clientX;
+    cursorY = e.clientY;
+    dot.style.left = e.clientX + 'px';
+    dot.style.top = e.clientY + 'px';
 });
 
-document.querySelectorAll('a,.card,.btn')
-.forEach(el=>{
+function animateCursor() {
+    dotX += (cursorX - dotX) * 0.15;
+    dotY += (cursorY - dotY) * 0.15;
+    cursor.style.left = dotX + 'px';
+    cursor.style.top = dotY + 'px';
+    requestAnimationFrame(animateCursor);
+}
+animateCursor();
 
-el.addEventListener('mouseenter',()=>{
-
-cursor.style.width='60px';
-cursor.style.height='60px';
-
-cursor.style.background=
-'rgba(10,132,255,.08)';
-
+document.querySelectorAll('a,.card,.btn').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+        cursor.style.width = '56px';
+        cursor.style.height = '56px';
+        cursor.style.background = 'rgba(10,132,255,.06)';
+    });
+    el.addEventListener('mouseleave', () => {
+        cursor.style.width = '24px';
+        cursor.style.height = '24px';
+        cursor.style.background = 'transparent';
+    });
 });
 
-el.addEventListener('mouseleave',()=>{
-
-cursor.style.width='24px';
-cursor.style.height='24px';
-
-cursor.style.background='transparent';
-
-});
-
-});
-
-/* ===================================
-PARTICLES
-=================================== */
-
-const canvas =
-document.getElementById("particles");
-
-const ctx =
-canvas.getContext("2d");
-
-canvas.width =
-window.innerWidth;
-
-canvas.height =
-window.innerHeight;
+/* Particles */
+const canvas = document.getElementById("particles");
+const ctx = canvas.getContext("2d");
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
 
 const particles = [];
-
-for(let i=0;i<90;i++){
-
-particles.push({
-
-x:Math.random()*canvas.width,
-y:Math.random()*canvas.height,
-
-vx:(Math.random()-.5)*0.5,
-vy:(Math.random()-.5)*0.5,
-
-r:Math.random()*2+1
-
-});
-
+for (let i = 0; i < 80; i++) {
+    particles.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        vx: (Math.random() - .5) * 0.4,
+        vy: (Math.random() - .5) * 0.4,
+        r: Math.random() * 2 + 1
+    });
 }
 
-function animate(){
-
-ctx.clearRect(
-0,
-0,
-canvas.width,
-canvas.height
-);
-
-particles.forEach(p=>{
-
-p.x += p.vx;
-p.y += p.vy;
-
-if(p.x<0 || p.x>canvas.width)
-p.vx *= -1;
-
-if(p.y<0 || p.y>canvas.height)
-p.vy *= -1;
-
-ctx.beginPath();
-
-ctx.arc(
-p.x,
-p.y,
-p.r,
-0,
-Math.PI*2
-);
-
-ctx.fillStyle =
-"rgba(10,132,255,.25)";
-
-ctx.fill();
-
-particles.forEach(other=>{
-
-const dx = p.x-other.x;
-const dy = p.y-other.y;
-
-const dist =
-Math.sqrt(dx*dx+dy*dy);
-
-if(dist < 120){
-
-ctx.beginPath();
-
-ctx.moveTo(p.x,p.y);
-ctx.lineTo(other.x,other.y);
-
-ctx.strokeStyle =
-`rgba(10,132,255,${
-1-dist/120
-})`;
-
-ctx.stroke();
-
+function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles.forEach(p => {
+        p.x += p.vx;
+        p.y += p.vy;
+        if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+        if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = "rgba(10,132,255,.2)";
+        ctx.fill();
+        particles.forEach(other => {
+            const dx = p.x - other.x;
+            const dy = p.y - other.y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist < 110) {
+                ctx.beginPath();
+                ctx.moveTo(p.x, p.y);
+                ctx.lineTo(other.x, other.y);
+                ctx.strokeStyle = `rgba(10,132,255,${(1 - dist / 110) * 0.15})`;
+                ctx.stroke();
+            }
+        });
+    });
+    requestAnimationFrame(animate);
 }
-
-});
-
-});
-
-requestAnimationFrame(animate);
-
-}
-
 animate();
 
-/* ===================================
-CARD INTERACTION
-=================================== */
-
-document.querySelectorAll('.card')
-.forEach(card=>{
-
-card.addEventListener('mousemove',(e)=>{
-
-const rect =
-card.getBoundingClientRect();
-
-const x =
-e.clientX - rect.left;
-
-const y =
-e.clientY - rect.top;
-
-card.style.setProperty(
-'--x',
-`${x}px`
-);
-
-card.style.setProperty(
-'--y',
-`${y}px`
-);
-
-const centerX =
-rect.width/2;
-
-const centerY =
-rect.height/2;
-
-const rotateX =
-(y-centerY)/18;
-
-const rotateY =
--(x-centerX)/18;
-
-card.style.transform = `
-perspective(1200px)
-rotateX(${rotateX}deg)
-rotateY(${rotateY}deg)
-translateY(-8px)
-`;
-
+/* Card 3D Interaction */
+document.querySelectorAll('.card').forEach(card => {
+    card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        card.style.setProperty('--x', `${x}px`);
+        card.style.setProperty('--y', `${y}px`);
+        const rotateX = (y - rect.height / 2) / 25;
+        const rotateY = -(x - rect.width / 2) / 25;
+        card.style.transform = `perspective(1200px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-8px)`;
+    });
+    card.addEventListener('mouseleave', () => {
+        card.style.transform = '';
+    });
 });
 
-card.addEventListener('mouseleave',()=>{
+/* Scroll Reveal */
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('active');
+    });
+}, { threshold: .12 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-card.style.transform='';
+/* Counter Animation */
+const counterObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            const counter = entry.target;
+            const target = +counter.dataset.count;
+            const suffix = counter.dataset.suffix || '';
+            let count = 0;
+            const increment = Math.ceil(target / 50);
+            const update = () => {
+                count += increment;
+                if (count >= target) {
+                    counter.innerText = target + suffix;
+                    return;
+                }
+                counter.innerText = count + suffix;
+                requestAnimationFrame(update);
+            };
+            update();
+            counterObserver.unobserve(counter);
+        }
+    });
+}, { threshold: .5 });
+document.querySelectorAll('.status-number').forEach(el => counterObserver.observe(el));
 
-});
-
-});
-
-/* ===================================
-REVEAL
-=================================== */
-
-const observer =
-new IntersectionObserver((entries)=>{
-
-entries.forEach(entry=>{
-
-if(entry.isIntersecting){
-
-entry.target.classList.add(
-'active'
-);
-
-}
-
-});
-
-},{
-threshold:.15
-});
-
-document
-.querySelectorAll('.reveal')
-.forEach(el=>observer.observe(el));
-
-/* ===================================
-COUNTER
-=================================== */
-
-document.querySelectorAll(
-'.status-number'
-).forEach(counter=>{
-
-const target =
-+counter.dataset.count;
-
-let count = 0;
-
-const update = ()=>{
-
-count += Math.ceil(target/60);
-
-if(count > target)
-count = target;
-
-counter.innerText = count;
-
-if(count < target){
-
-requestAnimationFrame(update);
-
-}
-
-}
-
-update();
-
-});
-
-setInterval(()=>{
-
-document.querySelectorAll('.status-number')
-.forEach(el=>{
-
-let base=+el.dataset.count;
-
-el.innerText =
-base + Math.floor(Math.random()*8);
-
-});
-
-},1800);
-
-/* ===================================
-SEARCH
-=================================== */
-
-const searchInput =
-document.getElementById(
-'searchInput'
-);
-
-const results =
-document.getElementById(
-'results'
-);
-
+/* Search */
+const searchInput = document.getElementById('searchInput');
+const results = document.getElementById('results');
 const database = {
-
-autonomous:[
-['Tesla AP','Planning Architect','98%'],
-['Huawei ADS','Perception Lead','95%'],
-['Momenta','BEV Engineer','94%']
-],
-
-multimodal:[
-['OpenAI','Multimodal Researcher','97%'],
-['Google DeepMind','Vision-Language Scientist','95%'],
-['Anthropic','Agent Engineer','93%']
-],
-
-embodied:[
-['Figure AI','Robotics AI Lead','96%'],
-['Tesla Optimus','Motion Planning','94%'],
-['Unitree','Embodied RL Engineer','91%']
-]
-
+    autonomous: [
+        ['Tesla AP', 'Planning Architect', '98%'],
+        ['Huawei ADS', 'Perception Lead', '95%'],
+        ['Momenta', 'BEV Engineer', '94%']
+    ],
+    multimodal: [
+        ['OpenAI', 'Multimodal Researcher', '97%'],
+        ['Google DeepMind', 'Vision-Language Scientist', '95%'],
+        ['Anthropic', 'Agent Engineer', '93%']
+    ],
+    embodied: [
+        ['Figure AI', 'Robotics AI Lead', '96%'],
+        ['Tesla Optimus', 'Motion Planning', '94%'],
+        ['Unitree', 'Embodied RL Engineer', '91%']
+    ]
 };
 
-searchInput.addEventListener(
-'input',
-(e)=>{
-
-const value =
-e.target.value.toLowerCase();
-
-results.innerHTML = `
-<div class="result-card">
-<div class="result-role">
-AI Intelligence 搜索中...
-</div>
-</div>
-`;
-
-setTimeout(()=>{
-
-results.innerHTML='';
-
-let found=false;
-
-Object.keys(database)
-.forEach(key=>{
-
-if(value.includes(key)){
-
-found=true;
-
-database[key]
-.forEach(item=>{
-
-results.innerHTML += `
-
-<div class="result-card">
-
-<div class="result-company">
-${item[0]}
-</div>
-
-<div class="result-role">
-${item[1]}
-</div>
-
-<div class="match">
-匹配度 ${item[2]}
-</div>
-
-</div>
-
-`;
-
+searchInput.addEventListener('input', (e) => {
+    const value = e.target.value.toLowerCase().trim();
+    if (!value) {
+        results.innerHTML = `
+            <div class="result-card"><div class="result-company">Tesla AP</div><div class="result-role">Planning Architect</div><div class="match">匹配度 98%</div></div>
+            <div class="result-card"><div class="result-company">OpenAI</div><div class="result-role">Agent Engineer</div><div class="match">匹配度 96%</div></div>
+            <div class="result-card"><div class="result-company">Figure AI</div><div class="result-role">Robotics AI Lead</div><div class="match">匹配度 94%</div></div>`;
+        return;
+    }
+    results.innerHTML = '<div class="result-card"><div class="result-role" style="color:var(--blue)">AI Intelligence 搜索中...</div></div>';
+    setTimeout(() => {
+        results.innerHTML = '';
+        let found = false;
+        Object.keys(database).forEach(key => {
+            if (value.includes(key)) {
+                found = true;
+                database[key].forEach(item => {
+                    results.innerHTML += `<div class="result-card"><div class="result-company">${item[0]}</div><div class="result-role">${item[1]}</div><div class="match">匹配度 ${item[2]}</div></div>`;
+                });
+            }
+        });
+        if (!found) {
+            results.innerHTML = '<div class="result-card"><div class="result-company">LEO Intelligence</div><div class="result-role">正在扩展人才图谱...</div><div class="match">深度搜索中</div></div>';
+        }
+    }, 400);
 });
 
+/* Mobile Nav */
+function toggleMobileNav() {
+    document.getElementById('navLinks').classList.toggle('open');
+    document.getElementById('hamburger').classList.toggle('open');
 }
 
+/* Nav Scroll */
+window.addEventListener('scroll', () => {
+    const nav = document.querySelector('nav');
+    if (window.scrollY > 40) {
+        nav.style.background = 'rgba(255,255,255,.85)';
+        nav.style.transform = 'translateX(-50%) scale(.98)';
+    } else {
+        nav.style.background = 'rgba(255,255,255,.68)';
+        nav.style.transform = 'translateX(-50%) scale(1)';
+    }
 });
 
-if(!found){
-
-results.innerHTML = `
-
-<div class="result-card">
-
-<div class="result-company">
-LEO Intelligence
-</div>
-
-<div class="result-role">
-正在扩展人才图谱...
-</div>
-
-<div class="match">
-深度搜索中
-</div>
-
-</div>
-
-`;
-
-}
-
-},500);
-
+/* Nav Active State */
+const sections = document.querySelectorAll('section[id]');
+window.addEventListener('scroll', () => {
+    const scrollY = window.scrollY + 200;
+    sections.forEach(section => {
+        const top = section.offsetTop;
+        const height = section.offsetHeight;
+        const id = section.getAttribute('id');
+        const link = document.querySelector(`.nav-links a[href="#${id}"]`);
+        if (link) {
+            if (scrollY >= top && scrollY < top + height) {
+                link.classList.add('active');
+            } else {
+                link.classList.remove('active');
+            }
+        }
+    });
 });
 
-/* ===================================
-NAV SCROLL
-=================================== */
-
-window.addEventListener(
-'scroll',
-()=>{
-
-const nav =
-document.querySelector('nav');
-
-if(window.scrollY > 40){
-
-nav.style.background =
-'rgba(255,255,255,.82)';
-
-nav.style.transform =
-'translateX(-50%) scale(.98)';
-
-}else{
-
-nav.style.background =
-'rgba(255,255,255,.68)';
-
-nav.style.transform =
-'translateX(-50%) scale(1)';
-
-}
-
+/* Resize */
+window.addEventListener('resize', () => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
 });
-
-/* ===================================
-RESIZE
-=================================== */
-
-window.addEventListener(
-'resize',
-()=>{
-
-canvas.width =
-window.innerWidth;
-
-canvas.height =
-window.innerHeight;
-
-});
-
 </script>
-
-</body>
-</html>
-
-</script>
-
 </body>
 </html>
