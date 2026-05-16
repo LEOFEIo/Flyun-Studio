@@ -3,1847 +3,1612 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-
-<title>LEO OS｜AI 人才智能系统</title>
+<meta name="description" content="LEO OS - AI 时代的人才智能操作系统。覆盖自动驾驶、AGI、具身智能与新能源核心技术人才网络。" />
+<title>LEO OS · AI Talent Intelligence System</title>
 
 <link rel="icon" type="image/svg+xml"
-href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 128 128'%3E%3Crect rx='28' width='128' height='128' fill='%230A84FF'/%3E%3Cpath d='M38 32v64h52v-12H52V32z' fill='white'/%3E%3C/svg%3E">
+href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 128 128'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' x2='1' y1='0' y2='1'%3E%3Cstop offset='0' stop-color='%2300E5FF'/%3E%3Cstop offset='1' stop-color='%230A84FF'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect rx='28' width='128' height='128' fill='url(%23g)'/%3E%3Cpath d='M38 32v64h52v-12H52V32z' fill='white'/%3E%3C/svg%3E">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 
 <style>
-
 :root{
-
---bg:#edf4ff;
---bg2:#f8fbff;
-
---card:rgba(255,255,255,.72);
-
---border:rgba(255,255,255,.55);
-
---text:#081120;
---muted:#64748b;
-
---blue:#0A84FF;
---cyan:#3CF2FF;
---purple:#7c3aed;
-
---shadow:
-0 20px 60px rgba(15,23,42,.08);
-
---ease:cubic-bezier(.22,.61,.36,1);
-
+  --bg:#05060A;
+  --bg-elev:#0B0D14;
+  --surface:rgba(18,21,32,.6);
+  --surface-2:rgba(28,32,48,.5);
+  --border:rgba(255,255,255,.08);
+  --border-strong:rgba(255,255,255,.14);
+  --text:#E8ECF5;
+  --text-dim:#94A3B8;
+  --text-mute:#64748B;
+  --blue:#0A84FF;
+  --cyan:#00E5FF;
+  --purple:#7C5CFF;
+  --pink:#FF3D9A;
+  --green:#00E5A0;
+  --amber:#FFB020;
+  --grad: linear-gradient(135deg,#00E5FF 0%,#0A84FF 50%,#7C5CFF 100%);
+  --grad-warm: linear-gradient(135deg,#FF3D9A 0%,#FFB020 100%);
+  --shadow-lg: 0 30px 80px rgba(0,0,0,.5);
+  --ease:cubic-bezier(.22,.61,.36,1);
 }
 
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-}
-
-html{
-scroll-behavior:smooth;
-}
-
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
 body{
+  font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  overflow-x:hidden;
+  min-height:100vh;
+  cursor:none;
+  -webkit-font-smoothing:antialiased;
+}
+::selection{background:var(--cyan);color:var(--bg);}
 
-font-family:'Inter',sans-serif;
-
-background:
-linear-gradient(
-135deg,
-#f7fbff 0%,
-#edf5ff 35%,
-#f7faff 100%
-);
-
-color:var(--text);
-
-overflow-x:hidden;
-
-min-height:100vh;
+/* ===== BOOT SCREEN ===== */
+#boot{
+  position:fixed;inset:0;z-index:99999;
+  background:#05060A;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:32px;
+  transition:opacity .8s var(--ease), visibility .8s var(--ease);
+}
+#boot.done{opacity:0;visibility:hidden;pointer-events:none;}
+.boot-logo{
+  width:88px;height:88px;border-radius:24px;
+  background:var(--grad);
+  display:flex;align-items:center;justify-content:center;
+  font-size:38px;font-weight:900;color:#fff;
+  box-shadow:0 0 60px rgba(0,229,255,.6);
+  animation:bootPulse 1.6s var(--ease) infinite;
+}
+@keyframes bootPulse{
+  0%,100%{transform:scale(1);box-shadow:0 0 60px rgba(0,229,255,.6);}
+  50%{transform:scale(1.06);box-shadow:0 0 90px rgba(0,229,255,.9);}
+}
+.boot-text{
+  font-family:'JetBrains Mono',monospace;
+  font-size:13px;color:var(--text-dim);
+  letter-spacing:.18em;
+}
+.boot-text .ok{color:var(--green);}
+.boot-bar{
+  width:280px;height:2px;border-radius:2px;
+  background:rgba(255,255,255,.06);overflow:hidden;
+}
+.boot-bar::after{
+  content:"";display:block;height:100%;width:30%;
+  background:var(--grad);
+  animation:bootBar 1.4s var(--ease) infinite;
+}
+@keyframes bootBar{
+  0%{transform:translateX(-100%);}
+  100%{transform:translateX(450%);}
 }
 
-/* ===================================
-BACKGROUND
-=================================== */
-
-.dynamic-bg{
-
-position:fixed;
-inset:0;
-
-z-index:-5;
-
-overflow:hidden;
+/* ===== BACKGROUND ===== */
+.aurora{
+  position:fixed;inset:0;z-index:-5;overflow:hidden;
 }
-
-.blob{
-
-position:absolute;
-
-border-radius:50%;
-
-filter:blur(90px);
-
-opacity:.45;
-
-animation:float 18s infinite ease-in-out;
+.aurora::before,.aurora::after{
+  content:"";position:absolute;
+  width:60vw;height:60vw;border-radius:50%;
+  filter:blur(120px);opacity:.35;
 }
-
-.blob1{
-width:600px;
-height:600px;
-background:#93c5fd;
-top:-120px;
-left:-100px;
+.aurora::before{
+  background:radial-gradient(circle,#0A84FF,transparent 60%);
+  top:-20%;left:-15%;
+  animation:auroraA 22s ease-in-out infinite;
 }
-
-.blob2{
-width:500px;
-height:500px;
-background:#c4b5fd;
-right:-120px;
-top:100px;
-animation-delay:4s;
+.aurora::after{
+  background:radial-gradient(circle,#7C5CFF,transparent 60%);
+  bottom:-30%;right:-15%;
+  animation:auroraB 26s ease-in-out infinite;
 }
-
-.blob3{
-width:500px;
-height:500px;
-background:#67e8f9;
-bottom:-180px;
-left:30%;
-animation-delay:8s;
+.aurora .glow3{
+  position:absolute;width:50vw;height:50vw;border-radius:50%;
+  background:radial-gradient(circle,#00E5FF,transparent 60%);
+  filter:blur(120px);opacity:.18;
+  top:30%;left:30%;
+  animation:auroraC 28s ease-in-out infinite;
 }
-
-@keyframes float{
-
-0%{
-transform:translate(0,0) scale(1);
-}
-
-50%{
-transform:translate(40px,-60px) scale(1.12);
-}
-
-100%{
-transform:translate(0,0) scale(1);
-}
-
-}
+@keyframes auroraA{0%,100%{transform:translate(0,0) scale(1);}50%{transform:translate(8vw,6vw) scale(1.1);}}
+@keyframes auroraB{0%,100%{transform:translate(0,0) scale(1);}50%{transform:translate(-6vw,-4vw) scale(1.15);}}
+@keyframes auroraC{0%,100%{transform:translate(-50%,-50%) scale(1);}50%{transform:translate(-30%,-60%) scale(1.2);}}
 
 .grid-bg{
-
-position:fixed;
-inset:0;
-
-z-index:-4;
-
-background-image:
-
-linear-gradient(
-rgba(255,255,255,.6) 1px,
-transparent 1px
-),
-
-linear-gradient(
-90deg,
-rgba(255,255,255,.6) 1px,
-transparent 1px
-);
-
-background-size:60px 60px;
-
-mask-image:
-linear-gradient(to bottom,
-rgba(0,0,0,.8),
-transparent);
-
-opacity:.4;
+  position:fixed;inset:0;z-index:-4;
+  background-image:
+    linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);
+  background-size:64px 64px;
+  mask-image:radial-gradient(ellipse at center,black 30%,transparent 80%);
 }
+#particles{position:fixed;inset:0;z-index:-3;}
 
-#particles{
-
-position:fixed;
-inset:0;
-
-z-index:-3;
+.scanline{
+  position:fixed;left:0;right:0;height:100px;z-index:-2;
+  background:linear-gradient(180deg,transparent,rgba(0,229,255,.06),transparent);
+  pointer-events:none;
+  animation:scan 8s linear infinite;
 }
+@keyframes scan{0%{top:-100px;}100%{top:100vh;}}
 
-/* ===================================
-CURSOR
-=================================== */
-
+/* ===== CURSOR ===== */
+.cursor,.cursor-dot{position:fixed;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);}
 .cursor{
-
-position:fixed;
-
-width:24px;
-height:24px;
-
-border:2px solid rgba(10,132,255,.5);
-
-border-radius:50%;
-
-pointer-events:none;
-
-transform:translate(-50%,-50%);
-
-transition:
-width .25s,
-height .25s,
-background .25s;
-
-z-index:9999;
+  width:32px;height:32px;border:1.5px solid rgba(0,229,255,.6);border-radius:50%;
+  transition:width .25s,height .25s,background .25s,border-color .25s;
+  mix-blend-mode:screen;
 }
+.cursor-dot{width:6px;height:6px;background:var(--cyan);border-radius:50%;box-shadow:0 0 12px var(--cyan);}
+.cursor.hover{width:64px;height:64px;background:rgba(0,229,255,.08);border-color:var(--cyan);}
 
-.cursor-dot{
+@media(hover:none){body{cursor:auto;}.cursor,.cursor-dot{display:none;}}
 
-position:fixed;
-
-width:6px;
-height:6px;
-
-background:var(--blue);
-
-border-radius:50%;
-
-pointer-events:none;
-
-transform:translate(-50%,-50%);
-
-z-index:9999;
-}
-
-/* ===================================
-NAV
-=================================== */
-
+/* ===== NAV ===== */
 nav{
-
-position:fixed;
-
-top:18px;
-left:50%;
-
-transform:translateX(-50%);
-
-width:calc(100% - 40px);
-max-width:1380px;
-
-height:74px;
-
-z-index:1000;
-
-background:
-rgba(255,255,255,.68);
-
-backdrop-filter:blur(30px);
-
-border:
-1px solid rgba(255,255,255,.7);
-
-border-radius:26px;
-
-box-shadow:
-0 10px 40px rgba(15,23,42,.08);
-
-transition:.4s;
+  position:fixed;top:18px;left:50%;transform:translateX(-50%);
+  width:calc(100% - 32px);max-width:1380px;height:64px;z-index:1000;
+  background:rgba(11,13,20,.7);
+  backdrop-filter:blur(24px) saturate(160%);
+  -webkit-backdrop-filter:blur(24px) saturate(160%);
+  border:1px solid var(--border);border-radius:20px;
+  box-shadow:0 8px 30px rgba(0,0,0,.4);
+  transition:.4s var(--ease);
 }
-
-.nav-inner{
-
-height:100%;
-
-display:flex;
-align-items:center;
-justify-content:space-between;
-
-padding:0 28px;
-}
-
-.logo{
-
-font-size:15px;
-font-weight:800;
-
-letter-spacing:2px;
-
-display:flex;
-align-items:center;
-gap:12px;
-}
-
+.nav-inner{height:100%;display:flex;align-items:center;justify-content:space-between;padding:0 18px;}
+.logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:14px;letter-spacing:.16em;}
 .logo-icon{
-
-width:38px;
-height:38px;
-
-border-radius:14px;
-
-background:
-linear-gradient(
-135deg,
-#0A84FF,
-#3CF2FF
-);
-
-display:flex;
-align-items:center;
-justify-content:center;
-
-color:white;
-
-font-weight:700;
-
-box-shadow:
-0 10px 20px rgba(10,132,255,.25);
+  width:32px;height:32px;border-radius:10px;background:var(--grad);
+  display:flex;align-items:center;justify-content:center;color:#fff;font-weight:900;
+  box-shadow:0 4px 16px rgba(10,132,255,.4);
+  position:relative;
 }
-
-.nav-links{
-
-display:flex;
-gap:12px;
+.logo-icon::after{
+  content:"";position:absolute;inset:-2px;border-radius:12px;
+  background:var(--grad);filter:blur(10px);opacity:.5;z-index:-1;
 }
-
+.logo-text{display:flex;flex-direction:column;line-height:1;}
+.logo-text small{font-size:9px;color:var(--text-mute);letter-spacing:.3em;margin-top:3px;}
+.nav-links{display:flex;gap:4px;}
 .nav-links a{
-
-height:44px;
-
-padding:0 18px;
-
-border-radius:14px;
-
-display:flex;
-align-items:center;
-justify-content:center;
-
-text-decoration:none;
-
-color:#475569;
-
-font-size:14px;
-font-weight:600;
-
-transition:.3s;
+  height:40px;padding:0 14px;border-radius:12px;
+  display:flex;align-items:center;justify-content:center;
+  text-decoration:none;color:var(--text-dim);font-size:13px;font-weight:500;
+  transition:.25s var(--ease);
+}
+.nav-links a:hover{background:rgba(255,255,255,.05);color:var(--text);}
+.nav-cta{display:flex;align-items:center;gap:10px;}
+.kbd{
+  display:inline-flex;align-items:center;gap:6px;
+  height:34px;padding:0 12px;border-radius:10px;
+  background:rgba(255,255,255,.04);border:1px solid var(--border);
+  font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-dim);
+  cursor:pointer;transition:.25s;
+}
+.kbd:hover{background:rgba(255,255,255,.08);color:var(--text);border-color:var(--border-strong);}
+.kbd kbd{
+  background:rgba(255,255,255,.06);padding:1px 6px;border-radius:5px;
+  border:1px solid var(--border);font-family:inherit;font-size:10px;
 }
 
-.nav-links a:hover{
-
-background:white;
-
-color:var(--blue);
-
-transform:translateY(-2px);
-}
-
-/* ===================================
-HERO
-=================================== */
-
+/* ===== HERO ===== */
 .hero{
-
-min-height:100vh;
-
-display:flex;
-align-items:center;
-justify-content:center;
-
-padding:180px 30px 120px;
-
-position:relative;
+  min-height:100vh;display:flex;align-items:center;justify-content:center;
+  padding:140px 24px 80px;position:relative;
 }
-
-.hero-content{
-
-max-width:1250px;
-
-text-align:center;
-}
-
+.hero-content{max-width:1280px;width:100%;text-align:center;position:relative;z-index:2;}
 .hero-badge{
-
-display:inline-flex;
-align-items:center;
-gap:10px;
-
-padding:12px 20px;
-
-background:
-rgba(255,255,255,.72);
-
-border:
-1px solid rgba(255,255,255,.8);
-
-border-radius:999px;
-
-backdrop-filter:blur(20px);
-
-margin-bottom:40px;
-
-font-size:13px;
-
-font-weight:600;
-
-color:#475569;
+  display:inline-flex;align-items:center;gap:10px;
+  padding:8px 16px;
+  background:rgba(0,229,255,.06);
+  border:1px solid rgba(0,229,255,.2);
+  border-radius:999px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;font-weight:500;letter-spacing:.18em;
+  color:var(--cyan);
+  margin-bottom:36px;
+  position:relative;
 }
-
 .live-dot{
-
-width:8px;
-height:8px;
-
-border-radius:50%;
-
-background:#00d26a;
-
-box-shadow:
-0 0 14px #00d26a;
-
-animation:pulse 1.5s infinite;
+  position:relative;width:8px;height:8px;border-radius:50%;background:var(--green);
+  box-shadow:0 0 10px var(--green);
 }
-
-@keyframes pulse{
-
-0%{opacity:1;}
-50%{opacity:.35;}
-100%{opacity:1;}
-
+.live-dot::after{
+  content:"";position:absolute;inset:-4px;border-radius:50%;
+  border:2px solid var(--green);
+  animation:livePulse 2s ease-out infinite;
+}
+@keyframes livePulse{
+  0%{transform:scale(.8);opacity:1;}
+  100%{transform:scale(2);opacity:0;}
 }
 
 .hero h1{
-
-font-size:
-clamp(62px,9vw,130px);
-
-line-height:.95;
-
-letter-spacing:-.07em;
-
-font-weight:800;
-
-margin-bottom:34px;
-
-background:
-linear-gradient(
-180deg,
-#081120 0%,
-#0A84FF 60%,
-#64748b 100%
-);
-
--webkit-background-clip:text;
--webkit-text-fill-color:transparent;
+  font-size:clamp(48px,8.5vw,128px);line-height:.95;letter-spacing:-.05em;font-weight:800;
+  margin-bottom:28px;
 }
+.hero h1 .line{display:block;}
+.hero h1 .grad{
+  background:var(--grad);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+  position:relative;
+}
+.hero h1 .typing{
+  display:inline-block;min-height:1em;
+  background:var(--grad);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.hero h1 .caret{
+  display:inline-block;width:5px;height:.85em;background:var(--cyan);
+  margin-left:4px;vertical-align:-8%;
+  animation:caret 1s step-end infinite;
+  box-shadow:0 0 16px var(--cyan);
+}
+@keyframes caret{50%{opacity:0;}}
 
 .hero p{
-
-font-size:24px;
-
-line-height:1.7;
-
-max-width:980px;
-
-margin:auto;
-
-color:#475569;
+  font-size:clamp(15px,1.4vw,19px);line-height:1.75;
+  max-width:760px;margin:0 auto;color:var(--text-dim);
 }
-
 .hero-actions{
-
-margin-top:60px;
-
-display:flex;
-justify-content:center;
-gap:18px;
-
-flex-wrap:wrap;
+  margin-top:48px;display:flex;justify-content:center;gap:14px;flex-wrap:wrap;
 }
-
 .btn{
-
-height:60px;
-
-padding:0 34px;
-
-border-radius:18px;
-
-display:flex;
-align-items:center;
-justify-content:center;
-
-text-decoration:none;
-
-font-weight:700;
-
-transition:.35s var(--ease);
-
-position:relative;
-
-overflow:hidden;
+  position:relative;height:54px;padding:0 28px;border-radius:14px;
+  display:inline-flex;align-items:center;justify-content:center;gap:10px;
+  text-decoration:none;font-weight:600;font-size:14px;
+  transition:.3s var(--ease);overflow:hidden;border:none;cursor:none;
 }
-
-.btn::before{
-
-content:"";
-
-position:absolute;
-
-inset:0;
-
-background:
-linear-gradient(
-120deg,
-transparent,
-rgba(255,255,255,.5),
-transparent
-);
-
-transform:translateX(-120%);
-
-transition:1s;
-}
-
-.btn:hover::before{
-
-transform:translateX(120%);
-}
-
 .btn-primary{
-
-background:
-linear-gradient(
-135deg,
-#0A84FF,
-#2563eb
-);
-
-color:white;
-
-box-shadow:
-0 20px 40px rgba(10,132,255,.25);
+  background:var(--grad);color:#fff;
+  box-shadow:0 10px 30px rgba(10,132,255,.4);
 }
-
-.btn-primary:hover{
-
-transform:
-translateY(-4px)
-scale(1.02);
+.btn-primary::after{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(120deg,transparent,rgba(255,255,255,.3),transparent);
+  transform:translateX(-100%);transition:.7s;
 }
-
+.btn-primary:hover{transform:translateY(-3px);box-shadow:0 18px 50px rgba(10,132,255,.6);}
+.btn-primary:hover::after{transform:translateX(100%);}
 .btn-secondary{
-
-background:
-rgba(255,255,255,.75);
-
-color:#0f172a;
-
-border:
-1px solid rgba(255,255,255,.8);
-
-backdrop-filter:blur(20px);
+  background:rgba(255,255,255,.04);color:var(--text);
+  border:1px solid var(--border-strong);backdrop-filter:blur(10px);
 }
+.btn-secondary:hover{background:rgba(255,255,255,.08);border-color:var(--cyan);transform:translateY(-3px);}
 
-.btn-secondary:hover{
-
-background:white;
-
-transform:translateY(-4px);
+/* ===== TICKER ===== */
+.ticker{
+  margin-top:64px;padding:14px 0;
+  border-top:1px solid var(--border);
+  border-bottom:1px solid var(--border);
+  background:rgba(11,13,20,.4);
+  overflow:hidden;position:relative;
+  mask-image:linear-gradient(90deg,transparent,black 10%,black 90%,transparent);
 }
+.ticker-track{
+  display:flex;gap:40px;
+  animation:tickerScroll 50s linear infinite;
+  white-space:nowrap;width:max-content;
+}
+.ticker:hover .ticker-track{animation-play-state:paused;}
+@keyframes tickerScroll{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
+.ticker-item{
+  display:inline-flex;align-items:center;gap:10px;
+  font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text-dim);
+}
+.ticker-item .co{color:var(--cyan);font-weight:600;}
+.ticker-item .arrow{color:var(--green);}
+.ticker-item .down{color:var(--pink);}
 
-/* ===================================
-STATUS
-=================================== */
-
+/* ===== STATS ===== */
 .status-grid{
-
-display:grid;
-
-grid-template-columns:
-repeat(3,1fr);
-
-gap:22px;
-
-margin-top:90px;
+  display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:48px;
 }
-
 .status-card{
-
-padding:30px;
-
-border-radius:28px;
-
-background:
-rgba(255,255,255,.68);
-
-backdrop-filter:blur(24px);
-
-border:
-1px solid rgba(255,255,255,.75);
-
-box-shadow:var(--shadow);
-
-transition:.4s;
+  position:relative;padding:24px;border-radius:18px;
+  background:var(--surface);
+  border:1px solid var(--border);
+  backdrop-filter:blur(16px);
+  transition:.4s var(--ease);
+  text-align:left;
+  overflow:hidden;
 }
-
-.status-card:hover{
-
-transform:
-translateY(-8px)
-rotateX(4deg);
+.status-card::before{
+  content:"";position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(0,229,255,.5),transparent);
 }
-
+.status-card:hover{transform:translateY(-4px);border-color:var(--border-strong);}
+.status-label{
+  font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-mute);
+  letter-spacing:.2em;text-transform:uppercase;margin-bottom:14px;
+}
 .status-number{
-
-font-size:52px;
-
-font-weight:800;
-
-color:var(--blue);
-
-margin-bottom:10px;
+  font-size:38px;font-weight:800;letter-spacing:-.03em;
+  background:var(--grad);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.status-text{font-size:12px;color:var(--text-dim);margin-top:4px;}
+.spark{
+  position:absolute;right:16px;bottom:16px;width:80px;height:30px;
+  opacity:.6;
 }
 
-.status-text{
-
-font-size:14px;
-
-color:#64748b;
+/* ===== SECTION ===== */
+section{padding:120px 24px;position:relative;}
+.container{max-width:1280px;margin:0 auto;}
+.section-eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.25em;
+  color:var(--cyan);margin-bottom:18px;text-transform:uppercase;
 }
-
-/* ===================================
-SECTION
-=================================== */
-
-section{
-
-padding:120px 30px;
+.section-eyebrow::before{
+  content:"";width:24px;height:1px;background:var(--cyan);
 }
-
-.container{
-
-max-width:1400px;
-
-margin:auto;
-}
-
 .section-title{
-
-font-size:64px;
-
-line-height:1;
-
-letter-spacing:-.06em;
-
-margin-bottom:24px;
+  font-size:clamp(36px,5.5vw,68px);line-height:1.05;letter-spacing:-.04em;
+  font-weight:700;margin-bottom:20px;
 }
-
+.section-title .grad{
+  background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
 .section-desc{
-
-font-size:21px;
-
-line-height:1.8;
-
-max-width:760px;
-
-color:#64748b;
-
-margin-bottom:70px;
+  font-size:17px;line-height:1.75;max-width:640px;color:var(--text-dim);margin-bottom:60px;
 }
 
-/* ===================================
-GRID
-=================================== */
-
-.grid{
-
-display:grid;
-
-grid-template-columns:
-repeat(3,1fr);
-
-gap:24px;
-}
-
+/* ===== CARDS ===== */
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
 .card{
-
-min-height:380px;
-
-padding:40px;
-
-border-radius:34px;
-
-position:relative;
-
-overflow:hidden;
-
-background:
-rgba(255,255,255,.65);
-
-backdrop-filter:blur(30px);
-
-border:
-1px solid rgba(255,255,255,.8);
-
-box-shadow:
-0 20px 60px rgba(15,23,42,.06);
-
-transition:.45s var(--ease);
-
-cursor:pointer;
+  position:relative;padding:32px;border-radius:24px;min-height:340px;
+  background:var(--surface);
+  border:1px solid var(--border);
+  backdrop-filter:blur(20px);
+  transition:.4s var(--ease);
+  overflow:hidden;
+  display:flex;flex-direction:column;
 }
-
-.card:hover{
-
-transform:
-translateY(-10px)
-scale(1.02);
-
-box-shadow:
-0 30px 80px rgba(10,132,255,.12);
-}
-
 .card::before{
-
-content:"";
-
-position:absolute;
-
-width:300px;
-height:300px;
-
-background:
-radial-gradient(
-circle,
-rgba(10,132,255,.14),
-transparent 70%
-);
-
-top:var(--y);
-left:var(--x);
-
-transform:
-translate(-50%,-50%);
-
-opacity:0;
-
-transition:.4s;
+  content:"";position:absolute;inset:0;border-radius:24px;padding:1px;
+  background:linear-gradient(135deg,rgba(0,229,255,.4),transparent 40%,transparent 60%,rgba(124,92,255,.4));
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor;mask-composite:exclude;
+  opacity:0;transition:.4s;
 }
-
-.card:hover::before{
-
-opacity:1;
+.card:hover::before{opacity:1;}
+.card::after{
+  content:"";position:absolute;width:400px;height:400px;border-radius:50%;
+  background:radial-gradient(circle,rgba(0,229,255,.15),transparent 60%);
+  top:var(--y,50%);left:var(--x,50%);
+  transform:translate(-50%,-50%);
+  opacity:0;transition:opacity .3s;pointer-events:none;
 }
+.card:hover::after{opacity:1;}
+.card:hover{transform:translateY(-6px);border-color:var(--border-strong);}
+.large{grid-column:span 2;}
+.full{grid-column:span 3;}
 
-.large{
-grid-column:span 2;
+.card-icon{
+  width:44px;height:44px;border-radius:12px;
+  background:rgba(0,229,255,.08);border:1px solid rgba(0,229,255,.2);
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:24px;color:var(--cyan);
 }
-
-.full{
-grid-column:span 3;
-}
-
 .card-tag{
-
-font-size:12px;
-
-letter-spacing:2px;
-
-text-transform:uppercase;
-
-color:#64748b;
-
-margin-bottom:20px;
+  font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.25em;
+  color:var(--text-mute);margin-bottom:16px;text-transform:uppercase;
 }
-
 .card-title{
-
-font-size:38px;
-
-line-height:1.1;
-
-letter-spacing:-.05em;
-
-margin-bottom:24px;
+  font-size:26px;line-height:1.2;letter-spacing:-.02em;font-weight:700;margin-bottom:14px;
+}
+.card-desc{font-size:14px;line-height:1.7;color:var(--text-dim);}
+.card-tags{
+  margin-top:auto;padding-top:24px;display:flex;flex-wrap:wrap;gap:6px;
+}
+.chip{
+  padding:5px 10px;border-radius:6px;
+  background:rgba(255,255,255,.04);border:1px solid var(--border);
+  font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-dim);
 }
 
-.card-desc{
-
-font-size:16px;
-
-line-height:1.9;
-
-color:#64748b;
+/* Special card: Mapping visualization */
+.card-map{
+  background:linear-gradient(135deg,rgba(0,229,255,.06),rgba(124,92,255,.06));
+  min-height:280px;
+}
+.map-viz{
+  position:absolute;inset:0;opacity:.5;pointer-events:none;
 }
 
-/* ===================================
-CONSOLE
-=================================== */
-
+/* ===== CONSOLE / SEARCH ===== */
 .console{
-
-padding:40px;
-
-border-radius:38px;
-
-background:
-rgba(255,255,255,.68);
-
-border:
-1px solid rgba(255,255,255,.85);
-
-backdrop-filter:blur(30px);
-
-box-shadow:
-0 20px 60px rgba(15,23,42,.08);
+  padding:6px;border-radius:24px;
+  background:linear-gradient(135deg,rgba(0,229,255,.18),rgba(124,92,255,.18));
 }
-
-.search-box{
-
-position:relative;
+.console-inner{
+  background:var(--bg-elev);border-radius:20px;padding:32px;
+  border:1px solid var(--border);
 }
+.console-header{
+  display:flex;align-items:center;gap:10px;margin-bottom:24px;
+  font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-mute);
+  letter-spacing:.2em;
+}
+.console-dot{width:10px;height:10px;border-radius:50%;}
+.dot-r{background:#FF5F57;}
+.dot-y{background:#FEBC2E;}
+.dot-g{background:#28C840;}
+.console-tag{margin-left:auto;color:var(--cyan);}
 
+.search-box{position:relative;}
 .console-input{
-
-width:100%;
-height:78px;
-
-border:none;
-outline:none;
-
-padding:0 28px;
-
-padding-left:70px;
-
-border-radius:24px;
-
-font-size:18px;
-
-background:white;
-
-border:
-1px solid rgba(10,132,255,.08);
-
-transition:.3s;
+  width:100%;height:64px;padding:0 24px 0 60px;
+  background:rgba(255,255,255,.03);
+  border:1px solid var(--border-strong);
+  border-radius:14px;
+  color:var(--text);font-size:16px;font-family:inherit;
+  outline:none;transition:.3s;
 }
-
-.console-input:focus{
-
-border-color:#0A84FF;
-
-box-shadow:
-0 0 0 6px rgba(10,132,255,.08);
-}
-
+.console-input::placeholder{color:var(--text-mute);}
+.console-input:focus{border-color:var(--cyan);box-shadow:0 0 0 4px rgba(0,229,255,.1);}
 .search-icon{
-
-position:absolute;
-
-left:24px;
-top:50%;
-
-transform:translateY(-50%);
-
-font-size:20px;
+  position:absolute;left:22px;top:50%;transform:translateY(-50%);
+  color:var(--text-mute);font-size:18px;
 }
+.search-suggest{
+  display:flex;flex-wrap:wrap;gap:8px;margin-top:18px;
+}
+.suggest-chip{
+  padding:8px 14px;border-radius:10px;
+  background:rgba(255,255,255,.03);border:1px solid var(--border);
+  font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-dim);
+  cursor:pointer;transition:.25s;
+}
+.suggest-chip:hover{background:rgba(0,229,255,.08);border-color:var(--cyan);color:var(--cyan);transform:translateY(-2px);}
 
 .results{
-
-margin-top:30px;
-
-display:grid;
-
-grid-template-columns:
-repeat(3,1fr);
-
-gap:20px;
+  margin-top:28px;display:grid;grid-template-columns:repeat(3,1fr);gap:14px;
+  min-height:200px;
 }
-
 .result-card{
+  position:relative;padding:20px;border-radius:14px;
+  background:rgba(255,255,255,.03);
+  border:1px solid var(--border);
+  transition:.3s var(--ease);
+  overflow:hidden;
+}
+.result-card::before{
+  content:"";position:absolute;left:0;top:0;bottom:0;width:3px;
+  background:var(--grad);transform:scaleY(0);transform-origin:top;transition:.3s;
+}
+.result-card:hover{background:rgba(255,255,255,.05);border-color:var(--border-strong);transform:translateY(-3px);}
+.result-card:hover::before{transform:scaleY(1);}
+.result-row{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;}
+.result-company{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--cyan);letter-spacing:.1em;}
+.result-stage{
+  font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-mute);
+  padding:2px 8px;background:rgba(255,255,255,.04);border-radius:4px;
+}
+.result-role{font-size:18px;font-weight:600;margin-bottom:6px;letter-spacing:-.01em;}
+.result-meta{font-size:12px;color:var(--text-mute);margin-bottom:16px;}
+.match-bar{
+  height:4px;background:rgba(255,255,255,.06);border-radius:2px;overflow:hidden;margin-bottom:8px;
+}
+.match-fill{height:100%;background:var(--grad);transition:width 1s var(--ease);}
+.match-text{
+  font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-dim);
+  display:flex;justify-content:space-between;
+}
+.match-text .pct{color:var(--cyan);font-weight:600;}
 
-padding:24px;
+/* ===== LOGOS MARQUEE ===== */
+.logos{
+  margin-top:60px;padding:24px 0;
+  border-top:1px solid var(--border);
+  overflow:hidden;
+  mask-image:linear-gradient(90deg,transparent,black 10%,black 90%,transparent);
+}
+.logos-track{
+  display:flex;gap:60px;align-items:center;
+  animation:tickerScroll 40s linear infinite;
+  width:max-content;
+}
+.logos-track span{
+  font-size:20px;font-weight:700;color:var(--text-mute);letter-spacing:-.02em;
+  white-space:nowrap;transition:.3s;
+}
+.logos-track span:hover{color:var(--text);}
 
-border-radius:24px;
+/* ===== TIMELINE ===== */
+.timeline{position:relative;padding-left:32px;}
+.timeline::before{
+  content:"";position:absolute;left:8px;top:8px;bottom:8px;width:2px;
+  background:linear-gradient(180deg,var(--cyan),var(--purple));
+  opacity:.3;
+}
+.t-item{position:relative;padding:18px 0 18px 24px;}
+.t-item::before{
+  content:"";position:absolute;left:-32px;top:24px;width:18px;height:18px;border-radius:50%;
+  background:var(--bg);border:2px solid var(--cyan);
+  box-shadow:0 0 12px var(--cyan);
+}
+.t-time{
+  font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--cyan);
+  letter-spacing:.15em;margin-bottom:6px;
+}
+.t-title{font-size:18px;font-weight:600;margin-bottom:6px;}
+.t-desc{font-size:14px;color:var(--text-dim);line-height:1.7;}
 
-background:white;
-
-border:
-1px solid rgba(10,132,255,.08);
-
-transition:.35s;
-
-box-shadow:
-0 10px 30px rgba(15,23,42,.04);
+/* ===== AI ASSISTANT ===== */
+.ai-fab{
+  position:fixed;right:24px;bottom:24px;z-index:998;
+  width:60px;height:60px;border-radius:18px;
+  background:var(--grad);
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 12px 40px rgba(10,132,255,.5),0 0 30px rgba(0,229,255,.3);
+  cursor:none;transition:.3s var(--ease);
+  border:none;
+}
+.ai-fab:hover{transform:scale(1.08) rotate(8deg);}
+.ai-fab svg{width:28px;height:28px;color:#fff;}
+.ai-fab::after{
+  content:"";position:absolute;inset:-4px;border-radius:22px;
+  border:2px solid var(--cyan);opacity:0;
+  animation:aiPulse 2.4s ease-out infinite;
+}
+@keyframes aiPulse{
+  0%{transform:scale(.95);opacity:.7;}
+  100%{transform:scale(1.4);opacity:0;}
 }
 
-.result-card:hover{
+.ai-panel{
+  position:fixed;right:24px;bottom:96px;z-index:997;
+  width:360px;max-width:calc(100vw - 32px);
+  max-height:520px;
+  background:rgba(11,13,20,.95);
+  backdrop-filter:blur(30px);
+  border:1px solid var(--border-strong);
+  border-radius:20px;
+  box-shadow:var(--shadow-lg);
+  display:none;flex-direction:column;
+  overflow:hidden;
+}
+.ai-panel.open{display:flex;animation:aiOpen .35s var(--ease);}
+@keyframes aiOpen{from{opacity:0;transform:translateY(20px) scale(.96);}to{opacity:1;transform:translateY(0) scale(1);}}
+.ai-head{
+  padding:16px 20px;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:10px;
+}
+.ai-avatar{
+  width:32px;height:32px;border-radius:10px;background:var(--grad);
+  display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;
+}
+.ai-name{font-size:14px;font-weight:600;}
+.ai-name small{display:block;font-size:10px;color:var(--green);font-weight:400;margin-top:2px;}
+.ai-name small::before{content:"●";color:var(--green);margin-right:4px;}
+.ai-close{
+  margin-left:auto;width:28px;height:28px;border-radius:8px;
+  background:rgba(255,255,255,.04);border:none;color:var(--text-dim);
+  display:flex;align-items:center;justify-content:center;cursor:none;transition:.2s;
+}
+.ai-close:hover{background:rgba(255,255,255,.08);color:var(--text);}
+.ai-body{
+  flex:1;padding:16px 20px;overflow-y:auto;display:flex;flex-direction:column;gap:12px;
+  scrollbar-width:thin;
+}
+.ai-body::-webkit-scrollbar{width:4px;}
+.ai-body::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:2px;}
+.msg{
+  max-width:85%;padding:10px 14px;border-radius:14px;font-size:13px;line-height:1.6;
+  animation:msgIn .3s var(--ease);
+}
+@keyframes msgIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+.msg-bot{
+  background:rgba(255,255,255,.04);border:1px solid var(--border);
+  align-self:flex-start;border-bottom-left-radius:4px;
+}
+.msg-user{
+  background:var(--grad);color:#fff;
+  align-self:flex-end;border-bottom-right-radius:4px;
+}
+.msg-typing{display:inline-flex;gap:4px;}
+.msg-typing span{
+  width:6px;height:6px;border-radius:50%;background:var(--text-dim);
+  animation:typingDot 1.4s ease-in-out infinite;
+}
+.msg-typing span:nth-child(2){animation-delay:.2s;}
+.msg-typing span:nth-child(3){animation-delay:.4s;}
+@keyframes typingDot{0%,60%,100%{opacity:.3;transform:scale(.8);}30%{opacity:1;transform:scale(1);}}
+.ai-foot{
+  padding:14px 16px;border-top:1px solid var(--border);
+  display:flex;gap:8px;
+}
+.ai-input{
+  flex:1;height:38px;padding:0 14px;border-radius:10px;
+  background:rgba(255,255,255,.04);border:1px solid var(--border);
+  color:var(--text);font-size:13px;outline:none;
+}
+.ai-input:focus{border-color:var(--cyan);}
+.ai-send{
+  width:38px;height:38px;border-radius:10px;background:var(--grad);
+  border:none;color:#fff;cursor:none;display:flex;align-items:center;justify-content:center;
+  transition:.2s;
+}
+.ai-send:hover{transform:scale(1.05);}
 
-transform:translateY(-6px);
+/* ===== COMMAND PALETTE ===== */
+.cmdk-overlay{
+  position:fixed;inset:0;z-index:9998;
+  background:rgba(5,6,10,.7);backdrop-filter:blur(8px);
+  display:none;align-items:flex-start;justify-content:center;
+  padding-top:18vh;
+}
+.cmdk-overlay.open{display:flex;animation:fadeIn .25s ease;}
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+.cmdk{
+  width:560px;max-width:calc(100vw - 32px);
+  background:rgba(15,18,28,.95);
+  backdrop-filter:blur(24px);
+  border:1px solid var(--border-strong);border-radius:18px;
+  box-shadow:var(--shadow-lg);
+  overflow:hidden;
+  animation:cmdkIn .3s var(--ease);
+}
+@keyframes cmdkIn{from{transform:translateY(-20px) scale(.96);opacity:0;}to{transform:translateY(0) scale(1);opacity:1;}}
+.cmdk-input{
+  width:100%;height:54px;padding:0 20px;
+  background:transparent;border:none;outline:none;
+  color:var(--text);font-size:15px;font-family:inherit;
+  border-bottom:1px solid var(--border);
+}
+.cmdk-input::placeholder{color:var(--text-mute);}
+.cmdk-list{padding:8px;max-height:360px;overflow-y:auto;}
+.cmdk-item{
+  display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:10px;
+  cursor:none;transition:.15s;color:var(--text-dim);text-decoration:none;
+}
+.cmdk-item:hover,.cmdk-item.active{background:rgba(0,229,255,.08);color:var(--text);}
+.cmdk-item-icon{
+  width:30px;height:30px;border-radius:8px;
+  background:rgba(255,255,255,.05);display:flex;align-items:center;justify-content:center;
+  color:var(--cyan);
+}
+.cmdk-item-text{flex:1;font-size:13px;}
+.cmdk-item-text small{display:block;color:var(--text-mute);font-size:11px;margin-top:2px;}
+.cmdk-item-shortcut{
+  font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-mute);
 }
 
-.result-company{
-
-font-size:13px;
-
-color:#64748b;
-
-margin-bottom:14px;
-}
-
-.result-role{
-
-font-size:24px;
-
-font-weight:700;
-
-margin-bottom:18px;
-}
-
-.match{
-
-display:inline-flex;
-
-padding:8px 14px;
-
-border-radius:999px;
-
-background:
-rgba(10,132,255,.1);
-
-color:#0A84FF;
-
-font-size:12px;
-
-font-weight:700;
-}
-
-/* ===================================
-FOOTER
-=================================== */
-
+/* ===== FOOTER ===== */
 footer{
-
-padding:100px 30px;
-
-text-align:center;
-
-color:#64748b;
+  padding:80px 24px 40px;border-top:1px solid var(--border);
+  background:rgba(11,13,20,.4);
+  position:relative;
+}
+.foot-grid{
+  max-width:1280px;margin:0 auto;
+  display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;
+  margin-bottom:48px;
+}
+.foot-col h4{
+  font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-mute);
+  letter-spacing:.2em;text-transform:uppercase;margin-bottom:16px;
+}
+.foot-col a{
+  display:block;color:var(--text-dim);text-decoration:none;
+  font-size:13px;margin-bottom:10px;transition:.2s;
+}
+.foot-col a:hover{color:var(--cyan);}
+.foot-brand{font-size:14px;line-height:1.7;color:var(--text-dim);}
+.foot-bottom{
+  max-width:1280px;margin:0 auto;padding-top:24px;border-top:1px solid var(--border);
+  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;
+  font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-mute);letter-spacing:.1em;
 }
 
-/* ===================================
-REVEAL
-=================================== */
+/* ===== REVEAL ===== */
+.reveal{opacity:0;transform:translateY(40px);transition:.9s var(--ease);}
+.reveal.active{opacity:1;transform:translateY(0);}
+.reveal[data-delay="1"]{transition-delay:.1s;}
+.reveal[data-delay="2"]{transition-delay:.2s;}
+.reveal[data-delay="3"]{transition-delay:.3s;}
+.reveal[data-delay="4"]{transition-delay:.4s;}
 
-.reveal{
-
-opacity:0;
-
-transform:
-translateY(60px);
-
-transition:1s var(--ease);
+/* ===== RESPONSIVE ===== */
+@media(max-width:1024px){
+  .grid,.results,.status-grid{grid-template-columns:repeat(2,1fr);}
+  .large,.full{grid-column:span 2;}
+  .foot-grid{grid-template-columns:1fr 1fr;}
+  .nav-links{display:none;}
 }
-
-.reveal.active{
-
-opacity:1;
-
-transform:
-translateY(0);
+@media(max-width:640px){
+  .grid,.results,.status-grid,.foot-grid{grid-template-columns:1fr;}
+  .large,.full{grid-column:span 1;}
+  .ai-panel{right:12px;left:12px;width:auto;bottom:90px;}
+  .ai-fab{right:16px;bottom:16px;}
+  body{cursor:auto;}
+  .cursor,.cursor-dot{display:none;}
+  section{padding:80px 18px;}
+  .hero{padding:120px 18px 60px;}
 }
-
-/* ===================================
-RESPONSIVE
-=================================== */
-
-@media(max-width:1100px){
-
-.grid,
-.results,
-.status-grid{
-
-grid-template-columns:1fr;
-}
-
-.large,
-.full{
-
-grid-column:span 1;
-}
-
-.section-title{
-
-font-size:44px;
-}
-
-.hero h1{
-
-font-size:60px;
-}
-
-.hero p{
-
-font-size:18px;
-}
-
-.nav-links{
-
-display:none;
-}
-
-}
-
 </style>
 </head>
 
 <body>
 
-<div class="dynamic-bg">
-
-<div class="blob blob1"></div>
-<div class="blob blob2"></div>
-<div class="blob blob3"></div>
-
+<!-- ===== BOOT SCREEN ===== -->
+<div id="boot">
+  <div class="boot-logo">L</div>
+  <div class="boot-text" id="bootText">INITIALIZING LEO OS...</div>
+  <div class="boot-bar"></div>
 </div>
 
+<!-- ===== BACKGROUND ===== -->
+<div class="aurora"><div class="glow3"></div></div>
 <div class="grid-bg"></div>
-
 <canvas id="particles"></canvas>
+<div class="scanline"></div>
 
+<!-- ===== CURSOR ===== -->
 <div class="cursor"></div>
 <div class="cursor-dot"></div>
 
+<!-- ===== NAV ===== -->
 <nav>
-
-<div class="nav-inner">
-
-<div class="logo">
-
-<div class="logo-icon">
-L
-</div>
-
-LEO OS
-
-</div>
-
-<div class="nav-links">
-
-<a href="#hero">首页</a>
-<a href="#intelligence">人才架构</a>
-<a href="#console">智能搜索</a>
-<a href="#network">高端网络</a>
-<a href="#contact">联系我</a>
-
-</div>
-
-</div>
-
+  <div class="nav-inner">
+    <div class="logo">
+      <div class="logo-icon">L</div>
+      <div class="logo-text">
+        <span>LEO OS</span>
+        <small>v2.6 · INTELLIGENCE</small>
+      </div>
+    </div>
+    <div class="nav-links">
+      <a href="#hero">首页</a>
+      <a href="#intelligence">人才架构</a>
+      <a href="#console">智能搜索</a>
+      <a href="#timeline">演进路径</a>
+      <a href="#contact">联系</a>
+    </div>
+    <div class="nav-cta">
+      <button class="kbd" id="cmdkBtn">
+        <span>搜索</span>
+        <kbd>⌘ K</kbd>
+      </button>
+    </div>
+  </div>
 </nav>
 
+<!-- ===== HERO ===== -->
 <section class="hero" id="hero">
+  <div class="hero-content">
+    <div class="hero-badge reveal">
+      <span class="live-dot"></span>
+      <span>AI EXECUTIVE INTELLIGENCE · LIVE</span>
+    </div>
 
-<div class="hero-content reveal">
+    <h1 class="reveal" data-delay="1">
+      <span class="line">Mapping the human</span>
+      <span class="line"><span class="grad">infrastructure</span></span>
+      <span class="line">behind <span class="typing" id="typing"></span><span class="caret"></span></span>
+    </h1>
 
-<div class="hero-badge">
+    <p class="reveal" data-delay="2">
+      在自动驾驶、AGI 与具身智能的交汇点，构建下一代 AI 人才基础设施。
+      不只是猎头 —— 而是 AI 时代的人才 Intelligence Network。
+    </p>
 
-<div class="live-dot"></div>
+    <div class="hero-actions reveal" data-delay="3">
+      <a href="#console" class="btn btn-primary" data-hover>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        启动智能搜索
+      </a>
+      <a href="mailto:supkefly@gmail.com" class="btn btn-secondary" data-hover>
+        建立私密对话
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14m-6-6 6 6-6 6"/></svg>
+      </a>
+    </div>
 
-AI EXECUTIVE INTELLIGENCE SYSTEM ONLINE
+    <!-- TICKER -->
+    <div class="ticker reveal" data-delay="4">
+      <div class="ticker-track" id="tickerTrack"></div>
+    </div>
 
-</div>
-
-<h1 id="typing"></h1>
-
-<p>
-
-在自动驾驶、AGI 与智能制造的交汇点，
-构建下一代 AI 人才基础设施。
-不仅是猎头，更是 AI 时代的人才 intelligence network。
-
-</p>
-
-<div class="hero-actions">
-
-<a href="#console" class="btn btn-primary">
-进入智能搜索系统
-</a>
-
-<a href="mailto:supkefly@gmail.com" class="btn btn-secondary">
-建立联系
-</a>
-
-</div>
-
-<div class="status-grid">
-
-<div class="status-card">
-
-<div class="status-number" data-count="128">
-0
-</div>
-
-<div class="status-text">
-活跃岗位搜索
-</div>
-
-</div>
-
-<div class="status-card">
-
-<div class="status-number" data-count="93">
-0
-</div>
-
-<div class="status-text">
-智能匹配精度
-</div>
-
-</div>
-
-<div class="status-card">
-
-<div class="status-number" data-count="2800">
-0
-</div>
-
-<div class="status-text">
-AI 人才节点
-</div>
-
-</div>
-
-</div>
-
-</div>
-
+    <!-- STATS -->
+    <div class="status-grid reveal" data-delay="4">
+      <div class="status-card" data-hover>
+        <div class="status-label">ACTIVE SEARCH</div>
+        <div class="status-number" data-count="128">0</div>
+        <div class="status-text">活跃岗位搜索</div>
+        <svg class="spark" viewBox="0 0 80 30"><polyline fill="none" stroke="url(#sg1)" stroke-width="2" points="0,22 12,18 24,20 36,12 48,15 60,8 72,11 80,5"/><defs><linearGradient id="sg1"><stop offset="0" stop-color="#0A84FF"/><stop offset="1" stop-color="#00E5FF"/></linearGradient></defs></svg>
+      </div>
+      <div class="status-card" data-hover>
+        <div class="status-label">MATCH PRECISION</div>
+        <div class="status-number" data-count="93" data-suffix="%">0</div>
+        <div class="status-text">智能匹配精度</div>
+        <svg class="spark" viewBox="0 0 80 30"><polyline fill="none" stroke="#00E5A0" stroke-width="2" points="0,20 10,15 22,18 34,10 46,8 58,12 70,6 80,4"/></svg>
+      </div>
+      <div class="status-card" data-hover>
+        <div class="status-label">TALENT GRAPH</div>
+        <div class="status-number" data-count="2800" data-suffix="+">0</div>
+        <div class="status-text">AI 人才节点</div>
+        <svg class="spark" viewBox="0 0 80 30"><polyline fill="none" stroke="#7C5CFF" stroke-width="2" points="0,25 12,20 24,22 36,15 48,10 60,12 72,6 80,4"/></svg>
+      </div>
+      <div class="status-card" data-hover>
+        <div class="status-label">RESPONSE TIME</div>
+        <div class="status-number" data-count="48" data-suffix="h">0</div>
+        <div class="status-text">高端职位响应</div>
+        <svg class="spark" viewBox="0 0 80 30"><polyline fill="none" stroke="#FFB020" stroke-width="2" points="0,12 12,15 24,10 36,18 48,12 60,8 72,14 80,10"/></svg>
+      </div>
+    </div>
+  </div>
 </section>
 
+<!-- ===== INTELLIGENCE ===== -->
 <section id="intelligence">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-eyebrow">01 · TALENT INTELLIGENCE ARCHITECTURE</div>
+      <h2 class="section-title">AI 人才情报<br/><span class="grad">深度架构</span></h2>
+      <p class="section-desc">
+        基于技术路线、组织演进与产业链的多维 Mapping，
+        持续追踪 AI 与新能源核心技术人才流向，构建可执行的人才情报网络。
+      </p>
+    </div>
 
-<div class="container">
+    <div class="grid">
+      <!-- Card 1: large -->
+      <div class="card large reveal" data-hover>
+        <div class="card-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/><circle cx="7" cy="6" r="1.5" fill="currentColor"/><circle cx="14" cy="12" r="1.5" fill="currentColor"/><circle cx="10" cy="18" r="1.5" fill="currentColor"/></svg>
+        </div>
+        <div class="card-tag">AUTONOMOUS SYSTEMS</div>
+        <div class="card-title">智能驾驶与端到端架构</div>
+        <div class="card-desc">
+          深度覆盖 ADS、BEV、Occupancy Network、世界模型、端到端自动驾驶、
+          EEA 与智能整车架构核心岗位 —— 从感知到规划，从芯片到云端。
+        </div>
+        <div class="card-tags">
+          <span class="chip">E2E Driving</span>
+          <span class="chip">BEV / Occupancy</span>
+          <span class="chip">World Model</span>
+          <span class="chip">VLA</span>
+          <span class="chip">EEA 3.0</span>
+        </div>
+      </div>
 
-<div class="reveal">
+      <!-- Card 2 -->
+      <div class="card reveal" data-delay="1" data-hover>
+        <div class="card-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48 2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48 2.83-2.83"/></svg>
+        </div>
+        <div class="card-tag">FOUNDATION MODEL</div>
+        <div class="card-title">AGI 与多模态前沿</div>
+        <div class="card-desc">
+          LLM、Agent、推理优化、RLHF、多模态生成、AI Infra —— 前沿研究与工程化落地的关键人才。
+        </div>
+        <div class="card-tags">
+          <span class="chip">LLM</span>
+          <span class="chip">Agent</span>
+          <span class="chip">RLHF</span>
+          <span class="chip">AI Infra</span>
+        </div>
+      </div>
 
-<h2 class="section-title">
-AI 人才情报架构
-</h2>
+      <!-- Card 3 -->
+      <div class="card reveal" data-delay="2" data-hover>
+        <div class="card-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="6" cy="6" r="2"/><circle cx="18" cy="6" r="2"/><circle cx="6" cy="18" r="2"/><circle cx="18" cy="18" r="2"/><circle cx="12" cy="12" r="2"/><path d="M8 6h8M6 8v8m12-8v8M8 18h8M7.5 7.5l3 3m3 3 3 3m0-9-3 3m-3 3-3 3"/></svg>
+        </div>
+        <div class="card-tag">GRAPH OS</div>
+        <div class="card-title">智能人才图谱</div>
+        <div class="card-desc">
+          基于知识图谱与本地化 AI Agent 的人才搜索系统，从公开信号到组织洞察。
+        </div>
+        <div class="card-tags">
+          <span class="chip">Knowledge Graph</span>
+          <span class="chip">Local AI</span>
+          <span class="chip">Signal Mining</span>
+        </div>
+      </div>
 
-<p class="section-desc">
+      <!-- Card 4 -->
+      <div class="card reveal" data-hover>
+        <div class="card-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2 4 7v6c0 5 3.5 8.5 8 9 4.5-.5 8-4 8-9V7l-8-5z"/><path d="m9 12 2 2 4-4"/></svg>
+        </div>
+        <div class="card-tag">EXECUTIVE NETWORK</div>
+        <div class="card-title">高端技术圈层</div>
+        <div class="card-desc">
+          长期深耕 AI、机器人、新能源与科技高管生态，
+          积累从 IC 到 VP 的多层级私域人脉。
+        </div>
+        <div class="card-tags">
+          <span class="chip">CTO / VP</span>
+          <span class="chip">Tech Director</span>
+          <span class="chip">Founding Eng</span>
+        </div>
+      </div>
 
-基于技术路线、组织架构与产业链的深度 Mapping，
-持续追踪 AI 与新能源领域核心技术人才流向。
+      <!-- Card 5 -->
+      <div class="card reveal" data-delay="1" data-hover>
+        <div class="card-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+        </div>
+        <div class="card-tag">EMBODIED AI</div>
+        <div class="card-title">具身智能与机器人</div>
+        <div class="card-desc">
+          人形机器人、操作策略、运动控制、强化学习、Sim2Real —— AI 落地物理世界的关键路径。
+        </div>
+        <div class="card-tags">
+          <span class="chip">Humanoid</span>
+          <span class="chip">RL</span>
+          <span class="chip">Sim2Real</span>
+        </div>
+      </div>
 
-</p>
+      <!-- Card 6: full -->
+      <div class="card full card-map reveal" data-hover>
+        <svg class="map-viz" id="mapViz" viewBox="0 0 1200 280" preserveAspectRatio="xMidYMid slice"></svg>
+        <div style="position:relative;z-index:1;">
+          <div class="card-tag">INDUSTRY INTELLIGENCE</div>
+          <div class="card-title" style="font-size:34px;max-width:760px;">
+            企业真正需要的，已不是传统 JD 匹配 —— <br/>
+            <span class="grad">而是理解技术演进与组织升级的人才 Intelligence System。</span>
+          </div>
+          <div class="card-desc" style="max-width:560px;margin-top:18px;">
+            从技术路线图反推人才地图，从组织升级反推关键岗位 —— 这是 LEO OS 的核心方法论。
+          </div>
+        </div>
+      </div>
+    </div>
 
-</div>
-
-<div class="grid">
-
-<div class="card large reveal">
-
-<div class="card-tag">
-AUTONOMOUS SYSTEM
-</div>
-
-<div class="card-title">
-智能驾驶与端到端架构
-</div>
-
-<div class="card-desc">
-
-覆盖 ADS、
-BEV、
-Occupancy Network、
-世界模型、
-端到端自动驾驶、
-EEA 与智能整车架构。
-
-</div>
-
-</div>
-
-<div class="card reveal">
-
-<div class="card-tag">
-FOUNDATION MODEL
-</div>
-
-<div class="card-title">
-AGI 与多模态
-</div>
-
-<div class="card-desc">
-
-LLM、
-Agent、
-世界模型、
-推理优化、
-RLHF、
-AI Infra。
-
-</div>
-
-</div>
-
-<div class="card reveal">
-
-<div class="card-tag">
-AI MAPPING OS
-</div>
-
-<div class="card-title">
-智能人才图谱
-</div>
-
-<div class="card-desc">
-
-基于知识图谱与本地 AI，
-构建下一代人才搜索系统。
-
-</div>
-
-</div>
-
-<div class="card reveal">
-
-<div class="card-tag">
-EXECUTIVE NETWORK
-</div>
-
-<div class="card-title">
-高端技术圈层
-</div>
-
-<div class="card-desc">
-
-长期深耕 AI、
-机器人、
-新能源与科技高管生态。
-
-</div>
-
-</div>
-
-<div class="card full reveal">
-
-<div class="card-tag">
-INDUSTRY INTELLIGENCE
-</div>
-
-<div class="card-title">
-Mapping the human infrastructure behind AI.
-</div>
-
-<div class="card-desc">
-
-企业真正需要的，
-已经不是传统 JD 匹配，
-而是理解技术演进与组织升级的人才 intelligence system。
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
+    <!-- Logos Marquee -->
+    <div class="logos">
+      <div class="logos-track" id="logosTrack"></div>
+    </div>
+  </div>
 </section>
 
+<!-- ===== CONSOLE ===== -->
 <section id="console">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-eyebrow">02 · INTELLIGENCE CONSOLE</div>
+      <h2 class="section-title">AI <span class="grad">智能搜索</span> 系统</h2>
+      <p class="section-desc">
+        输入技术方向、公司或岗位，AI Agent 实时调用人才图谱进行多维度匹配。
+      </p>
+    </div>
 
-<div class="container">
+    <div class="console reveal">
+      <div class="console-inner">
+        <div class="console-header">
+          <span class="console-dot dot-r"></span>
+          <span class="console-dot dot-y"></span>
+          <span class="console-dot dot-g"></span>
+          <span style="margin-left:12px;">leo-os://console/talent-search</span>
+          <span class="console-tag">● ONLINE</span>
+        </div>
 
-<div class="reveal">
+        <div class="search-box">
+          <div class="search-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          </div>
+          <input type="text" class="console-input" id="searchInput"
+                 placeholder="输入技术方向，例如: autonomous · multimodal · embodied · infra ..." />
+        </div>
 
-<h2 class="section-title">
-AI 智能搜索系统
-</h2>
+        <div class="search-suggest">
+          <span class="suggest-chip" data-q="autonomous" data-hover># autonomous</span>
+          <span class="suggest-chip" data-q="multimodal" data-hover># multimodal</span>
+          <span class="suggest-chip" data-q="embodied" data-hover># embodied AI</span>
+          <span class="suggest-chip" data-q="infra" data-hover># AI infra</span>
+          <span class="suggest-chip" data-q="agent" data-hover># agent</span>
+          <span class="suggest-chip" data-q="chip" data-hover># AI chip</span>
+        </div>
 
-<p class="section-desc">
-
-输入技术方向，
-模拟 AI 人才 intelligence 搜索。
-
-</p>
-
-</div>
-
-<div class="console reveal">
-
-<div class="search-box">
-
-<div class="search-icon">
-⌘
-</div>
-
-<input
-type="text"
-class="console-input"
-id="searchInput"
-placeholder="输入技术方向，例如：autonomous / multimodal / embodied AI"
-/>
-
-</div>
-
-<div class="results" id="results">
-
-<div class="result-card">
-
-<div class="result-company">
-Tesla AP
-</div>
-
-<div class="result-role">
-Planning Architect
-</div>
-
-<div class="match">
-匹配度 98%
-</div>
-
-</div>
-
-<div class="result-card">
-
-<div class="result-company">
-OpenAI
-</div>
-
-<div class="result-role">
-Agent Engineer
-</div>
-
-<div class="match">
-匹配度 96%
-</div>
-
-</div>
-
-<div class="result-card">
-
-<div class="result-company">
-Figure AI
-</div>
-
-<div class="result-role">
-Robotics AI Lead
-</div>
-
-<div class="match">
-匹配度 94%
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
+        <div class="results" id="results"></div>
+      </div>
+    </div>
+  </div>
 </section>
 
+<!-- ===== TIMELINE ===== -->
+<section id="timeline">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-eyebrow">03 · ENGAGEMENT FLOW</div>
+      <h2 class="section-title">智能化<span class="grad"> 4 步流程</span></h2>
+      <p class="section-desc">
+        从需求理解到人才交付，每一步都由 AI 与资深顾问双轨驱动。
+      </p>
+    </div>
+
+    <div class="grid">
+      <div class="card reveal" data-hover>
+        <div class="t-time">STEP 01</div>
+        <div class="card-title" style="font-size:22px;">技术解构</div>
+        <div class="card-desc">
+          深入企业技术栈与组织架构，AI 辅助提取核心能力图谱与隐性需求。
+        </div>
+      </div>
+      <div class="card reveal" data-delay="1" data-hover>
+        <div class="t-time">STEP 02</div>
+        <div class="card-title" style="font-size:22px;">人才 Mapping</div>
+        <div class="card-desc">
+          基于知识图谱锁定目标圈层，AI 多维评分排序候选清单。
+        </div>
+      </div>
+      <div class="card reveal" data-delay="2" data-hover>
+        <div class="t-time">STEP 03</div>
+        <div class="card-title" style="font-size:22px;">深度对齐</div>
+        <div class="card-desc">
+          顾问深度沟通技术方向、组织文化与个人发展路径，三维匹配。
+        </div>
+      </div>
+      <div class="card reveal" data-delay="3" data-hover>
+        <div class="t-time">STEP 04</div>
+        <div class="card-title" style="font-size:22px;">交付与陪跑</div>
+        <div class="card-desc">
+          Offer 谈判、入职过渡、90 天融入跟踪 —— 闭环保障入职成功率。
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
 <footer id="contact">
-
-© 2026 LEO OS ｜ AI时代的人才智能操作系统
-
+  <div class="foot-grid">
+    <div class="foot-col">
+      <div class="logo" style="margin-bottom:18px;">
+        <div class="logo-icon">L</div>
+        <div class="logo-text">
+          <span>LEO OS</span>
+          <small>AI TALENT INTELLIGENCE</small>
+        </div>
+      </div>
+      <div class="foot-brand">
+        AI 时代的人才智能操作系统。<br/>
+        我们不是猎头，是技术人才的情报网络。
+      </div>
+    </div>
+    <div class="foot-col">
+      <h4>领域</h4>
+      <a href="#">自动驾驶</a>
+      <a href="#">AGI / 多模态</a>
+      <a href="#">具身智能</a>
+      <a href="#">AI Infra</a>
+    </div>
+    <div class="foot-col">
+      <h4>系统</h4>
+      <a href="#hero">首页</a>
+      <a href="#intelligence">人才架构</a>
+      <a href="#console">智能搜索</a>
+      <a href="#timeline">流程</a>
+    </div>
+    <div class="foot-col">
+      <h4>联系</h4>
+      <a href="mailto:supkefly@gmail.com">supkefly@gmail.com</a>
+      <a href="#">私密咨询</a>
+      <a href="#">合作申请</a>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <div>© 2026 LEO OS · ALL SYSTEMS OPERATIONAL</div>
+    <div>BUILT WITH INTELLIGENCE · v2.6.0</div>
+  </div>
 </footer>
 
+<!-- ===== AI ASSISTANT ===== -->
+<button class="ai-fab" id="aiFab" data-hover aria-label="AI Assistant">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a3 3 0 0 1 3 3v1h2a2 2 0 0 1 2 2v3h1a1 1 0 0 1 0 2h-1v3a2 2 0 0 1-2 2h-2v1a3 3 0 0 1-6 0v-1H7a2 2 0 0 1-2-2v-3H4a1 1 0 0 1 0-2h1V8a2 2 0 0 1 2-2h2V5a3 3 0 0 1 3-3z"/><circle cx="9" cy="11" r="1.2" fill="currentColor"/><circle cx="15" cy="11" r="1.2" fill="currentColor"/><path d="M9.5 15h5"/></svg>
+</button>
+
+<div class="ai-panel" id="aiPanel">
+  <div class="ai-head">
+    <div class="ai-avatar">L</div>
+    <div class="ai-name">
+      LEO Intelligence
+      <small>在线 · 平均响应 1.2s</small>
+    </div>
+    <button class="ai-close" id="aiClose" data-hover>✕</button>
+  </div>
+  <div class="ai-body" id="aiBody">
+    <div class="msg msg-bot">
+      你好，我是 LEO Intelligence。<br/>
+      我可以帮你理解 AI 人才市场、解读技术方向、推荐人选画像。试试问我：
+    </div>
+    <div class="msg msg-bot" style="background:transparent;border:none;padding:4px 0;">
+      <div class="search-suggest" style="margin:0;">
+        <span class="suggest-chip" data-ai="自动驾驶人才现状">自动驾驶人才现状</span>
+        <span class="suggest-chip" data-ai="如何招到端到端专家">如何招到端到端专家</span>
+        <span class="suggest-chip" data-ai="具身智能赛道梳理">具身智能赛道</span>
+      </div>
+    </div>
+  </div>
+  <div class="ai-foot">
+    <input type="text" class="ai-input" id="aiInput" placeholder="询问 AI 人才情报..."/>
+    <button class="ai-send" id="aiSend" data-hover>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="m5 12 14-7-7 14-2-7-5-0z"/></svg>
+    </button>
+  </div>
+</div>
+
+<!-- ===== COMMAND PALETTE ===== -->
+<div class="cmdk-overlay" id="cmdkOverlay">
+  <div class="cmdk">
+    <input type="text" class="cmdk-input" id="cmdkInput" placeholder="搜索功能、跳转或执行命令..." autocomplete="off"/>
+    <div class="cmdk-list" id="cmdkList"></div>
+  </div>
+</div>
+
 <script>
-
-/* ===================================
-TYPING
-=================================== */
-
-const text =
-"构建下一代 AI 人才基础设施";
-
-const typing =
-document.getElementById("typing");
-
-let i = 0;
-
-function type(){
-
-if(i < text.length){
-
-typing.innerHTML += text.charAt(i);
-
-i++;
-
-setTimeout(type,45);
-
+/* ===== BOOT SEQUENCE ===== */
+const bootSteps = [
+  ['LOADING NEURAL NETWORK', 280],
+  ['CONNECTING TO TALENT GRAPH', 320],
+  ['INITIALIZING AI AGENTS', 280],
+  ['SYSTEMS READY', 200]
+];
+let bs = 0;
+const bootText = document.getElementById('bootText');
+function nextBoot(){
+  if(bs >= bootSteps.length){
+    document.getElementById('boot').classList.add('done');
+    document.body.style.overflow = '';
+    return;
+  }
+  bootText.innerHTML = bootSteps[bs][0] + ' <span class="ok">●</span>';
+  setTimeout(()=>{bs++; nextBoot();}, bootSteps[bs][1]);
 }
+document.body.style.overflow = 'hidden';
+setTimeout(nextBoot, 200);
 
+/* ===== TYPING ===== */
+const phrases = ['Autonomy','AGI','Embodied AI','New Energy'];
+const typing = document.getElementById('typing');
+let pIdx=0, cIdx=0, deleting=false;
+function typeLoop(){
+  const cur = phrases[pIdx];
+  if(!deleting){
+    typing.textContent = cur.slice(0,++cIdx);
+    if(cIdx === cur.length){deleting=true; setTimeout(typeLoop, 1600); return;}
+  } else {
+    typing.textContent = cur.slice(0,--cIdx);
+    if(cIdx === 0){deleting=false; pIdx=(pIdx+1)%phrases.length;}
+  }
+  setTimeout(typeLoop, deleting? 40 : 80);
 }
+typeLoop();
 
-type();
-
-/* ===================================
-CURSOR
-=================================== */
-
-const cursor =
-document.querySelector('.cursor');
-
-const dot =
-document.querySelector('.cursor-dot');
-
-document.addEventListener('mousemove',(e)=>{
-
-cursor.style.left =
-e.clientX + 'px';
-
-cursor.style.top =
-e.clientY + 'px';
-
-dot.style.left =
-e.clientX + 'px';
-
-dot.style.top =
-e.clientY + 'px';
-
+/* ===== CURSOR ===== */
+const cursor = document.querySelector('.cursor');
+const dot = document.querySelector('.cursor-dot');
+let cx=0,cy=0,tx=0,ty=0;
+document.addEventListener('mousemove',e=>{
+  tx=e.clientX; ty=e.clientY;
+  dot.style.left=tx+'px'; dot.style.top=ty+'px';
 });
-
-document.querySelectorAll('a,.card,.btn')
-.forEach(el=>{
-
-el.addEventListener('mouseenter',()=>{
-
-cursor.style.width='60px';
-cursor.style.height='60px';
-
-cursor.style.background=
-'rgba(10,132,255,.08)';
-
-});
-
-el.addEventListener('mouseleave',()=>{
-
-cursor.style.width='24px';
-cursor.style.height='24px';
-
-cursor.style.background='transparent';
-
-});
-
-});
-
-/* ===================================
-PARTICLES
-=================================== */
-
-const canvas =
-document.getElementById("particles");
-
-const ctx =
-canvas.getContext("2d");
-
-canvas.width =
-window.innerWidth;
-
-canvas.height =
-window.innerHeight;
-
-const particles = [];
-
-for(let i=0;i<90;i++){
-
-particles.push({
-
-x:Math.random()*canvas.width,
-y:Math.random()*canvas.height,
-
-vx:(Math.random()-.5)*0.5,
-vy:(Math.random()-.5)*0.5,
-
-r:Math.random()*2+1
-
-});
-
+function followCursor(){
+  cx += (tx-cx)*0.18; cy += (ty-cy)*0.18;
+  cursor.style.left=cx+'px'; cursor.style.top=cy+'px';
+  requestAnimationFrame(followCursor);
 }
+followCursor();
+document.addEventListener('mouseover',e=>{
+  if(e.target.closest('a,button,.card,.suggest-chip,[data-hover]')) cursor.classList.add('hover');
+  else cursor.classList.remove('hover');
+});
+
+/* ===== PARTICLES (Neural Network) ===== */
+const canvas = document.getElementById('particles');
+const ctx = canvas.getContext('2d');
+function resizeCanvas(){canvas.width=innerWidth; canvas.height=innerHeight;}
+resizeCanvas();
+addEventListener('resize', resizeCanvas);
+
+const N = Math.min(80, Math.floor(innerWidth/22));
+const particles = Array.from({length:N},()=>({
+  x:Math.random()*canvas.width,
+  y:Math.random()*canvas.height,
+  vx:(Math.random()-.5)*.4,
+  vy:(Math.random()-.5)*.4,
+  r:Math.random()*1.5+.5
+}));
+let mouseX = innerWidth/2, mouseY = innerHeight/2;
+document.addEventListener('mousemove',e=>{mouseX=e.clientX; mouseY=e.clientY;});
 
 function animate(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  particles.forEach(p=>{
+    p.x+=p.vx; p.y+=p.vy;
+    if(p.x<0||p.x>canvas.width) p.vx*=-1;
+    if(p.y<0||p.y>canvas.height) p.vy*=-1;
 
-ctx.clearRect(
-0,
-0,
-canvas.width,
-canvas.height
-);
+    const dxm=p.x-mouseX, dym=p.y-mouseY;
+    const dm=Math.sqrt(dxm*dxm+dym*dym);
+    if(dm<140){
+      const f=(140-dm)/140 * 0.8;
+      p.x += dxm/dm * f; p.y += dym/dm * f;
+    }
 
-particles.forEach(p=>{
+    ctx.beginPath();
+    ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+    ctx.fillStyle='rgba(0,229,255,.6)';
+    ctx.fill();
+  });
 
-p.x += p.vx;
-p.y += p.vy;
-
-if(p.x<0 || p.x>canvas.width)
-p.vx *= -1;
-
-if(p.y<0 || p.y>canvas.height)
-p.vy *= -1;
-
-ctx.beginPath();
-
-ctx.arc(
-p.x,
-p.y,
-p.r,
-0,
-Math.PI*2
-);
-
-ctx.fillStyle =
-"rgba(10,132,255,.25)";
-
-ctx.fill();
-
-particles.forEach(other=>{
-
-const dx = p.x-other.x;
-const dy = p.y-other.y;
-
-const dist =
-Math.sqrt(dx*dx+dy*dy);
-
-if(dist < 120){
-
-ctx.beginPath();
-
-ctx.moveTo(p.x,p.y);
-ctx.lineTo(other.x,other.y);
-
-ctx.strokeStyle =
-`rgba(10,132,255,${
-1-dist/120
-})`;
-
-ctx.stroke();
-
+  for(let i=0;i<particles.length;i++){
+    for(let j=i+1;j<particles.length;j++){
+      const dx=particles[i].x-particles[j].x;
+      const dy=particles[i].y-particles[j].y;
+      const d=Math.sqrt(dx*dx+dy*dy);
+      if(d<140){
+        ctx.beginPath();
+        ctx.moveTo(particles[i].x,particles[i].y);
+        ctx.lineTo(particles[j].x,particles[j].y);
+        ctx.strokeStyle=`rgba(0,229,255,${(1-d/140)*0.18})`;
+        ctx.lineWidth=.6;
+        ctx.stroke();
+      }
+    }
+  }
+  requestAnimationFrame(animate);
 }
-
-});
-
-});
-
-requestAnimationFrame(animate);
-
-}
-
 animate();
 
-/* ===================================
-CARD INTERACTION
-=================================== */
+/* ===== MAP VIZ (Card 6 background) ===== */
+(function(){
+  const svg = document.getElementById('mapViz');
+  if(!svg) return;
+  const W=1200,H=280;
+  const nodes = Array.from({length:24},()=>({
+    x:Math.random()*W, y:Math.random()*H, r:Math.random()*3+2
+  }));
+  let s='';
+  // edges
+  for(let i=0;i<nodes.length;i++){
+    for(let j=i+1;j<nodes.length;j++){
+      const d=Math.hypot(nodes[i].x-nodes[j].x,nodes[i].y-nodes[j].y);
+      if(d<200){
+        s+=`<line x1="${nodes[i].x}" y1="${nodes[i].y}" x2="${nodes[j].x}" y2="${nodes[j].y}" stroke="rgba(0,229,255,${(1-d/200)*0.3})" stroke-width="1"/>`;
+      }
+    }
+  }
+  // nodes
+  nodes.forEach((n,i)=>{
+    s+=`<circle cx="${n.x}" cy="${n.y}" r="${n.r}" fill="${i%3===0?'#00E5FF':i%3===1?'#7C5CFF':'#0A84FF'}" opacity=".7">
+      <animate attributeName="opacity" values=".4;1;.4" dur="${2+Math.random()*2}s" repeatCount="indefinite"/>
+    </circle>`;
+  });
+  svg.innerHTML = s;
+})();
 
-document.querySelectorAll('.card')
-.forEach(card=>{
+/* ===== TICKER ===== */
+const tickerData = [
+  ['Tesla AP','Planning Architect','▲','▲ Hiring'],
+  ['Figure AI','Robotics Lead','▲','▲ Active'],
+  ['OpenAI','Multimodal Sci','●','● Live'],
+  ['Anthropic','Agent Engineer','▲','▲ Open'],
+  ['ByteDance Seed','RL Research','●','● Live'],
+  ['Huawei ADS','Perception','▲','▲ Hiring'],
+  ['Momenta','BEV Engineer','▲','▲ Active'],
+  ['Unitree','Embodied RL','●','● Live'],
+  ['Google DeepMind','VL Model','▲','▲ Open'],
+  ['NVIDIA','AI Infra','▲','▲ Active'],
+  ['XPENG','E2E Driving','●','● Live'],
+  ['Li Auto','World Model','▲','▲ Hiring']
+];
+const tickerTrack = document.getElementById('tickerTrack');
+const tHTML = tickerData.map(t=>
+  `<span class="ticker-item"><span class="co">${t[0]}</span><span>${t[1]}</span><span class="${t[2]==='▲'?'arrow':'down'}">${t[3]}</span></span>`
+).join('');
+tickerTrack.innerHTML = tHTML + tHTML;
 
-card.addEventListener('mousemove',(e)=>{
+/* ===== LOGOS MARQUEE ===== */
+const logos = ['Tesla','OpenAI','Anthropic','Figure AI','Huawei','NVIDIA','Google DeepMind','Momenta','XPENG','Li Auto','ByteDance','Unitree','Meta AI','xAI','Waymo'];
+const logosTrack = document.getElementById('logosTrack');
+logosTrack.innerHTML = (logos.map(l=>`<span>${l}</span>`).join('') + logos.map(l=>`<span>${l}</span>`).join(''));
 
-const rect =
-card.getBoundingClientRect();
-
-const x =
-e.clientX - rect.left;
-
-const y =
-e.clientY - rect.top;
-
-card.style.setProperty(
-'--x',
-`${x}px`
-);
-
-card.style.setProperty(
-'--y',
-`${y}px`
-);
-
-const centerX =
-rect.width/2;
-
-const centerY =
-rect.height/2;
-
-const rotateX =
-(y-centerY)/18;
-
-const rotateY =
--(x-centerX)/18;
-
-card.style.transform = `
-perspective(1200px)
-rotateX(${rotateX}deg)
-rotateY(${rotateY}deg)
-translateY(-8px)
-`;
-
+/* ===== CARD 3D HOVER ===== */
+document.querySelectorAll('.card').forEach(card=>{
+  card.addEventListener('mousemove',e=>{
+    const r=card.getBoundingClientRect();
+    const x=e.clientX-r.left, y=e.clientY-r.top;
+    card.style.setProperty('--x',x+'px');
+    card.style.setProperty('--y',y+'px');
+    const rx=(y-r.height/2)/22, ry=-(x-r.width/2)/22;
+    card.style.transform=`perspective(1000px) rotateX(${rx}deg) rotateY(${ry}deg) translateY(-6px)`;
+  });
+  card.addEventListener('mouseleave',()=>{card.style.transform='';});
 });
 
-card.addEventListener('mouseleave',()=>{
+/* ===== REVEAL ===== */
+const io = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting) e.target.classList.add('active');});
+},{threshold:.12});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 
-card.style.transform='';
+/* ===== COUNTERS ===== */
+const counters = document.querySelectorAll('.status-number');
+const counterIO = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(!e.isIntersecting || e.target.dataset.done) return;
+    e.target.dataset.done='1';
+    const target=+e.target.dataset.count;
+    const suffix=e.target.dataset.suffix||'';
+    let count=0;
+    const dur=1400, start=performance.now();
+    function tick(now){
+      const p=Math.min((now-start)/dur,1);
+      const ease=1-Math.pow(1-p,3);
+      count=Math.floor(target*ease);
+      e.target.textContent = count + suffix;
+      if(p<1) requestAnimationFrame(tick);
+      else e.target.textContent = target + suffix;
+    }
+    requestAnimationFrame(tick);
+  });
+},{threshold:.4});
+counters.forEach(c=>counterIO.observe(c));
 
-});
-
-});
-
-/* ===================================
-REVEAL
-=================================== */
-
-const observer =
-new IntersectionObserver((entries)=>{
-
-entries.forEach(entry=>{
-
-if(entry.isIntersecting){
-
-entry.target.classList.add(
-'active'
-);
-
-}
-
-});
-
-},{
-threshold:.15
-});
-
-document
-.querySelectorAll('.reveal')
-.forEach(el=>observer.observe(el));
-
-/* ===================================
-COUNTER
-=================================== */
-
-document.querySelectorAll(
-'.status-number'
-).forEach(counter=>{
-
-const target =
-+counter.dataset.count;
-
-let count = 0;
-
-const update = ()=>{
-
-count += Math.ceil(target/60);
-
-if(count > target)
-count = target;
-
-counter.innerText = count;
-
-if(count < target){
-
-requestAnimationFrame(update);
-
-}
-
-}
-
-update();
-
-});
-
+/* fluctuate stats */
 setInterval(()=>{
+  counters.forEach(el=>{
+    if(!el.dataset.done) return;
+    const base=+el.dataset.count;
+    const suffix=el.dataset.suffix||'';
+    el.textContent = (base + Math.floor(Math.random()*5)) + suffix;
+  });
+}, 2400);
 
-document.querySelectorAll('.status-number')
-.forEach(el=>{
-
-let base=+el.dataset.count;
-
-el.innerText =
-base + Math.floor(Math.random()*8);
-
-});
-
-},1800);
-
-/* ===================================
-SEARCH
-=================================== */
-
-const searchInput =
-document.getElementById(
-'searchInput'
-);
-
-const results =
-document.getElementById(
-'results'
-);
-
+/* ===== SEARCH ===== */
 const database = {
-
-autonomous:[
-['Tesla AP','Planning Architect','98%'],
-['Huawei ADS','Perception Lead','95%'],
-['Momenta','BEV Engineer','94%']
-],
-
-multimodal:[
-['OpenAI','Multimodal Researcher','97%'],
-['Google DeepMind','Vision-Language Scientist','95%'],
-['Anthropic','Agent Engineer','93%']
-],
-
-embodied:[
-['Figure AI','Robotics AI Lead','96%'],
-['Tesla Optimus','Motion Planning','94%'],
-['Unitree','Embodied RL Engineer','91%']
-]
-
+  autonomous:[
+    ['Tesla AP','Planning Architect','SF · Senior','98','SERIES PUBLIC'],
+    ['Huawei ADS','Perception Tech Lead','深圳 · Principal','95','BU'],
+    ['Momenta','BEV Engineer','北京/苏州 · Senior','94','SERIES C'],
+    ['XPENG XNGP','E2E Engineer','广州 · Staff','92','PUBLIC'],
+    ['Li Auto MEGA','World Model Researcher','北京 · Senior','91','PUBLIC'],
+    ['Waymo','Motion Planning','MTV · Staff','90','SUBSIDIARY']
+  ],
+  multimodal:[
+    ['OpenAI','Multimodal Researcher','SF · Senior','97','PRIVATE'],
+    ['Google DeepMind','Vision-Language Sci','London · L6','95','PUBLIC'],
+    ['Anthropic','Agent Engineer','SF · Senior','93','SERIES E'],
+    ['ByteDance Seed','VL Researcher','北京 · Tech Lead','91','PRIVATE']
+  ],
+  embodied:[
+    ['Figure AI','Robotics AI Lead','Sunnyvale · Principal','96','SERIES B'],
+    ['Tesla Optimus','Motion Planning','SF · Senior','94','PUBLIC'],
+    ['Unitree','Embodied RL Engineer','杭州 · Senior','91','SERIES B'],
+    ['1X','Humanoid Control','Oslo · Staff','90','SERIES B']
+  ],
+  infra:[
+    ['NVIDIA','GPU Infra Architect','Santa Clara · Principal','96','PUBLIC'],
+    ['AI Infra Startup','Distributed Training','北京 · Tech Lead','93','SERIES A'],
+    ['Anthropic','Inference Optimization','SF · Senior','92','SERIES E']
+  ],
+  agent:[
+    ['OpenAI','Agent Researcher','SF · Senior','97','PRIVATE'],
+    ['Anthropic','Agent Eng Lead','SF · Principal','95','SERIES E'],
+    ['xAI','Agent Platform','Bay Area · Staff','92','PRIVATE']
+  ],
+  chip:[
+    ['Cerebras','AI Chip Architect','Sunnyvale · Principal','95','SERIES F'],
+    ['Tenstorrent','Compiler Lead','Toronto · Staff','93','SERIES D'],
+    ['Moore Threads','GPU IP Engineer','北京 · Senior','90','SERIES B']
+  ]
 };
 
-searchInput.addEventListener(
-'input',
-(e)=>{
+const searchInput = document.getElementById('searchInput');
+const results = document.getElementById('results');
 
-const value =
-e.target.value.toLowerCase();
-
-results.innerHTML = `
-<div class="result-card">
-<div class="result-role">
-AI Intelligence 搜索中...
-</div>
-</div>
-`;
-
-setTimeout(()=>{
-
-results.innerHTML='';
-
-let found=false;
-
-Object.keys(database)
-.forEach(key=>{
-
-if(value.includes(key)){
-
-found=true;
-
-database[key]
-.forEach(item=>{
-
-results.innerHTML += `
-
-<div class="result-card">
-
-<div class="result-company">
-${item[0]}
-</div>
-
-<div class="result-role">
-${item[1]}
-</div>
-
-<div class="match">
-匹配度 ${item[2]}
-</div>
-
-</div>
-
-`;
-
-});
-
+function renderResults(items){
+  if(!items.length){
+    results.innerHTML = `
+      <div class="result-card" style="grid-column:span 3;text-align:center;padding:40px;">
+        <div class="result-company">LEO INTELLIGENCE</div>
+        <div class="result-role" style="margin:12px 0;">人才图谱扩展中…</div>
+        <div class="result-meta">尝试: autonomous / multimodal / embodied / infra / agent / chip</div>
+      </div>`;
+    return;
+  }
+  results.innerHTML = items.map((it,i)=>`
+    <div class="result-card" style="animation:msgIn .4s ${i*0.06}s both var(--ease);">
+      <div class="result-row">
+        <div class="result-company">${it[0]}</div>
+        <div class="result-stage">${it[4]}</div>
+      </div>
+      <div class="result-role">${it[1]}</div>
+      <div class="result-meta">${it[2]}</div>
+      <div class="match-bar"><div class="match-fill" style="width:0"></div></div>
+      <div class="match-text">
+        <span>MATCH SCORE</span>
+        <span class="pct">${it[3]}%</span>
+      </div>
+    </div>
+  `).join('');
+  setTimeout(()=>{
+    document.querySelectorAll('.match-fill').forEach((el,i)=>{
+      el.style.width = items[i][3] + '%';
+    });
+  }, 200);
 }
 
-});
-
-if(!found){
-
-results.innerHTML = `
-
-<div class="result-card">
-
-<div class="result-company">
-LEO Intelligence
-</div>
-
-<div class="result-role">
-正在扩展人才图谱...
-</div>
-
-<div class="match">
-深度搜索中
-</div>
-
-</div>
-
-`;
-
+function runSearch(value){
+  results.innerHTML = `
+    <div class="result-card" style="grid-column:span 3;text-align:center;padding:30px;">
+      <div class="msg-typing" style="justify-content:center;display:flex;">
+        <span></span><span></span><span></span>
+      </div>
+      <div class="result-meta" style="margin-top:14px;">AI Intelligence searching talent graph…</div>
+    </div>`;
+  setTimeout(()=>{
+    let found=[];
+    Object.keys(database).forEach(k=>{
+      if(value.toLowerCase().includes(k)) found = found.concat(database[k]);
+    });
+    renderResults(found);
+  }, 600);
 }
 
-},500);
-
+searchInput.addEventListener('input',e=>{
+  const v = e.target.value.trim();
+  if(!v){
+    results.innerHTML='';
+    renderResults(database.autonomous.slice(0,3).concat(database.multimodal.slice(0,2)).concat(database.embodied.slice(0,1)));
+    return;
+  }
+  runSearch(v);
 });
 
-/* ===================================
-NAV SCROLL
-=================================== */
+document.querySelectorAll('.suggest-chip[data-q]').forEach(c=>{
+  c.addEventListener('click',()=>{
+    searchInput.value = c.dataset.q;
+    runSearch(c.dataset.q);
+    document.getElementById('console').scrollIntoView({behavior:'smooth'});
+  });
+});
 
-window.addEventListener(
-'scroll',
-()=>{
+// initial results
+renderResults(database.autonomous.slice(0,3).concat(database.multimodal.slice(0,2)).concat(database.embodied.slice(0,1)));
 
-const nav =
-document.querySelector('nav');
+/* ===== NAV SCROLL ===== */
+const navEl = document.querySelector('nav');
+addEventListener('scroll',()=>{
+  if(scrollY>40){navEl.style.background='rgba(11,13,20,.9)';navEl.style.transform='translateX(-50%) scale(.98)';}
+  else{navEl.style.background='rgba(11,13,20,.7)';navEl.style.transform='translateX(-50%) scale(1)';}
+});
 
-if(window.scrollY > 40){
+/* ===== AI ASSISTANT ===== */
+const aiFab = document.getElementById('aiFab');
+const aiPanel = document.getElementById('aiPanel');
+const aiClose = document.getElementById('aiClose');
+const aiBody = document.getElementById('aiBody');
+const aiInput = document.getElementById('aiInput');
+const aiSend = document.getElementById('aiSend');
 
-nav.style.background =
-'rgba(255,255,255,.82)';
+aiFab.addEventListener('click',()=>aiPanel.classList.add('open'));
+aiClose.addEventListener('click',()=>aiPanel.classList.remove('open'));
 
-nav.style.transform =
-'translateX(-50%) scale(.98)';
+const aiResponses = {
+  '自动驾驶': '当前自动驾驶人才市场呈现两极分化:头部车企争夺端到端 (E2E) 与世界模型方向 IC,而 Tier1 与初创则集中在 BEV、Occupancy 与规划控制。VLA(视觉-语言-动作)成为新热点,Tesla / 小鹏 / 理想 / Wayve 是参照系。',
+  '端到端': '招到端到端专家的关键 3 点: ①目标公司圈层精准 (Tesla AI、Wayve、Comma、毫末、小鹏 XNGP);②背景画像清晰 (大规模数据驱动 + 模型架构 + 仿真闭环);③用技术深度做钩子 —— 而不是薪酬。LEO OS 已积累此领域 200+ 候选人。',
+  '具身智能': '具身智能赛道核心三层: ①基础模型层 (Figure / 1X / Physical Intelligence);②本体层 (宇树 / 智元 / 小米);③控制策略层 (Diffusion Policy / VLA)。人才主要来自伯克利、CMU、清华等机器人 Lab,以及 Tesla Optimus 系。',
+  'agi': 'AGI 路线两条: 一条是 Scaling Law 主导 (OpenAI/Anthropic),一条是世界模型 + 具身 (DeepMind/Meta)。中国玩家 ByteDance Seed、月之暗面、智谱、阶跃在多模态 Agent 方向积极布局。',
+  '芯片': 'AI 芯片人才稀缺等级: Architect > Compiler > Verification > IP。中国玩家 (壁仞/燧原/Moore Threads/Cerebras 中国) 主要从 NVIDIA/AMD/Intel/Google TPU 团队挖人,Package + RoE 已显著高于美元包。',
+  '': '我可以帮你解读 AI 人才市场动态、行业 Mapping 与候选人画像。你也可以直接联系 supkefly@gmail.com 进行私密咨询。'
+};
 
-}else{
-
-nav.style.background =
-'rgba(255,255,255,.68)';
-
-nav.style.transform =
-'translateX(-50%) scale(1)';
-
+function aiReply(q){
+  const key = Object.keys(aiResponses).find(k=>k && q.includes(k)) || '';
+  return aiResponses[key] || `关于"${q}",建议先明确技术方向(如自动驾驶、AGI、具身、芯片),我可以提供更深入的人才情报。或联系 supkefly@gmail.com 进行私密对话。`;
 }
 
+function pushMsg(text, role){
+  const div = document.createElement('div');
+  div.className = 'msg msg-' + role;
+  div.innerHTML = text;
+  aiBody.appendChild(div);
+  aiBody.scrollTop = aiBody.scrollHeight;
+  return div;
+}
+
+function pushTyping(){
+  return pushMsg('<div class="msg-typing"><span></span><span></span><span></span></div>', 'bot');
+}
+
+function sendAI(text){
+  if(!text.trim()) return;
+  pushMsg(text, 'user');
+  aiInput.value = '';
+  const t = pushTyping();
+  setTimeout(()=>{
+    t.innerHTML = aiReply(text);
+  }, 900 + Math.random()*600);
+}
+
+aiSend.addEventListener('click',()=>sendAI(aiInput.value));
+aiInput.addEventListener('keydown',e=>{if(e.key==='Enter') sendAI(aiInput.value);});
+document.querySelectorAll('.suggest-chip[data-ai]').forEach(c=>{
+  c.addEventListener('click',()=>{aiPanel.classList.add('open'); sendAI(c.dataset.ai);});
 });
 
-/* ===================================
-RESIZE
-=================================== */
+/* ===== COMMAND PALETTE ===== */
+const cmdkOverlay = document.getElementById('cmdkOverlay');
+const cmdkInput = document.getElementById('cmdkInput');
+const cmdkList = document.getElementById('cmdkList');
+const cmdkBtn = document.getElementById('cmdkBtn');
 
-window.addEventListener(
-'resize',
-()=>{
+const cmdItems = [
+  {icon:'⌂', text:'回到首页', sub:'#hero', action:()=>document.getElementById('hero').scrollIntoView({behavior:'smooth'})},
+  {icon:'◇', text:'人才架构', sub:'#intelligence', action:()=>document.getElementById('intelligence').scrollIntoView({behavior:'smooth'})},
+  {icon:'⌕', text:'智能搜索', sub:'#console', action:()=>{document.getElementById('console').scrollIntoView({behavior:'smooth'}); setTimeout(()=>searchInput.focus(),600);}},
+  {icon:'↻', text:'演进流程', sub:'#timeline', action:()=>document.getElementById('timeline').scrollIntoView({behavior:'smooth'})},
+  {icon:'✦', text:'打开 AI 助手', sub:'LEO Intelligence', action:()=>aiPanel.classList.add('open')},
+  {icon:'✉', text:'发送邮件', sub:'supkefly@gmail.com', action:()=>location.href='mailto:supkefly@gmail.com'},
+  {icon:'⚡', text:'搜索: autonomous', sub:'自动驾驶人才', action:()=>{searchInput.value='autonomous'; runSearch('autonomous'); document.getElementById('console').scrollIntoView({behavior:'smooth'});}},
+  {icon:'⚡', text:'搜索: multimodal', sub:'多模态 AI', action:()=>{searchInput.value='multimodal'; runSearch('multimodal'); document.getElementById('console').scrollIntoView({behavior:'smooth'});}},
+  {icon:'⚡', text:'搜索: embodied', sub:'具身智能', action:()=>{searchInput.value='embodied'; runSearch('embodied'); document.getElementById('console').scrollIntoView({behavior:'smooth'});}}
+];
 
-canvas.width =
-window.innerWidth;
+function renderCmdk(filter=''){
+  const f = filter.toLowerCase();
+  const filtered = cmdItems.filter(i=>!f || i.text.toLowerCase().includes(f) || i.sub.toLowerCase().includes(f));
+  cmdkList.innerHTML = filtered.map((i,idx)=>`
+    <div class="cmdk-item ${idx===0?'active':''}" data-idx="${cmdItems.indexOf(i)}" data-hover>
+      <div class="cmdk-item-icon">${i.icon}</div>
+      <div class="cmdk-item-text">${i.text}<small>${i.sub}</small></div>
+      <div class="cmdk-item-shortcut">↵</div>
+    </div>
+  `).join('') || '<div class="cmdk-item" style="justify-content:center;color:var(--text-mute);">无匹配命令</div>';
+  cmdkList.querySelectorAll('.cmdk-item[data-idx]').forEach(el=>{
+    el.addEventListener('click',()=>{
+      cmdItems[+el.dataset.idx].action();
+      closeCmdk();
+    });
+  });
+}
+function openCmdk(){
+  cmdkOverlay.classList.add('open');
+  cmdkInput.value=''; renderCmdk();
+  setTimeout(()=>cmdkInput.focus(),100);
+}
+function closeCmdk(){cmdkOverlay.classList.remove('open');}
 
-canvas.height =
-window.innerHeight;
+cmdkBtn.addEventListener('click', openCmdk);
+cmdkOverlay.addEventListener('click',e=>{if(e.target===cmdkOverlay) closeCmdk();});
+cmdkInput.addEventListener('input',e=>renderCmdk(e.target.value));
 
+document.addEventListener('keydown',e=>{
+  if((e.metaKey||e.ctrlKey) && e.key.toLowerCase()==='k'){
+    e.preventDefault();
+    cmdkOverlay.classList.contains('open') ? closeCmdk() : openCmdk();
+  }
+  if(e.key==='Escape'){closeCmdk(); aiPanel.classList.remove('open');}
+  if(cmdkOverlay.classList.contains('open') && e.key==='Enter'){
+    const active = cmdkList.querySelector('.cmdk-item.active');
+    if(active && active.dataset.idx){
+      cmdItems[+active.dataset.idx].action();
+      closeCmdk();
+    }
+  }
 });
 
-</script>
-
-</body>
-</html>
-
+/* ===== TOUCH FALLBACK ===== */
+if(matchMedia('(hover:none)').matches){
+  document.body.style.cursor='auto';
+}
 </script>
 
 </body>
