@@ -1,160 +1,627 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <title>飞云 Pro - 猎头全能增效工作站</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        @keyframes cloudFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
-        .logo-cloud { animation: cloudFloat 3s ease-in-out infinite; background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%); }
-        .sidebar-item:hover { background: #f1f5f9; color: #2563eb; }
-        .sidebar-item.active { background: #eff6ff; color: #2563eb; border-right: 4px solid #2563eb; }
-        .glass { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px); }
-    </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>飞云 Pro · AI 猎头协作工作台</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --bg:#f6f8fc;
+  --surface:#ffffff;
+  --surface-2:rgba(255,255,255,.72);
+  --ink:#0a0e1a;
+  --ink-soft:#1a2236;
+  --muted:#5b6478;
+  --muted-2:#94a3b8;
+  --line:rgba(15,23,42,.06);
+  --line-2:rgba(15,23,42,.10);
+
+  --blue:#0A84FF;
+  --blue-2:#2563eb;
+  --cyan:#06b6d4;
+  --aurora:#3CF2FF;
+  --violet:#7c3aed;
+  --violet-2:#a78bfa;
+  --green:#10b981;
+  --amber:#f59e0b;
+  --pink:#ec4899;
+
+  --shadow-sm:0 4px 14px rgba(15,23,42,.04);
+  --shadow:0 20px 60px rgba(15,23,42,.08);
+
+  --ease:cubic-bezier(.22,.61,.36,1);
+}
+
+*{margin:0;padding:0;box-sizing:border-box;-webkit-font-smoothing:antialiased}
+body{
+  font-family:'Inter','PingFang SC','Helvetica Neue',sans-serif;
+  background:var(--bg);color:var(--ink);min-height:100vh;
+  display:flex;overflow-x:hidden;font-size:14px
+}
+::selection{background:rgba(10,132,255,.18);color:var(--ink)}
+
+/* AMBIENT */
+.ambient{position:fixed;inset:0;z-index:-10;
+  background:
+    radial-gradient(900px 600px at 0% 0%, #e0eaff 0%, transparent 55%),
+    radial-gradient(800px 700px at 100% 0%, #efe5ff 0%, transparent 55%),
+    radial-gradient(700px 700px at 50% 110%, #d9f5ff 0%, transparent 55%),
+    linear-gradient(180deg,#f6f8fc,#eef2fb)
+}
+.grid-mesh{position:fixed;inset:0;z-index:-9;pointer-events:none;
+  background-image:
+    linear-gradient(rgba(10,132,255,.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(10,132,255,.05) 1px, transparent 1px);
+  background-size:48px 48px;
+  mask-image:radial-gradient(ellipse 80% 60% at 50% 30%, #000 30%, transparent 80%)}
+
+/* SIDEBAR */
+aside{width:268px;min-width:268px;height:100vh;position:sticky;top:0;
+  background:var(--surface-2);backdrop-filter:blur(28px) saturate(180%);
+  border-right:1px solid var(--line);
+  display:flex;flex-direction:column;z-index:10}
+
+.brand{padding:22px 22px 18px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--line)}
+.brand-mark{width:38px;height:38px;border-radius:12px;
+  background:conic-gradient(from 220deg, #0A84FF, #06b6d4, #7c3aed, #0A84FF);
+  display:flex;align-items:center;justify-content:center;font-weight:800;color:#fff;font-size:15px;
+  box-shadow:0 8px 22px rgba(10,132,255,.32);position:relative;overflow:hidden}
+.brand-mark::after{content:"";position:absolute;inset:1.5px;border-radius:10px;background:#0a0e1a}
+.brand-mark span{position:relative;z-index:2;background:linear-gradient(180deg,#fff,#bfdbfe);
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.brand-text h1{font-size:16px;font-weight:900;letter-spacing:.5px}
+.brand-text h1 em{font-style:normal;color:var(--blue)}
+.brand-text p{font-size:9.5px;color:var(--muted-2);letter-spacing:1.5px;
+  font-family:'JetBrains Mono',monospace;font-weight:600;margin-top:2px;text-transform:uppercase}
+
+.ai-card{margin:18px;padding:14px;border-radius:14px;
+  background:linear-gradient(135deg,#0a0e1a 0%, #1e1b4b 100%);color:#fff;
+  position:relative;overflow:hidden}
+.ai-card::before{content:"";position:absolute;inset:0;
+  background:radial-gradient(300px 200px at 0% 0%, rgba(60,242,255,.18), transparent 60%),
+             radial-gradient(300px 200px at 100% 100%, rgba(124,58,237,.22), transparent 60%);
+  pointer-events:none}
+.ai-card > *{position:relative;z-index:1}
+.ai-card-head{display:flex;align-items:center;gap:8px;margin-bottom:10px;
+  font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1.2px;color:#3CF2FF}
+.ai-card-head .d{width:6px;height:6px;border-radius:50%;background:#3CF2FF;box-shadow:0 0 8px #3CF2FF;
+  animation:pulseDot 1.5s ease-in-out infinite}
+.ai-card h3{font-size:13px;font-weight:700;margin-bottom:4px}
+.ai-card p{font-size:11px;color:rgba(255,255,255,.6);line-height:1.5;font-family:'JetBrains Mono',monospace}
+@keyframes pulseDot{50%{opacity:.4}}
+
+.nav-section{padding:14px 18px}
+.nav-label{font-size:10px;font-weight:700;color:var(--muted-2);letter-spacing:1.8px;
+  font-family:'JetBrains Mono',monospace;margin-bottom:8px;padding-left:12px}
+.nav-item{display:flex;align-items:center;gap:11px;padding:10px 12px;border-radius:11px;
+  text-decoration:none;color:var(--muted);font-size:13px;font-weight:600;
+  transition:.25s var(--ease);margin-bottom:2px;position:relative;cursor:pointer}
+.nav-item .ic{width:18px;height:18px;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.nav-item .ic svg{width:16px;height:16px}
+.nav-item .badge{margin-left:auto;padding:2px 7px;border-radius:6px;background:rgba(10,132,255,.10);
+  color:var(--blue);font-size:10px;font-weight:700;font-family:'JetBrains Mono',monospace}
+.nav-item:hover{background:rgba(255,255,255,.6);color:var(--ink)}
+.nav-item.active{background:linear-gradient(90deg, rgba(10,132,255,.10), rgba(124,58,237,.06));
+  color:var(--blue);font-weight:700}
+.nav-item.active::before{content:"";position:absolute;left:0;top:8px;bottom:8px;width:3px;
+  background:linear-gradient(180deg,var(--blue),var(--violet));border-radius:0 3px 3px 0}
+
+.profile{margin-top:auto;padding:18px;border-top:1px solid var(--line)}
+.profile-row{display:flex;align-items:center;gap:11px}
+.avatar{width:38px;height:38px;border-radius:11px;
+  background:linear-gradient(135deg,#0A84FF,#7c3aed);
+  display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:14px;
+  box-shadow:0 6px 16px rgba(10,132,255,.25)}
+.profile-info p{font-size:13px;font-weight:700;color:var(--ink)}
+.profile-info span{font-size:10.5px;color:var(--muted-2);font-family:'JetBrains Mono',monospace;letter-spacing:.5px}
+.profile-btn{width:100%;padding:9px;margin-top:10px;border-radius:10px;
+  background:#fff;border:1px solid var(--line-2);font-size:11.5px;font-weight:700;
+  color:var(--ink);cursor:pointer;transition:.25s;font-family:inherit}
+.profile-btn:hover{border-color:var(--blue);color:var(--blue)}
+
+/* MAIN */
+main{flex:1;min-width:0}
+
+.topbar{height:64px;position:sticky;top:0;z-index:9;
+  background:var(--surface-2);backdrop-filter:blur(28px) saturate(180%);
+  border-bottom:1px solid var(--line);
+  display:flex;align-items:center;justify-content:space-between;padding:0 28px}
+.topbar h2{font-size:15px;font-weight:800;letter-spacing:-.01em;display:flex;align-items:center;gap:10px}
+.topbar h2 .live{display:inline-flex;align-items:center;gap:5px;padding:3px 8px;border-radius:6px;
+  background:rgba(16,185,129,.12);color:var(--green);font-size:10px;font-weight:700;
+  font-family:'JetBrains Mono',monospace;letter-spacing:.5px}
+.topbar h2 .live .d{width:5px;height:5px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green)}
+.top-actions{display:flex;align-items:center;gap:10px}
+.search-mini{display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:10px;
+  background:rgba(15,23,42,.04);border:1px solid transparent;transition:.25s}
+.search-mini:focus-within{background:#fff;border-color:var(--blue);
+  box-shadow:0 0 0 4px rgba(10,132,255,.08)}
+.search-mini svg{width:14px;height:14px;color:var(--muted-2)}
+.search-mini input{border:none;outline:none;background:transparent;font-size:13px;width:200px;
+  font-family:inherit;color:var(--ink)}
+.search-mini .kbd{padding:2px 6px;border-radius:5px;background:#fff;border:1px solid var(--line-2);
+  font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);font-weight:700}
+
+.btn-pri{display:inline-flex;align-items:center;gap:7px;padding:9px 16px;border-radius:11px;
+  background:linear-gradient(135deg,#0A84FF,#7c3aed);color:#fff;border:none;
+  font-size:13px;font-weight:700;cursor:pointer;
+  box-shadow:0 8px 22px rgba(10,132,255,.28);transition:.25s var(--ease);font-family:inherit}
+.btn-pri:hover{transform:translateY(-1px);box-shadow:0 12px 28px rgba(10,132,255,.36)}
+.btn-pri svg{width:14px;height:14px}
+
+/* CONTENT */
+.content{padding:28px;max-width:1280px;margin:0 auto}
+
+.page-head{margin-bottom:22px}
+.page-tag{display:inline-flex;align-items:center;gap:8px;padding:5px 11px;border-radius:999px;
+  background:rgba(10,132,255,.08);border:1px solid rgba(10,132,255,.18);
+  font-family:'JetBrains Mono',monospace;font-size:10.5px;font-weight:700;color:var(--blue);
+  letter-spacing:1.2px;text-transform:uppercase;margin-bottom:12px}
+.page-title{font-size:28px;font-weight:800;letter-spacing:-.02em;margin-bottom:8px}
+.page-title em{font-style:normal;
+  background:linear-gradient(120deg,var(--blue),var(--violet));
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.page-desc{font-size:13.5px;color:var(--muted);max-width:560px}
+
+/* QUICK STATS */
+.quick-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:22px}
+.qs{padding:16px 18px;border-radius:14px;background:var(--surface-2);
+  border:1px solid var(--glass-bd,rgba(255,255,255,.7));backdrop-filter:blur(20px);
+  box-shadow:var(--shadow-sm);transition:.3s var(--ease)}
+.qs:hover{transform:translateY(-3px);box-shadow:var(--shadow)}
+.qs-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.qs-icon{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;
+  background:rgba(10,132,255,.10);color:var(--blue)}
+.qs-icon svg{width:14px;height:14px}
+.qs-trend{font-size:10px;font-weight:700;color:var(--green);font-family:'JetBrains Mono',monospace}
+.qs-num{font-size:22px;font-weight:800;letter-spacing:-.02em;line-height:1.1}
+.qs-label{font-size:10.5px;color:var(--muted);font-family:'JetBrains Mono',monospace;letter-spacing:.6px;margin-top:3px}
+
+/* MAIN GRID */
+.main-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:18px;margin-bottom:22px}
+.panel{padding:24px;border-radius:20px;background:var(--surface);
+  border:1px solid var(--line);box-shadow:var(--shadow-sm);position:relative;overflow:hidden}
+.panel-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;gap:12px}
+.panel-title{display:flex;align-items:center;gap:10px;font-size:15px;font-weight:800}
+.panel-title .ic{width:24px;height:24px;border-radius:7px;display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(135deg,rgba(10,132,255,.12),rgba(124,58,237,.12));color:var(--blue)}
+.panel-title .ic svg{width:14px;height:14px}
+.panel-meta{display:flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace;
+  font-size:10.5px;color:var(--muted-2)}
+.panel-pill{padding:3px 8px;border-radius:6px;background:rgba(10,132,255,.08);color:var(--blue);font-weight:700}
+.panel-pill .d{display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--blue);
+  box-shadow:0 0 6px var(--blue);margin-right:5px;vertical-align:1px;animation:pulseDot 1.5s ease-in-out infinite}
+
+/* JD INPUT */
+.jd-input{width:100%;min-height:160px;padding:16px;border-radius:14px;
+  background:#fafbff;border:1.5px solid var(--line-2);
+  font-family:inherit;font-size:13.5px;line-height:1.7;color:var(--ink);
+  outline:none;transition:.3s var(--ease);resize:vertical;margin-bottom:14px}
+.jd-input:focus{border-color:var(--blue);background:#fff;box-shadow:0 0 0 4px rgba(10,132,255,.08)}
+
+.jd-toolbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;gap:10px;flex-wrap:wrap}
+.tag-row{display:flex;flex-wrap:wrap;gap:6px}
+.jd-tag{padding:5px 10px;border-radius:8px;background:rgba(10,132,255,.06);
+  font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;color:var(--blue);
+  border:1px solid rgba(10,132,255,.16);cursor:pointer;transition:.2s}
+.jd-tag:hover{background:rgba(10,132,255,.12)}
+.tok-meter{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--muted-2)}
+.tok-meter b{color:var(--ink);font-weight:600}
+
+.action-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.act{padding:13px;border-radius:12px;border:none;cursor:pointer;font-weight:700;font-size:13px;
+  display:flex;align-items:center;justify-content:center;gap:8px;transition:.3s var(--ease);
+  font-family:inherit;position:relative;overflow:hidden}
+.act svg{width:14px;height:14px}
+.act-dark{background:linear-gradient(135deg,#0a0e1a,#1a2236);color:#fff;
+  box-shadow:0 12px 30px rgba(10,14,26,.25)}
+.act-dark:hover{transform:translateY(-2px);box-shadow:0 16px 36px rgba(10,14,26,.32)}
+.act-blue{background:linear-gradient(135deg,#0A84FF,#7c3aed);color:#fff;
+  box-shadow:0 12px 30px rgba(10,132,255,.28)}
+.act-blue:hover{transform:translateY(-2px);box-shadow:0 16px 36px rgba(10,132,255,.36)}
+
+/* RESUME UPLOAD */
+.upload-zone{display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:30px 20px;border-radius:14px;border:2px dashed var(--line-2);
+  background:#fafbff;text-align:center;cursor:pointer;transition:.3s var(--ease);min-height:170px}
+.upload-zone:hover{border-color:var(--blue);background:rgba(10,132,255,.04)}
+.upload-icon{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(135deg,rgba(10,132,255,.12),rgba(124,58,237,.12));color:var(--blue);
+  margin-bottom:12px}
+.upload-icon svg{width:20px;height:20px}
+.upload-zone h4{font-size:13.5px;font-weight:700;color:var(--ink);margin-bottom:4px}
+.upload-zone p{font-size:11px;color:var(--muted);font-family:'JetBrains Mono',monospace;letter-spacing:.5px}
+
+.privacy{margin-top:14px;padding:12px 14px;border-radius:12px;
+  background:linear-gradient(135deg, rgba(16,185,129,.08), rgba(60,242,255,.06));
+  border:1px solid rgba(16,185,129,.18);display:flex;align-items:flex-start;gap:10px}
+.privacy svg{width:16px;height:16px;color:var(--green);flex-shrink:0;margin-top:2px}
+.privacy p{font-size:11.5px;color:var(--ink-soft);line-height:1.6}
+.privacy p b{color:var(--green);font-weight:700;font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.5px;text-transform:uppercase}
+
+/* INTERVIEW KIT */
+.kit{display:none;padding:30px;border-radius:24px;color:#fff;
+  background:linear-gradient(135deg,#0a0e1a 0%, #1a2236 50%, #1e1b4b 100%);
+  position:relative;overflow:hidden}
+.kit.show{display:block;animation:slideUp .6s var(--ease)}
+@keyframes slideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.kit::before{content:"";position:absolute;inset:0;
+  background:
+    radial-gradient(500px 300px at 100% 0%, rgba(60,242,255,.18), transparent 60%),
+    radial-gradient(400px 400px at 0% 100%, rgba(124,58,237,.20), transparent 60%);
+  pointer-events:none}
+.kit > *{position:relative;z-index:1}
+.kit-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:12px}
+.kit-head h3{font-size:22px;font-weight:800;letter-spacing:-.02em;
+  background:linear-gradient(180deg,#fff,#bfdbfe);
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.kit-head h3 em{font-style:normal;
+  background:linear-gradient(120deg,#3CF2FF,#a78bfa);
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.kit-meta{display:flex;align-items:center;gap:10px;font-family:'JetBrains Mono',monospace;font-size:10.5px;color:rgba(255,255,255,.5)}
+.kit-meta .pill{padding:4px 9px;border-radius:6px;background:rgba(60,242,255,.10);color:#3CF2FF;font-weight:700}
+
+.kit-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.kit-col{padding:18px;border-radius:14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06)}
+.kit-col-head{display:flex;align-items:center;gap:8px;margin-bottom:12px;
+  font-family:'JetBrains Mono',monospace;font-size:10.5px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase}
+.kit-col-head .num{width:22px;height:22px;border-radius:6px;display:flex;align-items:center;justify-content:center;
+  font-size:10px;font-weight:800}
+.kit-col:nth-child(1) .kit-col-head{color:#3CF2FF} .kit-col:nth-child(1) .num{background:rgba(60,242,255,.16);color:#3CF2FF}
+.kit-col:nth-child(2) .kit-col-head{color:#34d399} .kit-col:nth-child(2) .num{background:rgba(52,211,153,.16);color:#34d399}
+.kit-col:nth-child(3) .kit-col-head{color:#fbbf24} .kit-col:nth-child(3) .num{background:rgba(251,191,36,.16);color:#fbbf24}
+.kit-col p{font-size:13px;line-height:1.75;color:rgba(255,255,255,.78);font-style:italic}
+
+.kit-foot{margin-top:22px;padding-top:18px;border-top:1px solid rgba(255,255,255,.08);
+  display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.kit-foot .secure{font-family:'JetBrains Mono',monospace;font-size:11px;color:rgba(255,255,255,.5);
+  display:inline-flex;align-items:center;gap:6px}
+.kit-send{padding:9px 18px;border-radius:10px;background:rgba(255,255,255,.10);color:#fff;
+  border:1px solid rgba(255,255,255,.16);font-size:12px;font-weight:700;cursor:pointer;
+  transition:.25s;font-family:inherit;display:inline-flex;align-items:center;gap:7px}
+.kit-send:hover{background:rgba(255,255,255,.16);transform:translateY(-1px)}
+.kit-send svg{width:13px;height:13px}
+
+/* RESPONSIVE */
+@media(max-width:1100px){
+  .quick-stats{grid-template-columns:repeat(2,1fr)}
+  .main-grid{grid-template-columns:1fr}
+  .kit-grid{grid-template-columns:1fr}
+}
+@media(max-width:840px){
+  aside{display:none}
+  .content{padding:18px}
+  .topbar{padding:0 18px}
+  .search-mini input{width:120px}
+}
+</style>
 </head>
-<body class="bg-slate-50 min-h-screen flex text-slate-800 font-sans">
+<body>
 
-    <aside class="w-72 bg-white border-r flex flex-col sticky top-0 h-screen hidden lg:flex">
-        <div class="p-8 flex items-center gap-3 border-b">
-            <div class="logo-cloud text-white p-2.5 rounded-2xl shadow-lg"><i class="fas fa-cloud text-xl"></i></div>
-            <div class="leading-tight">
-                <span class="text-2xl font-black tracking-tighter">飞云 <span class="text-blue-600">Flyun</span></span>
-                <p class="text-[9px] text-slate-400 font-bold uppercase tracking-widest">Next-Gen Recruitment</p>
-            </div>
+<div class="ambient"></div>
+<div class="grid-mesh"></div>
+
+<!-- SIDEBAR -->
+<aside>
+  <div class="brand">
+    <div class="brand-mark"><span>F</span></div>
+    <div class="brand-text">
+      <h1>飞云 <em>Flyun</em></h1>
+      <p>AI · RECRUIT WORKSPACE</p>
+    </div>
+  </div>
+
+  <div class="ai-card">
+    <div class="ai-card-head"><span class="d"></span>AI ASSISTANT · ONLINE</div>
+    <h3>Flyun Engine v3.0</h3>
+    <p>neural · rag · 12.8M tokens / day</p>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-label">// CORE</div>
+    <a class="nav-item active">
+      <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3z"/></svg></span>
+      AI 话术助手
+      <span class="badge">NEW</span>
+    </a>
+    <a class="nav-item">
+      <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M8 10h2M8 14h8"/><circle cx="16" cy="9" r="2"/></svg></span>
+      简历脱敏美化
+    </a>
+    <a class="nav-item">
+      <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span>
+      面试谈资库
+    </a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-label">// NETWORK</div>
+    <a class="nav-item">
+      <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg></span>
+      候选人唤醒
+      <span class="badge">12</span>
+    </a>
+    <a class="nav-item">
+      <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m11 17-5-5 5-5M6 12h12.5a3.5 3.5 0 1 1 0 7H17"/></svg></span>
+      转介绍生成器
+    </a>
+    <a class="nav-item">
+      <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><circle cx="5" cy="5" r="2"/><circle cx="19" cy="5" r="2"/><circle cx="5" cy="19" r="2"/><circle cx="19" cy="19" r="2"/><path d="m7 7 3 3M17 7l-3 3M7 17l3-3M17 17l-3-3"/></svg></span>
+      人脉图谱
+    </a>
+  </div>
+
+  <div class="profile">
+    <div class="profile-row">
+      <div class="avatar">L</div>
+      <div class="profile-info">
+        <p>Leo Xu</p>
+        <span>SR · PARTNER</span>
+      </div>
+    </div>
+    <button class="profile-btn">个人中心 →</button>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main>
+
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <h2>
+      AI 生产力工作台
+      <span class="live"><span class="d"></span>LIVE</span>
+    </h2>
+    <div class="top-actions">
+      <div class="search-mini">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+        <input type="text" placeholder="输入岗位或人名..."/>
+        <span class="kbd">⌘K</span>
+      </div>
+      <button class="btn-pri">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+        新增职位
+      </button>
+    </div>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="content">
+
+    <div class="page-head">
+      <span class="page-tag">◆ AI WORKSTATION / 01</span>
+      <h2 class="page-title">AI <em>话术助手</em> · 神经协作</h2>
+      <p class="page-desc">粘贴 JD，让 AI 引擎在毫秒级别解析候选人画像并生成差异化话术。</p>
+    </div>
+
+    <!-- QUICK STATS -->
+    <div class="quick-stats">
+      <div class="qs">
+        <div class="qs-head">
+          <div class="qs-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></div>
+          <span class="qs-trend">▲ 12%</span>
         </div>
-        
-        <nav class="flex-1 p-6 space-y-2 overflow-y-auto">
-            <div class="text-[11px] font-bold text-slate-400 uppercase px-4 mb-3">工作核心</div>
-            <a href="#" class="sidebar-item active flex items-center gap-3 px-4 py-3.5 rounded-2xl transition font-bold">
-                <i class="fas fa-wand-sparkles"></i> AI 话术助手
-            </a>
-            <a href="#" class="sidebar-item flex items-center gap-3 px-4 py-3.5 rounded-2xl transition font-medium text-slate-500">
-                <i class="fas fa-id-badge"></i> 简历脱敏美化
-            </a>
-            <a href="#" class="sidebar-item flex items-center gap-3 px-4 py-3.5 rounded-2xl transition font-medium text-slate-500">
-                <i class="fas fa-comments-dollar"></i> 面试谈资库
-            </a>
-            
-            <div class="text-[11px] font-bold text-slate-400 uppercase px-4 mb-3 mt-10">人脉运营</div>
-            <a href="#" class="sidebar-item flex items-center gap-3 px-4 py-3.5 rounded-2xl transition font-medium text-slate-500">
-                <i class="fas fa-bell"></i> 候选人唤醒
-            </a>
-            <a href="#" class="sidebar-item flex items-center gap-3 px-4 py-3.5 rounded-2xl transition font-medium text-slate-500">
-                <i class="fas fa-handshake"></i> 转介绍生成器
-            </a>
-        </nav>
-
-        <div class="p-6 border-t bg-slate-50">
-            <div class="flex items-center gap-3 mb-4">
-                <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold">L</div>
-                <div>
-                    <p class="text-sm font-bold text-slate-800">Leo Xu</p>
-                    <p class="text-[10px] text-slate-400 italic">资深猎头合伙人</p>
-                </div>
-            </div>
-            <button class="w-full py-2.5 bg-white border border-slate-200 rounded-xl text-xs font-bold shadow-sm hover:shadow-md transition">个人中心</button>
+        <div class="qs-num">42</div>
+        <div class="qs-label">ACTIVE_JOBS</div>
+      </div>
+      <div class="qs">
+        <div class="qs-head">
+          <div class="qs-icon" style="background:rgba(124,58,237,.10);color:var(--violet)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="7" r="4"/><path d="M3 21v-2c0-3 3-5 6-5s6 2 6 5v2"/><circle cx="17" cy="9" r="3"/></svg></div>
+          <span class="qs-trend">▲ 6%</span>
         </div>
-    </aside>
+        <div class="qs-num">186</div>
+        <div class="qs-label">CANDIDATES</div>
+      </div>
+      <div class="qs">
+        <div class="qs-head">
+          <div class="qs-icon" style="background:rgba(16,185,129,.10);color:var(--green)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m9 12 2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg></div>
+          <span class="qs-trend">▲ 2.1%</span>
+        </div>
+        <div class="qs-num">93<span style="font-size:14px;color:var(--muted-2)">%</span></div>
+        <div class="qs-label">MATCH_RATE</div>
+      </div>
+      <div class="qs">
+        <div class="qs-head">
+          <div class="qs-icon" style="background:rgba(245,158,11,.10);color:var(--amber)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div>
+          <span class="qs-trend" style="color:var(--blue)">◆ LIVE</span>
+        </div>
+        <div class="qs-num">28<span style="font-size:14px;color:var(--muted-2)">ms</span></div>
+        <div class="qs-label">AVG_LATENCY</div>
+      </div>
+    </div>
 
-    <main class="flex-1 overflow-y-auto custom-scrollbar h-screen">
-        
-        <div class="h-20 bg-white/80 backdrop-blur-md sticky top-0 z-10 border-b px-8 flex justify-between items-center">
-            <h2 class="text-lg font-bold">AI 生产力工作台</h2>
-            <div class="flex gap-4">
-                <div class="flex items-center bg-slate-100 rounded-xl px-4 py-2 border border-transparent focus-within:border-blue-300">
-                    <i class="fas fa-search text-slate-400 mr-2 text-sm"></i>
-                    <input type="text" placeholder="输入岗位或人名..." class="bg-transparent border-none outline-none text-xs w-48">
-                </div>
-                <button class="bg-blue-600 text-white px-5 py-2 rounded-xl text-xs font-bold shadow-lg shadow-blue-200 hover:bg-blue-700 transition">新增职位</button>
-            </div>
+    <!-- MAIN GRID -->
+    <div class="main-grid">
+
+      <!-- JD PANEL -->
+      <div class="panel">
+        <div class="panel-head">
+          <div class="panel-title">
+            <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg></span>
+            JD 智能解析
+          </div>
+          <div class="panel-meta">
+            <span class="panel-pill"><span class="d"></span>ENGINE v3.0</span>
+            <span class="hide-sm">model: <code>flyun-2026</code></span>
+          </div>
         </div>
 
-        <div class="p-8 space-y-8 max-w-6xl mx-auto">
-            
-            <div class="grid grid-cols-12 gap-6">
-                <div class="col-span-12 lg:col-span-7 bg-white p-8 rounded-[2rem] shadow-sm border border-slate-100">
-                    <div class="flex items-center justify-between mb-6">
-                        <h3 class="font-black text-xl flex items-center gap-3">
-                            <span class="w-2 h-8 bg-blue-600 rounded-full"></span> JD 智能智造
-                        </h3>
-                        <div class="flex gap-2">
-                            <span class="px-3 py-1 bg-slate-100 rounded-full text-[10px] font-bold text-slate-500 uppercase">Flyun Engine v3.0</span>
-                        </div>
-                    </div>
-                    
-                    <textarea id="jdInput" class="w-full h-48 bg-slate-50 rounded-2xl p-5 text-sm border-2 border-transparent focus:border-blue-100 focus:bg-white outline-none transition-all mb-4" 
-                        placeholder="在此粘贴岗位 JD，飞云将为你解析核心标签..."></textarea>
-                    
-                    <div class="grid grid-cols-2 gap-4">
-                        <button onclick="analyzeJob()" class="py-4 bg-slate-900 text-white rounded-2xl font-bold flex items-center justify-center gap-2 hover:bg-black transition shadow-xl">
-                            <i class="fas fa-microscope"></i> 解析画像
-                        </button>
-                        <button onclick="generateScript()" class="py-4 bg-blue-600 text-white rounded-2xl font-bold flex items-center justify-center gap-2 hover:bg-blue-700 transition shadow-xl shadow-blue-100">
-                            <i class="fas fa-comment-dots"></i> 生成勾搭文案
-                        </button>
-                    </div>
-                </div>
+        <textarea id="jdInput" class="jd-input"
+          placeholder="› 在此粘贴岗位 JD，飞云将解析核心标签并生成话术..."></textarea>
 
-                <div class="col-span-12 lg:col-span-5 bg-white p-8 rounded-[2rem] shadow-sm border border-slate-100">
-                    <h3 class="font-bold text-lg mb-4 flex items-center gap-2 text-slate-700">
-                        <i class="fas fa-shield-halved text-emerald-500"></i> 简历脱敏预览
-                    </h3>
-                    <div class="border-2 border-dashed border-slate-200 rounded-2xl p-6 flex flex-col items-center justify-center h-56 group hover:border-blue-400 transition cursor-pointer">
-                        <i class="fas fa-cloud-arrow-up text-3xl text-slate-300 group-hover:text-blue-500 transition mb-3"></i>
-                        <p class="text-xs text-slate-400 font-medium">拖入 PDF/Word 简历</p>
-                        <p class="text-[10px] text-slate-300 mt-1 uppercase font-bold tracking-widest">自动隐去联系方式/姓名</p>
-                    </div>
-                    <div class="mt-4 p-4 bg-emerald-50 rounded-xl border border-emerald-100">
-                        <p class="text-[11px] text-emerald-700 leading-relaxed font-medium">
-                            <i class="fas fa-check-circle mr-1"></i> 飞云助手已开启“隐私模式”，生成的推荐报告将自动隐去候选人敏感信息。
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <div id="interviewKit" class="hidden animate-in slide-in-from-bottom duration-500">
-                <div class="bg-slate-900 rounded-[2.5rem] p-10 text-white overflow-hidden relative shadow-2xl">
-                    <i class="fas fa-lightbulb absolute -right-10 -top-10 text-[15rem] text-white/5 rotate-12"></i>
-                    <h3 class="text-2xl font-black mb-8">面试提分锦囊 <span class="text-blue-400">Interview Boost</span></h3>
-                    
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                        <div class="space-y-4">
-                            <div class="text-blue-400 font-bold uppercase tracking-widest text-[11px]">第一回合：个人优势</div>
-                            <p id="tip1" class="text-sm text-slate-300 leading-relaxed italic"></p>
-                        </div>
-                        <div class="space-y-4 border-l border-slate-700 pl-8">
-                            <div class="text-emerald-400 font-bold uppercase tracking-widest text-[11px]">第二回合：避坑指南</div>
-                            <p id="tip2" class="text-sm text-slate-300 leading-relaxed italic"></p>
-                        </div>
-                        <div class="space-y-4 border-l border-slate-700 pl-8">
-                            <div class="text-orange-400 font-bold uppercase tracking-widest text-[11px]">终极话术：反问环节</div>
-                            <p id="tip3" class="text-sm text-slate-300 leading-relaxed italic"></p>
-                        </div>
-                    </div>
-                    <button class="mt-10 px-6 py-2 bg-white/10 hover:bg-white/20 rounded-full text-xs font-bold border border-white/20 transition">一键发送给候选人</button>
-                </div>
-            </div>
-
+        <div class="jd-toolbar">
+          <div class="tag-row">
+            <span class="jd-tag" data-tpl="auto">› 自动驾驶</span>
+            <span class="jd-tag" data-tpl="llm">› 大模型</span>
+            <span class="jd-tag" data-tpl="robot">› 机器人</span>
+            <span class="jd-tag" data-tpl="agent">› Agent</span>
+          </div>
+          <div class="tok-meter">tokens: <b id="tokCount">0</b> / 8K</div>
         </div>
-    </main>
 
-    <script>
-        function analyzeJob() {
-            const jd = document.getElementById('jdInput').value;
-            if(!jd) return alert("请先输入 JD 内容");
-            
-            document.getElementById('interviewKit').classList.remove('hidden');
-            
-            // 模拟分析逻辑
-            document.getElementById('tip1').innerText = "“候选人您好，明天的面试重点突出您在 [复杂系统开发] 的经验，这家公司非常看重处理过亿级流量的背景。”";
-            document.getElementById('tip2').innerText = "“注意：该面试官不喜欢过于浮夸的表达，回答时请务必带上具体的数据指标，保持谦逊专业。”";
-            document.getElementById('tip3').innerText = "“面试结束前可以问：‘您对该岗位未来一年的核心期待是什么？’这能体现你的目标感。”";
-        }
+        <div class="action-row">
+          <button class="act act-dark" onclick="analyzeJob()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+            解析画像
+          </button>
+          <button class="act act-blue" onclick="generateScript()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8z"/></svg>
+            生成话术
+          </button>
+        </div>
+      </div>
 
-        function generateScript() {
-            alert("飞云助手正在后台生成 3 套差异化话术，请稍后在侧边栏‘话术库’中查看。");
-        }
-    </script>
+      <!-- RESUME PANEL -->
+      <div class="panel">
+        <div class="panel-head">
+          <div class="panel-title">
+            <span class="ic" style="background:linear-gradient(135deg,rgba(16,185,129,.12),rgba(60,242,255,.12));color:var(--green)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg></span>
+            简历脱敏预览
+          </div>
+          <div class="panel-meta">
+            <span class="panel-pill" style="background:rgba(16,185,129,.10);color:var(--green)"><span class="d" style="background:var(--green);box-shadow:0 0 6px var(--green)"></span>PRIVACY ON</span>
+          </div>
+        </div>
+
+        <div class="upload-zone" id="dropZone">
+          <div class="upload-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M17 8l-5-5-5 5"/><path d="M12 3v12"/></svg>
+          </div>
+          <h4>拖入 PDF / Word 简历</h4>
+          <p>// AUTO_REDACT · NAME · CONTACT</p>
+        </div>
+
+        <div class="privacy">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+          <p><b>PRIVACY MODE</b><br/>飞云助手已开启隐私模式，生成的推荐报告将自动隐去候选人敏感信息。</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- INTERVIEW KIT -->
+    <div id="interviewKit" class="kit">
+      <div class="kit-head">
+        <h3>面试提分锦囊 <em>Interview Boost</em></h3>
+        <div class="kit-meta">
+          <span class="pill"><span style="display:inline-block;width:5px;height:5px;border-radius:50%;background:#3CF2FF;box-shadow:0 0 6px #3CF2FF;margin-right:5px;vertical-align:1px"></span>NEURAL</span>
+          <span>generated · <code id="genTime">28ms</code></span>
+        </div>
+      </div>
+
+      <div class="kit-grid">
+        <div class="kit-col">
+          <div class="kit-col-head"><span class="num">01</span>第一回合 · 个人优势</div>
+          <p id="tip1"></p>
+        </div>
+        <div class="kit-col">
+          <div class="kit-col-head"><span class="num">02</span>第二回合 · 避坑指南</div>
+          <p id="tip2"></p>
+        </div>
+        <div class="kit-col">
+          <div class="kit-col-head"><span class="num">03</span>终极话术 · 反问环节</div>
+          <p id="tip3"></p>
+        </div>
+      </div>
+
+      <div class="kit-foot">
+        <span class="secure">› ENCRYPTED · TLS 1.3 · candidate-safe</span>
+        <button class="kit-send">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4z"/></svg>
+          一键发送给候选人
+        </button>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<script>
+/* TOK COUNTER */
+const jd = document.getElementById('jdInput');
+const tok = document.getElementById('tokCount');
+jd.addEventListener('input',()=>{
+  tok.textContent = Math.min(8000, Math.ceil(jd.value.length / 1.7));
+});
+
+/* TEMPLATES */
+const tpls = {
+  auto:'【自动驾驶 · 资深算法工程师】\n• 5年以上自动驾驶感知/规划算法经验\n• 熟悉 BEV / Occupancy / 端到端架构\n• 有量产项目交付经验优先\n• 团队：50人 · 上海 · L4 落地\n',
+  llm:'【大模型 · Multimodal Researcher】\n• 顶会一作 · LLM / VLM 方向\n• 熟悉 RLHF / DPO / Agent 框架\n• 北京 / 远程协作\n',
+  robot:'【人形机器人 · 运动控制】\n• 熟悉 MPC / 强化学习\n• 有双足或四足机器人量产经验\n• 杭州 · 创业核心团队\n',
+  agent:'【AI Agent · Infra Lead】\n• 大规模 Agent 编排平台经验\n• 熟悉 LangGraph / DSPy / Vector DB\n• 上海 · 资深 IC / 技术合伙人通道\n'
+};
+document.querySelectorAll('.jd-tag').forEach(el=>{
+  el.addEventListener('click',()=>{
+    jd.value = tpls[el.dataset.tpl] || '';
+    jd.dispatchEvent(new Event('input'));
+    jd.focus();
+  });
+});
+
+/* ANALYZE */
+function analyzeJob(){
+  if(!jd.value.trim()){
+    jd.style.borderColor = '#ef4444';
+    jd.placeholder = '› 请先粘贴 JD 内容...';
+    setTimeout(()=>{ jd.style.borderColor=''; }, 1500);
+    return;
+  }
+  const kit = document.getElementById('interviewKit');
+  kit.classList.remove('show');
+  // refresh time meter
+  const ms = 18 + Math.floor(Math.random()*22);
+  document.getElementById('genTime').textContent = ms+'ms';
+
+  setTimeout(()=>{
+    document.getElementById('tip1').innerText =
+      '"候选人您好，明天的面试请重点突出您在『复杂系统开发』的经验 — 这家公司非常看重处理过亿级流量的背景。"';
+    document.getElementById('tip2').innerText =
+      '"注意：该面试官不喜欢过于浮夸的表达，回答时请务必带上具体的数据指标，保持谦逊与专业。"';
+    document.getElementById('tip3').innerText =
+      '"面试结束前可以问：『您对该岗位未来一年的核心期待是什么？』这能体现你的目标感。"';
+    kit.classList.add('show');
+    kit.scrollIntoView({behavior:'smooth',block:'center'});
+  }, 200);
+}
+
+function generateScript(){
+  if(!jd.value.trim()){ analyzeJob(); return; }
+  const btn = event.target.closest('.act');
+  const orig = btn.innerHTML;
+  btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="animation:spin 1s linear infinite"><path d="M21 12a9 9 0 1 1-6.2-8.5"/></svg> 生成中 ...';
+  setTimeout(()=>{
+    btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg> 已生成 3 套';
+    setTimeout(()=>{ btn.innerHTML = orig; alert('飞云助手已生成 3 套差异化话术，可在『话术库』中查看。'); }, 1200);
+  }, 1100);
+}
+
+/* SPIN KEYFRAMES */
+const sty = document.createElement('style');
+sty.textContent = '@keyframes spin{to{transform:rotate(360deg)}}';
+document.head.appendChild(sty);
+
+/* DROP ZONE FAKE */
+const dz = document.getElementById('dropZone');
+['dragenter','dragover'].forEach(ev=>dz.addEventListener(ev,e=>{e.preventDefault();dz.style.borderColor='var(--blue)';dz.style.background='rgba(10,132,255,.06)';}));
+['dragleave','drop'].forEach(ev=>dz.addEventListener(ev,e=>{e.preventDefault();dz.style.borderColor='';dz.style.background='';}));
+dz.addEventListener('drop',e=>{
+  const h = dz.querySelector('h4');
+  h.textContent = '✓ 已接收 · 解析中 ...';
+  setTimeout(()=>{ h.textContent = '拖入 PDF / Word 简历'; }, 1800);
+});
+
+/* KEYBOARD */
+addEventListener('keydown',e=>{
+  if((e.metaKey||e.ctrlKey) && e.key.toLowerCase()==='k'){
+    e.preventDefault();
+    document.querySelector('.search-mini input').focus();
+  }
+});
+</script>
 </body>
 </html>
