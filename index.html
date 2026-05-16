@@ -3,1848 +3,1130 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-
-<title>LEO OS｜AI 人才智能系统</title>
+<title>LEO OS · AI 人才智能操作系统</title>
 
 <link rel="icon" type="image/svg+xml"
-href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 128 128'%3E%3Crect rx='28' width='128' height='128' fill='%230A84FF'/%3E%3Cpath d='M38 32v64h52v-12H52V32z' fill='white'/%3E%3C/svg%3E">
+href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 128 128'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%230A84FF'/%3E%3Cstop offset='1' stop-color='%237C3AED'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect rx='32' width='128' height='128' fill='url(%23g)'/%3E%3Cpath d='M38 32v64h52v-12H52V32z' fill='white'/%3E%3C/svg%3E">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 
 <style>
-
 :root{
+  --bg-base:#fafbff;
+  --ink:#0a0e1a;
+  --ink-soft:#1a2236;
+  --muted:#5b6478;
+  --muted-2:#94a3b8;
+  --line:rgba(15,23,42,.06);
+  --line-2:rgba(15,23,42,.10);
 
---bg:#edf4ff;
---bg2:#f8fbff;
+  --glass:rgba(255,255,255,.62);
+  --glass-2:rgba(255,255,255,.78);
+  --glass-bd:rgba(255,255,255,.78);
 
---card:rgba(255,255,255,.72);
+  --blue:#0A84FF;
+  --blue-2:#2563eb;
+  --cyan:#06b6d4;
+  --aurora:#3CF2FF;
+  --violet:#7c3aed;
+  --pink:#ec4899;
+  --green:#10b981;
 
---border:rgba(255,255,255,.55);
+  --shadow-sm:0 4px 14px rgba(15,23,42,.04);
+  --shadow:0 20px 60px rgba(15,23,42,.08);
+  --shadow-lg:0 30px 80px rgba(10,132,255,.12);
 
---text:#081120;
---muted:#64748b;
-
---blue:#0A84FF;
---cyan:#3CF2FF;
---purple:#7c3aed;
-
---shadow:
-0 20px 60px rgba(15,23,42,.08);
-
---ease:cubic-bezier(.22,.61,.36,1);
-
+  --ease:cubic-bezier(.22,.61,.36,1);
+  --spring:cubic-bezier(.34,1.56,.64,1);
 }
 
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-}
-
-html{
-scroll-behavior:smooth;
-}
-
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
 body{
+  font-family:'Inter','PingFang SC','Helvetica Neue',sans-serif;
+  background:var(--bg-base);
+  color:var(--ink);
+  overflow-x:hidden;
+  min-height:100vh;
+  -webkit-font-smoothing:antialiased;
+  cursor:none;
+}
+::selection{background:rgba(10,132,255,.18);color:var(--ink)}
 
-font-family:'Inter',sans-serif;
+/* ===== AMBIENT BACKGROUND ===== */
+.ambient{position:fixed;inset:0;z-index:-10;overflow:hidden;
+  background:
+    radial-gradient(1200px 800px at 10% -10%, #e0eaff 0%, transparent 60%),
+    radial-gradient(900px 700px at 110% 10%, #efe5ff 0%, transparent 55%),
+    radial-gradient(900px 800px at 50% 110%, #d9f5ff 0%, transparent 55%),
+    linear-gradient(180deg,#fafbff 0%, #f3f6ff 100%);
+}
+.aurora{position:fixed;inset:-20%;z-index:-9;pointer-events:none;
+  background:
+    conic-gradient(from 200deg at 30% 30%, transparent 0deg, rgba(10,132,255,.10) 90deg, transparent 200deg),
+    conic-gradient(from 20deg at 80% 70%, transparent 0deg, rgba(124,58,237,.10) 90deg, transparent 200deg);
+  filter:blur(60px);
+  animation:auroraSpin 40s linear infinite;
+}
+@keyframes auroraSpin{to{transform:rotate(360deg)}}
 
-background:
-linear-gradient(
-135deg,
-#f7fbff 0%,
-#edf5ff 35%,
-#f7faff 100%
-);
-
-color:var(--text);
-
-overflow-x:hidden;
-
-min-height:100vh;
+.grid-mesh{position:fixed;inset:0;z-index:-8;pointer-events:none;
+  background-image:
+    linear-gradient(rgba(10,132,255,.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(10,132,255,.07) 1px, transparent 1px);
+  background-size:64px 64px;
+  mask-image:radial-gradient(ellipse 80% 60% at 50% 30%, #000 30%, transparent 80%);
 }
 
-/* ===================================
-BACKGROUND
-=================================== */
+#neural{position:fixed;inset:0;z-index:-7;pointer-events:none;opacity:.85}
 
-.dynamic-bg{
+/* ===== CUSTOM CURSOR ===== */
+.cursor{position:fixed;width:28px;height:28px;border:1.5px solid rgba(10,132,255,.55);
+  border-radius:50%;pointer-events:none;transform:translate(-50%,-50%);
+  transition:width .25s var(--ease),height .25s var(--ease),background .25s,border-color .25s;
+  z-index:9999;mix-blend-mode:difference}
+.cursor-dot{position:fixed;width:5px;height:5px;background:var(--blue);border-radius:50%;
+  pointer-events:none;transform:translate(-50%,-50%);z-index:9999}
+@media (hover:none){body{cursor:auto}.cursor,.cursor-dot{display:none}}
 
-position:fixed;
-inset:0;
+/* ===== TOP STATUS BAR ===== */
+.statusbar{position:fixed;top:0;left:0;right:0;height:32px;z-index:1100;
+  background:rgba(10,14,26,.85);backdrop-filter:blur(20px);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 24px;font-family:'JetBrains Mono',monospace;font-size:11px;color:#9ca3af;
+  border-bottom:1px solid rgba(255,255,255,.05)}
+.statusbar .left{display:flex;gap:18px;align-items:center}
+.statusbar .right{display:flex;gap:18px;align-items:center}
+.statusbar .pill{display:inline-flex;gap:7px;align-items:center}
+.statusbar .dot{width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 10px var(--green)}
+.statusbar .dot.amber{background:#f59e0b;box-shadow:0 0 10px #f59e0b}
+.statusbar .dot.cyan{background:var(--aurora);box-shadow:0 0 10px var(--aurora)}
+.statusbar code{color:#e5e7eb}
+@media(max-width:720px){.statusbar .right .hide-sm{display:none}}
 
-z-index:-5;
+/* ===== NAV ===== */
+nav{position:fixed;top:48px;left:50%;transform:translateX(-50%);
+  width:calc(100% - 32px);max-width:1320px;height:64px;z-index:1000;
+  background:var(--glass);backdrop-filter:blur(28px) saturate(180%);
+  border:1px solid var(--glass-bd);border-radius:22px;
+  box-shadow:0 10px 40px rgba(15,23,42,.06);
+  transition:.4s var(--ease)}
+.nav-inner{height:100%;display:flex;align-items:center;justify-content:space-between;padding:0 12px 0 18px}
+.brand{display:flex;align-items:center;gap:12px}
+.brand-mark{width:34px;height:34px;border-radius:11px;
+  background:conic-gradient(from 220deg, #0A84FF, #06b6d4, #7c3aed, #0A84FF);
+  display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:14px;
+  box-shadow:0 8px 22px rgba(10,132,255,.32);position:relative;overflow:hidden}
+.brand-mark::after{content:"";position:absolute;inset:1.5px;border-radius:9px;background:#0a0e1a;
+  display:flex;align-items:center;justify-content:center}
+.brand-mark span{position:relative;z-index:2;background:linear-gradient(180deg,#fff,#bfdbfe);
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.brand-name{font-size:13px;font-weight:800;letter-spacing:2.5px}
+.brand-tag{font-size:9.5px;color:var(--muted-2);font-family:'JetBrains Mono',monospace;letter-spacing:1.5px;margin-top:1px}
 
-overflow:hidden;
+.nav-links{display:flex;gap:4px}
+.nav-links a{height:38px;padding:0 14px;border-radius:11px;display:flex;align-items:center;gap:8px;
+  text-decoration:none;color:var(--muted);font-size:13px;font-weight:600;
+  transition:.25s var(--ease);position:relative}
+.nav-links a:hover{background:rgba(255,255,255,.7);color:var(--ink);transform:translateY(-1px)}
+.nav-links a .ic{width:5px;height:5px;border-radius:50%;background:currentColor;opacity:.4}
+.nav-cta{display:flex;align-items:center;gap:8px}
+.kbd{display:inline-flex;align-items:center;gap:5px;padding:5px 9px;border-radius:8px;
+  background:rgba(15,23,42,.06);border:1px solid var(--line-2);
+  font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);font-weight:600}
+.kbd kbd{font-family:inherit;color:var(--ink-soft)}
+.icon-btn{width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(135deg,#0A84FF,#7c3aed);color:#fff;border:none;cursor:none;
+  box-shadow:0 8px 22px rgba(10,132,255,.28);transition:.25s var(--ease)}
+.icon-btn:hover{transform:translateY(-2px) scale(1.04)}
+
+@media(max-width:960px){
+  .nav-links{display:none}
+  .kbd{display:none}
 }
 
-.blob{
-
-position:absolute;
-
-border-radius:50%;
-
-filter:blur(90px);
-
-opacity:.45;
-
-animation:float 18s infinite ease-in-out;
-}
-
-.blob1{
-width:600px;
-height:600px;
-background:#93c5fd;
-top:-120px;
-left:-100px;
-}
-
-.blob2{
-width:500px;
-height:500px;
-background:#c4b5fd;
-right:-120px;
-top:100px;
-animation-delay:4s;
-}
-
-.blob3{
-width:500px;
-height:500px;
-background:#67e8f9;
-bottom:-180px;
-left:30%;
-animation-delay:8s;
-}
-
-@keyframes float{
-
-0%{
-transform:translate(0,0) scale(1);
-}
-
-50%{
-transform:translate(40px,-60px) scale(1.12);
-}
-
-100%{
-transform:translate(0,0) scale(1);
-}
-
-}
-
-.grid-bg{
-
-position:fixed;
-inset:0;
-
-z-index:-4;
-
-background-image:
-
-linear-gradient(
-rgba(255,255,255,.6) 1px,
-transparent 1px
-),
-
-linear-gradient(
-90deg,
-rgba(255,255,255,.6) 1px,
-transparent 1px
-);
-
-background-size:60px 60px;
-
-mask-image:
-linear-gradient(to bottom,
-rgba(0,0,0,.8),
-transparent);
-
-opacity:.4;
-}
-
-#particles{
-
-position:fixed;
-inset:0;
-
-z-index:-3;
-}
-
-/* ===================================
-CURSOR
-=================================== */
-
-.cursor{
-
-position:fixed;
-
-width:24px;
-height:24px;
-
-border:2px solid rgba(10,132,255,.5);
-
-border-radius:50%;
-
-pointer-events:none;
-
-transform:translate(-50%,-50%);
-
-transition:
-width .25s,
-height .25s,
-background .25s;
-
-z-index:9999;
-}
-
-.cursor-dot{
-
-position:fixed;
-
-width:6px;
-height:6px;
-
-background:var(--blue);
-
-border-radius:50%;
-
-pointer-events:none;
-
-transform:translate(-50%,-50%);
-
-z-index:9999;
-}
-
-/* ===================================
-NAV
-=================================== */
-
-nav{
-
-position:fixed;
-
-top:18px;
-left:50%;
-
-transform:translateX(-50%);
-
-width:calc(100% - 40px);
-max-width:1380px;
-
-height:74px;
-
-z-index:1000;
-
-background:
-rgba(255,255,255,.68);
-
-backdrop-filter:blur(30px);
-
-border:
-1px solid rgba(255,255,255,.7);
-
-border-radius:26px;
-
-box-shadow:
-0 10px 40px rgba(15,23,42,.08);
-
-transition:.4s;
-}
-
-.nav-inner{
-
-height:100%;
-
-display:flex;
-align-items:center;
-justify-content:space-between;
-
-padding:0 28px;
-}
-
-.logo{
-
-font-size:15px;
-font-weight:800;
-
-letter-spacing:2px;
-
-display:flex;
-align-items:center;
-gap:12px;
-}
-
-.logo-icon{
-
-width:38px;
-height:38px;
-
-border-radius:14px;
-
-background:
-linear-gradient(
-135deg,
-#0A84FF,
-#3CF2FF
-);
-
-display:flex;
-align-items:center;
-justify-content:center;
-
-color:white;
-
-font-weight:700;
-
-box-shadow:
-0 10px 20px rgba(10,132,255,.25);
-}
-
-.nav-links{
-
-display:flex;
-gap:12px;
-}
-
-.nav-links a{
-
-height:44px;
-
-padding:0 18px;
-
-border-radius:14px;
-
-display:flex;
-align-items:center;
-justify-content:center;
-
-text-decoration:none;
-
-color:#475569;
-
-font-size:14px;
-font-weight:600;
-
-transition:.3s;
-}
-
-.nav-links a:hover{
-
-background:white;
-
-color:var(--blue);
-
-transform:translateY(-2px);
-}
-
-/* ===================================
-HERO
-=================================== */
-
-.hero{
-
-min-height:100vh;
-
-display:flex;
-align-items:center;
-justify-content:center;
-
-padding:180px 30px 120px;
-
-position:relative;
-}
-
-.hero-content{
-
-max-width:1250px;
-
-text-align:center;
-}
-
-.hero-badge{
-
-display:inline-flex;
-align-items:center;
-gap:10px;
-
-padding:12px 20px;
-
-background:
-rgba(255,255,255,.72);
-
-border:
-1px solid rgba(255,255,255,.8);
-
-border-radius:999px;
-
-backdrop-filter:blur(20px);
-
-margin-bottom:40px;
-
-font-size:13px;
-
-font-weight:600;
-
-color:#475569;
-}
-
-.live-dot{
-
-width:8px;
-height:8px;
-
-border-radius:50%;
-
-background:#00d26a;
-
-box-shadow:
-0 0 14px #00d26a;
-
-animation:pulse 1.5s infinite;
-}
-
-@keyframes pulse{
-
-0%{opacity:1;}
-50%{opacity:.35;}
-100%{opacity:1;}
-
-}
+/* ===== HERO ===== */
+.hero{min-height:100vh;display:flex;align-items:center;justify-content:center;
+  padding:200px 24px 100px;position:relative}
+.hero-content{max-width:1240px;width:100%;text-align:center;position:relative}
+
+.hero-badge{display:inline-flex;align-items:center;gap:10px;padding:9px 16px 9px 12px;
+  background:var(--glass-2);border:1px solid var(--glass-bd);border-radius:999px;
+  backdrop-filter:blur(20px);margin-bottom:38px;font-size:12px;font-weight:600;
+  color:var(--muted);font-family:'JetBrains Mono',monospace;letter-spacing:.5px;
+  box-shadow:var(--shadow-sm)}
+.live-dot{position:relative;width:8px;height:8px;border-radius:50%;background:var(--green);
+  box-shadow:0 0 12px var(--green)}
+.live-dot::before{content:"";position:absolute;inset:-3px;border-radius:50%;background:var(--green);
+  opacity:.4;animation:pulseRing 1.6s var(--ease) infinite}
+@keyframes pulseRing{0%{transform:scale(.8);opacity:.6}100%{transform:scale(2.2);opacity:0}}
 
 .hero h1{
-
-font-size:
-clamp(62px,9vw,130px);
-
-line-height:.95;
-
-letter-spacing:-.07em;
-
-font-weight:800;
-
-margin-bottom:34px;
-
-background:
-linear-gradient(
-180deg,
-#081120 0%,
-#0A84FF 60%,
-#64748b 100%
-);
-
--webkit-background-clip:text;
--webkit-text-fill-color:transparent;
+  font-size:clamp(54px,9vw,128px);line-height:.94;letter-spacing:-.07em;
+  font-weight:900;margin-bottom:30px;
+  background:linear-gradient(180deg,#0a0e1a 0%,#0A84FF 55%,#7c3aed 100%);
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+  position:relative
 }
+.cursor-blink{display:inline-block;width:.06em;height:.85em;background:linear-gradient(180deg,#0A84FF,#7c3aed);
+  vertical-align:-0.1em;margin-left:.06em;animation:blink 1s steps(2) infinite;border-radius:2px;
+  -webkit-text-fill-color:initial}
+@keyframes blink{50%{opacity:0}}
 
-.hero p{
+.hero-sub{font-size:clamp(16px,1.6vw,21px);line-height:1.75;max-width:780px;margin:0 auto;color:var(--muted)}
+.hero-sub b{color:var(--ink);font-weight:600}
+.hero-actions{margin-top:46px;display:flex;justify-content:center;gap:14px;flex-wrap:wrap}
 
-font-size:24px;
+.btn{height:54px;padding:0 26px;border-radius:14px;display:inline-flex;align-items:center;
+  justify-content:center;gap:10px;text-decoration:none;font-weight:700;font-size:14px;
+  transition:.35s var(--ease);position:relative;overflow:hidden;cursor:none;
+  letter-spacing:.2px}
+.btn svg{width:16px;height:16px}
+.btn::before{content:"";position:absolute;inset:0;
+  background:linear-gradient(120deg,transparent 30%,rgba(255,255,255,.5),transparent 70%);
+  transform:translateX(-120%);transition:.9s var(--ease)}
+.btn:hover::before{transform:translateX(120%)}
+.btn-primary{background:linear-gradient(135deg,#0A84FF 0%,#2563eb 50%,#7c3aed 100%);
+  color:#fff;box-shadow:0 16px 36px rgba(10,132,255,.32)}
+.btn-primary:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 20px 50px rgba(10,132,255,.42)}
+.btn-secondary{background:var(--glass-2);color:var(--ink);border:1px solid var(--glass-bd);
+  backdrop-filter:blur(20px)}
+.btn-secondary:hover{background:#fff;transform:translateY(-3px)}
 
-line-height:1.7;
+/* ===== HERO STATS ===== */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:88px;
+  max-width:1100px;margin-left:auto;margin-right:auto}
+.stat-card{padding:26px 24px;border-radius:22px;background:var(--glass-2);
+  backdrop-filter:blur(24px);border:1px solid var(--glass-bd);box-shadow:var(--shadow-sm);
+  text-align:left;transition:.4s var(--ease);position:relative;overflow:hidden}
+.stat-card::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--blue),transparent);
+  transform:translateX(-100%);transition:.6s var(--ease)}
+.stat-card:hover{transform:translateY(-6px);box-shadow:var(--shadow)}
+.stat-card:hover::before{transform:translateX(0)}
+.stat-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.stat-icon{width:32px;height:32px;border-radius:9px;display:flex;align-items:center;justify-content:center;
+  background:rgba(10,132,255,.10);color:var(--blue)}
+.stat-icon svg{width:16px;height:16px}
+.stat-trend{font-size:10px;font-weight:700;color:var(--green);font-family:'JetBrains Mono',monospace;
+  display:inline-flex;align-items:center;gap:3px}
+.stat-num{font-size:38px;font-weight:800;letter-spacing:-.04em;
+  background:linear-gradient(180deg,var(--ink),var(--blue));
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+  line-height:1;margin-bottom:6px}
+.stat-num small{font-size:18px;font-weight:700;color:var(--muted-2);-webkit-text-fill-color:var(--muted-2)}
+.stat-label{font-size:12px;color:var(--muted);font-family:'JetBrains Mono',monospace;letter-spacing:.5px}
 
-max-width:980px;
+/* ===== SECTIONS ===== */
+section{padding:120px 24px;position:relative}
+.container{max-width:1320px;margin:0 auto}
+.section-head{margin-bottom:60px;max-width:820px}
+.section-tag{display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border-radius:999px;
+  background:rgba(10,132,255,.08);border:1px solid rgba(10,132,255,.18);
+  font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;color:var(--blue);
+  letter-spacing:1.2px;text-transform:uppercase;margin-bottom:20px}
+.section-title{font-size:clamp(36px,5vw,60px);line-height:1.05;letter-spacing:-.04em;
+  font-weight:800;margin-bottom:18px;color:var(--ink)}
+.section-title em{font-style:normal;
+  background:linear-gradient(120deg,var(--blue),var(--violet));
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.section-desc{font-size:17px;line-height:1.75;color:var(--muted);max-width:620px}
 
-margin:auto;
+/* ===== INTELLIGENCE GRID ===== */
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.card{position:relative;overflow:hidden;padding:32px;border-radius:24px;
+  background:var(--glass-2);backdrop-filter:blur(28px);border:1px solid var(--glass-bd);
+  box-shadow:var(--shadow-sm);transition:.45s var(--ease);cursor:none;min-height:300px;
+  display:flex;flex-direction:column}
+.card:hover{transform:translateY(-6px);box-shadow:var(--shadow-lg);border-color:rgba(10,132,255,.25)}
+.card::before{content:"";position:absolute;width:340px;height:340px;
+  background:radial-gradient(circle,rgba(10,132,255,.16),transparent 70%);
+  top:var(--y);left:var(--x);transform:translate(-50%,-50%);opacity:0;transition:.4s;pointer-events:none}
+.card:hover::before{opacity:1}
+.card-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px}
+.card-tag{font-family:'JetBrains Mono',monospace;font-size:10.5px;font-weight:700;
+  letter-spacing:1.8px;text-transform:uppercase;color:var(--muted-2)}
+.card-status{display:inline-flex;align-items:center;gap:6px;padding:4px 9px;border-radius:7px;
+  background:rgba(16,185,129,.10);color:var(--green);font-size:10px;font-weight:700;
+  font-family:'JetBrains Mono',monospace}
+.card-status .d{width:5px;height:5px;border-radius:50%;background:var(--green);
+  box-shadow:0 0 8px var(--green)}
+.card-icon{width:46px;height:46px;border-radius:13px;display:flex;align-items:center;justify-content:center;
+  margin-bottom:18px;background:linear-gradient(135deg,rgba(10,132,255,.12),rgba(124,58,237,.12));
+  color:var(--blue);position:relative}
+.card-icon svg{width:22px;height:22px}
+.card-icon::after{content:"";position:absolute;inset:0;border-radius:13px;
+  border:1px solid rgba(10,132,255,.18)}
+.card-title{font-size:24px;font-weight:800;line-height:1.18;letter-spacing:-.025em;
+  margin-bottom:14px;color:var(--ink)}
+.card-desc{font-size:14px;line-height:1.75;color:var(--muted);flex:1}
+.card-foot{display:flex;flex-wrap:wrap;gap:7px;margin-top:22px;padding-top:18px;
+  border-top:1px solid var(--line)}
+.chip{padding:5px 10px;border-radius:8px;background:rgba(15,23,42,.04);
+  font-size:11px;font-weight:600;color:var(--muted);font-family:'JetBrains Mono',monospace;
+  border:1px solid var(--line)}
+.chip.accent{background:rgba(10,132,255,.08);color:var(--blue);border-color:rgba(10,132,255,.16)}
 
-color:#475569;
+.large{grid-column:span 2}
+.full{grid-column:span 3}
+
+.card.feature{
+  background:linear-gradient(135deg,#0a0e1a 0%,#1a2236 60%,#1e1b4b 100%);
+  color:#fff;border-color:transparent;overflow:hidden;min-height:340px
 }
-
-.hero-actions{
-
-margin-top:60px;
-
-display:flex;
-justify-content:center;
-gap:18px;
-
-flex-wrap:wrap;
-}
-
-.btn{
-
-height:60px;
-
-padding:0 34px;
-
-border-radius:18px;
-
-display:flex;
-align-items:center;
-justify-content:center;
-
-text-decoration:none;
-
-font-weight:700;
-
-transition:.35s var(--ease);
-
-position:relative;
-
-overflow:hidden;
-}
-
-.btn::before{
-
-content:"";
-
-position:absolute;
-
-inset:0;
-
-background:
-linear-gradient(
-120deg,
-transparent,
-rgba(255,255,255,.5),
-transparent
-);
-
-transform:translateX(-120%);
-
-transition:1s;
-}
-
-.btn:hover::before{
-
-transform:translateX(120%);
-}
-
-.btn-primary{
-
-background:
-linear-gradient(
-135deg,
-#0A84FF,
-#2563eb
-);
-
-color:white;
-
-box-shadow:
-0 20px 40px rgba(10,132,255,.25);
-}
-
-.btn-primary:hover{
-
-transform:
-translateY(-4px)
-scale(1.02);
-}
-
-.btn-secondary{
-
-background:
-rgba(255,255,255,.75);
-
-color:#0f172a;
-
-border:
-1px solid rgba(255,255,255,.8);
-
-backdrop-filter:blur(20px);
-}
-
-.btn-secondary:hover{
-
-background:white;
-
-transform:translateY(-4px);
-}
-
-/* ===================================
-STATUS
-=================================== */
-
-.status-grid{
-
-display:grid;
-
-grid-template-columns:
-repeat(3,1fr);
-
-gap:22px;
-
-margin-top:90px;
-}
-
-.status-card{
-
-padding:30px;
-
-border-radius:28px;
-
-background:
-rgba(255,255,255,.68);
-
-backdrop-filter:blur(24px);
-
-border:
-1px solid rgba(255,255,255,.75);
-
-box-shadow:var(--shadow);
-
-transition:.4s;
-}
-
-.status-card:hover{
-
-transform:
-translateY(-8px)
-rotateX(4deg);
-}
-
-.status-number{
-
-font-size:52px;
-
-font-weight:800;
-
-color:var(--blue);
-
-margin-bottom:10px;
-}
-
-.status-text{
-
-font-size:14px;
-
-color:#64748b;
-}
-
-/* ===================================
-SECTION
-=================================== */
-
-section{
-
-padding:120px 30px;
-}
-
-.container{
-
-max-width:1400px;
-
-margin:auto;
-}
-
-.section-title{
-
-font-size:64px;
-
-line-height:1;
-
-letter-spacing:-.06em;
-
-margin-bottom:24px;
-}
-
-.section-desc{
-
-font-size:21px;
-
-line-height:1.8;
-
-max-width:760px;
-
-color:#64748b;
-
-margin-bottom:70px;
-}
-
-/* ===================================
-GRID
-=================================== */
-
-.grid{
-
-display:grid;
-
-grid-template-columns:
-repeat(3,1fr);
-
-gap:24px;
-}
-
-.card{
-
-min-height:380px;
-
-padding:40px;
-
-border-radius:34px;
-
-position:relative;
-
-overflow:hidden;
-
-background:
-rgba(255,255,255,.65);
-
-backdrop-filter:blur(30px);
-
-border:
-1px solid rgba(255,255,255,.8);
-
-box-shadow:
-0 20px 60px rgba(15,23,42,.06);
-
-transition:.45s var(--ease);
-
-cursor:pointer;
-}
-
-.card:hover{
-
-transform:
-translateY(-10px)
-scale(1.02);
-
-box-shadow:
-0 30px 80px rgba(10,132,255,.12);
-}
-
-.card::before{
-
-content:"";
-
-position:absolute;
-
-width:300px;
-height:300px;
-
-background:
-radial-gradient(
-circle,
-rgba(10,132,255,.14),
-transparent 70%
-);
-
-top:var(--y);
-left:var(--x);
-
-transform:
-translate(-50%,-50%);
-
-opacity:0;
-
-transition:.4s;
-}
-
-.card:hover::before{
-
-opacity:1;
-}
-
-.large{
-grid-column:span 2;
-}
-
-.full{
-grid-column:span 3;
-}
-
-.card-tag{
-
-font-size:12px;
-
-letter-spacing:2px;
-
-text-transform:uppercase;
-
-color:#64748b;
-
-margin-bottom:20px;
-}
-
-.card-title{
-
-font-size:38px;
-
-line-height:1.1;
-
-letter-spacing:-.05em;
-
-margin-bottom:24px;
-}
-
-.card-desc{
-
-font-size:16px;
-
-line-height:1.9;
-
-color:#64748b;
-}
-
-/* ===================================
-CONSOLE
-=================================== */
-
-.console{
-
-padding:40px;
-
-border-radius:38px;
-
-background:
-rgba(255,255,255,.68);
-
-border:
-1px solid rgba(255,255,255,.85);
-
-backdrop-filter:blur(30px);
-
-box-shadow:
-0 20px 60px rgba(15,23,42,.08);
-}
-
-.search-box{
-
-position:relative;
-}
-
-.console-input{
-
-width:100%;
-height:78px;
-
-border:none;
-outline:none;
-
-padding:0 28px;
-
-padding-left:70px;
-
-border-radius:24px;
-
-font-size:18px;
-
-background:white;
-
-border:
-1px solid rgba(10,132,255,.08);
-
-transition:.3s;
-}
-
-.console-input:focus{
-
-border-color:#0A84FF;
-
-box-shadow:
-0 0 0 6px rgba(10,132,255,.08);
-}
-
-.search-icon{
-
-position:absolute;
-
-left:24px;
-top:50%;
-
-transform:translateY(-50%);
-
-font-size:20px;
-}
-
-.results{
-
-margin-top:30px;
-
-display:grid;
-
-grid-template-columns:
-repeat(3,1fr);
-
-gap:20px;
-}
-
-.result-card{
-
-padding:24px;
-
-border-radius:24px;
-
-background:white;
-
-border:
-1px solid rgba(10,132,255,.08);
-
-transition:.35s;
-
-box-shadow:
-0 10px 30px rgba(15,23,42,.04);
-}
-
-.result-card:hover{
-
-transform:translateY(-6px);
-}
-
-.result-company{
-
-font-size:13px;
-
-color:#64748b;
-
-margin-bottom:14px;
-}
-
-.result-role{
-
-font-size:24px;
-
-font-weight:700;
-
-margin-bottom:18px;
-}
-
-.match{
-
-display:inline-flex;
-
-padding:8px 14px;
-
-border-radius:999px;
-
-background:
-rgba(10,132,255,.1);
-
-color:#0A84FF;
-
-font-size:12px;
-
-font-weight:700;
-}
-
-/* ===================================
-FOOTER
-=================================== */
-
-footer{
-
-padding:100px 30px;
-
-text-align:center;
-
-color:#64748b;
-}
-
-/* ===================================
-REVEAL
-=================================== */
-
-.reveal{
-
-opacity:0;
-
-transform:
-translateY(60px);
-
-transition:1s var(--ease);
-}
-
-.reveal.active{
-
-opacity:1;
-
-transform:
-translateY(0);
-}
-
-/* ===================================
-RESPONSIVE
-=================================== */
-
+.card.feature .card-tag{color:rgba(255,255,255,.45)}
+.card.feature .card-title{color:#fff;font-size:38px;letter-spacing:-.04em}
+.card.feature .card-title em{font-style:normal;
+  background:linear-gradient(120deg,#3CF2FF,#a78bfa);
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.card.feature .card-desc{color:rgba(255,255,255,.62);font-size:16px;max-width:620px}
+.card.feature .card-foot{border-color:rgba(255,255,255,.08)}
+.card.feature .chip{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.10);color:rgba(255,255,255,.75)}
+.card.feature .chip.accent{background:rgba(60,242,255,.10);border-color:rgba(60,242,255,.25);color:#3CF2FF}
+.card.feature::after{content:"";position:absolute;right:-100px;top:-100px;width:480px;height:480px;
+  background:radial-gradient(circle,rgba(60,242,255,.18),transparent 60%);pointer-events:none}
+
+/* ===== AI CONSOLE ===== */
+.console{padding:28px;border-radius:28px;background:var(--glass-2);
+  border:1px solid var(--glass-bd);backdrop-filter:blur(28px);box-shadow:var(--shadow);
+  position:relative;overflow:hidden}
+.console-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;
+  padding:0 4px}
+.console-dots{display:flex;gap:6px}
+.console-dots span{width:11px;height:11px;border-radius:50%}
+.console-dots span:nth-child(1){background:#ff5f57}
+.console-dots span:nth-child(2){background:#febc2e}
+.console-dots span:nth-child(3){background:#28c840}
+.console-meta{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted-2);
+  display:flex;align-items:center;gap:14px}
+.console-meta .pill{display:inline-flex;align-items:center;gap:6px;padding:4px 9px;border-radius:6px;
+  background:rgba(10,132,255,.08);color:var(--blue);font-weight:700}
+.console-meta .pill .d{width:5px;height:5px;border-radius:50%;background:var(--blue);
+  box-shadow:0 0 8px var(--blue);animation:blink 1.5s ease-in-out infinite}
+
+.search-box{position:relative}
+.console-prefix{position:absolute;left:18px;top:50%;transform:translateY(-50%);
+  font-family:'JetBrains Mono',monospace;font-size:14px;color:var(--violet);font-weight:700;
+  pointer-events:none}
+.console-input{width:100%;height:64px;border:none;outline:none;
+  padding:0 64px 0 50px;border-radius:18px;font-size:16px;font-weight:500;
+  background:#fff;border:1px solid var(--line-2);transition:.3s var(--ease);
+  font-family:'Inter',sans-serif;cursor:none}
+.console-input:focus{border-color:var(--blue);box-shadow:0 0 0 5px rgba(10,132,255,.10)}
+.console-input::placeholder{color:var(--muted-2)}
+.console-shortcut{position:absolute;right:14px;top:50%;transform:translateY(-50%);
+  display:inline-flex;gap:4px}
+.console-shortcut span{padding:4px 8px;border-radius:6px;background:rgba(15,23,42,.04);
+  border:1px solid var(--line-2);font-family:'JetBrains Mono',monospace;
+  font-size:10.5px;font-weight:700;color:var(--muted)}
+
+.console-suggest{display:flex;flex-wrap:wrap;gap:7px;margin-top:14px;padding:0 4px}
+.suggest-pill{padding:6px 12px;border-radius:8px;background:rgba(10,132,255,.06);
+  border:1px solid rgba(10,132,255,.15);color:var(--blue);font-size:12px;font-weight:600;
+  cursor:none;transition:.25s var(--ease);font-family:'JetBrains Mono',monospace}
+.suggest-pill:hover{background:rgba(10,132,255,.12);transform:translateY(-1px)}
+
+.results{margin-top:24px;display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.result-card{padding:22px;border-radius:18px;background:#fff;border:1px solid var(--line-2);
+  transition:.35s var(--ease);box-shadow:0 6px 20px rgba(15,23,42,.03);position:relative;overflow:hidden}
+.result-card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;
+  background:linear-gradient(180deg,var(--blue),var(--violet));transform:scaleY(0);
+  transform-origin:top;transition:.4s var(--ease)}
+.result-card:hover{transform:translateY(-4px);box-shadow:var(--shadow);border-color:rgba(10,132,255,.25)}
+.result-card:hover::before{transform:scaleY(1)}
+.result-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.result-co{display:flex;align-items:center;gap:9px;font-size:12px;color:var(--muted);font-weight:600}
+.result-co .logo{width:22px;height:22px;border-radius:6px;background:linear-gradient(135deg,#0A84FF,#7c3aed);
+  display:flex;align-items:center;justify-content:center;color:#fff;font-size:10px;font-weight:800}
+.result-role{font-size:18px;font-weight:700;letter-spacing:-.02em;margin-bottom:14px;color:var(--ink)}
+.result-meta{display:flex;align-items:center;justify-content:space-between;font-size:11px;
+  font-family:'JetBrains Mono',monospace;color:var(--muted-2)}
+.match{display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border-radius:7px;
+  background:rgba(10,132,255,.10);color:var(--blue);font-size:11px;font-weight:800}
+.match .bar{width:36px;height:4px;border-radius:2px;background:rgba(10,132,255,.18);overflow:hidden}
+.match .bar i{display:block;height:100%;background:linear-gradient(90deg,var(--blue),var(--aurora));
+  border-radius:2px;animation:fillBar .9s var(--ease)}
+@keyframes fillBar{from{width:0}}
+
+/* ===== CAPABILITY (NEW) ===== */
+.cap-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:18px}
+.cap-main{padding:36px;border-radius:28px;
+  background:linear-gradient(135deg,#0a0e1a 0%,#0c1226 50%,#1a1247 100%);
+  color:#fff;position:relative;overflow:hidden;min-height:460px}
+.cap-main::before{content:"";position:absolute;inset:0;
+  background:
+    radial-gradient(600px 400px at 100% 0%, rgba(60,242,255,.18), transparent 60%),
+    radial-gradient(500px 500px at 0% 100%, rgba(124,58,237,.22), transparent 60%);
+  pointer-events:none}
+.cap-main > *{position:relative;z-index:1}
+.cap-tag{display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border-radius:999px;
+  background:rgba(60,242,255,.10);border:1px solid rgba(60,242,255,.25);color:#3CF2FF;
+  font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;letter-spacing:1.2px;
+  text-transform:uppercase;margin-bottom:24px}
+.cap-title{font-size:42px;line-height:1.08;letter-spacing:-.04em;font-weight:800;margin-bottom:20px;
+  background:linear-gradient(180deg,#fff 0%,#bfdbfe 100%);
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.cap-desc{font-size:15px;line-height:1.78;color:rgba(255,255,255,.68);max-width:520px;margin-bottom:34px}
+
+.cap-pipeline{display:flex;flex-direction:column;gap:12px}
+.pipe-row{display:flex;align-items:center;gap:14px;padding:14px 16px;border-radius:14px;
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);
+  transition:.35s var(--ease)}
+.pipe-row:hover{background:rgba(60,242,255,.06);border-color:rgba(60,242,255,.18);transform:translateX(4px)}
+.pipe-num{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;
+  background:rgba(60,242,255,.12);color:#3CF2FF;font-family:'JetBrains Mono',monospace;
+  font-size:11px;font-weight:800;flex-shrink:0}
+.pipe-text{flex:1;font-size:13.5px;font-weight:600;color:rgba(255,255,255,.92)}
+.pipe-text small{display:block;font-weight:400;color:rgba(255,255,255,.45);font-size:11.5px;
+  margin-top:2px;font-family:'JetBrains Mono',monospace}
+.pipe-bar{width:60px;height:5px;border-radius:3px;background:rgba(255,255,255,.06);overflow:hidden}
+.pipe-bar i{display:block;height:100%;background:linear-gradient(90deg,#3CF2FF,#a78bfa);border-radius:3px}
+
+.cap-side{display:flex;flex-direction:column;gap:18px}
+.cap-card{padding:26px;border-radius:22px;background:var(--glass-2);backdrop-filter:blur(24px);
+  border:1px solid var(--glass-bd);box-shadow:var(--shadow-sm);transition:.35s var(--ease);
+  position:relative;overflow:hidden;flex:1;display:flex;flex-direction:column}
+.cap-card:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
+.cap-card-head{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.cap-card-icon{width:40px;height:40px;border-radius:11px;display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(135deg,rgba(10,132,255,.12),rgba(60,242,255,.12));color:var(--blue)}
+.cap-card-icon svg{width:20px;height:20px}
+.cap-card h4{font-size:17px;font-weight:800;letter-spacing:-.02em;color:var(--ink)}
+.cap-card p{font-size:13.5px;line-height:1.7;color:var(--muted);flex:1}
+.cap-metric{display:flex;align-items:baseline;gap:10px;margin-top:14px;padding-top:14px;
+  border-top:1px solid var(--line)}
+.cap-metric .v{font-size:28px;font-weight:800;letter-spacing:-.03em;
+  background:linear-gradient(120deg,var(--blue),var(--violet));
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.cap-metric .l{font-size:11px;color:var(--muted-2);font-family:'JetBrains Mono',monospace}
+
+/* ===== CTA ===== */
+.cta{padding:64px 48px;border-radius:32px;
+  background:linear-gradient(135deg,#0a0e1a 0%,#1a2236 60%,#3730a3 100%);
+  color:#fff;text-align:center;position:relative;overflow:hidden}
+.cta::before{content:"";position:absolute;inset:0;
+  background:
+    radial-gradient(800px 500px at 50% 0%, rgba(60,242,255,.18), transparent 60%),
+    radial-gradient(600px 400px at 50% 100%, rgba(124,58,237,.20), transparent 60%);
+  pointer-events:none}
+.cta > *{position:relative;z-index:1}
+.cta h2{font-size:clamp(34px,5vw,56px);line-height:1.05;letter-spacing:-.04em;font-weight:800;
+  margin-bottom:18px;background:linear-gradient(180deg,#fff 0%,#bfdbfe 100%);
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.cta p{font-size:17px;color:rgba(255,255,255,.7);max-width:580px;margin:0 auto 32px}
+
+/* ===== FOOTER ===== */
+footer{padding:60px 24px 40px;border-top:1px solid var(--line);text-align:center}
+.footer-brand{display:inline-flex;align-items:center;gap:10px;margin-bottom:14px}
+.footer-meta{color:var(--muted-2);font-size:12.5px;font-family:'JetBrains Mono',monospace;letter-spacing:.5px}
+.footer-meta b{color:var(--ink);font-weight:600}
+
+/* ===== REVEAL ===== */
+.reveal{opacity:0;transform:translateY(36px);transition:.9s var(--ease)}
+.reveal.active{opacity:1;transform:translateY(0)}
+
+/* ===== RESPONSIVE ===== */
 @media(max-width:1100px){
-
-.grid,
-.results,
-.status-grid{
-
-grid-template-columns:1fr;
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .grid{grid-template-columns:1fr}
+  .results{grid-template-columns:1fr}
+  .large,.full{grid-column:span 1}
+  .cap-grid{grid-template-columns:1fr}
 }
-
-.large,
-.full{
-
-grid-column:span 1;
+@media(max-width:640px){
+  .hero{padding:160px 18px 80px}
+  .stats{grid-template-columns:1fr}
+  section{padding:80px 18px}
+  .cta{padding:48px 28px}
+  .cap-main,.cap-card{padding:24px}
+  .cap-title{font-size:32px}
 }
-
-.section-title{
-
-font-size:44px;
-}
-
-.hero h1{
-
-font-size:60px;
-}
-
-.hero p{
-
-font-size:18px;
-}
-
-.nav-links{
-
-display:none;
-}
-
-}
-
 </style>
 </head>
-
 <body>
 
-<div class="dynamic-bg">
-
-<div class="blob blob1"></div>
-<div class="blob blob2"></div>
-<div class="blob blob3"></div>
-
-</div>
-
-<div class="grid-bg"></div>
-
-<canvas id="particles"></canvas>
+<div class="ambient"></div>
+<div class="aurora"></div>
+<div class="grid-mesh"></div>
+<canvas id="neural"></canvas>
 
 <div class="cursor"></div>
 <div class="cursor-dot"></div>
 
+<!-- TOP STATUS BAR -->
+<div class="statusbar">
+  <div class="left">
+    <span class="pill"><span class="dot"></span><code>SYS · ONLINE</code></span>
+    <span class="pill hide-sm"><span class="dot cyan"></span><code>NEURAL · 2.4 GHz</code></span>
+    <span class="pill hide-sm"><span class="dot amber"></span><code>QUEUE · 12</code></span>
+  </div>
+  <div class="right">
+    <span class="pill hide-sm"><code>v3.1.0</code></span>
+    <span class="pill"><code id="clock">00:00:00 UTC</code></span>
+    <span class="pill"><code>SH · CN</code></span>
+  </div>
+</div>
+
+<!-- NAV -->
 <nav>
-
-<div class="nav-inner">
-
-<div class="logo">
-
-<div class="logo-icon">
-L
-</div>
-
-LEO OS
-
-</div>
-
-<div class="nav-links">
-
-<a href="#hero">首页</a>
-<a href="#intelligence">人才架构</a>
-<a href="#console">智能搜索</a>
-<a href="#network">高端网络</a>
-<a href="#contact">联系我</a>
-
-</div>
-
-</div>
-
+  <div class="nav-inner">
+    <div class="brand">
+      <div class="brand-mark"><span>L</span></div>
+      <div>
+        <div class="brand-name">LEO OS</div>
+        <div class="brand-tag">AI · INTELLIGENCE</div>
+      </div>
+    </div>
+    <div class="nav-links">
+      <a href="#hero"><span class="ic"></span>首页</a>
+      <a href="#intelligence"><span class="ic"></span>人才架构</a>
+      <a href="#console"><span class="ic"></span>智能搜索</a>
+      <a href="#capability"><span class="ic"></span>能力图谱</a>
+      <a href="#contact"><span class="ic"></span>联系</a>
+    </div>
+    <div class="nav-cta">
+      <span class="kbd"><kbd>⌘</kbd><kbd>K</kbd></span>
+      <button class="icon-btn" aria-label="启动 AI">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+      </button>
+    </div>
+  </div>
 </nav>
 
+<!-- HERO -->
 <section class="hero" id="hero">
+  <div class="hero-content reveal">
+    <div class="hero-badge">
+      <span class="live-dot"></span>
+      AI EXECUTIVE INTELLIGENCE · ONLINE
+    </div>
+    <h1 id="typing"><span class="cursor-blink"></span></h1>
+    <p class="hero-sub">
+      在 <b>自动驾驶</b>、<b>AGI</b> 与 <b>智能制造</b> 的交汇点，
+      构建下一代 AI 人才基础设施。
+      不仅是猎头，更是 AI 时代的人才 <b>intelligence network</b>。
+    </p>
+    <div class="hero-actions">
+      <a href="#console" class="btn btn-primary">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+        启动智能搜索
+      </a>
+      <a href="mailto:supkefly@gmail.com" class="btn btn-secondary">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1 0 2 1 2 2v12c0 1-1 2-2 2H4c-1 0-2-1-2-2V6c0-1 1-2 2-2z"/><path d="m22 6-10 7L2 6"/></svg>
+        建立联系
+      </a>
+    </div>
 
-<div class="hero-content reveal">
-
-<div class="hero-badge">
-
-<div class="live-dot"></div>
-
-AI EXECUTIVE INTELLIGENCE SYSTEM ONLINE
-
-</div>
-
-<h1 id="typing"></h1>
-
-<p>
-
-在自动驾驶、AGI 与智能制造的交汇点，
-构建下一代 AI 人才基础设施。
-不仅是猎头，更是 AI 时代的人才 intelligence network。
-
-</p>
-
-<div class="hero-actions">
-
-<a href="#console" class="btn btn-primary">
-进入智能搜索系统
-</a>
-
-<a href="mailto:supkefly@gmail.com" class="btn btn-secondary">
-建立联系
-</a>
-
-</div>
-
-<div class="status-grid">
-
-<div class="status-card">
-
-<div class="status-number" data-count="128">
-0
-</div>
-
-<div class="status-text">
-活跃岗位搜索
-</div>
-
-</div>
-
-<div class="status-card">
-
-<div class="status-number" data-count="93">
-0
-</div>
-
-<div class="status-text">
-智能匹配精度
-</div>
-
-</div>
-
-<div class="status-card">
-
-<div class="status-number" data-count="2800">
-0
-</div>
-
-<div class="status-text">
-AI 人才节点
-</div>
-
-</div>
-
-</div>
-
-</div>
-
+    <div class="stats">
+      <div class="stat-card">
+        <div class="stat-head">
+          <div class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3h7v7H3zM14 3h7v7h-7zM14 14h7v7h-7zM3 14h7v7H3z"/></svg></div>
+          <span class="stat-trend">▲ 12.4%</span>
+        </div>
+        <div class="stat-num" data-count="128">0<small>+</small></div>
+        <div class="stat-label">ACTIVE_SEARCH</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-head">
+          <div class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 12 2 2 4-4"/><path d="M21 12c0 5-4 9-9 9s-9-4-9-9 4-9 9-9 9 4 9 9z"/></svg></div>
+          <span class="stat-trend">▲ 2.1%</span>
+        </div>
+        <div class="stat-num" data-count="93">0<small>%</small></div>
+        <div class="stat-label">MATCH_PRECISION</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-head">
+          <div class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><circle cx="6" cy="6" r="2"/><circle cx="18" cy="6" r="2"/><circle cx="6" cy="18" r="2"/><circle cx="18" cy="18" r="2"/><path d="m9 9-2-2M15 9l2-2M9 15l-2 2M15 15l2 2"/></svg></div>
+          <span class="stat-trend">▲ 6.8%</span>
+        </div>
+        <div class="stat-num" data-count="2800">0<small>+</small></div>
+        <div class="stat-label">TALENT_NODES</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-head">
+          <div class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div>
+          <span class="stat-trend">◆ LIVE</span>
+        </div>
+        <div class="stat-num" data-count="24">0<small>/7</small></div>
+        <div class="stat-label">ALWAYS_ON</div>
+      </div>
+    </div>
+  </div>
 </section>
 
+<!-- INTELLIGENCE -->
 <section id="intelligence">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="section-tag">◆ INTELLIGENCE / 01</span>
+      <h2 class="section-title">AI 人才<em>情报架构</em></h2>
+      <p class="section-desc">
+        基于技术路线、组织架构与产业链的深度 mapping，
+        持续追踪 AI 与新能源领域核心技术人才流向。
+      </p>
+    </div>
 
-<div class="container">
+    <div class="grid">
 
-<div class="reveal">
+      <div class="card large reveal">
+        <div class="card-head">
+          <span class="card-tag">AUTONOMOUS · L4</span>
+          <span class="card-status"><span class="d"></span>TRACKING</span>
+        </div>
+        <div class="card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/></svg>
+        </div>
+        <h3 class="card-title">智能驾驶与端到端架构</h3>
+        <p class="card-desc">覆盖 ADS、BEV、Occupancy Network、世界模型、端到端自动驾驶、EEA 与智能整车架构。深度跟踪国内外头部团队组织演进与人才流动。</p>
+        <div class="card-foot">
+          <span class="chip accent">BEV</span>
+          <span class="chip">Occupancy</span>
+          <span class="chip">World Model</span>
+          <span class="chip">EEA</span>
+          <span class="chip">VLA</span>
+        </div>
+      </div>
 
-<h2 class="section-title">
-AI 人才情报架构
-</h2>
+      <div class="card reveal">
+        <div class="card-head">
+          <span class="card-tag">FOUNDATION · LLM</span>
+          <span class="card-status"><span class="d"></span>ACTIVE</span>
+        </div>
+        <div class="card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8V4M3 8h18M5 8v9c0 1 1 2 2 2h10c1 0 2-1 2-2V8M9 14h6"/></svg>
+        </div>
+        <h3 class="card-title">AGI 与多模态</h3>
+        <p class="card-desc">LLM、Agent、世界模型、推理优化、RLHF、AI Infra。</p>
+        <div class="card-foot">
+          <span class="chip accent">LLM</span>
+          <span class="chip">Agent</span>
+          <span class="chip">RLHF</span>
+        </div>
+      </div>
 
-<p class="section-desc">
+      <div class="card reveal">
+        <div class="card-head">
+          <span class="card-tag">MAPPING · OS</span>
+          <span class="card-status"><span class="d"></span>SYNC</span>
+        </div>
+        <div class="card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><circle cx="5" cy="5" r="2"/><circle cx="19" cy="5" r="2"/><circle cx="5" cy="19" r="2"/><circle cx="19" cy="19" r="2"/><path d="m7 7 3 3M17 7l-3 3M7 17l3-3M17 17l-3-3"/></svg>
+        </div>
+        <h3 class="card-title">智能人才图谱</h3>
+        <p class="card-desc">基于知识图谱与本地 AI，构建下一代人才搜索系统。</p>
+        <div class="card-foot">
+          <span class="chip accent">KG</span>
+          <span class="chip">Vector DB</span>
+          <span class="chip">RAG</span>
+        </div>
+      </div>
 
-基于技术路线、组织架构与产业链的深度 Mapping，
-持续追踪 AI 与新能源领域核心技术人才流向。
+      <div class="card reveal">
+        <div class="card-head">
+          <span class="card-tag">EXECUTIVE · NETWORK</span>
+          <span class="card-status"><span class="d"></span>LIVE</span>
+        </div>
+        <div class="card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="7" r="4"/><path d="M3 21v-2c0-3 3-5 6-5s6 2 6 5v2"/><circle cx="17" cy="9" r="3"/><path d="M21 21v-1c0-2-1.5-3.5-4-4"/></svg>
+        </div>
+        <h3 class="card-title">高端技术圈层</h3>
+        <p class="card-desc">长期深耕 AI、机器人、新能源与科技高管生态。</p>
+        <div class="card-foot">
+          <span class="chip accent">VP+</span>
+          <span class="chip">CTO</span>
+          <span class="chip">Founder</span>
+        </div>
+      </div>
 
-</p>
+      <div class="card feature full reveal">
+        <div class="card-head">
+          <span class="card-tag">◆ INDUSTRY INTELLIGENCE / SIGNAL</span>
+          <span class="card-status" style="background:rgba(60,242,255,.10);color:#3CF2FF"><span class="d" style="background:#3CF2FF;box-shadow:0 0 8px #3CF2FF"></span>BROADCASTING</span>
+        </div>
+        <h3 class="card-title">Mapping the <em>human infrastructure</em><br/>behind AI.</h3>
+        <p class="card-desc">企业真正需要的，已不是传统 JD 匹配，而是理解技术演进与组织升级的人才 intelligence system。我们把每一次招聘视为一次产业级的信号校准。</p>
+        <div class="card-foot">
+          <span class="chip accent">SIGNAL</span>
+          <span class="chip">SCAN</span>
+          <span class="chip">ALIGN</span>
+          <span class="chip">DEPLOY</span>
+        </div>
+      </div>
 
-</div>
-
-<div class="grid">
-
-<div class="card large reveal">
-
-<div class="card-tag">
-AUTONOMOUS SYSTEM
-</div>
-
-<div class="card-title">
-智能驾驶与端到端架构
-</div>
-
-<div class="card-desc">
-
-覆盖 ADS、
-BEV、
-Occupancy Network、
-世界模型、
-端到端自动驾驶、
-EEA 与智能整车架构。
-
-</div>
-
-</div>
-
-<div class="card reveal">
-
-<div class="card-tag">
-FOUNDATION MODEL
-</div>
-
-<div class="card-title">
-AGI 与多模态
-</div>
-
-<div class="card-desc">
-
-LLM、
-Agent、
-世界模型、
-推理优化、
-RLHF、
-AI Infra。
-
-</div>
-
-</div>
-
-<div class="card reveal">
-
-<div class="card-tag">
-AI MAPPING OS
-</div>
-
-<div class="card-title">
-智能人才图谱
-</div>
-
-<div class="card-desc">
-
-基于知识图谱与本地 AI，
-构建下一代人才搜索系统。
-
-</div>
-
-</div>
-
-<div class="card reveal">
-
-<div class="card-tag">
-EXECUTIVE NETWORK
-</div>
-
-<div class="card-title">
-高端技术圈层
-</div>
-
-<div class="card-desc">
-
-长期深耕 AI、
-机器人、
-新能源与科技高管生态。
-
-</div>
-
-</div>
-
-<div class="card full reveal">
-
-<div class="card-tag">
-INDUSTRY INTELLIGENCE
-</div>
-
-<div class="card-title">
-Mapping the human infrastructure behind AI.
-</div>
-
-<div class="card-desc">
-
-企业真正需要的，
-已经不是传统 JD 匹配，
-而是理解技术演进与组织升级的人才 intelligence system。
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
+    </div>
+  </div>
 </section>
 
+<!-- CONSOLE -->
 <section id="console">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="section-tag">◆ CONSOLE / 02</span>
+      <h2 class="section-title">AI 智能<em>搜索系统</em></h2>
+      <p class="section-desc">输入技术方向，模拟 AI 人才 intelligence 搜索。系统将基于本地知识图谱实时返回匹配人选。</p>
+    </div>
 
-<div class="container">
+    <div class="console reveal">
+      <div class="console-bar">
+        <div class="console-dots"><span></span><span></span><span></span></div>
+        <div class="console-meta">
+          <span class="pill"><span class="d"></span>LEO_SEARCH · v3.1</span>
+          <span>tokens: <code id="tokens">0</code></span>
+          <span>latency: <code>~28ms</code></span>
+        </div>
+      </div>
 
-<div class="reveal">
+      <div class="search-box">
+        <span class="console-prefix">»</span>
+        <input type="text" class="console-input" id="searchInput"
+          placeholder="输入技术方向，例如 autonomous / multimodal / embodied AI"/>
+        <span class="console-shortcut"><span>⏎</span></span>
+      </div>
 
-<h2 class="section-title">
-AI 智能搜索系统
-</h2>
+      <div class="console-suggest">
+        <span class="suggest-pill" data-q="autonomous">› autonomous</span>
+        <span class="suggest-pill" data-q="multimodal">› multimodal</span>
+        <span class="suggest-pill" data-q="embodied">› embodied AI</span>
+        <span class="suggest-pill" data-q="agent">› agent infra</span>
+        <span class="suggest-pill" data-q="robotics">› humanoid robotics</span>
+      </div>
 
-<p class="section-desc">
-
-输入技术方向，
-模拟 AI 人才 intelligence 搜索。
-
-</p>
-
-</div>
-
-<div class="console reveal">
-
-<div class="search-box">
-
-<div class="search-icon">
-⌘
-</div>
-
-<input
-type="text"
-class="console-input"
-id="searchInput"
-placeholder="输入技术方向，例如：autonomous / multimodal / embodied AI"
-/>
-
-</div>
-
-<div class="results" id="results">
-
-<div class="result-card">
-
-<div class="result-company">
-Tesla AP
-</div>
-
-<div class="result-role">
-Planning Architect
-</div>
-
-<div class="match">
-匹配度 98%
-</div>
-
-</div>
-
-<div class="result-card">
-
-<div class="result-company">
-OpenAI
-</div>
-
-<div class="result-role">
-Agent Engineer
-</div>
-
-<div class="match">
-匹配度 96%
-</div>
-
-</div>
-
-<div class="result-card">
-
-<div class="result-company">
-Figure AI
-</div>
-
-<div class="result-role">
-Robotics AI Lead
-</div>
-
-<div class="match">
-匹配度 94%
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
+      <div class="results" id="results">
+        <div class="result-card">
+          <div class="result-row">
+            <div class="result-co"><span class="logo">T</span>Tesla AP</div>
+            <span class="match">98% <span class="bar"><i style="width:98%"></i></span></span>
+          </div>
+          <div class="result-role">Planning Architect</div>
+          <div class="result-meta"><span>Palo Alto</span><span>L4 · IC</span></div>
+        </div>
+        <div class="result-card">
+          <div class="result-row">
+            <div class="result-co"><span class="logo">O</span>OpenAI</div>
+            <span class="match">96% <span class="bar"><i style="width:96%"></i></span></span>
+          </div>
+          <div class="result-role">Agent Engineer</div>
+          <div class="result-meta"><span>San Francisco</span><span>Senior</span></div>
+        </div>
+        <div class="result-card">
+          <div class="result-row">
+            <div class="result-co"><span class="logo">F</span>Figure AI</div>
+            <span class="match">94% <span class="bar"><i style="width:94%"></i></span></span>
+          </div>
+          <div class="result-role">Robotics AI Lead</div>
+          <div class="result-meta"><span>Sunnyvale</span><span>Lead</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
 
-<footer id="contact">
+<!-- CAPABILITY -->
+<section id="capability">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="section-tag">◆ CAPABILITY / 03</span>
+      <h2 class="section-title">智能<em>能力图谱</em></h2>
+      <p class="section-desc">从信号扫描到精准交付，AI 全流程智能调度。每一次连接，都被算法持续优化。</p>
+    </div>
 
-© 2026 LEO OS ｜ AI时代的人才智能操作系统
+    <div class="cap-grid">
+      <div class="cap-main reveal">
+        <span class="cap-tag"><span style="width:5px;height:5px;border-radius:50%;background:#3CF2FF;box-shadow:0 0 8px #3CF2FF"></span>NEURAL PIPELINE</span>
+        <h3 class="cap-title">从信号扫描<br/>到精准交付</h3>
+        <p class="cap-desc">AI 引擎实时编排五段式智能流水线，从市场信号采集、人才特征建模，到匹配引擎、深度访谈与最终交付，全过程数据驱动、可观测、可优化。</p>
 
+        <div class="cap-pipeline">
+          <div class="pipe-row"><div class="pipe-num">01</div><div class="pipe-text">Signal Scan<small>市场信号扫描 · 实时索引</small></div><div class="pipe-bar"><i style="width:96%"></i></div></div>
+          <div class="pipe-row"><div class="pipe-num">02</div><div class="pipe-text">Feature Modeling<small>候选人特征建模 · 知识图谱</small></div><div class="pipe-bar"><i style="width:88%"></i></div></div>
+          <div class="pipe-row"><div class="pipe-num">03</div><div class="pipe-text">Match Engine<small>语义匹配引擎 · 多模态嵌入</small></div><div class="pipe-bar"><i style="width:93%"></i></div></div>
+          <div class="pipe-row"><div class="pipe-num">04</div><div class="pipe-text">Deep Interview<small>深度访谈 · 真人 × AI 协作</small></div><div class="pipe-bar"><i style="width:80%"></i></div></div>
+          <div class="pipe-row"><div class="pipe-num">05</div><div class="pipe-text">Smart Delivery<small>智能交付 · 全周期跟踪</small></div><div class="pipe-bar"><i style="width:99%"></i></div></div>
+        </div>
+      </div>
+
+      <div class="cap-side">
+        <div class="cap-card reveal">
+          <div class="cap-card-head">
+            <div class="cap-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div>
+            <h4>实时神经索引</h4>
+          </div>
+          <p>持续监控全球 AI 与硬科技核心团队的组织变化，毫秒级建立人才动态图谱。</p>
+          <div class="cap-metric"><span class="v">12.8M</span><span class="l">SIGNALS / DAY</span></div>
+        </div>
+        <div class="cap-card reveal">
+          <div class="cap-card-head">
+            <div class="cap-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div>
+            <h4>极速匹配响应</h4>
+          </div>
+          <p>从 JD 到 shortlist 的端到端响应时间，相比传统流程压缩 6 倍以上。</p>
+          <div class="cap-metric"><span class="v">28<small style="font-size:18px;color:var(--muted-2);-webkit-text-fill-color:var(--muted-2)">ms</small></span><span class="l">AVG_LATENCY</span></div>
+        </div>
+        <div class="cap-card reveal">
+          <div class="cap-card-head">
+            <div class="cap-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg></div>
+            <h4>隐私优先架构</h4>
+          </div>
+          <p>所有候选人数据本地化加密存储，端到端权限管控，满足头部客户合规要求。</p>
+          <div class="cap-metric"><span class="v">100<small style="font-size:18px;color:var(--muted-2);-webkit-text-fill-color:var(--muted-2)">%</small></span><span class="l">ENCRYPTED</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="contact">
+  <div class="container">
+    <div class="cta reveal">
+      <h2>准备好让 AI<br/>重新定义你的招聘了吗？</h2>
+      <p>无论你是寻找下一位关键技术合伙人的创始人，还是探索新机会的资深工程师 —— LEO OS 都在为你建立连接。</p>
+      <div class="hero-actions" style="margin-top:0;justify-content:center">
+        <a href="mailto:supkefly@gmail.com" class="btn btn-primary">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1 0 2 1 2 2v12c0 1-1 2-2 2H4c-1 0-2-1-2-2V6c0-1 1-2 2-2z"/><path d="m22 6-10 7L2 6"/></svg>
+          建立联系
+        </a>
+        <a href="job.html" class="btn btn-secondary" style="background:rgba(255,255,255,.08);color:#fff;border-color:rgba(255,255,255,.16)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          加入我们
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-brand">
+    <div class="brand-mark" style="width:26px;height:26px;border-radius:8px;font-size:11px"><span>L</span></div>
+    <b style="font-size:13px;font-weight:800;letter-spacing:2px">LEO OS</b>
+  </div>
+  <div class="footer-meta">© 2026 <b>LEO OS</b> · AI 时代的人才智能操作系统 · <code>build.2026.05</code></div>
 </footer>
 
 <script>
-
-/* ===================================
-TYPING
-=================================== */
-
-const text =
-"构建下一代 AI 人才基础设施";
-
-const typing =
-document.getElementById("typing");
-
+/* ===== TYPING ===== */
+const text = "构建下一代 AI 人才基础设施";
+const typing = document.getElementById("typing");
+const blink = '<span class="cursor-blink"></span>';
 let i = 0;
-
 function type(){
-
-if(i < text.length){
-
-typing.innerHTML += text.charAt(i);
-
-i++;
-
-setTimeout(type,45);
-
+  if(i < text.length){
+    typing.innerHTML = text.slice(0,i+1) + blink;
+    i++;
+    setTimeout(type, 60 + Math.random()*40);
+  }
 }
-
-}
-
 type();
 
-/* ===================================
-CURSOR
-=================================== */
+/* ===== CLOCK ===== */
+function tick(){
+  const d = new Date();
+  const pad = n => String(n).padStart(2,'0');
+  document.getElementById('clock').textContent =
+    pad(d.getUTCHours())+':'+pad(d.getUTCMinutes())+':'+pad(d.getUTCSeconds())+' UTC';
+}
+setInterval(tick,1000); tick();
 
-const cursor =
-document.querySelector('.cursor');
-
-const dot =
-document.querySelector('.cursor-dot');
-
+/* ===== CURSOR ===== */
+const cursor = document.querySelector('.cursor');
+const dot = document.querySelector('.cursor-dot');
+let cx=window.innerWidth/2, cy=window.innerHeight/2, tx=cx, ty=cy;
 document.addEventListener('mousemove',(e)=>{
-
-cursor.style.left =
-e.clientX + 'px';
-
-cursor.style.top =
-e.clientY + 'px';
-
-dot.style.left =
-e.clientX + 'px';
-
-dot.style.top =
-e.clientY + 'px';
-
+  tx=e.clientX; ty=e.clientY;
+  dot.style.left=tx+'px'; dot.style.top=ty+'px';
 });
-
-document.querySelectorAll('a,.card,.btn')
-.forEach(el=>{
-
-el.addEventListener('mouseenter',()=>{
-
-cursor.style.width='60px';
-cursor.style.height='60px';
-
-cursor.style.background=
-'rgba(10,132,255,.08)';
-
-});
-
-el.addEventListener('mouseleave',()=>{
-
-cursor.style.width='24px';
-cursor.style.height='24px';
-
-cursor.style.background='transparent';
-
-});
-
-});
-
-/* ===================================
-PARTICLES
-=================================== */
-
-const canvas =
-document.getElementById("particles");
-
-const ctx =
-canvas.getContext("2d");
-
-canvas.width =
-window.innerWidth;
-
-canvas.height =
-window.innerHeight;
-
-const particles = [];
-
-for(let i=0;i<90;i++){
-
-particles.push({
-
-x:Math.random()*canvas.width,
-y:Math.random()*canvas.height,
-
-vx:(Math.random()-.5)*0.5,
-vy:(Math.random()-.5)*0.5,
-
-r:Math.random()*2+1
-
-});
-
+function trail(){
+  cx += (tx-cx)*.18; cy += (ty-cy)*.18;
+  cursor.style.left=cx+'px'; cursor.style.top=cy+'px';
+  requestAnimationFrame(trail);
 }
+trail();
+document.querySelectorAll('a,button,.card,.result-card,.suggest-pill,.cap-card,.console-input,.stat-card,.pipe-row').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{
+    cursor.style.width='52px'; cursor.style.height='52px';
+    cursor.style.background='rgba(10,132,255,.10)';
+    cursor.style.borderColor='rgba(10,132,255,.7)';
+  });
+  el.addEventListener('mouseleave',()=>{
+    cursor.style.width='28px'; cursor.style.height='28px';
+    cursor.style.background='transparent';
+    cursor.style.borderColor='rgba(10,132,255,.55)';
+  });
+});
 
-function animate(){
-
-ctx.clearRect(
-0,
-0,
-canvas.width,
-canvas.height
-);
-
-particles.forEach(p=>{
-
-p.x += p.vx;
-p.y += p.vy;
-
-if(p.x<0 || p.x>canvas.width)
-p.vx *= -1;
-
-if(p.y<0 || p.y>canvas.height)
-p.vy *= -1;
-
-ctx.beginPath();
-
-ctx.arc(
-p.x,
-p.y,
-p.r,
-0,
-Math.PI*2
-);
-
-ctx.fillStyle =
-"rgba(10,132,255,.25)";
-
-ctx.fill();
-
-particles.forEach(other=>{
-
-const dx = p.x-other.x;
-const dy = p.y-other.y;
-
-const dist =
-Math.sqrt(dx*dx+dy*dy);
-
-if(dist < 120){
-
-ctx.beginPath();
-
-ctx.moveTo(p.x,p.y);
-ctx.lineTo(other.x,other.y);
-
-ctx.strokeStyle =
-`rgba(10,132,255,${
-1-dist/120
-})`;
-
-ctx.stroke();
-
+/* ===== NEURAL NETWORK BACKGROUND ===== */
+const canvas = document.getElementById("neural");
+const ctx = canvas.getContext("2d");
+let W,H,DPR=Math.min(2,window.devicePixelRatio||1);
+function resize(){
+  W=canvas.width=innerWidth*DPR;
+  H=canvas.height=innerHeight*DPR;
+  canvas.style.width=innerWidth+'px';
+  canvas.style.height=innerHeight+'px';
 }
+resize();
+window.addEventListener('resize',resize);
 
-});
-
-});
-
-requestAnimationFrame(animate);
-
+const NODES = [];
+const N = window.innerWidth < 720 ? 50 : 90;
+for(let k=0;k<N;k++){
+  NODES.push({
+    x: Math.random()*W,
+    y: Math.random()*H,
+    vx: (Math.random()-.5)*0.18*DPR,
+    vy: (Math.random()-.5)*0.18*DPR,
+    r: (Math.random()*1.5+.6)*DPR,
+    pulse: Math.random()*Math.PI*2
+  });
 }
+let mx=W/2, my=H/2;
+window.addEventListener('mousemove',e=>{ mx=e.clientX*DPR; my=e.clientY*DPR; });
 
-animate();
+function drawNeural(){
+  ctx.clearRect(0,0,W,H);
+  const linkDist = 140*DPR;
+  const mouseDist = 200*DPR;
 
-/* ===================================
-CARD INTERACTION
-=================================== */
+  for(const p of NODES){
+    p.x+=p.vx; p.y+=p.vy;
+    if(p.x<0||p.x>W) p.vx*=-1;
+    if(p.y<0||p.y>H) p.vy*=-1;
 
-document.querySelectorAll('.card')
-.forEach(card=>{
+    // mouse interaction
+    const mdx = p.x-mx, mdy = p.y-my;
+    const md = Math.hypot(mdx,mdy);
+    if(md < mouseDist){
+      const f = (1 - md/mouseDist) * 0.4;
+      p.x += (mdx/md)*f*DPR;
+      p.y += (mdy/md)*f*DPR;
+    }
 
-card.addEventListener('mousemove',(e)=>{
+    p.pulse += 0.02;
+    const a = 0.45 + Math.sin(p.pulse)*0.25;
 
-const rect =
-card.getBoundingClientRect();
+    // glow
+    ctx.beginPath();
+    const grad = ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,p.r*4);
+    grad.addColorStop(0,`rgba(10,132,255,${a*0.6})`);
+    grad.addColorStop(1,'rgba(10,132,255,0)');
+    ctx.fillStyle = grad;
+    ctx.arc(p.x,p.y,p.r*4,0,Math.PI*2);
+    ctx.fill();
 
-const x =
-e.clientX - rect.left;
+    ctx.beginPath();
+    ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+    ctx.fillStyle=`rgba(10,132,255,${a})`;
+    ctx.fill();
+  }
 
-const y =
-e.clientY - rect.top;
-
-card.style.setProperty(
-'--x',
-`${x}px`
-);
-
-card.style.setProperty(
-'--y',
-`${y}px`
-);
-
-const centerX =
-rect.width/2;
-
-const centerY =
-rect.height/2;
-
-const rotateX =
-(y-centerY)/18;
-
-const rotateY =
--(x-centerX)/18;
-
-card.style.transform = `
-perspective(1200px)
-rotateX(${rotateX}deg)
-rotateY(${rotateY}deg)
-translateY(-8px)
-`;
-
-});
-
-card.addEventListener('mouseleave',()=>{
-
-card.style.transform='';
-
-});
-
-});
-
-/* ===================================
-REVEAL
-=================================== */
-
-const observer =
-new IntersectionObserver((entries)=>{
-
-entries.forEach(entry=>{
-
-if(entry.isIntersecting){
-
-entry.target.classList.add(
-'active'
-);
-
+  // links
+  for(let i=0;i<NODES.length;i++){
+    for(let j=i+1;j<NODES.length;j++){
+      const a=NODES[i], b=NODES[j];
+      const d=Math.hypot(a.x-b.x,a.y-b.y);
+      if(d<linkDist){
+        const t = 1-d/linkDist;
+        ctx.beginPath();
+        ctx.moveTo(a.x,a.y);
+        ctx.lineTo(b.x,b.y);
+        ctx.strokeStyle=`rgba(10,132,255,${t*0.22})`;
+        ctx.lineWidth=DPR*0.6;
+        ctx.stroke();
+      }
+    }
+    // mouse links
+    const a=NODES[i];
+    const dm = Math.hypot(a.x-mx,a.y-my);
+    if(dm<mouseDist){
+      const t = 1-dm/mouseDist;
+      ctx.beginPath();
+      ctx.moveTo(a.x,a.y);
+      ctx.lineTo(mx,my);
+      ctx.strokeStyle=`rgba(124,58,237,${t*0.32})`;
+      ctx.lineWidth=DPR*0.7;
+      ctx.stroke();
+    }
+  }
+  requestAnimationFrame(drawNeural);
 }
+drawNeural();
 
+/* ===== CARD HOVER PARALLAX ===== */
+document.querySelectorAll('.card').forEach(card=>{
+  card.addEventListener('mousemove',(e)=>{
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    card.style.setProperty('--x',`${x}px`);
+    card.style.setProperty('--y',`${y}px`);
+    if(card.classList.contains('feature')) return;
+    const cX = rect.width/2, cY = rect.height/2;
+    const rX = (y-cY)/26, rY = -(x-cX)/26;
+    card.style.transform = `perspective(1200px) rotateX(${rX}deg) rotateY(${rY}deg) translateY(-6px)`;
+  });
+  card.addEventListener('mouseleave',()=>{ card.style.transform=''; });
 });
 
-},{
-threshold:.15
-});
+/* ===== REVEAL ===== */
+const observer = new IntersectionObserver((entries)=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){
+      entry.target.classList.add('active');
+      observer.unobserve(entry.target);
+    }
+  });
+},{ threshold:.12 });
+document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
 
-document
-.querySelectorAll('.reveal')
-.forEach(el=>observer.observe(el));
-
-/* ===================================
-COUNTER
-=================================== */
-
-document.querySelectorAll(
-'.status-number'
-).forEach(counter=>{
-
-const target =
-+counter.dataset.count;
-
-let count = 0;
-
-const update = ()=>{
-
-count += Math.ceil(target/60);
-
-if(count > target)
-count = target;
-
-counter.innerText = count;
-
-if(count < target){
-
-requestAnimationFrame(update);
-
+/* ===== COUNTER ===== */
+function animateCounter(el){
+  const target = +el.dataset.count;
+  const small = el.querySelector('small');
+  const suffix = small ? small.outerHTML : '';
+  let count = 0;
+  const dur = 1400;
+  const start = performance.now();
+  function step(now){
+    const t = Math.min(1,(now-start)/dur);
+    const eased = 1 - Math.pow(1-t,3);
+    count = Math.floor(target*eased);
+    el.innerHTML = count + suffix;
+    if(t<1) requestAnimationFrame(step);
+    else el.innerHTML = target + suffix;
+  }
+  requestAnimationFrame(step);
 }
+const cObs = new IntersectionObserver(es=>{
+  es.forEach(e=>{
+    if(e.isIntersecting){ animateCounter(e.target); cObs.unobserve(e.target); }
+  });
+},{threshold:.4});
+document.querySelectorAll('.stat-num').forEach(el=>cObs.observe(el));
 
-}
-
-update();
-
-});
-
+/* token meter */
+let tokens = 0;
 setInterval(()=>{
+  tokens = (tokens + Math.floor(Math.random()*7)+2);
+  if(tokens>9999) tokens = Math.floor(Math.random()*200)+50;
+  const el = document.getElementById('tokens');
+  if(el) el.textContent = tokens.toLocaleString();
+},800);
 
-document.querySelectorAll('.status-number')
-.forEach(el=>{
-
-let base=+el.dataset.count;
-
-el.innerText =
-base + Math.floor(Math.random()*8);
-
-});
-
-},1800);
-
-/* ===================================
-SEARCH
-=================================== */
-
-const searchInput =
-document.getElementById(
-'searchInput'
-);
-
-const results =
-document.getElementById(
-'results'
-);
+/* ===== SEARCH ===== */
+const searchInput = document.getElementById('searchInput');
+const results = document.getElementById('results');
 
 const database = {
-
-autonomous:[
-['Tesla AP','Planning Architect','98%'],
-['Huawei ADS','Perception Lead','95%'],
-['Momenta','BEV Engineer','94%']
-],
-
-multimodal:[
-['OpenAI','Multimodal Researcher','97%'],
-['Google DeepMind','Vision-Language Scientist','95%'],
-['Anthropic','Agent Engineer','93%']
-],
-
-embodied:[
-['Figure AI','Robotics AI Lead','96%'],
-['Tesla Optimus','Motion Planning','94%'],
-['Unitree','Embodied RL Engineer','91%']
-]
-
+  autonomous:[
+    ['T','Tesla AP','Planning Architect','Palo Alto','L4 · IC','98%'],
+    ['H','Huawei ADS','Perception Lead','Shenzhen','M5','95%'],
+    ['M','Momenta','BEV Engineer','Beijing','Senior','94%']
+  ],
+  multimodal:[
+    ['O','OpenAI','Multimodal Researcher','SF','Senior','97%'],
+    ['G','Google DeepMind','Vision-Language Scientist','London','Staff','95%'],
+    ['A','Anthropic','Agent Engineer','SF','Senior','93%']
+  ],
+  embodied:[
+    ['F','Figure AI','Robotics AI Lead','Sunnyvale','Lead','96%'],
+    ['T','Tesla Optimus','Motion Planning','Palo Alto','Senior','94%'],
+    ['U','Unitree','Embodied RL Engineer','Hangzhou','Senior','91%']
+  ],
+  agent:[
+    ['O','OpenAI','Agent Infra Engineer','SF','Staff','95%'],
+    ['L','LangChain','Core Engineer','SF','Senior','92%'],
+    ['B','ByteDance','Agent Platform Lead','Beijing','M5','90%']
+  ],
+  robotics:[
+    ['F','Figure AI','Humanoid Lead','Sunnyvale','Director','97%'],
+    ['B','Boston Dynamics','Locomotion Researcher','Boston','Staff','94%'],
+    ['1','1X Tech','Whole-Body Control','Oslo','Senior','92%']
+  ]
 };
 
-searchInput.addEventListener(
-'input',
-(e)=>{
-
-const value =
-e.target.value.toLowerCase();
-
-results.innerHTML = `
-<div class="result-card">
-<div class="result-role">
-AI Intelligence 搜索中...
-</div>
-</div>
-`;
-
-setTimeout(()=>{
-
-results.innerHTML='';
-
-let found=false;
-
-Object.keys(database)
-.forEach(key=>{
-
-if(value.includes(key)){
-
-found=true;
-
-database[key]
-.forEach(item=>{
-
-results.innerHTML += `
-
-<div class="result-card">
-
-<div class="result-company">
-${item[0]}
-</div>
-
-<div class="result-role">
-${item[1]}
-</div>
-
-<div class="match">
-匹配度 ${item[2]}
-</div>
-
-</div>
-
-`;
-
-});
-
+function renderResults(items){
+  results.innerHTML = items.map(it=>`
+    <div class="result-card">
+      <div class="result-row">
+        <div class="result-co"><span class="logo">${it[0]}</span>${it[1]}</div>
+        <span class="match">${it[5]} <span class="bar"><i style="width:${it[5]}"></i></span></span>
+      </div>
+      <div class="result-role">${it[2]}</div>
+      <div class="result-meta"><span>${it[3]}</span><span>${it[4]}</span></div>
+    </div>
+  `).join('');
 }
 
-});
-
-if(!found){
-
-results.innerHTML = `
-
-<div class="result-card">
-
-<div class="result-company">
-LEO Intelligence
-</div>
-
-<div class="result-role">
-正在扩展人才图谱...
-</div>
-
-<div class="match">
-深度搜索中
-</div>
-
-</div>
-
-`;
-
+function renderLoading(){
+  results.innerHTML = `
+    <div class="result-card" style="grid-column:span 3">
+      <div class="result-row">
+        <div class="result-co"><span class="logo">·</span>LEO Intelligence</div>
+        <span class="match" style="background:rgba(124,58,237,.10);color:var(--violet)">SCANNING <span class="bar"><i style="width:60%;background:linear-gradient(90deg,var(--violet),var(--blue));animation:fillBar 1.2s var(--ease) infinite"></i></span></span>
+      </div>
+      <div class="result-role" style="font-family:'JetBrains Mono',monospace;font-size:14px;color:var(--muted)">› neural query in progress · matching candidates ...</div>
+    </div>
+  `;
 }
 
-},500);
-
+let typingTimer;
+searchInput.addEventListener('input',(e)=>{
+  clearTimeout(typingTimer);
+  const v = e.target.value.trim().toLowerCase();
+  if(!v){ return; }
+  renderLoading();
+  typingTimer = setTimeout(()=>{
+    let found=null;
+    for(const k of Object.keys(database)){
+      if(v.includes(k) || k.includes(v.split(' ')[0])){ found = database[k]; break; }
+    }
+    if(found){ renderResults(found); }
+    else{
+      results.innerHTML = `
+        <div class="result-card" style="grid-column:span 3">
+          <div class="result-row">
+            <div class="result-co"><span class="logo">·</span>LEO Intelligence</div>
+            <span class="match" style="background:rgba(124,58,237,.10);color:var(--violet)">EXPANDING</span>
+          </div>
+          <div class="result-role" style="font-family:'JetBrains Mono',monospace;font-size:14px;color:var(--muted)">› 正在为 "${e.target.value}" 扩展人才图谱，留下联系方式获取深度报告</div>
+        </div>`;
+    }
+  },520);
 });
 
-/* ===================================
-NAV SCROLL
-=================================== */
-
-window.addEventListener(
-'scroll',
-()=>{
-
-const nav =
-document.querySelector('nav');
-
-if(window.scrollY > 40){
-
-nav.style.background =
-'rgba(255,255,255,.82)';
-
-nav.style.transform =
-'translateX(-50%) scale(.98)';
-
-}else{
-
-nav.style.background =
-'rgba(255,255,255,.68)';
-
-nav.style.transform =
-'translateX(-50%) scale(1)';
-
-}
-
+document.querySelectorAll('.suggest-pill').forEach(el=>{
+  el.addEventListener('click',()=>{
+    const q = el.dataset.q;
+    searchInput.value = q;
+    searchInput.dispatchEvent(new Event('input'));
+    searchInput.focus();
+  });
 });
 
-/* ===================================
-RESIZE
-=================================== */
-
-window.addEventListener(
-'resize',
-()=>{
-
-canvas.width =
-window.innerWidth;
-
-canvas.height =
-window.innerHeight;
-
+/* ===== KEYBOARD ⌘K ===== */
+window.addEventListener('keydown',e=>{
+  if((e.metaKey||e.ctrlKey) && e.key.toLowerCase()==='k'){
+    e.preventDefault();
+    document.getElementById('console').scrollIntoView({behavior:'smooth'});
+    setTimeout(()=>searchInput.focus(),600);
+  }
 });
 
+/* ===== NAV SCROLL ===== */
+window.addEventListener('scroll',()=>{
+  const nav = document.querySelector('nav');
+  if(window.scrollY > 40){
+    nav.style.background='rgba(255,255,255,.84)';
+    nav.style.transform='translateX(-50%) scale(.98)';
+    nav.style.boxShadow='0 14px 50px rgba(15,23,42,.10)';
+  }else{
+    nav.style.background='var(--glass)';
+    nav.style.transform='translateX(-50%) scale(1)';
+    nav.style.boxShadow='0 10px 40px rgba(15,23,42,.06)';
+  }
+});
 </script>
-
-</body>
-</html>
-
-</script>
-
 </body>
 </html>
