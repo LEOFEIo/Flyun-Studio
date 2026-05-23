@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="description" content="FLYUN Lab · 飞云 XR 实验工坊 —— visionOS、WebXR、空间计算的公开实验。" />
+<title>FLYUN Lab · XR 实验工坊</title>
+
+<link rel="icon" type="image/svg+xml"
+href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 128 128'%3E%3Crect width='128' height='128' rx='28' fill='%230A0908'/%3E%3Cpath d='M36 30v68m0-68h56m-56 32h44' stroke='%23FF4D2E' stroke-width='10' stroke-linecap='square' fill='none'/%3E%3C/svg%3E">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,300..900,0..100&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Noto+Serif+SC:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --bg:#0A0908;
+  --bg-2:#13110F;
+  --surface:rgba(28,24,20,.55);
+  --border:rgba(237,230,214,.08);
+  --border-strong:rgba(237,230,214,.18);
+  --text:#EDE6D6;
+  --text-dim:#9B9285;
+  --text-mute:#6B6359;
+  --accent:#FF4D2E;
+  --accent-2:#C8FF4D;
+  --accent-warm:#F4B860;
+  --ease:cubic-bezier(.22,.61,.36,1);
+  --serif:'Fraunces','Noto Serif SC',Georgia,serif;
+  --sans:'Inter','Noto Sans SC',-apple-system,BlinkMacSystemFont,sans-serif;
+  --mono:'JetBrains Mono',monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:var(--sans);
+  background:var(--bg);
+  color:var(--text);
+  overflow-x:hidden;
+  min-height:100vh;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+}
+::selection{background:var(--accent-2);color:#0A0908;}
+
+.noise{
+  position:fixed;inset:0;z-index:-3;pointer-events:none;opacity:.04;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence baseFrequency='.9' numOctaves='2'/></filter><rect width='200' height='200' filter='url(%23n)'/></svg>");
+  mix-blend-mode:overlay;
+}
+.aura{position:fixed;inset:0;z-index:-2;overflow:hidden;pointer-events:none;}
+.aura::before,.aura::after{
+  content:"";position:absolute;width:60vw;height:60vw;border-radius:50%;
+  filter:blur(140px);opacity:.18;
+}
+.aura::before{background:radial-gradient(circle,#C8FF4D,transparent 60%);top:-25%;left:-15%;animation:floatA 28s ease-in-out infinite;}
+.aura::after{background:radial-gradient(circle,#FF4D2E,transparent 60%);bottom:-30%;right:-20%;animation:floatB 32s ease-in-out infinite;}
+@keyframes floatA{0%,100%{transform:translate(0,0) scale(1);}50%{transform:translate(8vw,4vw) scale(1.15);}}
+@keyframes floatB{0%,100%{transform:translate(0,0) scale(1);}50%{transform:translate(-6vw,-4vw) scale(1.1);}}
+.grid-bg{
+  position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background-image:
+    linear-gradient(rgba(237,230,214,.025) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(237,230,214,.025) 1px,transparent 1px);
+  background-size:80px 80px;
+  mask-image:radial-gradient(ellipse at center,black 30%,transparent 75%);
+}
+
+/* NAV */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:1000;
+  padding:18px 32px;
+  display:flex;align-items:center;justify-content:space-between;
+  background:rgba(10,9,8,.7);backdrop-filter:blur(24px) saturate(140%);
+  border-bottom:1px solid var(--border);
+}
+.nav-logo{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--text);}
+.nav-mark{
+  width:36px;height:36px;border-radius:10px;background:var(--bg);border:1px solid var(--border-strong);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--serif);font-size:18px;font-weight:600;position:relative;
+}
+.nav-mark::after{
+  content:"";position:absolute;width:6px;height:6px;border-radius:50%;
+  background:var(--accent-2);right:-2px;top:-2px;box-shadow:0 0 10px var(--accent-2);
+}
+.nav-name{font-family:var(--serif);font-size:15px;line-height:1.1;}
+.nav-name small{display:block;font-family:var(--mono);font-size:9px;color:var(--text-mute);letter-spacing:.25em;margin-top:3px;}
+.nav-back{
+  font-family:var(--mono);font-size:11px;color:var(--text-dim);
+  text-decoration:none;padding:8px 14px;border:1px solid var(--border);
+  border-radius:999px;transition:.3s;
+}
+.nav-back:hover{color:var(--accent-2);border-color:var(--accent-2);}
+
+.container{max-width:1320px;margin:0 auto;padding:0 32px;}
+
+/* HERO */
+.hero{
+  padding:160px 32px 60px;
+  position:relative;
+}
+.hero-status{
+  display:inline-flex;align-items:center;gap:10px;
+  font-family:var(--mono);font-size:11px;letter-spacing:.25em;color:var(--text-dim);
+  padding:8px 14px;border:1px solid var(--border);border-radius:999px;
+  margin-bottom:32px;
+}
+.dot-live{
+  width:8px;height:8px;border-radius:50%;background:var(--accent-2);
+  box-shadow:0 0 10px var(--accent-2);position:relative;
+}
+.dot-live::after{
+  content:"";position:absolute;inset:-4px;border-radius:50%;
+  border:2px solid var(--accent-2);animation:livePulse 2.2s ease-out infinite;
+}
+@keyframes livePulse{0%{transform:scale(.8);opacity:1;}100%{transform:scale(2.2);opacity:0;}}
+
+.hero h1{
+  font-family:var(--serif);font-weight:300;
+  font-size:clamp(56px,11vw,168px);line-height:.92;letter-spacing:-.045em;
+  margin-bottom:36px;
+}
+.hero h1 em{font-style:italic;color:var(--accent-2);font-weight:400;}
+.hero h1 .stroke{
+  -webkit-text-stroke:1.5px var(--text);
+  -webkit-text-fill-color:transparent;
+}
+.hero-sub{
+  display:grid;grid-template-columns:1.4fr 1fr;gap:60px;align-items:end;
+  margin-top:48px;
+}
+.hero-sub p{
+  font-size:18px;line-height:1.75;color:var(--text-dim);max-width:560px;
+}
+.hero-sub p strong{color:var(--text);font-weight:500;}
+.lab-stats{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:14px;
+}
+.stat{
+  padding:18px;border:1px solid var(--border);border-radius:14px;
+  background:var(--surface);
+}
+.stat-num{
+  font-family:var(--serif);font-style:italic;font-weight:300;font-size:38px;
+  color:var(--accent-2);line-height:1;letter-spacing:-.02em;
+}
+.stat-label{
+  font-family:var(--mono);font-size:10px;letter-spacing:.22em;color:var(--text-mute);
+  margin-top:8px;text-transform:uppercase;
+}
+@media(max-width:900px){
+  .hero-sub{grid-template-columns:1fr;}
+}
+
+/* SECTION */
+section{padding:120px 32px;position:relative;}
+.section-head{
+  display:grid;grid-template-columns:1fr 1.2fr;gap:80px;align-items:end;
+  margin-bottom:64px;
+}
+@media(max-width:900px){.section-head{grid-template-columns:1fr;gap:32px;}}
+.eyebrow{
+  font-family:var(--mono);font-size:11px;letter-spacing:.3em;color:var(--text-mute);
+  text-transform:uppercase;display:inline-flex;align-items:center;gap:10px;margin-bottom:24px;
+}
+.eyebrow::before{content:"";width:24px;height:1px;background:var(--accent-2);}
+.section-title{
+  font-family:var(--serif);font-weight:300;
+  font-size:clamp(38px,5.6vw,76px);line-height:1;letter-spacing:-.03em;
+}
+.section-title em{font-style:italic;color:var(--accent-2);font-weight:400;}
+.section-desc{
+  font-size:17px;line-height:1.75;max-width:560px;color:var(--text-dim);
+}
+
+/* EXPERIMENTS GRID */
+.exp-grid{
+  display:grid;grid-template-columns:repeat(2,1fr);gap:18px;
+}
+.exp{
+  position:relative;padding:0;border-radius:24px;
+  background:var(--surface);border:1px solid var(--border);
+  overflow:hidden;transition:.4s var(--ease);
+  display:flex;flex-direction:column;min-height:520px;
+}
+.exp::before{
+  content:"";position:absolute;inset:0;border-radius:24px;
+  background:linear-gradient(135deg,rgba(200,255,77,.06),transparent 60%);
+  opacity:0;transition:.4s;pointer-events:none;
+}
+.exp:hover{border-color:var(--border-strong);transform:translateY(-6px);}
+.exp:hover::before{opacity:1;}
+.exp-canvas{
+  height:280px;position:relative;border-bottom:1px solid var(--border);
+  background:radial-gradient(circle at 30% 40%,rgba(200,255,77,.25),transparent 60%),#0d0b09;
+}
+.exp-canvas.warm{background:radial-gradient(circle at 70% 30%,rgba(244,184,96,.3),transparent 60%),#0d0b09;}
+.exp-canvas.red{background:radial-gradient(circle at 50% 50%,rgba(255,77,46,.3),transparent 60%),#0d0b09;}
+.exp-canvas.cool{background:radial-gradient(circle at 30% 70%,rgba(122,226,160,.25),transparent 60%),#0d0b09;}
+.exp-canvas svg{position:absolute;inset:0;width:100%;height:100%;}
+.exp-platform{
+  position:absolute;top:18px;left:18px;
+  display:inline-flex;align-items:center;gap:8px;
+  padding:6px 12px;border-radius:999px;
+  background:rgba(10,9,8,.7);backdrop-filter:blur(8px);
+  border:1px solid var(--border-strong);
+  font-family:var(--mono);font-size:10px;letter-spacing:.2em;color:var(--text);
+  text-transform:uppercase;
+}
+.exp-platform .dot{width:6px;height:6px;border-radius:50%;background:var(--accent-2);box-shadow:0 0 6px var(--accent-2);}
+.exp-platform.warm .dot{background:var(--accent-warm);box-shadow:0 0 6px var(--accent-warm);}
+.exp-platform.red .dot{background:var(--accent);box-shadow:0 0 6px var(--accent);}
+
+.exp-fps{
+  position:absolute;top:18px;right:18px;
+  font-family:var(--mono);font-size:10px;color:var(--text-dim);
+  background:rgba(10,9,8,.6);backdrop-filter:blur(8px);
+  padding:5px 10px;border-radius:6px;letter-spacing:.15em;
+  border:1px solid var(--border);
+}
+.exp-fps span{color:var(--accent-2);}
+
+.exp-body{padding:28px 30px;flex:1;display:flex;flex-direction:column;}
+.exp-no{
+  font-family:var(--mono);font-size:11px;color:var(--text-mute);letter-spacing:.3em;
+  margin-bottom:14px;
+}
+.exp-name{
+  font-family:var(--serif);font-size:34px;font-weight:400;letter-spacing:-.015em;
+  line-height:1.05;margin-bottom:8px;
+}
+.exp-name em{font-style:italic;color:var(--accent-2);}
+.exp-zh{
+  font-family:var(--serif);font-size:16px;color:var(--text-dim);font-weight:400;
+  margin-bottom:18px;
+}
+.exp-desc{
+  font-size:14px;line-height:1.7;color:var(--text-dim);margin-bottom:auto;
+}
+.exp-stack{
+  display:flex;flex-wrap:wrap;gap:6px;margin-top:22px;
+}
+.tech{
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;
+  padding:5px 10px;border-radius:6px;
+  background:rgba(237,230,214,.05);border:1px solid var(--border);
+  color:var(--text);
+}
+.tech.hot{background:rgba(200,255,77,.08);border-color:rgba(200,255,77,.3);color:var(--accent-2);}
+.exp-foot{
+  margin-top:22px;padding-top:18px;border-top:1px solid var(--border);
+  display:flex;justify-content:space-between;align-items:center;
+  font-family:var(--mono);font-size:11px;color:var(--text-mute);letter-spacing:.18em;
+}
+.exp-foot strong{color:var(--accent-2);font-weight:500;}
+
+@media(max-width:900px){
+  .exp-grid{grid-template-columns:1fr;}
+}
+
+/* PIPELINE */
+.pipeline{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:14px;
+}
+.step{
+  position:relative;padding:28px;border-radius:20px;
+  background:var(--surface);border:1px solid var(--border);
+}
+.step-no{
+  font-family:var(--mono);font-size:12px;color:var(--accent-2);letter-spacing:.25em;
+  margin-bottom:16px;
+}
+.step h3{
+  font-family:var(--serif);font-size:22px;font-weight:400;letter-spacing:-.01em;
+  margin-bottom:10px;
+}
+.step h3 em{font-style:italic;color:var(--accent-2);}
+.step p{font-size:13px;line-height:1.7;color:var(--text-dim);}
+@media(max-width:900px){.pipeline{grid-template-columns:1fr;}}
+
+/* CODE BLOCK */
+.code-block{
+  margin-top:64px;padding:36px;border-radius:20px;
+  background:#000;border:1px solid var(--border-strong);
+  font-family:var(--mono);font-size:13px;line-height:1.7;
+  color:var(--text-dim);overflow-x:auto;
+  position:relative;
+}
+.code-block::before{
+  content:"// LAB.snippet · visionOS spatial anchor";
+  display:block;color:var(--text-mute);font-size:11px;letter-spacing:.18em;
+  margin-bottom:18px;text-transform:uppercase;
+}
+.code-block .kw{color:var(--accent);}
+.code-block .fn{color:var(--accent-2);}
+.code-block .str{color:var(--accent-warm);}
+.code-block .com{color:var(--text-mute);font-style:italic;}
+
+/* CTA */
+.cta{
+  margin:80px 32px;padding:80px 48px;
+  border:1px solid var(--border);border-radius:32px;
+  background:radial-gradient(ellipse at center,rgba(200,255,77,.08),transparent 70%),var(--surface);
+  text-align:center;
+}
+.cta h2{
+  font-family:var(--serif);font-size:clamp(36px,5vw,64px);font-weight:300;
+  letter-spacing:-.02em;line-height:1.1;margin-bottom:18px;
+}
+.cta h2 em{font-style:italic;color:var(--accent-2);}
+.cta p{color:var(--text-dim);font-size:16px;line-height:1.6;max-width:520px;margin:0 auto 32px;}
+.btn{
+  height:54px;padding:0 28px;border-radius:14px;
+  display:inline-flex;align-items:center;justify-content:center;gap:10px;
+  text-decoration:none;font-weight:600;font-size:14px;
+  background:var(--accent-2);color:var(--bg);border:1px solid var(--accent-2);
+  transition:.3s var(--ease);box-shadow:0 12px 36px rgba(200,255,77,.25);
+}
+.btn:hover{transform:translateY(-3px);box-shadow:0 20px 50px rgba(200,255,77,.4);}
+
+/* FOOTER */
+footer{
+  padding:48px 32px;border-top:1px solid var(--border);
+  display:flex;justify-content:space-between;align-items:center;
+  font-family:var(--mono);font-size:11px;letter-spacing:.2em;color:var(--text-mute);
+  flex-wrap:wrap;gap:18px;
+}
+footer a{color:var(--text-mute);text-decoration:none;transition:.2s;}
+footer a:hover{color:var(--accent-2);}
+
+.reveal{opacity:0;transform:translateY(40px);transition:.9s var(--ease);}
+.reveal.active{opacity:1;transform:translateY(0);}
+
+@media(max-width:640px){
+  nav{padding:14px 18px;}
+  .container{padding:0 18px;}
+  .hero{padding:120px 18px 50px;}
+  section{padding:80px 18px;}
+  .cta{margin:60px 18px;padding:48px 24px;}
+  footer{flex-direction:column;text-align:center;}
+}
+</style>
+</head>
+<body>
+
+<div class="noise"></div>
+<div class="aura"></div>
+<div class="grid-bg"></div>
+
+<nav>
+  <a href="index.html" class="nav-logo">
+    <div class="nav-mark">F</div>
+    <div class="nav-name">
+      Flyun Studio
+      <small>SPATIAL · XR · TALENT</small>
+    </div>
+  </a>
+  <a href="index.html" class="nav-back">← 返回主站</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-status reveal">
+      <span class="dot-live"></span>
+      <span>LAB ONLINE · 公开实验中 · 可被 fork</span>
+    </div>
+
+    <h1 class="reveal">
+      在<em>头显</em>里，<br/>
+      我们做<em>不正经</em>的<br/>
+      <span class="stroke">实验</span>。
+    </h1>
+
+    <div class="hero-sub">
+      <p class="reveal">
+        <strong>FLYUN Lab</strong> 是飞云工作室的 XR 公开实验工坊 ——
+        我们把 visionOS、WebXR、空间计算的边角料整理成一个个能跑起来的小 Demo。
+        没有商业目的，只测一个问题：<strong>头显里能不能再多一种"对话"？</strong>
+      </p>
+      <div class="lab-stats reveal">
+        <div class="stat">
+          <div class="stat-num">12</div>
+          <div class="stat-label">实验数</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">4</div>
+          <div class="stat-label">平台</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">∞</div>
+          <div class="stat-label">迭代中</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIMENTS -->
+<section>
+  <div class="container">
+    <div class="section-head reveal">
+      <div>
+        <div class="eyebrow">EXPERIMENTS · 实验台</div>
+        <h2 class="section-title">六个<em>正在跑</em>的<br/>头显小 Demo。</h2>
+      </div>
+      <p class="section-desc">
+        每个实验都附带一个能跑的链接（Lab 内部）、一份脚本说明、一段 30 秒视频。
+        欢迎 fork、复现，或者直接告诉我们"这玩意儿没意思"。
+      </p>
+    </div>
+
+    <div class="exp-grid">
+
+      <!-- EXP 01 · Spatial Anchor -->
+      <div class="exp reveal">
+        <div class="exp-canvas">
+          <span class="exp-platform"><span class="dot"></span>visionOS</span>
+          <span class="exp-fps"><span>● </span>60 FPS</span>
+          <svg viewBox="0 0 600 280" preserveAspectRatio="xMidYMid slice">
+            <g stroke="#C8FF4D" fill="none" stroke-width=".7" opacity=".7">
+              <rect x="200" y="80" width="200" height="120" transform="skewY(-8)"/>
+              <rect x="240" y="100" width="120" height="80" transform="skewY(-8)"/>
+            </g>
+            <g fill="#C8FF4D">
+              <circle cx="300" cy="140" r="4"><animate attributeName="r" values="4;7;4" dur="2s" repeatCount="indefinite"/></circle>
+            </g>
+            <g stroke="#FF4D2E" stroke-width=".5" opacity=".5">
+              <line x1="100" y1="240" x2="500" y2="240" stroke-dasharray="3,3"/>
+              <line x1="100" y1="40" x2="500" y2="40" stroke-dasharray="3,3"/>
+            </g>
+          </svg>
+        </div>
+        <div class="exp-body">
+          <div class="exp-no">EXPERIMENT / 01 · LIVE</div>
+          <div class="exp-name"><em>Anchor</em> Echo</div>
+          <div class="exp-zh">空间锚 · 把"位置"做成可被记忆</div>
+          <p class="exp-desc">
+            用户在 visionOS 中放置一个空间锚后，下次戴上头显回到同一个房间，
+            它会"记得"上次的位置和姿态 —— 让物理空间真的拥有数字记忆。
+          </p>
+          <div class="exp-stack">
+            <span class="tech hot">visionOS</span>
+            <span class="tech">RealityKit</span>
+            <span class="tech">ARKit</span>
+            <span class="tech">Swift 5.9</span>
+          </div>
+          <div class="exp-foot">
+            <span>UPDATED · 2026.04.18</span>
+            <strong>↗ TRY DEMO</strong>
+          </div>
+        </div>
+      </div>
+
+      <!-- EXP 02 · WebXR Hand -->
+      <div class="exp reveal">
+        <div class="exp-canvas warm">
+          <span class="exp-platform warm"><span class="dot"></span>WebXR</span>
+          <span class="exp-fps"><span>● </span>72 FPS</span>
+          <svg viewBox="0 0 600 280" preserveAspectRatio="xMidYMid slice">
+            <g stroke="#F4B860" fill="none" stroke-width=".7" opacity=".75">
+              <path d="M150 200 L200 100 L260 80 L300 100 L340 80 L380 100 L440 200"/>
+              <circle cx="200" cy="100" r="6"/>
+              <circle cx="260" cy="80" r="6"/>
+              <circle cx="300" cy="100" r="6"/>
+              <circle cx="340" cy="80" r="6"/>
+              <circle cx="380" cy="100" r="6"/>
+            </g>
+            <g fill="#F4B860">
+              <circle cx="300" cy="140" r="3"><animate attributeName="r" values="3;6;3" dur="1.6s" repeatCount="indefinite"/></circle>
+            </g>
+          </svg>
+        </div>
+        <div class="exp-body">
+          <div class="exp-no">EXPERIMENT / 02 · LIVE</div>
+          <div class="exp-name"><em>Hand</em> Calligraphy</div>
+          <div class="exp-zh">空中书法 · 用手指在空气里写字</div>
+          <p class="exp-desc">
+            浏览器即开即用 —— 摄像头识别手势，食指与拇指捏合时开始绘制 3D 笔触，
+            松开时笔画凝固在空中。一支不需要墨水的笔。
+          </p>
+          <div class="exp-stack">
+            <span class="tech hot">WebXR</span>
+            <span class="tech">MediaPipe</span>
+            <span class="tech">Three.js</span>
+            <span class="tech">GLSL</span>
+          </div>
+          <div class="exp-foot">
+            <span>UPDATED · 2026.03.22</span>
+            <strong>↗ TRY IN BROWSER</strong>
+          </div>
+        </div>
+      </div>
+
+      <!-- EXP 03 · Heart Wind -->
+      <div class="exp reveal">
+        <div class="exp-canvas red">
+          <span class="exp-platform red"><span class="dot"></span>Quest</span>
+          <span class="exp-fps"><span>● </span>90 FPS</span>
+          <svg viewBox="0 0 600 280" preserveAspectRatio="xMidYMid slice">
+            <g stroke="#FF4D2E" fill="none" stroke-width=".5" opacity=".7">
+              <path d="M50 220 Q150 100 250 220 Q350 100 450 220 Q500 180 550 220"/>
+              <path d="M50 200 Q150 80 250 200 Q350 80 450 200 Q500 160 550 200" opacity=".6"/>
+              <path d="M50 180 Q150 60 250 180 Q350 60 450 180 Q500 140 550 180" opacity=".4"/>
+            </g>
+            <g fill="#FF4D2E">
+              <circle cx="150" cy="140" r="3"><animate attributeName="opacity" values=".3;1;.3" dur="1.2s" repeatCount="indefinite"/></circle>
+              <circle cx="350" cy="140" r="3"><animate attributeName="opacity" values=".3;1;.3" dur="1.2s" begin=".4s" repeatCount="indefinite"/></circle>
+            </g>
+          </svg>
+        </div>
+        <div class="exp-body">
+          <div class="exp-no">EXPERIMENT / 03 · BETA</div>
+          <div class="exp-name"><em>Heart</em> Wind</div>
+          <div class="exp-zh">心跳成风 · 心率传感器驱动场景</div>
+          <p class="exp-desc">
+            Apple Watch 把心率以 1Hz 推送到 Quest，场景中的草、布料、粒子都按你的心跳频率拂动。
+            一群人在同一房间里，会出现"风的合奏"。
+          </p>
+          <div class="exp-stack">
+            <span class="tech hot">Unity 2023</span>
+            <span class="tech">Quest OS</span>
+            <span class="tech">HealthKit Bridge</span>
+          </div>
+          <div class="exp-foot">
+            <span>UPDATED · 2026.04.30</span>
+            <strong>↗ JOIN BETA</strong>
+          </div>
+        </div>
+      </div>
+
+      <!-- EXP 04 · USDZ Pavilion -->
+      <div class="exp reveal">
+        <div class="exp-canvas cool">
+          <span class="exp-platform"><span class="dot"></span>iOS · AR</span>
+          <span class="exp-fps"><span>● </span>60 FPS</span>
+          <svg viewBox="0 0 600 280" preserveAspectRatio="xMidYMid slice">
+            <g stroke="#7AE2A0" fill="none" stroke-width=".6" opacity=".6">
+              <polygon points="300,60 200,180 400,180"/>
+              <polygon points="300,100 240,180 360,180"/>
+              <line x1="100" y1="220" x2="500" y2="220"/>
+            </g>
+            <g fill="#C8FF4D">
+              <circle cx="300" cy="140" r="3"><animate attributeName="r" values="3;5;3" dur="2s" repeatCount="indefinite"/></circle>
+            </g>
+          </svg>
+        </div>
+        <div class="exp-body">
+          <div class="exp-no">EXPERIMENT / 04 · LIVE</div>
+          <div class="exp-name"><em>USDZ</em> Pavilion</div>
+          <div class="exp-zh">iMessage 里的展馆 · 一条信息打开</div>
+          <p class="exp-desc">
+            发一条 iMessage，对方点开就在 AR 里看到 1:1 的微型展馆 —— 不下载、不点击 "允许相机"，
+            只用 USDZ 的 Quick Look 把内容塞进消息流。
+          </p>
+          <div class="exp-stack">
+            <span class="tech hot">USDZ</span>
+            <span class="tech">RealityKit</span>
+            <span class="tech">Quick Look</span>
+          </div>
+          <div class="exp-foot">
+            <span>UPDATED · 2026.02.14</span>
+            <strong>↗ AR PREVIEW</strong>
+          </div>
+        </div>
+      </div>
+
+      <!-- EXP 05 · Voice Volume -->
+      <div class="exp reveal">
+        <div class="exp-canvas">
+          <span class="exp-platform"><span class="dot"></span>visionOS</span>
+          <span class="exp-fps"><span>● </span>120 Hz</span>
+          <svg viewBox="0 0 600 280" preserveAspectRatio="xMidYMid slice">
+            <g stroke="#C8FF4D" stroke-width=".7" fill="none" opacity=".7">
+              <line x1="80" y1="140" x2="120" y2="140"/>
+              <line x1="140" y1="100" x2="180" y2="180"/>
+              <line x1="200" y1="60" x2="240" y2="220"/>
+              <line x1="260" y1="80" x2="300" y2="200"/>
+              <line x1="320" y1="40" x2="360" y2="240"/>
+              <line x1="380" y1="80" x2="420" y2="200"/>
+              <line x1="440" y1="100" x2="480" y2="180"/>
+              <line x1="500" y1="140" x2="540" y2="140"/>
+            </g>
+            <circle cx="320" cy="140" r="6" fill="#C8FF4D"><animate attributeName="r" values="6;10;6" dur="1.4s" repeatCount="indefinite"/></circle>
+          </svg>
+        </div>
+        <div class="exp-body">
+          <div class="exp-no">EXPERIMENT / 05 · LAB</div>
+          <div class="exp-name"><em>Voice</em> Volume</div>
+          <div class="exp-zh">声音变体积 · 说话越大空间越大</div>
+          <p class="exp-desc">
+            一个对着空房间唱歌的实验。声压被实时映射到房间的几何边界 ——
+            你越大声，房间越大。一种把"演唱"翻译成"建筑"的玩法。
+          </p>
+          <div class="exp-stack">
+            <span class="tech hot">visionOS</span>
+            <span class="tech">AVAudioEngine</span>
+            <span class="tech">Metal Shader</span>
+          </div>
+          <div class="exp-foot">
+            <span>UPDATED · 2026.05.03</span>
+            <strong>↗ NDA · INVITE</strong>
+          </div>
+        </div>
+      </div>
+
+      <!-- EXP 06 · WebXR Twin -->
+      <div class="exp reveal">
+        <div class="exp-canvas warm">
+          <span class="exp-platform warm"><span class="dot"></span>WebXR</span>
+          <span class="exp-fps"><span>● </span>60 FPS</span>
+          <svg viewBox="0 0 600 280" preserveAspectRatio="xMidYMid slice">
+            <g opacity=".7">
+              <ellipse cx="300" cy="140" rx="180" ry="40" fill="none" stroke="#F4B860" stroke-width=".7"/>
+              <ellipse cx="300" cy="140" rx="120" ry="120" fill="none" stroke="#F4B860" stroke-width=".7" transform="rotate(60 300 140)"/>
+              <ellipse cx="300" cy="140" rx="120" ry="120" fill="none" stroke="#F4B860" stroke-width=".7" transform="rotate(120 300 140)"/>
+            </g>
+            <circle cx="300" cy="140" r="5" fill="#F4B860"/>
+          </svg>
+        </div>
+        <div class="exp-body">
+          <div class="exp-no">EXPERIMENT / 06 · ARCHIVE</div>
+          <div class="exp-name"><em>Twin</em> Walk</div>
+          <div class="exp-zh">数字孪生散步 · 不在场也能逛</div>
+          <p class="exp-desc">
+            把武汉一段六公里的江滩扫描成数字孪生，浏览器里可步行，
+            也可拉到 Vision Pro 里 1:1 大小走一遍。一个"被记录的散步"。
+          </p>
+          <div class="exp-stack">
+            <span class="tech hot">Three.js</span>
+            <span class="tech">Gaussian Splat</span>
+            <span class="tech">WebXR</span>
+          </div>
+          <div class="exp-foot">
+            <span>UPDATED · 2025.12.08</span>
+            <strong>↗ WALK NOW</strong>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- PIPELINE -->
+<section style="background:linear-gradient(180deg,transparent,rgba(200,255,77,.02),transparent);">
+  <div class="container">
+    <div class="section-head reveal">
+      <div>
+        <div class="eyebrow">PIPELINE · 一个 Demo 的诞生</div>
+        <h2 class="section-title">从<em>痒</em>到<em>跑</em><br/>四步。</h2>
+      </div>
+      <p class="section-desc">
+        每个实验都从一个"我们想要在头显里试这件事"开始 ——
+        没有 PRD，没有交付物，只在四个 checkpoint 之间循环。
+      </p>
+    </div>
+
+    <div class="pipeline">
+      <div class="step reveal">
+        <div class="step-no">/ 01</div>
+        <h3><em>Itch</em> · 痒</h3>
+        <p>团队成员或合作者抛出一个"我想在头显里看见 X"的念头。30 分钟内决定"做不做"。</p>
+      </div>
+      <div class="step reveal">
+        <div class="step-no">/ 02</div>
+        <h3><em>Sketch</em> · 草图</h3>
+        <p>1 — 2 天搭出最低跑得起来的原型。允许丑、允许 hardcode、允许只在一台头显上跑。</p>
+      </div>
+      <div class="step reveal">
+        <div class="step-no">/ 03</div>
+        <h3><em>Polish</em> · 打磨</h3>
+        <p>对感兴趣的实验追加 1 周深化：交互节奏、视觉气质、可测体验。其它就停在这里当作日记。</p>
+      </div>
+      <div class="step reveal">
+        <div class="step-no">/ 04</div>
+        <h3><em>Open</em> · 公开</h3>
+        <p>能开源就开源，能写一篇就写一篇。一些实验最终演变成工作室的服务或自有 IP。</p>
+      </div>
+    </div>
+
+    <div class="code-block reveal">
+<span class="com">// Apple Vision Pro · 持久化空间锚示例</span>
+<span class="kw">import</span> ARKit
+<span class="kw">import</span> RealityKit
+
+<span class="kw">let</span> <span class="fn">session</span> = <span class="fn">ARKitSession</span>()
+<span class="kw">let</span> <span class="fn">worldTracking</span> = <span class="fn">WorldTrackingProvider</span>()
+
+<span class="kw">try await</span> session.<span class="fn">run</span>([worldTracking])
+
+<span class="kw">for await</span> update <span class="kw">in</span> worldTracking.<span class="fn">anchorUpdates</span> {
+  <span class="kw">switch</span> update.event {
+    <span class="kw">case</span> .added, .updated:
+      <span class="fn">echo</span>(<span class="str">"// 锚点已被记住 → "</span>, update.anchor.id)
+    <span class="kw">case</span> .removed:
+      <span class="fn">echo</span>(<span class="str">"// 房间发生剧变，锚点失效"</span>)
+  }
+}
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta">
+  <h2>有一个想<em>在头显</em>里试的<em>念头</em>？</h2>
+  <p>FLYUN Lab 接受外部合作者带 idea 进来 —— 我们提供设备、原型时间和工程师。<br/>能跑出来的 Demo 双方共同署名，公开发布。</p>
+  <a href="mailto:lab@flyun.studio" class="btn">lab@flyun.studio ↗</a>
+</section>
+
+<footer>
+  <div>© 2026 FLYUN STUDIO · 飞云工作室</div>
+  <div>Lab <span style="color:var(--accent-2);">·</span> 公开实验</div>
+  <div><a href="index.html">↑ 返回主站</a></div>
+</footer>
+
+<script>
+const io = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('active'); });
+},{threshold:.1});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>
