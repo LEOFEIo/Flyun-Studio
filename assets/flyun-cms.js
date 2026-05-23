@@ -82,7 +82,7 @@
 
       'blog.title': '飞云博客',
       'blog.subtitle': '设计、XR、人才与一些研究生日记。',
-      'blog.empty': '暂无文章，去后台发布第一篇吧。',
+      'blog.empty': '这里还很安静，第一篇文章正在路上。',
       'blog.read': '阅读全文',
       'blog.back': '← 返回博客',
 
@@ -153,7 +153,7 @@
 
       'blog.title': 'FLYUN Journal',
       'blog.subtitle': 'Notes on design, XR, talent and grad-school life.',
-      'blog.empty': 'No posts yet. Publish the first one from admin.',
+      'blog.empty': 'Quiet here for now. The first piece is on its way.',
       'blog.read': 'Read more',
       'blog.back': '← Back to journal',
 
@@ -324,16 +324,70 @@
       document.addEventListener('DOMContentLoaded', () => {
         injectLangToggle();
         applyI18n();
+        installStealthGate();
       });
     } else {
       injectLangToggle();
       applyI18n();
+      installStealthGate();
     }
     // 跨标签页同步
     window.addEventListener('storage', e => {
       if (!e.key) return;
       if (e.key === STORAGE_KEYS.lang || e.key === STORAGE_KEYS.content) applyI18n();
       if (e.key === STORAGE_KEYS.posts) document.dispatchEvent(new Event('flyun:postschange'));
+    });
+  }
+
+  /* ============== STEALTH ADMIN GATE ==============
+   * 公共页面不暴露任何后台入口。主理人可用以下任一方式静默进入：
+   *   1) 键盘组合：  Ctrl + Alt + A   （macOS：⌘ + Option + A 也可）
+   *   2) 触发短语：  连续输入 "flyun"（任意页面，1.5 秒内）
+   *   3) URL hash：  在主站地址后加 #studio  →  自动跳到 admin
+   * 这些入口都不会出现在 DOM 里，访客无法看见。 */
+  function installStealthGate() {
+    if (window.__flyunStealthInstalled) return;
+    window.__flyunStealthInstalled = true;
+    const here = (location.pathname || '').toLowerCase();
+    if (here.endsWith('/admin.html') || here.endsWith('admin.html')) return;
+
+    // 1) Hash 触发
+    if (location.hash === '#studio' || location.hash === '#admin') {
+      // 清掉 hash 再跳，避免书签泄露
+      try { history.replaceState(null, '', location.pathname + location.search); } catch (e) {}
+      location.href = 'admin.html';
+      return;
+    }
+
+    // 2) 键盘组合
+    document.addEventListener('keydown', e => {
+      const key = (e.key || '').toLowerCase();
+      // Ctrl/Cmd + Alt + A
+      if ((e.ctrlKey || e.metaKey) && e.altKey && key === 'a') {
+        e.preventDefault();
+        location.href = 'admin.html';
+      }
+    });
+
+    // 3) 触发短语：连续输入 "flyun"（不区分大小写）
+    let buf = '';
+    let bufTimer = null;
+    document.addEventListener('keydown', e => {
+      // 忽略修饰键、功能键
+      if (e.ctrlKey || e.metaKey || e.altKey) return;
+      // 当焦点在 input/textarea 时不触发，避免打扰用户
+      const ae = document.activeElement;
+      if (ae && /^(input|textarea|select)$/i.test(ae.tagName)) return;
+      const k = (e.key || '');
+      if (k.length !== 1) return;
+      buf += k.toLowerCase();
+      if (buf.length > 5) buf = buf.slice(-5);
+      clearTimeout(bufTimer);
+      bufTimer = setTimeout(() => { buf = ''; }, 1500);
+      if (buf === 'flyun') {
+        buf = '';
+        location.href = 'admin.html';
+      }
     });
   }
 

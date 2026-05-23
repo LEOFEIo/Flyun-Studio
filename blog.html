@@ -366,7 +366,7 @@ footer a:hover{color:var(--accent);}
 <footer>
   <div data-i18n="footer.copyright">© 2026 FLYUN STUDIO · 飞云工作室 · 保留全部权利</div>
   <div data-i18n="footer.location">武汉 · WUHAN · 服务全球</div>
-  <div><a href="index.html">↑ 主站</a> · <a href="admin.html">admin</a></div>
+  <div><a href="index.html">↑ 主站</a></div>
 </footer>
 
 <script src="assets/flyun-cms.js"></script>
@@ -475,8 +475,8 @@ function renderList(){
   const host = document.getElementById('posts');
   if (!posts.length) {
     host.innerHTML = '<div class="empty" style="grid-column:1/-1;">' +
-      '<span data-i18n="blog.empty">暂无文章，去后台发布第一篇吧。</span><br/><br/>' +
-      '<a href="admin.html">→ 进入后台</a></div>';
+      '<span data-i18n="blog.empty">这里还很安静，第一篇文章正在路上。</span>' +
+      '</div>';
     FlyunCMS.applyI18n(host);
     return;
   }
