@@ -451,29 +451,6 @@ section{padding:140px 32px;position:relative;}
 .case-bg-5{background:radial-gradient(circle at 80% 20%,rgba(200,255,77,.3),transparent 60%),#13110F;}
 .case-bg-6{background:radial-gradient(ellipse at 50% 60%,rgba(255,77,46,.3),transparent 70%),radial-gradient(circle at 15% 30%,rgba(244,184,96,.25),transparent 60%),#0d0b09;}
 
-/* AI image layer (sits above gradient canvas, below SVG decorations) */
-.case-img,.portrait-img{
-  position:absolute;inset:0;width:100%;height:100%;
-  object-fit:cover;display:block;
-  opacity:0;transform:scale(1.04);
-  transition:opacity 1s var(--ease),transform 1.2s var(--ease),filter .5s var(--ease);
-  filter:brightness(.62) contrast(1.06) saturate(.95);
-  pointer-events:none;
-}
-.case-img.loaded,.portrait-img.loaded{opacity:1;transform:scale(1);}
-.case:hover .case-img{filter:brightness(.78) contrast(1.12) saturate(1.05);transform:scale(1.04);}
-.about-portrait:hover .portrait-img{filter:brightness(.72) contrast(1.1) saturate(1);}
-.case-img-skeleton,.portrait-img-skeleton{
-  position:absolute;inset:0;pointer-events:none;
-  background:linear-gradient(110deg,rgba(237,230,214,.04) 0%,rgba(237,230,214,.08) 40%,rgba(237,230,214,.04) 80%);
-  background-size:200% 100%;
-  animation:shimmer 2.4s linear infinite;
-  opacity:1;transition:opacity .6s var(--ease);
-}
-.case-img.loaded ~ .case-img-skeleton,
-.portrait-img.loaded ~ .portrait-img-skeleton{opacity:0;}
-@keyframes shimmer{0%{background-position:200% 0;}100%{background-position:-200% 0;}}
-
 .case-svg{position:absolute;inset:0;width:100%;height:100%;}
 
 .case-info{
@@ -958,11 +935,6 @@ footer a:hover{color:var(--accent);}
 
     <div class="about-grid">
       <div class="about-portrait reveal">
-        <img class="portrait-img"
-             src="https://image.pollinations.ai/prompt/moody%20editorial%20portrait%20of%20asian%20creative%20designer%20in%20his%20twenties%20side%20profile%20dark%20studio%20warm%20orange%20amber%20rim%20lighting%20holographic%20light%20particles%20floating%20minimal%20black%20turtleneck%20cinematic%2035mm%20film%20grain%20fashion%20magazine%20aesthetic?width=800&height=1000&seed=7&nologo=true&model=flux"
-             alt="Leo · Founder of FLYUN Studio"
-             loading="lazy" decoding="async">
-        <div class="portrait-img-skeleton"></div>
         <svg class="portrait-svg" viewBox="0 0 400 500" preserveAspectRatio="xMidYMid slice">
           <defs>
             <linearGradient id="pg1" x1="0" y1="0" x2="1" y2="1">
@@ -974,8 +946,7 @@ footer a:hover{color:var(--accent);}
               <stop offset="1" stop-color="#0d0b09"/>
             </radialGradient>
           </defs>
-          <!-- subtle dark vignette so portrait stays moody -->
-          <rect width="400" height="500" fill="#0A0908" opacity=".22"/>
+          <rect width="400" height="500" fill="url(#pg2)"/>
           <!-- abstract figure -->
           <circle cx="200" cy="180" r="58" fill="none" stroke="#FF4D2E" stroke-width="1.2" opacity=".55"/>
           <circle cx="200" cy="180" r="80" fill="none" stroke="#F4B860" stroke-width="1" opacity=".3"/>
@@ -1345,11 +1316,6 @@ footer a:hover{color:var(--accent);}
       <!-- Case 1 -->
       <a href="cases.html" class="case case-1 reveal" data-hover>
         <div class="case-canvas case-bg-1"></div>
-        <img class="case-img"
-             src="https://image.pollinations.ai/prompt/dark%20immersive%20art%20installation%20glowing%20concentric%20sound%20wave%20ripples%20projected%20on%20curved%20wall%20deep%20orange%20red%20gradient%20minimalist%20museum%20gallery%20dust%20particles%20volumetric%20light%20cinematic%20ultra%20realistic?width=1200&height=750&seed=11&nologo=true&model=flux"
-             alt="ECHO ROOM · 声光沉浸装置"
-             loading="lazy" decoding="async">
-        <div class="case-img-skeleton"></div>
         <svg class="case-svg" viewBox="0 0 800 500" preserveAspectRatio="xMidYMid slice">
           <g opacity=".5" stroke="#EDE6D6" stroke-width=".5" fill="none">
             <circle cx="400" cy="250" r="60"/>
@@ -1377,11 +1343,6 @@ footer a:hover{color:var(--accent);}
       <!-- Case 2 -->
       <a href="#contact" class="case case-2 reveal" data-delay="1" data-hover>
         <div class="case-canvas case-bg-2"></div>
-        <img class="case-img"
-             src="https://image.pollinations.ai/prompt/person%20wearing%20apple%20vision%20pro%20headset%20in%20dark%20minimal%20studio%20holographic%20geometric%20portal%20glowing%20in%20front%20lime%20green%20and%20amber%20neon%20reflections%20editorial%20cinematic%20photography%20premium%20tech%20aesthetic?width=900&height=800&seed=22&nologo=true&model=flux"
-             alt="VISION GATE · visionOS 空间应用"
-             loading="lazy" decoding="async">
-        <div class="case-img-skeleton"></div>
         <svg class="case-svg" viewBox="0 0 600 500" preserveAspectRatio="xMidYMid slice">
           <g stroke="#C8FF4D" stroke-width=".6" fill="none" opacity=".6">
             <path d="M50 250 L300 100 L550 250 L300 400 Z"/>
@@ -1405,11 +1366,6 @@ footer a:hover{color:var(--accent);}
       <!-- Case 3 -->
       <a href="#contact" class="case case-3 reveal" data-hover>
         <div class="case-canvas case-bg-3"></div>
-        <img class="case-img"
-             src="https://image.pollinations.ai/prompt/futuristic%20transparent%20holographic%20display%20capsule%20pavilion%20rotating%20golden%20amber%20light%20rings%20premium%20product%20launch%20event%20dark%20studio%20with%20volumetric%20beams%20sci%20fi%20cinematic%20ultra%20realistic?width=800&height=800&seed=33&nologo=true&model=flux"
-             alt="HOLO PAVILION · 全息品牌发布舱"
-             loading="lazy" decoding="async">
-        <div class="case-img-skeleton"></div>
         <svg class="case-svg" viewBox="0 0 400 400" preserveAspectRatio="xMidYMid slice">
           <g opacity=".7">
             <ellipse cx="200" cy="200" rx="140" ry="40" fill="none" stroke="#F4B860" stroke-width=".6"/>
@@ -1432,11 +1388,6 @@ footer a:hover{color:var(--accent);}
       <!-- Case 4 -->
       <a href="lab.html" class="case case-4 reveal" data-delay="1" data-hover>
         <div class="case-canvas case-bg-4"></div>
-        <img class="case-img"
-             src="https://image.pollinations.ai/prompt/interactive%20light%20garden%20installation%20glowing%20organic%20flowing%20curves%20bioluminescent%20waves%20warm%20orange%20red%20amber%20tones%20dark%20exhibition%20hall%20dreamy%20atmospheric%20ultra%20realistic%20cinematic?width=800&height=800&seed=44&nologo=true&model=flux"
-             alt="PULSE GARDEN · 互动光影花园"
-             loading="lazy" decoding="async">
-        <div class="case-img-skeleton"></div>
         <svg class="case-svg" viewBox="0 0 400 400" preserveAspectRatio="xMidYMid slice">
           <g stroke="#FF4D2E" fill="none" opacity=".6" stroke-width=".5">
             <path d="M50 350 Q100 200 150 350 Q200 200 250 350 Q300 200 350 350"/>
@@ -1463,11 +1414,6 @@ footer a:hover{color:var(--accent);}
       <!-- Case 5 -->
       <a href="F.html" class="case case-5 reveal" data-delay="2" data-hover>
         <div class="case-canvas case-bg-5"></div>
-        <img class="case-img"
-             src="https://image.pollinations.ai/prompt/abstract%20data%20network%20visualization%20glowing%20lime%20green%20nodes%20interconnected%20by%20thin%20lines%20dark%20digital%20interface%20geometric%20grid%20perspective%20floor%20futuristic%20ui%20dashboard%20cinematic%20ultra%20realistic?width=800&height=800&seed=55&nologo=true&model=flux"
-             alt="TALENT GRID · 飞云 Pro 猎头 AI 工作站"
-             loading="lazy" decoding="async">
-        <div class="case-img-skeleton"></div>
         <svg class="case-svg" viewBox="0 0 400 400" preserveAspectRatio="xMidYMid slice">
           <g stroke="#C8FF4D" stroke-width=".5" fill="none" opacity=".6">
             <rect x="80" y="80" width="240" height="240"/>
@@ -1492,11 +1438,6 @@ footer a:hover{color:var(--accent);}
       <!-- Case 6 (full-width) -->
       <a href="letter.html" class="case case-6 reveal" data-hover>
         <div class="case-canvas case-bg-6"></div>
-        <img class="case-img"
-             src="https://image.pollinations.ai/prompt/wide%20cinematic%20urban%20night%20skyline%20with%20light%20installations%20warm%20orange%20amber%20traveling%20light%20ribbons%20across%20skyscrapers%20digital%20art%20exhibition%20tour%20between%20cities%20atmospheric%20premium%20magazine%20cover?width=1800&height=800&seed=66&nologo=true&model=flux"
-             alt="LIGHT SCRIPT · FLYUN 自有数字策展品牌"
-             loading="lazy" decoding="async">
-        <div class="case-img-skeleton"></div>
         <svg class="case-svg" viewBox="0 0 1200 500" preserveAspectRatio="xMidYMid slice">
           <g stroke="#FF4D2E" stroke-width=".4" fill="none" opacity=".5">
             <line x1="0" y1="100" x2="1200" y2="100"/>
@@ -1986,22 +1927,6 @@ if(burger && mobile){
 if(matchMedia('(hover:none)').matches || matchMedia('(max-width:640px)').matches){
   document.body.style.cursor='auto';
 }
-
-/* ===== AI IMAGES · FADE IN ON LOAD ===== */
-document.querySelectorAll('.case-img,.portrait-img').forEach(img=>{
-  const markLoaded = ()=>img.classList.add('loaded');
-  if(img.complete && img.naturalWidth>0) markLoaded();
-  else{
-    img.addEventListener('load',markLoaded,{once:true});
-    img.addEventListener('error',()=>{
-      // hide broken image so the gradient canvas + SVG decoration stay visible
-      img.style.display='none';
-      const sk = img.nextElementSibling;
-      if(sk && sk.classList.contains('case-img-skeleton')) sk.style.display='none';
-      if(sk && sk.classList.contains('portrait-img-skeleton')) sk.style.display='none';
-    },{once:true});
-  }
-});
 </script>
 
 <!-- ===== FLYUN CMS · I18N ===== -->
