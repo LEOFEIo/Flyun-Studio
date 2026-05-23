@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>FLY YUN - iOS 26 Spatial Space</title>
+    <title>飞云 · 寻访空间 / Spatial Talent Space</title>
     <script src="https://cdn.jsdelivr.net/npm/xlsx-js-style@1.2.0/dist/xlsx.bundle.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
@@ -131,24 +131,24 @@
 
 <div id="loginOverlay">
     <div class="login-spatial">
-        <h1>FLY YUN</h1>
-        <p>Intelligence in Every Pixel</p>
-        <input type="password" id="sysPass" class="ios-input-group" placeholder="请输入密码密钥" onkeydown="if(event.keyCode==13) handleLogin()">
-        <button class="btn-ios btn-accent" style="width: 100%; margin-top: 35px;" onclick="handleLogin()">解锁空间</button>
+        <h1>飞云寻访</h1>
+        <p>每一个像素里 · 都是判断力</p>
+        <input type="password" id="sysPass" class="ios-input-group" placeholder="输入访问密钥" onkeydown="if(event.keyCode==13) handleLogin()">
+        <button class="btn-ios btn-accent" style="width: 100%; margin-top: 35px;" onclick="handleLogin()">解锁我的空间</button>
         <div style="margin-top: 30px; font-size: 12px; color: var(--apple-blue); cursor: pointer; font-weight: 600; opacity: 0.6;" onclick="toggleAdmin()">超级管理中心</div>
     </div>
 </div>
 
 <div class="app-shell" id="app">
     <header style="margin-bottom: 50px;">
-        <h2 style="font-size: 38px; font-weight: 900; letter-spacing: -3px; margin: 0;">FLY YUN</h2>
+        <h2 style="font-size: 38px; font-weight: 900; letter-spacing: -3px; margin: 0;">飞云寻访</h2>
         <div id="userDisplay" style="color: var(--apple-sub); font-weight: 700; font-size: 13px; margin-top: 8px;"></div>
     </header>
 
     <div class="dashboard-row">
-        <div class="ios-card"><span class="chart-label">Status Distribution</span><div style="height:190px;"><canvas id="chartStatus"></canvas></div></div>
-        <div class="ios-card"><span class="chart-label">Education Profile</span><div style="height:190px;"><canvas id="chartEdu"></canvas></div></div>
-        <div class="ios-card"><span class="chart-label">Project Inventory</span><div style="height:190px;"><canvas id="chartJob"></canvas></div></div>
+        <div class="ios-card"><span class="chart-label">寻访状态分布</span><div style="height:190px;"><canvas id="chartStatus"></canvas></div></div>
+        <div class="ios-card"><span class="chart-label">学历画像</span><div style="height:190px;"><canvas id="chartEdu"></canvas></div></div>
+        <div class="ios-card"><span class="chart-label">客户 / 项目分布</span><div style="height:190px;"><canvas id="chartJob"></canvas></div></div>
     </div>
 
     <div class="ios-card">
@@ -235,7 +235,7 @@
                 document.getElementById('loginOverlay').style.display='none';
                 document.getElementById('app').style.display='block';
                 document.getElementById('userDock').style.display='flex';
-                document.getElementById('userDisplay').innerText = "Encrypted Space // " + p.substring(0,2) + "****";
+                document.getElementById('userDisplay').innerText = "加密空间 // " + p.substring(0,2) + "****";
                 initApp();
             }, 600);
         }

@@ -2,15 +2,27 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <title>飞云 Pro - 猎头全能增效工作站</title>
+    <title>飞云 Pro · 猎头 AI 工作站 / XR 人才</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         @keyframes cloudFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+        @keyframes xrPulse { 0%, 100% { opacity: 0.7; transform: scale(1); } 50% { opacity: 1; transform: scale(1.05); } }
         .logo-cloud { animation: cloudFloat 3s ease-in-out infinite; background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%); }
         .sidebar-item:hover { background: #f1f5f9; color: #2563eb; }
         .sidebar-item.active { background: #eff6ff; color: #2563eb; border-right: 4px solid #2563eb; }
         .glass { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px); }
+        .xr-chip {
+            display: inline-flex; align-items: center; gap: 6px;
+            font-size: 9px; font-weight: 800; letter-spacing: 0.18em;
+            background: linear-gradient(135deg, #FF4D2E, #F4B860); color: #fff;
+            padding: 3px 8px; border-radius: 6px;
+            text-transform: uppercase; animation: xrPulse 2.4s ease-in-out infinite;
+        }
+        .xr-chip::before {
+            content: ""; width: 5px; height: 5px; border-radius: 50%;
+            background: #fff; box-shadow: 0 0 6px #fff;
+        }
     </style>
 </head>
 <body class="bg-slate-50 min-h-screen flex text-slate-800 font-sans">
@@ -18,9 +30,9 @@
     <aside class="w-72 bg-white border-r flex flex-col sticky top-0 h-screen hidden lg:flex">
         <div class="p-8 flex items-center gap-3 border-b">
             <div class="logo-cloud text-white p-2.5 rounded-2xl shadow-lg"><i class="fas fa-cloud text-xl"></i></div>
-            <div class="leading-tight">
-                <span class="text-2xl font-black tracking-tighter">飞云 <span class="text-blue-600">Flyun</span></span>
-                <p class="text-[9px] text-slate-400 font-bold uppercase tracking-widest">Next-Gen Recruitment</p>
+            <div class="leading-tight flex-1">
+                <span class="text-2xl font-black tracking-tighter">飞云 <span class="text-blue-600">Pro</span></span>
+                <p class="text-[9px] text-slate-400 font-bold uppercase tracking-widest mt-0.5">猎头 AI 工作站 · XR Ready</p>
             </div>
         </div>
         
@@ -36,6 +48,14 @@
                 <i class="fas fa-comments-dollar"></i> 面试谈资库
             </a>
             
+            <div class="text-[11px] font-bold text-slate-400 uppercase px-4 mb-3 mt-10">XR · 新业务</div>
+            <a href="job.html" class="sidebar-item flex items-center gap-3 px-4 py-3.5 rounded-2xl transition font-medium text-slate-500">
+                <i class="fas fa-vr-cardboard"></i> XR 人才池 <span class="xr-chip ml-auto">NEW</span>
+            </a>
+            <a href="X.html" class="sidebar-item flex items-center gap-3 px-4 py-3.5 rounded-2xl transition font-medium text-slate-500">
+                <i class="fas fa-cube"></i> 智能寻访空间
+            </a>
+
             <div class="text-[11px] font-bold text-slate-400 uppercase px-4 mb-3 mt-10">人脉运营</div>
             <a href="#" class="sidebar-item flex items-center gap-3 px-4 py-3.5 rounded-2xl transition font-medium text-slate-500">
                 <i class="fas fa-bell"></i> 候选人唤醒
@@ -53,18 +73,21 @@
                     <p class="text-[10px] text-slate-400 italic">资深猎头合伙人</p>
                 </div>
             </div>
-            <button class="w-full py-2.5 bg-white border border-slate-200 rounded-xl text-xs font-bold shadow-sm hover:shadow-md transition">个人中心</button>
+            <a href="index.html" class="block w-full py-2.5 bg-white border border-slate-200 rounded-xl text-xs font-bold shadow-sm hover:shadow-md transition text-center text-slate-700 no-underline">← 返回飞云主站</a>
         </div>
     </aside>
 
     <main class="flex-1 overflow-y-auto custom-scrollbar h-screen">
         
         <div class="h-20 bg-white/80 backdrop-blur-md sticky top-0 z-10 border-b px-8 flex justify-between items-center">
-            <h2 class="text-lg font-bold">AI 生产力工作台</h2>
+            <div class="flex items-center gap-3">
+                <h2 class="text-lg font-bold">AI 生产力工作台</h2>
+                <span class="xr-chip">VR · AR Ready</span>
+            </div>
             <div class="flex gap-4">
                 <div class="flex items-center bg-slate-100 rounded-xl px-4 py-2 border border-transparent focus-within:border-blue-300">
                     <i class="fas fa-search text-slate-400 mr-2 text-sm"></i>
-                    <input type="text" placeholder="输入岗位或人名..." class="bg-transparent border-none outline-none text-xs w-48">
+                    <input type="text" placeholder="输入岗位 / 候选人 / XR 关键词..." class="bg-transparent border-none outline-none text-xs w-56">
                 </div>
                 <button class="bg-blue-600 text-white px-5 py-2 rounded-xl text-xs font-bold shadow-lg shadow-blue-200 hover:bg-blue-700 transition">新增职位</button>
             </div>
@@ -76,15 +99,15 @@
                 <div class="col-span-12 lg:col-span-7 bg-white p-8 rounded-[2rem] shadow-sm border border-slate-100">
                     <div class="flex items-center justify-between mb-6">
                         <h3 class="font-black text-xl flex items-center gap-3">
-                            <span class="w-2 h-8 bg-blue-600 rounded-full"></span> JD 智能智造
+                            <span class="w-2 h-8 bg-blue-600 rounded-full"></span> JD 智能解析
                         </h3>
                         <div class="flex gap-2">
-                            <span class="px-3 py-1 bg-slate-100 rounded-full text-[10px] font-bold text-slate-500 uppercase">Flyun Engine v3.0</span>
+                            <span class="px-3 py-1 bg-slate-100 rounded-full text-[10px] font-bold text-slate-500 uppercase">飞云引擎 v3.0 · XR</span>
                         </div>
                     </div>
                     
                     <textarea id="jdInput" class="w-full h-48 bg-slate-50 rounded-2xl p-5 text-sm border-2 border-transparent focus:border-blue-100 focus:bg-white outline-none transition-all mb-4" 
-                        placeholder="在此粘贴岗位 JD，飞云将为你解析核心标签..."></textarea>
+                        placeholder="贴入岗位 JD（含 VR / AR / visionOS / Three.js 等关键词更佳），飞云将解析候选人画像..."></textarea>
                     
                     <div class="grid grid-cols-2 gap-4">
                         <button onclick="analyzeJob()" class="py-4 bg-slate-900 text-white rounded-2xl font-bold flex items-center justify-center gap-2 hover:bg-black transition shadow-xl">
@@ -116,7 +139,7 @@
             <div id="interviewKit" class="hidden animate-in slide-in-from-bottom duration-500">
                 <div class="bg-slate-900 rounded-[2.5rem] p-10 text-white overflow-hidden relative shadow-2xl">
                     <i class="fas fa-lightbulb absolute -right-10 -top-10 text-[15rem] text-white/5 rotate-12"></i>
-                    <h3 class="text-2xl font-black mb-8">面试提分锦囊 <span class="text-blue-400">Interview Boost</span></h3>
+                    <h3 class="text-2xl font-black mb-8">面试提分锦囊 <span class="text-blue-400">Interview Boost · XR Edition</span></h3>
                     
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                         <div class="space-y-4">

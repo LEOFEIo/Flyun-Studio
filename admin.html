@@ -1,139 +1,316 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flyun Studio | Core System</title>
+    <title>飞云核心终端 · FLYUN ADMIN</title>
     <style>
-        /* 赛博极简风格 CSS */
+        /* 赛博极简 · 黑客绿 */
         body {
             background-color: #050505;
             color: #e0e0e0;
-            font-family: 'Courier New', Courier, monospace; /* 程序员等宽字体 */
+            font-family: 'Courier New', 'JetBrains Mono', Courier, monospace;
             margin: 0;
-            padding: 40px;
+            padding: 40px 20px;
             display: flex;
             justify-content: center;
+            min-height: 100vh;
+            align-items: flex-start;
         }
         .admin-container {
             width: 100%;
-            max-width: 600px;
+            max-width: 640px;
             border: 1px solid #333;
-            padding: 30px;
+            padding: 32px;
             background: #0a0a0a;
-            box-shadow: 0 0 20px rgba(0, 255, 65, 0.05);
+            box-shadow: 0 0 30px rgba(0, 255, 65, 0.06);
         }
         .header {
-            border-bottom: 1px solid #00ff41; /* 黑客绿边缘 */
-            padding-bottom: 10px;
-            margin-bottom: 30px;
+            border-bottom: 1px solid #00ff41;
+            padding-bottom: 14px;
+            margin-bottom: 28px;
             text-transform: uppercase;
             letter-spacing: 2px;
         }
         .header h1 {
             color: #00ff41;
-            font-size: 24px;
+            font-size: 22px;
             margin: 0;
+            text-shadow: 0 0 8px rgba(0,255,65,0.3);
         }
-        .form-group {
-            margin-bottom: 20px;
+        .header .subtitle {
+            font-size: 11px;
+            color: #888;
+            letter-spacing: 1px;
+            margin-top: 6px;
+            text-transform: none;
         }
+        .header .system-line {
+            font-size: 11px;
+            color: #555;
+            margin-top: 4px;
+            text-transform: none;
+        }
+        .blink {
+            display: inline-block;
+            animation: blink 1.2s steps(2) infinite;
+            color: #00ff41;
+        }
+        @keyframes blink { to { opacity: 0; } }
+
+        /* 业务模式切换 */
+        .mode-bar {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 6px;
+            margin-bottom: 28px;
+            padding: 4px;
+            border: 1px solid #222;
+            background: #000;
+        }
+        .mode-btn {
+            padding: 10px;
+            background: transparent;
+            border: none;
+            color: #666;
+            font-family: inherit;
+            font-size: 11px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            transition: 0.2s;
+        }
+        .mode-btn:hover { color: #00ff41; }
+        .mode-btn.active {
+            background: rgba(0, 255, 65, 0.12);
+            color: #00ff41;
+            box-shadow: inset 0 0 10px rgba(0,255,65,0.1);
+        }
+
+        .form-group { margin-bottom: 18px; }
         label {
             display: block;
-            margin-bottom: 8px;
-            font-size: 14px;
+            margin-bottom: 6px;
+            font-size: 12px;
             color: #888;
+            letter-spacing: 0.5px;
         }
-        input[type="text"], input[type="number"], textarea {
+        label .en { color: #444; font-size: 10px; margin-left: 6px; }
+        input[type="text"], input[type="number"], textarea, select {
             width: 100%;
             padding: 12px;
             background-color: #000;
             border: 1px solid #333;
             color: #fff;
-            font-family: 'Courier New', Courier, monospace;
+            font-family: inherit;
+            font-size: 14px;
             box-sizing: border-box;
-            transition: border 0.3s;
+            transition: border 0.3s, box-shadow 0.3s;
         }
-        input:focus, textarea:focus {
+        input:focus, textarea:focus, select:focus {
             outline: none;
-            border-color: #00ff41; /* 聚焦时亮绿灯 */
+            border-color: #00ff41;
+            box-shadow: 0 0 0 1px rgba(0,255,65,0.3);
         }
-        textarea {
-            height: 120px;
-            resize: vertical;
-        }
-        button {
+        textarea { height: 110px; resize: vertical; line-height: 1.5; }
+        select option { background: #000; color: #fff; }
+
+        button.execute {
             background-color: #00ff41;
             color: #000;
             border: none;
-            padding: 12px 24px;
+            padding: 14px 24px;
             font-weight: bold;
-            font-family: 'Courier New', Courier, monospace;
+            font-family: inherit;
+            font-size: 14px;
             cursor: pointer;
             width: 100%;
             text-transform: uppercase;
-            transition: background 0.3s, color 0.3s;
+            letter-spacing: 2px;
+            transition: background 0.2s, color 0.2s;
+            margin-top: 8px;
         }
-        button:hover {
+        button.execute:hover {
             background-color: #fff;
             color: #000;
         }
+        button.execute:active { transform: scale(0.98); }
         .status {
-            margin-top: 15px;
+            margin-top: 16px;
             font-size: 12px;
             color: #00ff41;
             text-align: center;
+            min-height: 16px;
+            line-height: 1.4;
         }
+
+        /* 业务模块 - 默认隐藏，按 mode 切换 */
+        .module { display: none; }
+        .module.active { display: block; }
+
+        .pair { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+        @media (max-width: 540px) { .pair { grid-template-columns: 1fr; } }
+
+        .footer-line {
+            margin-top: 24px;
+            padding-top: 16px;
+            border-top: 1px dashed #222;
+            font-size: 10px;
+            color: #444;
+            text-align: center;
+            letter-spacing: 1px;
+        }
+        .footer-line a { color: #00ff41; text-decoration: none; }
     </style>
 </head>
 <body>
 
 <div class="admin-container">
     <div class="header">
-        <h1>[ Flyun_Admin_Terminal ]</h1>
-        <p style="font-size: 12px; color: #555;">> Establish connection to main frame...</p>
+        <h1>[ 飞云核心终端 · FLYUN_ADMIN ]<span class="blink">_</span></h1>
+        <p class="subtitle">> 主框架数据流管理 / 后台更新通道</p>
+        <p class="system-line">> 已建立加密链接 · TLS 1.3 · 节点 WUHAN-A</p>
     </div>
 
-    <div class="form-group">
-        <label>> Product_Name (产品名称)</label>
-        <input type="text" id="productName" placeholder="e.g. Algorithmic Toothbrush V1">
+    <!-- 业务模块切换 -->
+    <div class="mode-bar">
+        <button class="mode-btn active" data-mode="space">空间项目</button>
+        <button class="mode-btn" data-mode="xr">VR / AR</button>
+        <button class="mode-btn" data-mode="talent">猎头人才</button>
     </div>
 
-    <div class="form-group">
-        <label>> Price_USD (售价 - 美元)</label>
-        <input type="number" id="productPrice" placeholder="e.g. 59">
+    <!-- 模块 1: 空间项目 -->
+    <div class="module active" data-mode="space">
+        <div class="form-group">
+            <label>&gt; 项目名称 <span class="en">PROJECT_NAME</span></label>
+            <input type="text" id="projectName" placeholder="例如：ECHO ROOM 沉浸装置">
+        </div>
+        <div class="pair">
+            <div class="form-group">
+                <label>&gt; 项目类型 <span class="en">CATEGORY</span></label>
+                <select id="projectCat">
+                    <option>沉浸装置</option>
+                    <option>品牌空间</option>
+                    <option>数字物理融合</option>
+                    <option>内容 IP</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>&gt; 报价 <span class="en">PRICE_CNY</span></label>
+                <input type="number" id="projectPrice" placeholder="例如：200000">
+            </div>
+        </div>
+        <div class="form-group">
+            <label>&gt; 案例描述 <span class="en">DESCRIPTION</span></label>
+            <textarea id="projectDesc" placeholder="一句话+一段话描述这个项目..."></textarea>
+        </div>
+        <button class="execute" onclick="executeUpdate('space')">[ 推送 · EXECUTE_UPDATE ]</button>
     </div>
 
-    <div class="form-group">
-        <label>> Manifesto_Text (白皮书/宣传文案更新)</label>
-        <textarea id="manifestoText" placeholder="Enter new manifesto text here..."></textarea>
+    <!-- 模块 2: VR / AR -->
+    <div class="module" data-mode="xr">
+        <div class="form-group">
+            <label>&gt; XR 体验名称 <span class="en">XR_TITLE</span></label>
+            <input type="text" id="xrTitle" placeholder="例如：VISION GATE 空间应用">
+        </div>
+        <div class="pair">
+            <div class="form-group">
+                <label>&gt; 平台 <span class="en">PLATFORM</span></label>
+                <select id="xrPlatform">
+                    <option>Apple Vision Pro · visionOS</option>
+                    <option>Meta Quest · Quest OS</option>
+                    <option>WebXR · 浏览器</option>
+                    <option>移动端 AR</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>&gt; 时长（分钟） <span class="en">DURATION</span></label>
+                <input type="number" id="xrDuration" placeholder="例如：12">
+            </div>
+        </div>
+        <div class="form-group">
+            <label>&gt; 体验脚本 <span class="en">EXPERIENCE_SCRIPT</span></label>
+            <textarea id="xrScript" placeholder="戴上头显的第 1 秒 → 第 1 分钟 → 第 12 分钟，用户分别看到/做到什么"></textarea>
+        </div>
+        <button class="execute" onclick="executeUpdate('xr')">[ 推送 · EXECUTE_UPDATE ]</button>
     </div>
 
-    <button onclick="saveData()">[ EXECUTE_UPDATE ]</button>
-    
+    <!-- 模块 3: 猎头人才 -->
+    <div class="module" data-mode="talent">
+        <div class="form-group">
+            <label>&gt; 岗位名称 <span class="en">POSITION</span></label>
+            <input type="text" id="talentRole" placeholder="例如：高级 visionOS 工程师">
+        </div>
+        <div class="pair">
+            <div class="form-group">
+                <label>&gt; 客户行业 <span class="en">CLIENT_INDUSTRY</span></label>
+                <select id="talentIndustry">
+                    <option>XR / 空间计算</option>
+                    <option>数字创意 / 设计</option>
+                    <option>品牌 / 零售</option>
+                    <option>文旅 / 文博</option>
+                    <option>互联网 / AI</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>&gt; 年薪上限（K） <span class="en">SALARY_K</span></label>
+                <input type="number" id="talentSalary" placeholder="例如：800">
+            </div>
+        </div>
+        <div class="form-group">
+            <label>&gt; JD 摘要 <span class="en">JD_SUMMARY</span></label>
+            <textarea id="talentJD" placeholder="贴入 JD 全文或关键摘要，飞云 Pro 将自动解析候选人画像..."></textarea>
+        </div>
+        <button class="execute" onclick="executeUpdate('talent')">[ 入库 · PUSH_TO_FLYUN_PRO ]</button>
+    </div>
+
     <div class="status" id="statusMessage"></div>
+
+    <div class="footer-line">
+        FLYUN_ADMIN v1.1 · <a href="index.html">← 返回主站</a> · <a href="F.html">飞云 Pro</a> · <a href="X.html">寻访空间</a>
+    </div>
 </div>
 
 <script>
-    // 这里是我们下一步要放 Firebase 数据库连接代码的地方
-    // 现在点击按钮只会显示一个虚假的成功提示，让你感受一下交互
-    function saveData() {
-        const btn = document.querySelector('button');
+    // 业务模块切换
+    const buttons = document.querySelectorAll('.mode-btn');
+    const modules = document.querySelectorAll('.module');
+    buttons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            buttons.forEach(b => b.classList.remove('active'));
+            modules.forEach(m => m.classList.remove('active'));
+            btn.classList.add('active');
+            document.querySelector('.module[data-mode="' + btn.dataset.mode + '"]').classList.add('active');
+            document.getElementById('statusMessage').innerText = '';
+        });
+    });
+
+    // 模拟更新（后续可接 Firebase / 自有 API）
+    const labelMap = {
+        space: '空间项目',
+        xr: 'VR / AR 体验',
+        talent: '猎头人才'
+    };
+
+    function executeUpdate(mode) {
+        const btn = event.target;
         const status = document.getElementById('statusMessage');
-        
-        btn.innerText = "[ PROCESSING... ]";
-        
+        const original = btn.innerText;
+
+        btn.innerText = '[ 处理中 · PROCESSING... ]';
+        btn.disabled = true;
+        status.innerText = '> 正在与主框架同步...';
+        status.style.color = '#F4B860';
+
         setTimeout(() => {
-            btn.innerText = "[ EXECUTE_UPDATE ]";
-            status.innerText = "> SYSTEM_UPDATE_SUCCESSFUL: Data pushed to frontend.";
-            // 3秒后清除提示
-            setTimeout(() => { status.innerText = ""; }, 3000);
-        }, 1000);
+            btn.innerText = original;
+            btn.disabled = false;
+            status.style.color = '#00ff41';
+            status.innerText = '> 已推送 · ' + labelMap[mode] + ' · 数据已写入主框架\n> SYSTEM_UPDATE_OK · ' + new Date().toLocaleTimeString();
+            setTimeout(() => { status.innerText = ''; }, 4000);
+        }, 900);
     }
 </script>
-
-</body>
-</html>
 
 </body>
 </html>

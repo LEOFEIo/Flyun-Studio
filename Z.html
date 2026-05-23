@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>FLY YUN - iOS 26 Intelligent Space</title>
+    <title>飞云智能寻访空间 · Intelligent Space</title>
     <script src="https://cdn.jsdelivr.net/npm/xlsx-js-style@1.2.0/dist/xlsx.bundle.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
@@ -127,8 +127,8 @@
 
 <div id="loginOverlay">
     <div class="spatial-card">
-        <h1>FLY YUN</h1>
-        <p>Your Private Intelligence Space</p>
+        <h1>飞云寻访</h1>
+        <p>你的私人智能寻访空间</p>
         <input type="password" id="sysPass" class="ios-input" placeholder="输入访问密码" onkeydown="if(event.keyCode==13) handleLogin()">
         <button class="btn-ios" style="width: 100%; margin-top: 30px;" onclick="handleLogin()">解锁空间</button>
         <div style="margin-top: 25px; font-size: 12px; color: var(--ios-blue); cursor: pointer; font-weight: 600;" onclick="toggleAdmin()">超级管理中心</div>
@@ -137,7 +137,7 @@
 
 <div class="app-shell" id="app">
     <header style="margin-bottom: 45px; padding: 0 10px;">
-        <h2 style="font-size: 34px; font-weight: 900; letter-spacing: -2px; margin: 0;">FLY YUN</h2>
+        <h2 id="mainTitle" style="font-size: 34px; font-weight: 900; letter-spacing: -2px; margin: 0;">飞云寻访</h2>
         <div id="userDisplay" style="color: var(--ios-sub); font-weight: 600; font-size: 13px; margin-top: 6px;"></div>
     </header>
 
@@ -233,8 +233,10 @@
 
     function toggleAdmin() {
         isAdmin = !isAdmin;
-        document.getElementById('mainTitle').innerText = isAdmin ? "ADMIN" : "FLY YUN";
-        document.getElementById('mainTitle').style.color = isAdmin ? "#AF52DE" : "#1D1D1F";
+        const t = document.getElementById('mainTitle');
+        if (!t) return;
+        t.innerText = isAdmin ? "管理后台" : "飞云寻访";
+        t.style.color = isAdmin ? "#AF52DE" : "#1D1D1F";
     }
 
     async function handleLogin() {
@@ -249,7 +251,7 @@
                 document.getElementById('loginOverlay').style.display='none';
                 document.getElementById('app').style.display='block';
                 document.getElementById('userDock').style.display='flex';
-                document.getElementById('userDisplay').innerText = "Security Key: " + p;
+                document.getElementById('userDisplay').innerText = "安全密钥: " + p;
                 initApp();
             }, 500);
         }
