@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="description" content="FLYUN Letter · 双月一刊 —— 关于交互空间、VR/AR、猎头与人之间的长稿专栏。订阅一封会被认真写的信。" />
+<title>FLYUN Letter · 双月一刊 · 空间 / XR / 人</title>
+<link rel="icon" type="image/svg+xml"
+href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 128 128'%3E%3Crect width='128' height='128' rx='28' fill='%230A0908'/%3E%3Cpath d='M36 30v68m0-68h56m-56 32h44' stroke='%23FF4D2E' stroke-width='10' stroke-linecap='square' fill='none'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,300..900,0..100&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Noto+Serif+SC:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0A0908;--bg-2:#13110F;--paper:#15120F;
+  --surface:rgba(28,24,20,.55);--surface-2:rgba(40,34,28,.45);
+  --border:rgba(237,230,214,.08);--border-strong:rgba(237,230,214,.18);
+  --text:#EDE6D6;--text-dim:#9B9285;--text-mute:#6B6359;
+  --accent:#FF4D2E;--accent-2:#C8FF4D;--accent-warm:#F4B860;
+  --ease:cubic-bezier(.22,.61,.36,1);
+  --serif:'Fraunces','Noto Serif SC',Georgia,serif;
+  --serif-zh:'Noto Serif SC',Georgia,serif;
+  --sans:'Inter','Noto Sans SC',-apple-system,BlinkMacSystemFont,sans-serif;
+  --mono:'JetBrains Mono',monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-font-smoothing:antialiased;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:var(--sans);background:var(--bg);color:var(--text);
+  overflow-x:hidden;min-height:100vh;
+  font-feature-settings:"ss01","cv11";
+}
+::selection{background:var(--accent-warm);color:#0A0908;}
+
+.aura{position:fixed;inset:0;z-index:-2;overflow:hidden;pointer-events:none;}
+.aura::before,.aura::after{content:"";position:absolute;width:60vw;height:60vw;border-radius:50%;filter:blur(140px);opacity:.16;}
+.aura::before{background:radial-gradient(circle,#F4B860,transparent 60%);top:-25%;left:-15%;animation:floatA 28s ease-in-out infinite;}
+.aura::after{background:radial-gradient(circle,#FF4D2E,transparent 60%);bottom:-30%;right:-20%;animation:floatB 32s ease-in-out infinite;}
+@keyframes floatA{0%,100%{transform:translate(0,0) scale(1);}50%{transform:translate(8vw,4vw) scale(1.15);}}
+@keyframes floatB{0%,100%{transform:translate(0,0) scale(1);}50%{transform:translate(-6vw,-4vw) scale(1.1);}}
+.grid-bg{
+  position:fixed;inset:0;z-index:-3;pointer-events:none;
+  background-image:linear-gradient(rgba(237,230,214,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(237,230,214,.025) 1px,transparent 1px);
+  background-size:80px 80px;mask-image:radial-gradient(ellipse at center,black 30%,transparent 75%);
+}
+.noise{
+  position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.04;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence baseFrequency='.9' numOctaves='2'/></filter><rect width='200' height='200' filter='url(%23n)'/></svg>");
+  mix-blend-mode:overlay;
+}
+
+/* nav */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:1000;padding:18px 32px;
+  display:flex;align-items:center;justify-content:space-between;
+  background:rgba(10,9,8,.7);backdrop-filter:blur(24px) saturate(140%);
+  -webkit-backdrop-filter:blur(24px) saturate(140%);
+  border-bottom:1px solid var(--border);
+}
+.nav-logo{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--text);}
+.nav-mark{
+  width:36px;height:36px;border-radius:10px;background:var(--bg);
+  border:1px solid var(--border-strong);display:flex;align-items:center;justify-content:center;
+  font-family:var(--serif);font-size:18px;font-weight:600;position:relative;
+}
+.nav-mark::after{
+  content:"";position:absolute;width:6px;height:6px;border-radius:50%;
+  background:var(--accent-warm);right:-2px;top:-2px;box-shadow:0 0 10px var(--accent-warm);
+}
+.nav-name{font-family:var(--serif);font-size:15px;line-height:1.1;}
+.nav-name small{display:block;font-family:var(--mono);font-size:9px;color:var(--text-mute);letter-spacing:.25em;margin-top:3px;}
+.nav-back{
+  font-family:var(--mono);font-size:11px;color:var(--text-dim);text-decoration:none;
+  padding:8px 14px;border:1px solid var(--border);border-radius:999px;transition:.3s;
+}
+.nav-back:hover{color:var(--accent-warm);border-color:var(--accent-warm);}
+
+.container{max-width:1100px;margin:0 auto;padding:140px 32px 100px;}
+
+/* masthead */
+.masthead{
+  text-align:center;padding-bottom:48px;border-bottom:1px solid var(--border-strong);
+  margin-bottom:64px;
+}
+.masthead-eyebrow{
+  font-family:var(--mono);font-size:11px;letter-spacing:.4em;color:var(--text-mute);
+  text-transform:uppercase;display:inline-flex;align-items:center;gap:14px;margin-bottom:24px;
+}
+.masthead-eyebrow::before,.masthead-eyebrow::after{
+  content:"";width:32px;height:1px;background:var(--accent-warm);
+}
+.masthead-title{
+  font-family:var(--serif);font-weight:300;
+  font-size:clamp(64px,12vw,180px);line-height:.9;letter-spacing:-.05em;
+  margin-bottom:24px;
+  font-variation-settings:"opsz" 144,"SOFT" 50;
+}
+.masthead-title em{font-style:italic;color:var(--accent-warm);font-weight:400;}
+.masthead-sub{
+  font-family:var(--serif);font-style:italic;font-weight:300;
+  font-size:clamp(18px,2.4vw,26px);color:var(--text-dim);
+  max-width:680px;margin:0 auto 28px;line-height:1.5;
+}
+.masthead-meta{
+  display:inline-flex;gap:24px;flex-wrap:wrap;justify-content:center;
+  font-family:var(--mono);font-size:11px;letter-spacing:.25em;color:var(--text-mute);
+}
+.masthead-meta span{display:inline-flex;align-items:center;gap:8px;}
+.masthead-meta strong{color:var(--accent-warm);font-weight:500;}
+
+/* subscribe form */
+.subscribe{
+  background:var(--surface);border:1px solid var(--border);
+  backdrop-filter:blur(20px);border-radius:24px;
+  padding:48px;margin-bottom:80px;
+  display:grid;grid-template-columns:1.1fr 1fr;gap:48px;align-items:center;
+}
+.subscribe h3{
+  font-family:var(--serif);font-size:32px;font-weight:300;letter-spacing:-.02em;
+  line-height:1.2;margin-bottom:14px;
+}
+.subscribe h3 em{font-style:italic;color:var(--accent-warm);}
+.subscribe p{font-size:14px;line-height:1.7;color:var(--text-dim);}
+.subscribe-form{display:flex;flex-direction:column;gap:12px;}
+.subscribe-form input{
+  width:100%;background:rgba(237,230,214,.04);border:1px solid var(--border-strong);
+  border-radius:14px;padding:16px 20px;color:var(--text);font-size:15px;
+  font-family:var(--sans);outline:none;transition:.3s;
+}
+.subscribe-form input:focus{border-color:var(--accent-warm);background:rgba(237,230,214,.06);}
+.subscribe-form button{
+  background:var(--accent-warm);color:#0A0908;border:none;
+  padding:16px 24px;border-radius:14px;font-weight:600;font-size:14px;
+  cursor:pointer;transition:.3s;letter-spacing:.04em;
+  box-shadow:0 12px 36px rgba(244,184,96,.2);
+}
+.subscribe-form button:hover{transform:translateY(-2px);box-shadow:0 20px 50px rgba(244,184,96,.35);}
+.subscribe-meta{
+  font-family:var(--mono);font-size:10px;color:var(--text-mute);letter-spacing:.2em;
+  margin-top:6px;text-align:center;
+}
+
+/* issues list */
+.section-eyebrow{
+  font-family:var(--mono);font-size:11px;letter-spacing:.3em;color:var(--text-mute);
+  text-transform:uppercase;display:inline-flex;align-items:center;gap:10px;margin-bottom:14px;
+}
+.section-eyebrow::before{content:"";width:24px;height:1px;background:var(--accent-warm);}
+.section-title{
+  font-family:var(--serif);font-size:clamp(36px,5vw,64px);font-weight:300;
+  line-height:1;letter-spacing:-.03em;margin-bottom:48px;
+}
+.section-title em{font-style:italic;color:var(--accent-warm);}
+
+.issues{display:flex;flex-direction:column;gap:0;margin-bottom:96px;}
+.issue{
+  display:grid;grid-template-columns:140px 1fr auto;gap:48px;align-items:center;
+  padding:36px 0;border-top:1px solid var(--border);
+  text-decoration:none;color:inherit;transition:.3s var(--ease);
+  position:relative;
+}
+.issue:last-child{border-bottom:1px solid var(--border);}
+.issue:hover{padding-left:18px;}
+.issue:hover .issue-name{color:var(--accent-warm);}
+.issue:hover .issue-arrow{transform:translateX(8px);color:var(--accent-warm);}
+.issue-no{
+  font-family:var(--mono);font-size:13px;color:var(--text-mute);letter-spacing:.2em;
+}
+.issue-no .num{color:var(--accent-warm);}
+.issue-name{
+  font-family:var(--serif);font-size:clamp(24px,3.4vw,40px);font-weight:300;
+  letter-spacing:-.02em;line-height:1.15;transition:.3s;
+}
+.issue-name em{font-style:italic;color:var(--accent-warm);}
+.issue-meta{
+  margin-top:8px;font-family:var(--mono);font-size:11px;
+  letter-spacing:.2em;color:var(--text-mute);
+}
+.issue-arrow{
+  font-size:32px;color:var(--text-mute);transition:.3s var(--ease);
+  font-family:var(--serif);font-weight:300;
+}
+
+.issue.upcoming{opacity:.55;cursor:default;}
+.issue.upcoming:hover{padding-left:0;}
+.issue.upcoming:hover .issue-name{color:var(--text);}
+.issue.upcoming .issue-arrow{display:none;}
+.upcoming-tag{
+  display:inline-block;padding:3px 10px;border-radius:6px;margin-left:12px;
+  font-family:var(--mono);font-size:9.5px;letter-spacing:.2em;
+  background:rgba(244,184,96,.12);color:var(--accent-warm);vertical-align:middle;
+}
+
+/* preview pull-quote */
+.preview{
+  margin:0 0 96px;padding:64px 56px;border:1px solid var(--border);border-radius:24px;
+  background:var(--surface);position:relative;overflow:hidden;
+}
+.preview::before{
+  content:"\201C";position:absolute;top:-40px;left:32px;
+  font-family:var(--serif);font-size:240px;font-weight:300;
+  color:var(--accent-warm);opacity:.15;line-height:1;
+}
+.preview-eyebrow{
+  font-family:var(--mono);font-size:11px;letter-spacing:.3em;color:var(--accent-warm);
+  margin-bottom:18px;
+}
+.preview-text{
+  font-family:var(--serif-zh);font-weight:300;font-style:italic;
+  font-size:clamp(20px,2.6vw,30px);line-height:1.6;color:var(--text);
+  margin-bottom:24px;position:relative;
+}
+.preview-text em{color:var(--accent-warm);font-style:italic;}
+.preview-cite{
+  font-family:var(--mono);font-size:11px;letter-spacing:.25em;color:var(--text-mute);
+}
+
+/* topics strip */
+.topics{
+  margin-bottom:96px;padding:48px 0;
+  border-top:1px solid var(--border);border-bottom:1px solid var(--border);
+}
+.topics-head{
+  display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:16px;
+  margin-bottom:32px;
+}
+.topics-head h3{
+  font-family:var(--serif);font-size:28px;font-weight:300;letter-spacing:-.02em;
+}
+.topics-head h3 em{font-style:italic;color:var(--accent-warm);}
+.topics-head .hint{font-family:var(--mono);font-size:11px;color:var(--text-mute);letter-spacing:.2em;}
+.topics-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
+.topic{
+  padding:24px;border:1px solid var(--border);border-radius:14px;
+  background:var(--surface);transition:.3s var(--ease);text-align:left;
+}
+.topic:hover{border-color:var(--accent-warm);transform:translateY(-3px);}
+.topic-tag{
+  font-family:var(--mono);font-size:10px;color:var(--accent-warm);letter-spacing:.25em;
+  margin-bottom:10px;
+}
+.topic-name{
+  font-family:var(--serif);font-size:18px;font-weight:400;letter-spacing:-.01em;
+  margin-bottom:6px;
+}
+.topic-desc{font-size:12.5px;color:var(--text-dim);line-height:1.5;}
+
+/* archive */
+.archive{
+  text-align:center;padding:48px 0;
+  font-family:var(--mono);font-size:12px;color:var(--text-dim);letter-spacing:.2em;
+}
+.archive a{color:var(--accent-warm);text-decoration:none;border-bottom:1px solid var(--accent-warm);}
+
+footer{
+  padding:48px 32px;border-top:1px solid var(--border);
+  display:flex;justify-content:space-between;align-items:center;
+  font-family:var(--mono);font-size:11px;letter-spacing:.2em;color:var(--text-mute);
+  flex-wrap:wrap;gap:18px;
+}
+footer a{color:var(--text-mute);text-decoration:none;transition:.2s;}
+footer a:hover{color:var(--accent-warm);}
+
+@media(max-width:900px){
+  .subscribe{grid-template-columns:1fr;gap:24px;padding:36px;}
+  .topics-grid{grid-template-columns:repeat(2,1fr);}
+  .issue{grid-template-columns:80px 1fr auto;gap:18px;padding:24px 0;}
+  .preview{padding:40px 28px;}
+}
+@media(max-width:540px){
+  nav{padding:14px 18px;}
+  .container{padding:110px 18px 60px;}
+  .masthead{padding-bottom:32px;margin-bottom:48px;}
+  .topics-grid{grid-template-columns:1fr;}
+  .issue{grid-template-columns:1fr;gap:6px;}
+  .issue-arrow{display:none;}
+  footer{flex-direction:column;text-align:center;}
+}
+</style>
+</head>
+<body>
+
+<div class="aura"></div>
+<div class="grid-bg"></div>
+<div class="noise"></div>
+
+<nav>
+  <a href="index.html" class="nav-logo">
+    <div class="nav-mark">F</div>
+    <div class="nav-name">飞云 Flyun Studio<small>SPATIAL · XR · TALENT</small></div>
+  </a>
+  <a href="index.html" class="nav-back">← 返回主站</a>
+</nav>
+
+<div class="container">
+
+  <header class="masthead">
+    <div class="masthead-eyebrow">FLYUN LETTER · 双月一刊</div>
+    <h1 class="masthead-title">FLYUN<br/><em>Letter</em></h1>
+    <p class="masthead-sub">
+      关于<em>交互空间</em>、<em>VR / AR</em>、<em>猎头</em>，<br/>
+      与人之间的长稿专栏。一封会被认真写的信。
+    </p>
+    <div class="masthead-meta">
+      <span><strong>BIMONTHLY</strong> · 双月一刊</span>
+      <span>FLYUN ORIGINAL</span>
+      <span>EST. <strong>2026</strong></span>
+    </div>
+  </header>
+
+  <!-- Subscribe -->
+  <section class="subscribe" id="subscribe">
+    <div>
+      <h3>订阅一封<br/>会被<em>认真写</em>的信。</h3>
+      <p>
+        每两个月一期，3 — 4 篇长稿，附主创手记 + 一张此刻只属于这期的海报。
+        不卖广告，不发推送 —— 只在写完那个早上，悄悄到你的邮箱。
+      </p>
+    </div>
+    <form class="subscribe-form" id="subForm">
+      <input type="email" name="email" placeholder="你的邮箱 · email@you.com" required>
+      <input type="text" name="name" placeholder="如何称呼你 (选填)">
+      <button type="submit">订阅 FLYUN Letter ↗</button>
+      <div class="subscribe-meta">永久免费 · 一键退订 · 私下信箱</div>
+    </form>
+  </section>
+
+  <!-- Issues list -->
+  <div>
+    <div class="section-eyebrow">ISSUES · 往期与下一期</div>
+    <h2 class="section-title">每两个月，<br/>写一封<em>慢的</em>信。</h2>
+
+    <div class="issues">
+
+      <a href="#" class="issue upcoming">
+        <div class="issue-no"><span class="num">No. 02</span> · 2026 · 09</div>
+        <div>
+          <div class="issue-name">头显里的<em>客厅</em><span class="upcoming-tag">UPCOMING</span></div>
+          <div class="issue-meta">VISION PRO · 家庭场景 · 空间叙事</div>
+        </div>
+        <span class="issue-arrow">→</span>
+      </a>
+
+      <a href="#" class="issue">
+        <div class="issue-no"><span class="num">No. 01</span> · 2026 · 07</div>
+        <div>
+          <div class="issue-name">空间是被<em>低估</em>的界面</div>
+          <div class="issue-meta">FEATURE · 长文 · 6 篇 · 主创手记</div>
+        </div>
+        <span class="issue-arrow">→</span>
+      </a>
+
+      <a href="#" class="issue">
+        <div class="issue-no"><span class="num">No. 00</span> · 2026 · 05</div>
+        <div>
+          <div class="issue-name">创刊 · <em>为什么</em>要做飞云</div>
+          <div class="issue-meta">ISSUE 0 · 创刊号 · 主创自白 · 4 篇</div>
+        </div>
+        <span class="issue-arrow">→</span>
+      </a>
+
+    </div>
+  </div>
+
+  <!-- Preview pull-quote -->
+  <div class="preview">
+    <div class="preview-eyebrow">PREVIEW · NO. 01 节选</div>
+    <p class="preview-text">
+      我们花了二十年把界面做小、做扁、做轻 ——
+      可<em>真正决定体验的</em>，从来不是按钮的圆角，<br/>
+      而是<em>你在哪里</em>、<em>谁在你身边</em>、<em>那一刻光怎么落</em>。
+    </p>
+    <div class="preview-cite">— 《空间是被低估的界面》 · LEO · No. 01</div>
+  </div>
+
+  <!-- Topics -->
+  <div class="topics">
+    <div class="topics-head">
+      <h3>常驻<em>专栏</em></h3>
+      <span class="hint">EVERY ISSUE · 每期都有</span>
+    </div>
+    <div class="topics-grid">
+      <div class="topic">
+        <div class="topic-tag">COLUMN / 01</div>
+        <div class="topic-name">空间笔记</div>
+        <div class="topic-desc">主创看到的一处空间，写一篇短札</div>
+      </div>
+      <div class="topic">
+        <div class="topic-tag">COLUMN / 02</div>
+        <div class="topic-name">头显日记</div>
+        <div class="topic-desc">最近戴的头显、玩到的应用、做坏的 demo</div>
+      </div>
+      <div class="topic">
+        <div class="topic-tag">COLUMN / 03</div>
+        <div class="topic-name">候选人侧记</div>
+        <div class="topic-desc">猎头视角下一段对话、一个故事</div>
+      </div>
+      <div class="topic">
+        <div class="topic-tag">COLUMN / 04</div>
+        <div class="topic-name">实验室转载</div>
+        <div class="topic-desc">从 FLYUN Lab 抓一两个实验，写成长稿</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Archive -->
+  <div class="archive">
+    <div>· 全部往期归档将在 <strong style="color:var(--text);">No. 03</strong> 上线后开放 ·</div>
+    <div style="margin-top:12px;">想先看主创手记？<a href="index.html#about">→ 主站「关于」</a></div>
+  </div>
+
+</div>
+
+<footer>
+  <div>© 2026 FLYUN STUDIO · 飞云工作室 · LETTER</div>
+  <div>武汉 <span style="color:var(--accent-warm);">·</span> WUHAN · 服务全球</div>
+  <div><a href="index.html">↑ 主站</a> · <a href="cases.html">案例</a> · <a href="lab.html">实验室</a></div>
+</footer>
+
+<script>
+  document.getElementById('subForm').addEventListener('submit', e => {
+    e.preventDefault();
+    const btn = e.target.querySelector('button');
+    btn.innerText = '· 已收到 · 下一期会到你邮箱 ·';
+    btn.style.background = 'transparent';
+    btn.style.color = 'var(--accent-warm)';
+    btn.style.border = '1px solid var(--accent-warm)';
+    btn.style.boxShadow = 'none';
+    btn.disabled = true;
+    setTimeout(() => e.target.reset(), 200);
+  });
+</script>
+</body>
+</html>
