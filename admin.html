@@ -3,264 +3,693 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>飞云核心终端 · FLYUN ADMIN</title>
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta name="referrer" content="no-referrer">
+<title>· · ·</title>
+
 <link rel="icon" type="image/svg+xml"
-href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 128 128'%3E%3Crect width='128' height='128' rx='28' fill='%230A0908'/%3E%3Cpath d='M36 30v68m0-68h56m-56 32h44' stroke='%2300ff41' stroke-width='10' stroke-linecap='square' fill='none'/%3E%3C/svg%3E">
+href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 128 128'%3E%3Crect width='128' height='128' rx='28' fill='%230A0908'/%3E%3Cpath d='M36 30v68m0-68h56m-56 32h44' stroke='%23FF4D2E' stroke-width='10' stroke-linecap='square' fill='none'/%3E%3C/svg%3E">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Noto+Serif+SC:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
 <style>
 :root{
-  --bg:#050505; --panel:#0a0a0a; --panel-2:#111;
-  --border:#222; --border-strong:#333;
-  --text:#e0e0e0; --text-dim:#888; --text-mute:#555;
-  --green:#00ff41; --orange:#F4B860; --red:#ff5252;
-  --mono:'JetBrains Mono','Courier New',monospace;
+  --bg:#0A0908;
+  --bg-2:#13110F;
+  --surface:rgba(28,24,20,.55);
+  --surface-2:rgba(40,34,28,.45);
+  --border:rgba(237,230,214,.08);
+  --border-strong:rgba(237,230,214,.18);
+  --text:#EDE6D6;
+  --text-dim:#9B9285;
+  --text-mute:#6B6359;
+  --accent:#FF4D2E;
+  --accent-2:#C8FF4D;
+  --accent-warm:#F4B860;
+  --danger:#ff5252;
+  --ease:cubic-bezier(.22,.61,.36,1);
+  --serif:'Fraunces','Noto Serif SC',Georgia,serif;
+  --sans:'Inter','Noto Sans SC',-apple-system,BlinkMacSystemFont,sans-serif;
+  --mono:'JetBrains Mono',monospace;
 }
 *{margin:0;padding:0;box-sizing:border-box;}
-html,body{background:var(--bg);color:var(--text);font-family:var(--mono);min-height:100vh;}
-body{padding:0;}
-a{color:var(--green);text-decoration:none;}
-a:hover{text-decoration:underline;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:var(--sans);
+  background:var(--bg);
+  color:var(--text);
+  min-height:100vh;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  font-feature-settings:"ss01","cv11","calt";
+  text-rendering:optimizeLegibility;
+}
+::selection{background:var(--accent);color:#fff;}
+a{color:inherit;text-decoration:none;}
+
+/* ===== BACKGROUND TEXTURE ===== */
+.aura{position:fixed;inset:0;z-index:-5;overflow:hidden;pointer-events:none;}
+.aura::before,.aura::after{
+  content:"";position:absolute;width:60vw;height:60vw;border-radius:50%;
+  filter:blur(140px);opacity:.14;
+}
+.aura::before{
+  background:radial-gradient(circle,#FF4D2E,transparent 60%);
+  top:-25%;left:-15%;animation:floatA 28s ease-in-out infinite;
+}
+.aura::after{
+  background:radial-gradient(circle,#F4B860,transparent 60%);
+  bottom:-30%;right:-20%;animation:floatB 32s ease-in-out infinite;
+}
+@keyframes floatA{0%,100%{transform:translate(0,0) scale(1);}50%{transform:translate(8vw,4vw) scale(1.15);}}
+@keyframes floatB{0%,100%{transform:translate(0,0) scale(1);}50%{transform:translate(-6vw,-4vw) scale(1.1);}}
+.grid-bg{
+  position:fixed;inset:0;z-index:-4;pointer-events:none;
+  background-image:
+    linear-gradient(rgba(237,230,214,.025) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(237,230,214,.025) 1px,transparent 1px);
+  background-size:80px 80px;
+  mask-image:radial-gradient(ellipse at center,black 30%,transparent 75%);
+}
+
+.serif{font-family:var(--serif);font-variation-settings:"opsz" 144,"SOFT" 30;}
+.italic{font-style:italic;}
+.mono{font-family:var(--mono);}
 
 /* ===== TOP BAR ===== */
 .topbar{
   position:sticky;top:0;z-index:100;
-  display:flex;align-items:center;justify-content:space-between;gap:16px;
-  padding:14px 20px;background:#000;border-bottom:1px solid var(--green);
-  box-shadow:0 2px 16px rgba(0,255,65,.08);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 28px;gap:16px;
+  background:rgba(10,9,8,.7);
+  backdrop-filter:blur(24px) saturate(140%);
+  -webkit-backdrop-filter:blur(24px) saturate(140%);
+  border-bottom:1px solid var(--border);
 }
-.topbar h1{
-  color:var(--green);font-size:14px;font-weight:600;letter-spacing:2px;
-  text-shadow:0 0 8px rgba(0,255,65,.3);
+.brand{display:flex;align-items:center;gap:12px;}
+.brand-mark{
+  width:36px;height:36px;border-radius:10px;
+  background:var(--bg);border:1px solid var(--border-strong);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--serif);font-size:18px;font-weight:600;
+  position:relative;
 }
-.topbar .right{display:flex;gap:10px;align-items:center;}
-.topbar .right a,.topbar .right button{
-  font-family:inherit;font-size:11px;letter-spacing:1px;
-  padding:8px 14px;border:1px solid var(--border-strong);background:transparent;
-  color:var(--text-dim);cursor:pointer;text-transform:uppercase;
-  transition:.2s;
+.brand-mark::after{
+  content:"";position:absolute;width:6px;height:6px;border-radius:50%;
+  background:var(--accent);right:-2px;top:-2px;
+  box-shadow:0 0 10px var(--accent);
 }
-.topbar .right a:hover,.topbar .right button:hover{color:var(--green);border-color:var(--green);text-decoration:none;}
-
-.blink{display:inline-block;animation:blink 1.2s steps(2) infinite;color:var(--green);}
-@keyframes blink{to{opacity:0;}}
+.brand-name{
+  font-family:var(--serif);font-size:15px;font-weight:500;
+  letter-spacing:.04em;line-height:1.1;
+}
+.brand-name small{
+  display:block;font-family:var(--mono);font-size:9px;color:var(--text-mute);
+  letter-spacing:.25em;margin-top:3px;font-weight:400;
+}
+.bar-right{display:flex;gap:10px;align-items:center;}
+.sync-stat{
+  font-family:var(--mono);font-size:10px;color:var(--text-mute);letter-spacing:.22em;
+  padding:6px 12px;border:1px solid var(--border);border-radius:999px;
+  display:inline-flex;align-items:center;gap:8px;
+}
+.sync-stat::before{
+  content:"";width:6px;height:6px;border-radius:50%;
+  background:var(--accent-2);box-shadow:0 0 8px var(--accent-2);
+}
+.bar-link{
+  padding:9px 14px;border-radius:10px;
+  font-family:var(--mono);font-size:11px;letter-spacing:.18em;
+  color:var(--text-dim);border:1px solid transparent;
+  transition:.2s var(--ease);cursor:pointer;background:transparent;
+}
+.bar-link:hover{color:var(--text);border-color:var(--border-strong);}
+.bar-link.danger{color:var(--text-mute);}
+.bar-link.danger:hover{color:var(--danger);border-color:rgba(255,82,82,.4);}
 
 /* ===== LAYOUT ===== */
 .shell{
-  display:grid;grid-template-columns:240px 1fr;gap:0;min-height:calc(100vh - 60px);
+  display:grid;grid-template-columns:240px 1fr;
+  min-height:calc(100vh - 64px);
 }
 .sidebar{
   border-right:1px solid var(--border);
-  background:var(--panel);padding:24px 0;
+  padding:32px 0 24px;
+  background:rgba(13,11,9,.4);
 }
-.sidebar nav{display:flex;flex-direction:column;}
-.sidebar nav button{
-  text-align:left;padding:14px 24px;background:transparent;border:none;
-  color:var(--text-dim);font-family:inherit;font-size:12px;letter-spacing:1.5px;
-  text-transform:uppercase;cursor:pointer;transition:.2s;
+.sidebar nav{display:flex;flex-direction:column;gap:2px;}
+.tab-btn{
+  text-align:left;padding:14px 28px;background:transparent;border:none;
+  color:var(--text-dim);font-family:var(--mono);font-size:11px;
+  letter-spacing:.22em;text-transform:uppercase;cursor:pointer;
+  transition:.2s var(--ease);
   border-left:2px solid transparent;
+  display:flex;align-items:center;gap:12px;
 }
-.sidebar nav button:hover{color:var(--text);background:rgba(255,255,255,.02);}
-.sidebar nav button.active{
-  color:var(--green);border-left-color:var(--green);
-  background:rgba(0,255,65,.06);
+.tab-btn .num{
+  font-family:var(--mono);font-size:9px;color:var(--text-mute);
+  letter-spacing:.2em;
 }
-.sidebar .side-foot{
-  padding:24px;font-size:10px;color:var(--text-mute);letter-spacing:1px;
-  border-top:1px dashed var(--border);margin-top:24px;line-height:1.7;
+.tab-btn:hover{color:var(--text);background:rgba(237,230,214,.03);}
+.tab-btn.active{
+  color:var(--accent);border-left-color:var(--accent);
+  background:linear-gradient(90deg,rgba(255,77,46,.06),transparent);
 }
+.tab-btn.active .num{color:var(--accent);}
+.side-foot{
+  padding:24px 28px;font-family:var(--mono);font-size:10px;
+  color:var(--text-mute);letter-spacing:.18em;line-height:1.9;
+  border-top:1px dashed var(--border);margin-top:24px;
+}
+.side-foot strong{color:var(--text-dim);font-weight:500;}
 
-.main{padding:32px 36px;max-width:none;overflow:hidden;}
-.panel-title{
-  display:flex;align-items:flex-end;justify-content:space-between;gap:16px;
-  padding-bottom:14px;margin-bottom:24px;border-bottom:1px solid var(--green);
+.main{padding:48px 56px 80px;max-width:none;overflow:hidden;}
+
+/* ===== TYPOGRAPHY (mirroring index) ===== */
+.eyebrow{
+  font-family:var(--mono);font-size:11px;letter-spacing:.3em;
+  color:var(--text-mute);text-transform:uppercase;
+  display:inline-flex;align-items:center;gap:10px;margin-bottom:18px;
+}
+.eyebrow::before{
+  content:"";width:24px;height:1px;background:var(--accent);
+}
+.panel-head{
+  display:flex;justify-content:space-between;align-items:flex-end;gap:24px;
+  padding-bottom:24px;margin-bottom:36px;
+  border-bottom:1px solid var(--border);
   flex-wrap:wrap;
 }
-.panel-title h2{
-  color:var(--green);font-size:18px;letter-spacing:2px;text-transform:uppercase;
-  text-shadow:0 0 8px rgba(0,255,65,.3);
+.panel-title{
+  font-family:var(--serif);font-weight:300;
+  font-size:clamp(34px,5vw,56px);line-height:1;letter-spacing:-.03em;
+  font-variation-settings:"opsz" 144,"SOFT" 30;
 }
-.panel-title .hint{font-size:11px;color:var(--text-mute);letter-spacing:1px;}
+.panel-title em{font-style:italic;color:var(--accent);font-weight:400;}
+.panel-hint{
+  font-family:var(--mono);font-size:11px;color:var(--text-mute);
+  letter-spacing:.2em;text-align:right;
+}
 
-/* ===== TAB CONTENT ===== */
-.tab{display:none;}
+/* ===== STAT CARDS ===== */
+.stat-grid{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:28px;
+}
+.stat{
+  padding:24px;border:1px solid var(--border);border-radius:18px;
+  background:var(--surface);backdrop-filter:blur(20px);
+  transition:.3s var(--ease);
+}
+.stat:hover{border-color:var(--border-strong);transform:translateY(-3px);}
+.stat-label{
+  font-family:var(--mono);font-size:10px;color:var(--text-mute);
+  letter-spacing:.25em;text-transform:uppercase;margin-bottom:14px;
+}
+.stat-num{
+  font-family:var(--serif);font-size:42px;font-weight:300;
+  letter-spacing:-.02em;color:var(--text);line-height:1;
+}
+.stat-num em{color:var(--accent);font-style:italic;}
+.stat-sub{
+  font-family:var(--mono);font-size:10px;color:var(--text-mute);
+  letter-spacing:.18em;margin-top:8px;
+}
+
+/* ===== SURFACE CARD ===== */
+.card{
+  position:relative;padding:32px;border-radius:20px;
+  background:var(--surface);
+  border:1px solid var(--border);
+  backdrop-filter:blur(20px);margin-bottom:18px;
+}
+.card-head{
+  display:flex;justify-content:space-between;align-items:center;
+  font-family:var(--mono);font-size:10px;letter-spacing:.25em;
+  color:var(--text-mute);text-transform:uppercase;
+  padding-bottom:12px;margin-bottom:18px;
+  border-bottom:1px dashed var(--border);
+}
+.card-head .k{color:var(--accent);}
+
+.guide-list{font-size:14px;line-height:1.95;color:var(--text-dim);}
+.guide-list strong{color:var(--text);font-weight:500;}
+.guide-list .warn{
+  display:block;margin-top:14px;padding:14px 16px;
+  border:1px solid rgba(244,184,96,.3);border-radius:12px;
+  background:rgba(244,184,96,.05);color:var(--accent-warm);
+  font-size:13px;
+}
+
+/* ===== TAB SWAP ===== */
+.tab{display:none;animation:fadeIn .35s var(--ease);}
 .tab.active{display:block;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
 
 /* ===== FORMS ===== */
 .field{margin-bottom:18px;}
 .field label{
-  display:block;font-size:11px;color:var(--text-dim);
-  letter-spacing:1px;margin-bottom:6px;text-transform:uppercase;
+  display:flex;align-items:center;gap:10px;
+  font-family:var(--mono);font-size:10px;color:var(--text-dim);
+  letter-spacing:.22em;margin-bottom:8px;text-transform:uppercase;
 }
-.field label .key{color:var(--text-mute);font-size:10px;margin-left:8px;}
-.field input[type=text],.field input[type=password],.field input[type=number],.field textarea,.field select{
-  width:100%;padding:11px 12px;background:#000;border:1px solid var(--border-strong);
-  color:#fff;font-family:inherit;font-size:13px;line-height:1.5;
-  transition:border .2s,box-shadow .2s;
+.field label .key{
+  color:var(--text-mute);font-size:9px;letter-spacing:.18em;
 }
-.field textarea{min-height:90px;resize:vertical;}
-.field input:focus,.field textarea:focus,.field select:focus{
-  outline:none;border-color:var(--green);box-shadow:0 0 0 1px rgba(0,255,65,.3);
+.input,
+.field input[type=text],.field input[type=password],
+.field input[type=number],.field input[type=file],
+.field textarea,.field select{
+  width:100%;padding:14px 16px;
+  background:rgba(10,9,8,.4);
+  border:1px solid var(--border);
+  color:var(--text);font-family:var(--sans);font-size:14px;line-height:1.5;
+  border-radius:12px;
+  transition:border .25s var(--ease),background .25s var(--ease);
 }
+.field textarea{
+  min-height:100px;resize:vertical;
+  font-family:var(--mono);font-size:13px;line-height:1.7;
+}
+.field input:focus,.field textarea:focus,.field select:focus,.input:focus{
+  outline:none;border-color:var(--accent);
+  background:rgba(10,9,8,.6);
+}
+.field input::placeholder,.field textarea::placeholder{color:var(--text-mute);}
 .field .pair{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
 @media(max-width:900px){.field .pair{grid-template-columns:1fr;}}
 
+/* ===== BUTTONS (homepage style) ===== */
 .btn{
-  display:inline-flex;align-items:center;gap:8px;
-  padding:11px 18px;background:var(--green);color:#000;
-  border:none;font-family:inherit;font-size:12px;font-weight:700;
-  letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;
-  transition:.2s;
+  position:relative;height:48px;padding:0 22px;border-radius:12px;
+  display:inline-flex;align-items:center;justify-content:center;gap:10px;
+  font-family:var(--sans);font-weight:600;font-size:13px;letter-spacing:.02em;
+  border:none;cursor:pointer;transition:.3s var(--ease);overflow:hidden;
+  background:var(--accent);color:#fff;
+  box-shadow:0 12px 36px rgba(255,77,46,.25);
 }
-.btn:hover{background:#fff;}
-.btn.ghost{background:transparent;color:var(--text);border:1px solid var(--border-strong);}
-.btn.ghost:hover{background:transparent;color:var(--green);border-color:var(--green);}
-.btn.danger{background:transparent;color:var(--red);border:1px solid var(--red);}
-.btn.danger:hover{background:var(--red);color:#000;}
-.btn.small{padding:7px 12px;font-size:10px;}
+.btn:hover{transform:translateY(-2px);box-shadow:0 18px 40px rgba(255,77,46,.4);}
+.btn::after{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(120deg,transparent,rgba(255,255,255,.18),transparent);
+  transform:translateX(-100%);transition:.7s;
+}
+.btn:hover::after{transform:translateX(100%);}
+.btn.ghost{
+  background:transparent;color:var(--text);
+  border:1px solid var(--border-strong);box-shadow:none;
+}
+.btn.ghost:hover{border-color:var(--text);background:rgba(237,230,214,.04);box-shadow:none;}
+.btn.danger{
+  background:transparent;color:var(--danger);
+  border:1px solid rgba(255,82,82,.4);box-shadow:none;
+}
+.btn.danger:hover{background:var(--danger);color:#fff;border-color:var(--danger);box-shadow:0 12px 36px rgba(255,82,82,.3);}
+.btn.small{height:36px;padding:0 14px;font-size:11px;border-radius:10px;}
+.btn .arrow{display:inline-block;transition:.3s var(--ease);}
+.btn:hover .arrow{transform:translate(3px,-3px);}
 
-.row-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px;}
+.row-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px;}
 
+/* ===== TOAST ===== */
 .toast{
-  position:fixed;bottom:24px;right:24px;z-index:200;
-  padding:14px 20px;background:#000;border:1px solid var(--green);
-  color:var(--green);font-size:12px;letter-spacing:1px;
-  box-shadow:0 0 20px rgba(0,255,65,.3);
-  opacity:0;transform:translateY(20px);transition:.3s;
-  pointer-events:none;max-width:320px;
+  position:fixed;bottom:28px;right:28px;z-index:200;
+  padding:16px 22px;border-radius:14px;
+  background:rgba(10,9,8,.92);
+  border:1px solid var(--accent);
+  color:var(--text);font-family:var(--mono);font-size:12px;
+  letter-spacing:.12em;
+  box-shadow:0 24px 60px rgba(255,77,46,.3);
+  backdrop-filter:blur(20px);
+  opacity:0;transform:translateY(20px) scale(.95);
+  transition:.35s var(--ease);pointer-events:none;max-width:340px;
 }
-.toast.show{opacity:1;transform:translateY(0);}
-.toast.warn{border-color:var(--orange);color:var(--orange);box-shadow:0 0 20px rgba(244,184,96,.3);}
-.toast.err{border-color:var(--red);color:var(--red);box-shadow:0 0 20px rgba(255,82,82,.3);}
+.toast.show{opacity:1;transform:none;}
+.toast.warn{border-color:var(--accent-warm);box-shadow:0 24px 60px rgba(244,184,96,.25);}
+.toast.warn::before{background:var(--accent-warm);}
+.toast.err{border-color:var(--danger);box-shadow:0 24px 60px rgba(255,82,82,.3);}
+.toast::before{
+  content:"";display:inline-block;width:6px;height:6px;border-radius:50%;
+  background:var(--accent);margin-right:10px;vertical-align:middle;
+  box-shadow:0 0 10px currentColor;
+}
+.toast.err::before{background:var(--danger);}
 
 /* ===== I18N EDIT GROUP ===== */
 .i18n-group{
-  border:1px solid var(--border);padding:18px;margin-bottom:18px;
-  background:var(--panel-2);
+  border:1px solid var(--border);border-radius:18px;
+  padding:24px;margin-bottom:14px;
+  background:var(--surface);backdrop-filter:blur(20px);
+  transition:.3s var(--ease);
 }
+.i18n-group:hover{border-color:var(--border-strong);}
 .i18n-group .key-line{
   display:flex;justify-content:space-between;align-items:center;
-  font-size:10px;color:var(--text-mute);letter-spacing:1.5px;
-  margin-bottom:12px;border-bottom:1px dashed var(--border);padding-bottom:8px;
+  font-family:var(--mono);font-size:10px;color:var(--text-mute);
+  letter-spacing:.2em;text-transform:uppercase;
+  padding-bottom:12px;margin-bottom:14px;
+  border-bottom:1px dashed var(--border);
 }
-.i18n-group .key-line .k{color:var(--green);}
-.i18n-group .lang-row{display:grid;grid-template-columns:60px 1fr;gap:14px;margin-bottom:12px;align-items:start;}
+.i18n-group .key-line .k{color:var(--accent);}
+.i18n-group .lang-row{
+  display:grid;grid-template-columns:48px 1fr;gap:14px;
+  margin-bottom:10px;align-items:start;
+}
 .i18n-group .lang-row:last-child{margin-bottom:0;}
 .i18n-group .lang-row .tag{
-  font-size:10px;letter-spacing:1.5px;color:var(--orange);
-  padding-top:11px;
+  font-family:var(--serif);font-size:14px;font-style:italic;
+  color:var(--accent-warm);padding-top:14px;
+  letter-spacing:.05em;
 }
-.i18n-group .lang-row .tag.en{color:var(--green);}
+.i18n-group .lang-row .tag.en{color:var(--accent-2);font-style:normal;font-family:var(--mono);font-size:11px;letter-spacing:.18em;}
+
+/* ===== BLOG: WRITING ROOM ===== */
+.writer{
+  position:relative;padding:48px;border-radius:24px;
+  background:var(--surface);backdrop-filter:blur(20px);
+  border:1px solid var(--border-strong);
+  margin-bottom:36px;
+  background-image:linear-gradient(135deg,rgba(255,77,46,.04),transparent 60%);
+}
+.writer-eyebrow{
+  font-family:var(--mono);font-size:11px;color:var(--accent);
+  letter-spacing:.3em;margin-bottom:14px;text-transform:uppercase;
+  display:inline-flex;align-items:center;gap:10px;
+}
+.writer-eyebrow::before{content:"";width:24px;height:1px;background:var(--accent);}
+.writer-h{
+  font-family:var(--serif);font-size:32px;font-weight:300;
+  letter-spacing:-.02em;line-height:1.1;margin-bottom:32px;
+  font-variation-settings:"opsz" 144,"SOFT" 30;
+}
+.writer-h em{font-style:italic;color:var(--accent);}
+
+.title-input{
+  width:100%;padding:8px 0;background:transparent;border:none;
+  border-bottom:1px solid var(--border);
+  font-family:var(--serif);font-weight:300;
+  font-size:clamp(28px,4vw,44px);line-height:1.15;letter-spacing:-.02em;
+  color:var(--text);margin-bottom:24px;
+  font-variation-settings:"opsz" 144,"SOFT" 30;
+  transition:border-color .25s var(--ease);
+}
+.title-input:focus{outline:none;border-bottom-color:var(--accent);}
+.title-input::placeholder{color:var(--text-mute);font-style:italic;}
+.title-pair{
+  display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-bottom:8px;
+}
+.title-cell .lang-tag{
+  font-family:var(--mono);font-size:10px;color:var(--text-mute);
+  letter-spacing:.25em;margin-bottom:6px;
+}
+.title-cell .lang-tag.en{color:var(--accent-2);}
+.title-cell .lang-tag.zh{color:var(--accent-warm);}
+@media(max-width:900px){.title-pair{grid-template-columns:1fr;gap:14px;}}
+
+.body-pair{
+  display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:8px;
+}
+.body-cell{display:flex;flex-direction:column;}
+.body-cell .body-tag{
+  font-family:var(--mono);font-size:10px;color:var(--text-mute);
+  letter-spacing:.25em;margin-bottom:8px;display:flex;align-items:center;gap:10px;
+}
+.body-cell .body-tag.en{color:var(--accent-2);}
+.body-cell .body-tag.zh{color:var(--accent-warm);}
+.body-cell .body-tag::before{content:"";width:18px;height:1px;background:currentColor;}
+.body-textarea{
+  width:100%;padding:20px 22px;
+  background:rgba(10,9,8,.4);
+  border:1px solid var(--border);border-radius:14px;
+  color:var(--text);
+  font-family:var(--serif);font-size:16px;line-height:1.85;
+  min-height:280px;resize:vertical;
+  transition:border .25s var(--ease),background .25s var(--ease);
+}
+.body-textarea:focus{outline:none;border-color:var(--accent);background:rgba(10,9,8,.6);}
+.body-textarea::placeholder{color:var(--text-mute);font-style:italic;}
+@media(max-width:900px){.body-pair{grid-template-columns:1fr;}}
+
+.writer-meta{
+  margin-top:32px;padding-top:24px;border-top:1px solid var(--border);
+  display:grid;grid-template-columns:repeat(4,1fr);gap:14px;
+}
+@media(max-width:1100px){.writer-meta{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:600px){.writer-meta{grid-template-columns:1fr;}}
+
+.meta-cell label{
+  display:block;font-family:var(--mono);font-size:9px;
+  color:var(--text-mute);letter-spacing:.25em;
+  text-transform:uppercase;margin-bottom:8px;
+}
+.meta-cell input,.meta-cell select{
+  width:100%;padding:11px 14px;
+  background:rgba(10,9,8,.4);
+  border:1px solid var(--border);border-radius:10px;
+  color:var(--text);font-family:var(--mono);font-size:12px;letter-spacing:.05em;
+  transition:.25s var(--ease);
+}
+.meta-cell input:focus,.meta-cell select:focus{
+  outline:none;border-color:var(--accent);background:rgba(10,9,8,.6);
+}
+
+.excerpt-pair{
+  display:grid;grid-template-columns:1fr 1fr;gap:24px;
+  margin-top:24px;padding-top:24px;border-top:1px solid var(--border);
+}
+@media(max-width:900px){.excerpt-pair{grid-template-columns:1fr;}}
+.excerpt-cell label{
+  display:block;font-family:var(--mono);font-size:10px;
+  color:var(--text-mute);letter-spacing:.25em;margin-bottom:8px;text-transform:uppercase;
+}
+.excerpt-cell .lt{color:var(--accent-warm);}
+.excerpt-cell .lt.en{color:var(--accent-2);}
+.excerpt-cell textarea{
+  width:100%;padding:14px 16px;background:rgba(10,9,8,.4);
+  border:1px solid var(--border);border-radius:12px;
+  color:var(--text-dim);font-family:var(--serif);font-style:italic;
+  font-size:15px;line-height:1.7;min-height:80px;resize:vertical;
+}
+.excerpt-cell textarea:focus{outline:none;border-color:var(--accent);background:rgba(10,9,8,.6);}
+
+.writer-actions{
+  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;
+  margin-top:32px;padding-top:24px;border-top:1px solid var(--border);
+}
+.writer-actions .word-count{
+  font-family:var(--mono);font-size:10px;color:var(--text-mute);letter-spacing:.2em;
+}
 
 /* ===== BLOG LIST ===== */
-.post-list{display:flex;flex-direction:column;gap:8px;margin-top:16px;}
+.post-list{display:flex;flex-direction:column;gap:10px;margin-top:18px;}
 .post-row{
-  display:grid;grid-template-columns:1fr auto auto auto;gap:12px;
-  padding:14px 16px;background:var(--panel-2);border:1px solid var(--border);
-  align-items:center;
+  display:grid;grid-template-columns:1fr auto;gap:18px;align-items:center;
+  padding:22px 24px;border:1px solid var(--border);border-radius:16px;
+  background:var(--surface);backdrop-filter:blur(20px);
+  transition:.3s var(--ease);
 }
-.post-row:hover{border-color:var(--border-strong);}
-.post-row .title{font-size:13px;color:var(--text);}
-.post-row .meta{font-size:10px;color:var(--text-mute);letter-spacing:1px;margin-top:4px;}
-.post-row .lang-pill{
-  display:inline-block;padding:2px 8px;border:1px solid var(--border-strong);
-  font-size:9px;color:var(--text-dim);letter-spacing:1px;margin-right:6px;
+.post-row:hover{border-color:var(--border-strong);transform:translateY(-2px);}
+.post-row .ttl{
+  font-family:var(--serif);font-size:18px;font-weight:400;
+  letter-spacing:-.01em;color:var(--text);line-height:1.3;
 }
-.post-row .lang-pill.zh{color:var(--orange);border-color:var(--orange);}
-.post-row .lang-pill.en{color:var(--green);border-color:var(--green);}
-.post-row .lang-pill.both{color:#fff;border-color:#fff;}
+.post-row .ttl em{color:var(--accent);font-style:italic;}
+.post-row .meta-line{
+  font-family:var(--mono);font-size:10px;color:var(--text-mute);
+  letter-spacing:.18em;margin-top:8px;
+}
+.post-row .meta-line .tag-pill{color:var(--accent);}
+.lang-pill{
+  display:inline-block;padding:3px 9px;border:1px solid var(--border-strong);
+  border-radius:999px;
+  font-family:var(--mono);font-size:9px;color:var(--text-dim);
+  letter-spacing:.18em;margin-right:8px;text-transform:uppercase;
+}
+.lang-pill.zh{color:var(--accent-warm);border-color:rgba(244,184,96,.4);}
+.lang-pill.en{color:var(--accent-2);border-color:rgba(200,255,77,.4);}
+.lang-pill.both{color:var(--text);border-color:var(--border-strong);}
+.lang-pill.draft{color:var(--accent-warm);border-color:rgba(244,184,96,.4);}
 
-.post-edit-card{
-  border:1px solid var(--green);padding:24px;background:var(--panel-2);
-  margin-bottom:24px;box-shadow:inset 0 0 30px rgba(0,255,65,.04);
-}
-.post-edit-card h3{
-  color:var(--green);font-size:13px;letter-spacing:2px;
-  margin-bottom:16px;text-transform:uppercase;
-}
+.post-row .acts{display:flex;gap:8px;flex-wrap:wrap;}
 
 /* ===== LOGIN GATE ===== */
 .gate{
-  position:fixed;inset:0;background:var(--bg);z-index:1000;
-  display:flex;align-items:center;justify-content:center;padding:20px;
+  position:fixed;inset:0;z-index:1000;
+  display:flex;align-items:center;justify-content:center;padding:24px;
+  background:rgba(10,9,8,.86);
+  backdrop-filter:blur(24px);
+  -webkit-backdrop-filter:blur(24px);
 }
 .gate-box{
-  width:100%;max-width:380px;background:var(--panel);
-  border:1px solid var(--green);padding:32px;
-  box-shadow:0 0 40px rgba(0,255,65,.08);
+  width:100%;max-width:440px;
+  padding:48px 40px;border-radius:24px;
+  background:var(--surface);
+  border:1px solid var(--border-strong);
+  backdrop-filter:blur(40px);
+  box-shadow:0 32px 80px rgba(0,0,0,.6),inset 0 1px 0 rgba(237,230,214,.06);
+  position:relative;overflow:hidden;
 }
+.gate-box::before{
+  content:"";position:absolute;inset:0;border-radius:24px;
+  background:linear-gradient(135deg,rgba(255,77,46,.06),transparent 60%);
+  pointer-events:none;
+}
+.gate-box .gate-eyebrow{
+  font-family:var(--mono);font-size:10px;color:var(--accent);
+  letter-spacing:.3em;text-transform:uppercase;margin-bottom:16px;
+  display:inline-flex;align-items:center;gap:10px;
+}
+.gate-box .gate-eyebrow::before{content:"";width:24px;height:1px;background:var(--accent);}
 .gate-box h2{
-  color:var(--green);font-size:16px;letter-spacing:2px;
-  margin-bottom:6px;text-shadow:0 0 8px rgba(0,255,65,.3);
+  font-family:var(--serif);font-weight:300;
+  font-size:36px;line-height:1.1;letter-spacing:-.025em;
+  margin-bottom:8px;
+  font-variation-settings:"opsz" 144,"SOFT" 30;
 }
-.gate-box .sub{font-size:11px;color:var(--text-mute);letter-spacing:1px;margin-bottom:24px;}
+.gate-box h2 em{color:var(--accent);font-style:italic;}
+.gate-box .sub{
+  font-family:var(--mono);font-size:11px;color:var(--text-mute);
+  letter-spacing:.2em;margin-bottom:32px;
+}
+.gate-back{
+  display:block;text-align:center;margin-top:20px;
+  font-family:var(--mono);font-size:10px;color:var(--text-mute);
+  letter-spacing:.22em;transition:.2s;
+}
+.gate-back:hover{color:var(--text);}
 
 /* ===== IMAGES ===== */
-.img-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;}
-.img-card{
-  border:1px solid var(--border);background:var(--panel-2);padding:12px;
+.img-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;
 }
+.img-card{
+  border:1px solid var(--border);border-radius:16px;
+  background:var(--surface);backdrop-filter:blur(20px);
+  padding:14px;transition:.3s var(--ease);
+}
+.img-card:hover{border-color:var(--border-strong);transform:translateY(-3px);}
 .img-card .preview{
-  width:100%;aspect-ratio:4/3;background:#000;
-  background-size:cover;background-position:center;
+  width:100%;aspect-ratio:4/3;border-radius:10px;
+  background:#000 center/cover no-repeat;
   border:1px solid var(--border);
 }
-.img-card .name{font-size:11px;color:var(--text-dim);margin-top:8px;letter-spacing:1px;}
-.img-card .url{font-size:9px;color:var(--text-mute);word-break:break-all;margin-top:4px;line-height:1.4;}
-
-@media(max-width:760px){
-  .shell{grid-template-columns:1fr;}
-  .sidebar{border-right:none;border-bottom:1px solid var(--border);padding:12px 0;}
-  .sidebar nav{flex-direction:row;overflow-x:auto;}
-  .sidebar nav button{padding:10px 16px;border-left:none;border-bottom:2px solid transparent;flex-shrink:0;}
-  .sidebar nav button.active{border-left:none;border-bottom-color:var(--green);}
-  .sidebar .side-foot{display:none;}
-  .main{padding:22px 18px;}
-  .topbar h1{font-size:12px;letter-spacing:1.5px;}
+.img-card .name{
+  font-family:var(--serif);font-size:14px;color:var(--text);
+  margin-top:12px;letter-spacing:-.005em;
 }
+.img-card .url{
+  font-family:var(--mono);font-size:9px;color:var(--text-mute);
+  word-break:break-all;margin-top:6px;line-height:1.5;letter-spacing:.05em;
+}
+
+/* ===== UPLOAD INPUT TWEAK ===== */
+input[type=file]{
+  font-family:var(--mono);font-size:11px;color:var(--text-dim);letter-spacing:.1em;
+}
+input[type=file]::file-selector-button{
+  background:transparent;border:1px solid var(--border-strong);
+  color:var(--text);padding:8px 14px;border-radius:8px;
+  font-family:var(--mono);font-size:10px;letter-spacing:.18em;
+  margin-right:14px;cursor:pointer;transition:.2s var(--ease);
+}
+input[type=file]::file-selector-button:hover{
+  background:var(--accent);color:#fff;border-color:var(--accent);
+}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:980px){
+  .shell{grid-template-columns:1fr;}
+  .sidebar{
+    border-right:none;border-bottom:1px solid var(--border);
+    padding:0;background:rgba(10,9,8,.6);
+    position:sticky;top:64px;z-index:50;
+    backdrop-filter:blur(20px);
+  }
+  .sidebar nav{flex-direction:row;overflow-x:auto;padding:8px 16px;}
+  .tab-btn{
+    flex:0 0 auto;padding:14px 20px;
+    border-left:none;border-bottom:2px solid transparent;
+  }
+  .tab-btn.active{
+    border-left:none;border-bottom-color:var(--accent);
+    background:transparent;
+  }
+  .side-foot{display:none;}
+  .main{padding:32px 22px 60px;}
+  .stat-grid{grid-template-columns:repeat(2,1fr);}
+  .writer{padding:28px 22px;}
+}
+@media(max-width:640px){
+  .topbar{padding:12px 16px;}
+  .brand-name small{display:none;}
+  .stat-grid{grid-template-columns:1fr;}
+  .post-row{grid-template-columns:1fr;}
+  .post-row .acts{justify-content:flex-start;}
+  .panel-title{font-size:32px;}
+  .bar-link{padding:7px 10px;font-size:10px;}
+  .sync-stat{display:none;}
+}
+
 </style>
 </head>
 <body>
 
+<div class="aura"></div>
+<div class="grid-bg"></div>
+
 <!-- ===== LOGIN GATE ===== -->
 <div class="gate" id="gate">
   <form class="gate-box" id="gateForm">
-    <h2>[ FLYUN_ADMIN ]<span class="blink">_</span></h2>
-    <div class="sub">&gt; 加密链接 · TLS 1.3 · 节点 WUHAN-A</div>
+    <div class="gate-eyebrow">FLYUN · Private Studio</div>
+    <h2>仅<em>主理人</em><br/>可进入。</h2>
+    <div class="sub">A QUIET ROOM · TLS · WUHAN-A</div>
     <div class="field">
-      <label>&gt; 访问口令 <span class="key">PASSPHRASE</span></label>
-      <input type="password" id="gatePwd" placeholder="默认 flyun2026 (首次登录后请尽快修改)" autocomplete="off">
+      <label>访问口令<span class="key">PASSPHRASE</span></label>
+      <input type="password" id="gatePwd" placeholder="默认 flyun2026 · 请尽快修改" autocomplete="off">
     </div>
-    <button type="submit" class="btn" style="width:100%;justify-content:center;">[ 进入主框架 · ENTER ]</button>
-    <div style="font-size:10px;color:var(--text-mute);letter-spacing:1px;margin-top:18px;text-align:center;">
-      <a href="index.html">← 返回主站</a>
-    </div>
+    <button type="submit" class="btn" style="width:100%;height:52px;">
+      <span>进入工作室</span>
+      <svg class="arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14m-6-6 6 6-6 6"/></svg>
+    </button>
+    <a href="index.html" class="gate-back">← 返回主站</a>
   </form>
 </div>
 
-<!-- ===== TOPBAR ===== -->
+<!-- ===== TOP BAR ===== -->
 <div class="topbar">
-  <h1>[ FLYUN_ADMIN · 飞云核心终端 ]<span class="blink">_</span></h1>
-  <div class="right">
-    <span style="font-size:10px;color:var(--text-mute);letter-spacing:1px;" id="syncStat">SYNC · LOCAL</span>
-    <a href="index.html">← 返回主站</a>
-    <a href="blog.html">博客</a>
-    <button id="logoutBtn">[ 注销 ]</button>
+  <div class="brand">
+    <div class="brand-mark">F</div>
+    <div class="brand-name">
+      Flyun Studio
+      <small>PRIVATE · STUDIO ROOM</small>
+    </div>
+  </div>
+  <div class="bar-right">
+    <span class="sync-stat" id="syncStat">SYNC · LOCAL</span>
+    <a href="index.html" class="bar-link">← 主站</a>
+    <a href="blog.html" class="bar-link">博客</a>
+    <button id="logoutBtn" class="bar-link danger" type="button">注销</button>
   </div>
 </div>
 
 <!-- ===== SHELL ===== -->
 <div class="shell">
+
   <aside class="sidebar">
     <nav>
-      <button class="tab-btn active" data-tab="dashboard">&gt; 概览 · DASHBOARD</button>
-      <button class="tab-btn" data-tab="content">&gt; 首页文案 · CONTENT</button>
-      <button class="tab-btn" data-tab="images">&gt; 图片资源 · IMAGES</button>
-      <button class="tab-btn" data-tab="blog">&gt; 博客 · JOURNAL</button>
-      <button class="tab-btn" data-tab="system">&gt; 系统 · SYSTEM</button>
+      <button class="tab-btn active" data-tab="dashboard"><span class="num">01</span><span>概览</span></button>
+      <button class="tab-btn" data-tab="content"><span class="num">02</span><span>首页文案</span></button>
+      <button class="tab-btn" data-tab="images"><span class="num">03</span><span>图片资源</span></button>
+      <button class="tab-btn" data-tab="blog"><span class="num">04</span><span>博客 · Journal</span></button>
+      <button class="tab-btn" data-tab="system"><span class="num">05</span><span>系统</span></button>
     </nav>
     <div class="side-foot">
-      FLYUN_ADMIN v2.0<br/>
-      数据存储于本机浏览器<br/>
-      请定期导出 JSON 备份<br/>
+      <strong>FLYUN_ADMIN</strong><br/>
+      v2.1 · QUIET<br/><br/>
+      数据保存于本机浏览器。<br/>
+      请定期到「系统」导出 JSON 备份。
     </div>
   </aside>
 
@@ -268,213 +697,236 @@ a:hover{text-decoration:underline;}
 
     <!-- ===== DASHBOARD ===== -->
     <section class="tab active" data-tab="dashboard">
-      <div class="panel-title">
-        <h2>&gt; 概览 · STATUS</h2>
-        <div class="hint" id="dashTime"></div>
+      <div class="eyebrow">01 · STATUS / 概览</div>
+      <div class="panel-head">
+        <h2 class="panel-title">今天的<em>工作室</em>。</h2>
+        <div class="panel-hint" id="dashTime"></div>
       </div>
 
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-bottom:28px;">
-        <div class="i18n-group" style="margin:0;">
-          <div class="key-line"><span>覆盖文案</span><span class="k" id="statContent">0</span></div>
-          <div style="font-size:11px;color:var(--text-mute);">CONTENT_OVERRIDES</div>
+      <div class="stat-grid">
+        <div class="stat">
+          <div class="stat-label">Content overrides</div>
+          <div class="stat-num"><em id="statContent">0</em></div>
+          <div class="stat-sub">覆盖文案</div>
         </div>
-        <div class="i18n-group" style="margin:0;">
-          <div class="key-line"><span>博客文章</span><span class="k" id="statPosts">0</span></div>
-          <div style="font-size:11px;color:var(--text-mute);">POSTS_TOTAL</div>
+        <div class="stat">
+          <div class="stat-label">Posts total</div>
+          <div class="stat-num"><em id="statPosts">0</em></div>
+          <div class="stat-sub">博客文章</div>
         </div>
-        <div class="i18n-group" style="margin:0;">
-          <div class="key-line"><span>已发布</span><span class="k" id="statPublished">0</span></div>
-          <div style="font-size:11px;color:var(--text-mute);">PUBLISHED</div>
+        <div class="stat">
+          <div class="stat-label">Published</div>
+          <div class="stat-num"><em id="statPublished">0</em></div>
+          <div class="stat-sub">已发布</div>
         </div>
-        <div class="i18n-group" style="margin:0;">
-          <div class="key-line"><span>图片记录</span><span class="k" id="statImages">0</span></div>
-          <div style="font-size:11px;color:var(--text-mute);">IMAGE_REFS</div>
+        <div class="stat">
+          <div class="stat-label">Image refs</div>
+          <div class="stat-num"><em id="statImages">0</em></div>
+          <div class="stat-sub">图片记录</div>
         </div>
       </div>
 
-      <div class="i18n-group">
-        <div class="key-line"><span>使用引导</span><span class="k">QUICK_START</span></div>
-        <div style="font-size:12px;color:var(--text-dim);line-height:1.9;">
-          1. <strong style="color:var(--text);">首页文案</strong> —— 修改主页任意文字，中英分别填写。<br/>
-          2. <strong style="color:var(--text);">图片资源</strong> —— 替换 Logo / 头像 / 案例封面（用图床链接，例如 imgur / 七牛 / 阿里 OSS）。<br/>
-          3. <strong style="color:var(--text);">博客</strong> —— 写日志、研究笔记、项目记录，支持中英双语和 Markdown 简版。<br/>
-          4. <strong style="color:var(--text);">系统</strong> —— 导出 JSON 备份，跨设备同步内容。<br/>
-          <br/>
-          <span style="color:var(--orange);">⚠ 数据保存在你当前浏览器的 localStorage。换电脑/清缓存前请到「系统 → 导出」备份。</span>
+      <div class="card">
+        <div class="card-head"><span>使用引导</span><span class="k">QUICK_START</span></div>
+        <div class="guide-list">
+          1 · <strong>首页文案</strong> —— 修改主页任意文字，中英分别填写。<br/>
+          2 · <strong>图片资源</strong> —— 替换 Logo / 头像 / 案例封面（图床链接或本地上传）。<br/>
+          3 · <strong>博客 · Journal</strong> —— 像写信一样写日志、研究笔记、项目记录，支持中英双语与简版 Markdown。<br/>
+          4 · <strong>系统</strong> —— 导出 JSON 备份，跨设备恢复内容。
+          <span class="warn">数据保存在你当前浏览器的 localStorage。换电脑或清缓存前，请到「系统 → 导出」备份。</span>
         </div>
       </div>
     </section>
 
     <!-- ===== CONTENT (i18n editor) ===== -->
     <section class="tab" data-tab="content">
-      <div class="panel-title">
-        <h2>&gt; 首页文案 · I18N</h2>
-        <div class="hint">编辑内容会实时覆盖主页文字</div>
+      <div class="eyebrow">02 · I18N / 首页文案</div>
+      <div class="panel-head">
+        <h2 class="panel-title">让<em>主页</em>说<br/>你想说的话。</h2>
+        <div class="panel-hint">编辑会实时覆盖主页文字</div>
       </div>
 
       <div class="field">
-        <label>&gt; 搜索 / 过滤 <span class="key">FILTER</span></label>
-        <input type="text" id="contentFilter" placeholder="按 key 或文字内容过滤，例如 hero / 业务 / talent">
+        <label>搜索 / 过滤<span class="key">FILTER</span></label>
+        <input type="text" id="contentFilter" placeholder="按 key 或文字过滤，例如 hero / 业务 / talent">
       </div>
 
       <div id="contentEditor"></div>
 
       <div class="row-actions">
-        <button class="btn" id="saveContent">[ 保存全部 · SAVE_ALL ]</button>
-        <button class="btn ghost" id="reloadContent">[ 刷新 ]</button>
-        <button class="btn danger" id="resetContent">[ 重置为默认 · RESET ]</button>
+        <button class="btn" id="saveContent">保存全部
+          <svg class="arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14m-6-6 6 6-6 6"/></svg>
+        </button>
+        <button class="btn ghost" id="reloadContent">刷新</button>
+        <button class="btn danger" id="resetContent">重置为默认</button>
       </div>
     </section>
 
     <!-- ===== IMAGES ===== -->
     <section class="tab" data-tab="images">
-      <div class="panel-title">
-        <h2>&gt; 图片资源 · IMAGES</h2>
-        <div class="hint">支持网络 URL 与 Base64</div>
+      <div class="eyebrow">03 · IMAGES / 图片资源</div>
+      <div class="panel-head">
+        <h2 class="panel-title"><em>图像</em>仓库。</h2>
+        <div class="panel-hint">支持网络 URL 与 Base64</div>
       </div>
 
-      <div class="i18n-group">
-        <div class="key-line"><span>添加 / 替换</span><span class="k">UPSERT_IMAGE</span></div>
+      <div class="card">
+        <div class="card-head"><span>添加 / 替换</span><span class="k">UPSERT_IMAGE</span></div>
         <div class="field">
-          <label>&gt; 图片标识符 <span class="key">IMAGE_KEY (例如 hero.portrait / blog.cover.123)</span></label>
+          <label>图片标识符<span class="key">IMAGE_KEY · 例如 hero.portrait / blog.cover.123</span></label>
           <input type="text" id="imgKey" placeholder="hero.portrait">
         </div>
         <div class="field">
-          <label>&gt; 图片 URL 或 Base64 <span class="key">SOURCE</span></label>
-          <textarea id="imgUrl" placeholder="https://... 或 data:image/png;base64,..."></textarea>
+          <label>图片 URL 或 Base64<span class="key">SOURCE</span></label>
+          <textarea id="imgUrl" placeholder="https://… 或 data:image/png;base64,…"></textarea>
         </div>
         <div class="field">
-          <label>&gt; 或本地上传（自动转 Base64） <span class="key">UPLOAD</span></label>
+          <label>或本地上传（自动转 Base64）<span class="key">UPLOAD</span></label>
           <input type="file" id="imgFile" accept="image/*">
         </div>
-        <button class="btn" id="saveImg">[ 保存图片 · UPSERT ]</button>
+        <button class="btn" id="saveImg">保存图片
+          <svg class="arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14m-6-6 6 6-6 6"/></svg>
+        </button>
       </div>
 
-      <div class="panel-title" style="margin-top:32px;">
-        <h2 style="font-size:14px;">&gt; 已存图片</h2>
-        <div class="hint" id="imgCount">0 项</div>
+      <div class="panel-head" style="margin-top:36px;">
+        <h2 class="panel-title" style="font-size:32px;">已存<em>图片</em></h2>
+        <div class="panel-hint" id="imgCount">0 项</div>
       </div>
       <div class="img-grid" id="imgGrid"></div>
     </section>
 
-    <!-- ===== BLOG ===== -->
+    <!-- ===== BLOG · WRITING ROOM ===== -->
     <section class="tab" data-tab="blog">
-      <div class="panel-title">
-        <h2>&gt; 博客 · JOURNAL</h2>
-        <div class="hint">支持中英双语、Markdown 简版（**粗体** / *斜体* / [链接](url) / # 标题 / ![alt](img)）</div>
+      <div class="eyebrow">04 · JOURNAL / 写作室</div>
+      <div class="panel-head">
+        <h2 class="panel-title">像写<em>一封信</em>一样<br/>写一篇日志。</h2>
+        <div class="panel-hint">支持中英双语 · 简版 Markdown</div>
       </div>
 
-      <div class="post-edit-card">
-        <h3 id="postEditTitle">&gt; 撰写新文章 · NEW POST</h3>
+      <div class="writer">
+        <div class="writer-eyebrow" id="postEditTitle">撰写新文章 · NEW POST</div>
 
         <input type="hidden" id="postId">
 
-        <div class="field pair">
-          <div>
-            <label>&gt; 中文标题 <span class="key">TITLE_ZH</span></label>
-            <input type="text" id="postTitleZh" placeholder="例如：一个研究生的 XR 周记">
+        <!-- 标题：双语并排，serif 大字 -->
+        <div class="title-pair">
+          <div class="title-cell">
+            <div class="lang-tag zh">中文标题 · TITLE_ZH</div>
+            <input type="text" class="title-input" id="postTitleZh" placeholder="例如：一个研究生的 XR 周记">
           </div>
-          <div>
-            <label>&gt; English Title <span class="key">TITLE_EN</span></label>
-            <input type="text" id="postTitleEn" placeholder="A grad student's XR weekly">
-          </div>
-        </div>
-
-        <div class="field pair">
-          <div>
-            <label>&gt; 标签 <span class="key">TAGS (逗号分隔)</span></label>
-            <input type="text" id="postTags" placeholder="研究生, XR, 设计, 工作室日记">
-          </div>
-          <div>
-            <label>&gt; 封面图 URL（可选） <span class="key">COVER</span></label>
-            <input type="text" id="postCover" placeholder="https://...">
+          <div class="title-cell">
+            <div class="lang-tag en">ENGLISH TITLE</div>
+            <input type="text" class="title-input" id="postTitleEn" placeholder="A grad student's XR weekly">
           </div>
         </div>
 
-        <div class="field pair">
-          <div>
-            <label>&gt; 摘要（中文） <span class="key">EXCERPT_ZH</span></label>
-            <textarea id="postExcerptZh" placeholder="一段话，列表页用"></textarea>
+        <!-- 正文：双语并排，serif 阅读字体 -->
+        <div class="body-pair">
+          <div class="body-cell">
+            <div class="body-tag zh">正文 · 中文</div>
+            <textarea class="body-textarea" id="postBodyZh" placeholder="在这里慢慢写。&#10;&#10;支持简版 Markdown：**粗体** · *斜体* · # 标题 · [链接](url) · ![alt](img) · > 引用 · `代码`"></textarea>
           </div>
-          <div>
-            <label>&gt; Excerpt (English) <span class="key">EXCERPT_EN</span></label>
-            <textarea id="postExcerptEn" placeholder="One paragraph used on listing"></textarea>
+          <div class="body-cell">
+            <div class="body-tag en">BODY · ENGLISH</div>
+            <textarea class="body-textarea" id="postBodyEn" placeholder="Optional. Leave blank to fall back to Chinese.&#10;&#10;Supports simple Markdown."></textarea>
           </div>
         </div>
 
-        <div class="field">
-          <label>&gt; 正文 · 中文 <span class="key">BODY_ZH</span></label>
-          <textarea id="postBodyZh" style="min-height:160px;" placeholder="支持简版 Markdown..."></textarea>
-        </div>
-        <div class="field">
-          <label>&gt; Body · English <span class="key">BODY_EN</span></label>
-          <textarea id="postBodyEn" style="min-height:160px;" placeholder="Optional. Leave blank to fall back to Chinese."></textarea>
+        <!-- 摘要 -->
+        <div class="excerpt-pair">
+          <div class="excerpt-cell">
+            <label class="lt">摘要 · 中文 · EXCERPT_ZH</label>
+            <textarea id="postExcerptZh" placeholder="一段话，列表页用。"></textarea>
+          </div>
+          <div class="excerpt-cell">
+            <label class="lt en">EXCERPT · ENGLISH</label>
+            <textarea id="postExcerptEn" placeholder="One paragraph used on listing."></textarea>
+          </div>
         </div>
 
-        <div class="field pair">
-          <div>
-            <label>&gt; 状态 <span class="key">STATUS</span></label>
+        <!-- 元信息 -->
+        <div class="writer-meta">
+          <div class="meta-cell">
+            <label>状态 · STATUS</label>
             <select id="postStatus">
-              <option value="published">已发布 · PUBLISHED</option>
-              <option value="draft">草稿 · DRAFT</option>
+              <option value="published">已发布 · published</option>
+              <option value="draft">草稿 · draft</option>
             </select>
           </div>
-          <div>
-            <label>&gt; 发布时间 <span class="key">DATE (留空 = 现在)</span></label>
-            <input type="text" id="postDate" placeholder="2026-05-23">
+          <div class="meta-cell">
+            <label>发布日期 · DATE</label>
+            <input type="text" id="postDate" placeholder="留空 = 今日">
+          </div>
+          <div class="meta-cell">
+            <label>标签 · TAGS</label>
+            <input type="text" id="postTags" placeholder="设计, XR, 工作室日记">
+          </div>
+          <div class="meta-cell">
+            <label>封面图 URL · COVER</label>
+            <input type="text" id="postCover" placeholder="https://…（可选）">
           </div>
         </div>
 
-        <div class="row-actions">
-          <button class="btn" id="savePost">[ 保存 · SAVE ]</button>
-          <button class="btn ghost" id="newPost">[ 清空 · NEW ]</button>
+        <!-- 操作行 -->
+        <div class="writer-actions">
+          <div class="word-count" id="wordCount">字数 · 0 / 0</div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;">
+            <button class="btn ghost" id="newPost" type="button">清空 · NEW</button>
+            <button class="btn" id="savePost" type="button">
+              <span>保存文章</span>
+              <svg class="arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14m-6-6 6 6-6 6"/></svg>
+            </button>
+          </div>
         </div>
       </div>
 
-      <div class="panel-title">
-        <h2 style="font-size:14px;">&gt; 全部文章</h2>
-        <div class="hint" id="postCount">0 篇</div>
+      <div class="panel-head">
+        <h2 class="panel-title" style="font-size:32px;">全部<em>文章</em></h2>
+        <div class="panel-hint" id="postCount">0 篇</div>
       </div>
       <div class="post-list" id="postList"></div>
     </section>
 
     <!-- ===== SYSTEM ===== -->
     <section class="tab" data-tab="system">
-      <div class="panel-title">
-        <h2>&gt; 系统 · SYSTEM</h2>
-        <div class="hint">备份 · 恢复 · 安全</div>
+      <div class="eyebrow">05 · SYSTEM / 系统</div>
+      <div class="panel-head">
+        <h2 class="panel-title">备份 · <em>恢复</em><br/>· 安全。</h2>
+        <div class="panel-hint">所有数据保存在浏览器</div>
       </div>
 
-      <div class="i18n-group">
-        <div class="key-line"><span>导出 / 导入</span><span class="k">BACKUP</span></div>
-        <div style="font-size:12px;color:var(--text-dim);line-height:1.7;margin-bottom:14px;">
-          导出会把所有文案覆盖、博客文章、图片打包成一个 JSON 文件。<br/>
-          换设备时，在新设备上点「导入」选择这个 JSON 即可恢复。
+      <div class="card">
+        <div class="card-head"><span>导出 / 导入</span><span class="k">BACKUP</span></div>
+        <div style="font-size:14px;color:var(--text-dim);line-height:1.85;margin-bottom:20px;">
+          导出会把所有文案覆盖、博客文章、图片打包成一个 JSON 文件。换设备时，在新设备上点「导入」选择这个 JSON 即可恢复。
         </div>
         <div class="row-actions" style="margin:0;">
-          <button class="btn" id="exportBtn">[ 导出 JSON · EXPORT ]</button>
+          <button class="btn" id="exportBtn">导出 JSON
+            <svg class="arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14m-6-6 6 6 6-6"/></svg>
+          </button>
           <label class="btn ghost" style="cursor:pointer;">
-            [ 导入 JSON · IMPORT ]
+            导入 JSON
             <input type="file" id="importFile" accept="application/json,.json" style="display:none;">
           </label>
         </div>
       </div>
 
-      <div class="i18n-group">
-        <div class="key-line"><span>修改密码</span><span class="k">CHANGE_PASSPHRASE</span></div>
-        <div class="field">
+      <div class="card">
+        <div class="card-head"><span>修改密码</span><span class="k">CHANGE_PASSPHRASE</span></div>
+        <div class="field" style="margin-bottom:14px;">
           <input type="password" id="newPwd" placeholder="新密码（至少 4 位）">
         </div>
-        <button class="btn" id="changePwdBtn">[ 更新密码 · UPDATE ]</button>
+        <button class="btn" id="changePwdBtn">更新密码</button>
       </div>
 
-      <div class="i18n-group" style="border-color:rgba(255,82,82,.4);">
-        <div class="key-line"><span style="color:var(--red);">危险区域</span><span class="k" style="color:var(--red);">DANGER_ZONE</span></div>
-        <div style="font-size:11px;color:var(--text-mute);line-height:1.7;margin-bottom:14px;">
-          以下操作不可恢复，请确认你已经导出过备份。
+      <div class="card" style="border-color:rgba(255,82,82,.3);">
+        <div class="card-head"><span style="color:var(--danger);">危险区域</span><span class="k" style="color:var(--danger);">DANGER_ZONE</span></div>
+        <div style="font-size:13px;color:var(--text-mute);line-height:1.85;margin-bottom:18px;">
+          以下操作不可恢复。请确认你已经导出过备份。
         </div>
         <div class="row-actions" style="margin:0;">
-          <button class="btn danger" id="resetAll">[ 清空所有数据 · WIPE ALL ]</button>
+          <button class="btn danger" id="resetAll">清空所有数据 · WIPE ALL</button>
         </div>
       </div>
     </section>
@@ -499,9 +951,7 @@ function toast(msg, type){
 }
 
 /* ============== LOGIN ============== */
-function showApp(){
-  $('#gate').style.display = 'none';
-}
+function showApp(){ $('#gate').style.display = 'none'; }
 function showGate(){
   $('#gate').style.display = 'flex';
   $('#gatePwd').value = '';
@@ -513,17 +963,17 @@ $('#gateForm').addEventListener('submit', e => {
   e.preventDefault();
   const pwd = $('#gatePwd').value;
   if (FlyunCMS.login(pwd)) {
-    toast('> 链接已建立 · WELCOME');
+    toast('链接已建立 · WELCOME');
     showApp();
     initAll();
   } else {
-    toast('> 口令错误 · ACCESS DENIED', 'err');
+    toast('口令错误 · ACCESS DENIED', 'err');
   }
 });
 $('#logoutBtn').addEventListener('click', ()=>{
   FlyunCMS.logout();
   showGate();
-  toast('> 已注销 · LOGGED OUT', 'warn');
+  toast('已注销 · LOGGED OUT', 'warn');
 });
 
 /* ============== TABS ============== */
@@ -532,6 +982,7 @@ $$('.tab-btn').forEach(b => {
     const tab = b.dataset.tab;
     $$('.tab-btn').forEach(x=>x.classList.toggle('active', x===b));
     $$('.tab').forEach(x=>x.classList.toggle('active', x.dataset.tab===tab));
+    window.scrollTo({top:0, behavior:'smooth'});
   });
 });
 
@@ -568,7 +1019,6 @@ function buildContentEditor(filter){
     shown++;
     const isHtml = /\.html$/.test(k);
     const tag = isHtml ? 'textarea' : 'input';
-    const safe = v => String(v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
     const inputAttrs = isHtml ? 'rows="3"' : 'type="text"';
     const wrap = document.createElement('div');
     wrap.className = 'i18n-group';
@@ -579,23 +1029,21 @@ function buildContentEditor(filter){
       </div>
       <div class="lang-row">
         <div class="tag">中</div>
-        <${tag} ${inputAttrs} data-key="${k}" data-lang="zh">${isHtml?safe(zhCur):''}${isHtml?'</textarea>':''}
+        <${tag} ${inputAttrs} data-key="${k}" data-lang="zh">${isHtml?'</textarea>':''}
       </div>
       <div class="lang-row">
         <div class="tag en">EN</div>
-        <${tag} ${inputAttrs} data-key="${k}" data-lang="en">${isHtml?safe(enCur):''}${isHtml?'</textarea>':''}
+        <${tag} ${inputAttrs} data-key="${k}" data-lang="en">${isHtml?'</textarea>':''}
       </div>
     `;
-    if (!isHtml) {
-      // input value 单独设置（避免转义）
-      const inputs = wrap.querySelectorAll('input');
-      inputs[0].value = zhCur;
-      inputs[1].value = enCur;
-    }
+    // value 单独设置（避免转义）
+    const fields = wrap.querySelectorAll('[data-key]');
+    fields[0].value = zhCur;
+    fields[1].value = enCur;
     host.appendChild(wrap);
   });
   if (!shown) {
-    host.innerHTML = '<div style="padding:24px;color:var(--text-mute);font-size:12px;letter-spacing:1px;">&gt; 没有匹配的内容</div>';
+    host.innerHTML = '<div class="i18n-group" style="color:var(--text-mute);font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-align:center;padding:32px;">没有匹配的内容</div>';
   }
 }
 $('#contentFilter')?.addEventListener('input', e => buildContentEditor(e.target.value));
@@ -606,26 +1054,25 @@ $('#saveContent')?.addEventListener('click', ()=>{
     const lang = el.dataset.lang;
     const v = el.value;
     const def = (FlyunCMS.DICT[lang] || {})[k] || '';
-    // 只保存与默认值不同的覆盖
     if (v !== def) {
       if (!c[lang]) c[lang] = {};
       c[lang][k] = v;
     }
   });
   FlyunCMS.setContent(c);
-  toast('> 已保存 · 主页同步更新');
+  toast('已保存 · 主页同步更新');
   refreshDash();
 });
 $('#reloadContent')?.addEventListener('click', ()=>{
   buildContentEditor($('#contentFilter').value);
-  toast('> 已刷新');
+  toast('已刷新');
 });
 $('#resetContent')?.addEventListener('click', ()=>{
   if (!confirm('确认重置所有文案为默认？此操作不可恢复。')) return;
   FlyunCMS.resetContent();
   buildContentEditor($('#contentFilter').value);
   refreshDash();
-  toast('> 已重置为默认', 'warn');
+  toast('已重置为默认', 'warn');
 });
 
 /* ============== IMAGES ============== */
@@ -643,7 +1090,7 @@ function renderImageGrid(){
   const keys = Object.keys(imgs);
   $('#imgCount').textContent = keys.length + ' 项';
   if (!keys.length) {
-    grid.innerHTML = '<div style="grid-column:1/-1;padding:24px;color:var(--text-mute);font-size:12px;letter-spacing:1px;">&gt; 还没有图片，去上面添加</div>';
+    grid.innerHTML = '<div style="grid-column:1/-1;padding:32px;color:var(--text-mute);font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-align:center;border:1px dashed var(--border);border-radius:16px;">还没有图片，去上面添加</div>';
     return;
   }
   keys.forEach(k => {
@@ -654,7 +1101,7 @@ function renderImageGrid(){
       <div class="preview" style="background-image:url('${url.replace(/'/g,"\\'")}');"></div>
       <div class="name">${k}</div>
       <div class="url">${url.length > 80 ? url.slice(0,77)+'…' : url}</div>
-      <div class="row-actions" style="margin-top:10px;">
+      <div class="row-actions" style="margin-top:12px;">
         <button class="btn small ghost" data-act="copy" data-k="${k}">复制</button>
         <button class="btn small danger" data-act="del" data-k="${k}">删除</button>
       </div>
@@ -670,27 +1117,27 @@ $('#imgGrid')?.addEventListener('click', e => {
   if (btn.dataset.act === 'del') {
     if (!confirm('删除「' + k + '」？')) return;
     delete imgs[k]; setImages(imgs); renderImageGrid(); refreshDash();
-    toast('> 已删除 · ' + k, 'warn');
+    toast('已删除 · ' + k, 'warn');
   } else if (btn.dataset.act === 'copy') {
     navigator.clipboard.writeText(imgs[k] || '');
-    toast('> 已复制 URL');
+    toast('已复制 URL');
   }
 });
 $('#imgFile')?.addEventListener('change', e => {
   const file = e.target.files[0]; if (!file) return;
   const r = new FileReader();
-  r.onload = () => { $('#imgUrl').value = r.result; toast('> 已转 Base64'); };
+  r.onload = () => { $('#imgUrl').value = r.result; toast('已转 Base64'); };
   r.readAsDataURL(file);
 });
 $('#saveImg')?.addEventListener('click', ()=>{
   const k = $('#imgKey').value.trim();
   const u = $('#imgUrl').value.trim();
-  if (!k || !u) { toast('> 标识符与 URL 不能为空', 'err'); return; }
+  if (!k || !u) { toast('标识符与 URL 不能为空', 'err'); return; }
   const imgs = getImages();
   imgs[k] = u; setImages(imgs);
   renderImageGrid(); refreshDash();
   $('#imgKey').value = ''; $('#imgUrl').value = ''; $('#imgFile').value = '';
-  toast('> 已保存 · ' + k);
+  toast('已保存 · ' + k);
 });
 
 /* ============== BLOG ============== */
@@ -706,7 +1153,8 @@ function clearPostForm(){
   $('#postBodyEn').value = '';
   $('#postStatus').value = 'published';
   $('#postDate').value = '';
-  $('#postEditTitle').textContent = '> 撰写新文章 · NEW POST';
+  $('#postEditTitle').textContent = '撰写新文章 · NEW POST';
+  updateWordCount();
 }
 function loadPostForm(p){
   $('#postId').value = p.id || '';
@@ -720,7 +1168,8 @@ function loadPostForm(p){
   $('#postBodyEn').value = p.body?.en || '';
   $('#postStatus').value = p.status || 'published';
   $('#postDate').value = p.date || '';
-  $('#postEditTitle').textContent = '> 编辑文章 · EDIT · ' + (p.title?.zh || p.title?.en || p.id);
+  $('#postEditTitle').textContent = '编辑文章 · EDIT · ' + (p.title?.zh || p.title?.en || p.id);
+  updateWordCount();
 }
 function buildPostFromForm(){
   const id = $('#postId').value.trim() || ('p_' + Date.now());
@@ -736,54 +1185,70 @@ function buildPostFromForm(){
     date: $('#postDate').value.trim() || new Date().toISOString().slice(0,10)
   };
 }
+function updateWordCount(){
+  const zh = ($('#postBodyZh').value || '').trim();
+  const en = ($('#postBodyEn').value || '').trim();
+  // 中文按字符，英文按词
+  const zhCount = zh.replace(/\s/g, '').length;
+  const enCount = en ? en.split(/\s+/).filter(Boolean).length : 0;
+  $('#wordCount').textContent = `字数 · ${zhCount} 中 / ${enCount} EN`;
+}
+['#postBodyZh', '#postBodyEn'].forEach(sel => {
+  $(sel)?.addEventListener('input', updateWordCount);
+});
+
 function renderPostList(){
   const posts = FlyunCMS.getPosts();
   const list = $('#postList');
   list.innerHTML = '';
   $('#postCount').textContent = posts.length + ' 篇';
   if (!posts.length) {
-    list.innerHTML = '<div style="padding:24px;color:var(--text-mute);font-size:12px;letter-spacing:1px;">&gt; 还没有文章</div>';
+    list.innerHTML = '<div style="padding:48px 32px;color:var(--text-mute);font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-align:center;border:1px dashed var(--border);border-radius:16px;">还没有文章 · 在上面写第一篇吧</div>';
     return;
   }
   posts.forEach(p => {
     const hasZh = !!p.title?.zh; const hasEn = !!p.title?.en;
-    const langPill = (hasZh && hasEn) ? '<span class="lang-pill both">中 / EN</span>'
+    const langPill = (hasZh && hasEn) ? '<span class="lang-pill both">中 · EN</span>'
       : hasEn ? '<span class="lang-pill en">EN</span>'
       : '<span class="lang-pill zh">中</span>';
+    const draftPill = p.status === 'draft' ? '<span class="lang-pill draft">DRAFT</span>' : '';
     const row = document.createElement('div');
     row.className = 'post-row';
+    const tags = (p.tags||[]).map(t=>'<span class="tag-pill">·#'+t+'</span>').join(' ');
     row.innerHTML = `
       <div>
-        <div class="title">${langPill}${(p.title?.zh || p.title?.en || '(无标题)')}</div>
-        <div class="meta">${p.status === 'draft' ? '[草稿] · ' : ''}${p.date || ''} · ${(p.tags||[]).join(' · ')}</div>
+        <div class="ttl">${langPill}${draftPill}${(p.title?.zh || p.title?.en || '<em>(无标题)</em>')}</div>
+        <div class="meta-line">${p.date || ''} ${tags}</div>
       </div>
-      <button class="btn small ghost" data-act="edit" data-id="${p.id}">编辑</button>
-      <a class="btn small ghost" href="blog.html?p=${encodeURIComponent(p.id)}" target="_blank">预览</a>
-      <button class="btn small danger" data-act="del" data-id="${p.id}">删除</button>
+      <div class="acts">
+        <button class="btn small ghost" data-act="edit" data-id="${p.id}">编辑</button>
+        <a class="btn small ghost" href="blog.html?p=${encodeURIComponent(p.id)}" target="_blank">预览</a>
+        <button class="btn small danger" data-act="del" data-id="${p.id}">删除</button>
+      </div>
     `;
     list.appendChild(row);
   });
 }
 $('#postList')?.addEventListener('click', e => {
-  const btn = e.target.closest('button[data-act]');
+  const btn = e.target.closest('button[data-act], a[data-act]');
   if (!btn) return;
   const id = btn.dataset.id;
   if (btn.dataset.act === 'edit') {
     const p = FlyunCMS.getPosts().find(x=>x.id===id);
     if (p) { loadPostForm(p); window.scrollTo({top:0,behavior:'smooth'}); }
   } else if (btn.dataset.act === 'del') {
-    if (!confirm('删除文章「' + id + '」？')) return;
+    if (!confirm('删除这篇文章？')) return;
     FlyunCMS.deletePost(id); renderPostList(); refreshDash();
-    toast('> 已删除', 'warn');
+    toast('已删除', 'warn');
   }
 });
 $('#savePost')?.addEventListener('click', ()=>{
   const p = buildPostFromForm();
-  if (!p.title.zh && !p.title.en) { toast('> 至少填一个标题', 'err'); return; }
+  if (!p.title.zh && !p.title.en) { toast('至少填一个标题', 'err'); return; }
   FlyunCMS.upsertPost(p);
   clearPostForm();
   renderPostList(); refreshDash();
-  toast('> 已保存 · ' + (p.title.zh || p.title.en));
+  toast('已保存 · ' + (p.title.zh || p.title.en));
 });
 $('#newPost')?.addEventListener('click', clearPostForm);
 
@@ -797,7 +1262,7 @@ $('#exportBtn')?.addEventListener('click', ()=>{
   a.download = 'flyun-backup-' + new Date().toISOString().slice(0,10) + '.json';
   a.click();
   URL.revokeObjectURL(a.href);
-  toast('> 已导出 JSON');
+  toast('已导出 JSON');
 });
 $('#importFile')?.addEventListener('change', e => {
   const file = e.target.files[0]; if (!file) return;
@@ -809,9 +1274,9 @@ $('#importFile')?.addEventListener('change', e => {
       if (data.images) setImages(data.images);
       buildContentEditor($('#contentFilter').value);
       renderPostList(); renderImageGrid(); refreshDash();
-      toast('> 已导入');
+      toast('已导入');
     } catch(err) {
-      toast('> JSON 解析失败', 'err');
+      toast('JSON 解析失败', 'err');
     }
   };
   r.readAsText(file);
@@ -819,10 +1284,10 @@ $('#importFile')?.addEventListener('change', e => {
 });
 $('#changePwdBtn')?.addEventListener('click', ()=>{
   const p = $('#newPwd').value;
-  if (!p || p.length < 4) { toast('> 至少 4 位', 'err'); return; }
+  if (!p || p.length < 4) { toast('至少 4 位', 'err'); return; }
   FlyunCMS.changePassword(p);
   $('#newPwd').value = '';
-  toast('> 密码已更新');
+  toast('密码已更新');
 });
 $('#resetAll')?.addEventListener('click', ()=>{
   if (!confirm('确认清空所有内容覆盖、博客、图片？')) return;
@@ -831,7 +1296,7 @@ $('#resetAll')?.addEventListener('click', ()=>{
   FlyunCMS.setPosts([]);
   setImages({});
   buildContentEditor(); renderPostList(); renderImageGrid(); refreshDash();
-  toast('> 已清空全部数据', 'warn');
+  toast('已清空全部数据', 'warn');
 });
 
 /* ============== INIT ============== */
@@ -840,6 +1305,7 @@ function initAll(){
   renderPostList();
   renderImageGrid();
   refreshDash();
+  updateWordCount();
   setInterval(refreshDash, 30000);
 }
 if (FlyunCMS.isAuthed()) initAll();
