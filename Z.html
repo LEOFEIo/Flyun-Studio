@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>FLY YUN - iOS 26 Intelligent Space</title>
+    <title>飞云候选人空间 · FLY YUN Candidate</title>
     <script src="https://cdn.jsdelivr.net/npm/xlsx-js-style@1.2.0/dist/xlsx.bundle.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
@@ -119,27 +119,119 @@
         .badge-合适 { background: #E8F5E9; color: #2E7D32; }
         .badge-不合适 { background: #FFEBEE; color: #C62828; }
         .badge-正在联系中 { background: #FFF8E1; color: #F57F17; }
+
+        /* 顶部导航 */
+        .top-nav {
+            position: fixed; top: 18px; left: 50%; transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(30px) saturate(180%);
+            border: 1px solid rgba(0,0,0,0.05); border-radius: 999px;
+            padding: 8px 8px 8px 18px; display: flex; align-items: center; gap: 14px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.06); z-index: 998;
+        }
+        .top-nav-brand { font-weight: 800; font-size: 13px; letter-spacing: -0.5px; }
+        .top-nav-brand b { color: var(--ios-blue); }
+        .top-nav-divider { width: 1px; height: 18px; background: rgba(0,0,0,0.08); }
+        .top-nav-links { display: flex; gap: 4px; }
+        .top-nav-link {
+            padding: 6px 12px; border-radius: 999px;
+            text-decoration: none; color: var(--ios-sub); font-size: 12px; font-weight: 600;
+            transition: 0.2s;
+        }
+        .top-nav-link:hover { background: rgba(0,0,0,0.04); color: var(--ios-text); }
+        .top-nav-link.current { background: var(--ios-blue); color: #fff; }
+        .top-nav-link.vr { background: linear-gradient(135deg, #7c3aed, #2563eb); color: #fff; }
+        @media (max-width: 768px) {
+            .top-nav { padding: 6px; gap: 4px; left: 10px; right: 10px; transform: none; max-width: calc(100% - 20px); overflow-x: auto; }
+            .top-nav-brand, .top-nav-divider { display: none; }
+        }
+
+        .vr-banner {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 6px 14px; background: linear-gradient(135deg, rgba(124,58,237,0.08), rgba(37,99,235,0.08));
+            border: 1px solid rgba(124,58,237,0.2); border-radius: 999px;
+            font-size: 11px; font-weight: 700; color: #7c3aed; letter-spacing: 1px;
+        }
+        .vr-banner .pulse {
+            width: 6px; height: 6px; border-radius: 50%; background: #7c3aed;
+            box-shadow: 0 0 8px #7c3aed; animation: vrPulse 1.5s ease-in-out infinite;
+        }
+        @keyframes vrPulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+        .vr-card {
+            margin-top: 25px;
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+            color: #fff; border-radius: 28px; padding: 32px;
+            position: relative; overflow: hidden;
+        }
+        .vr-card::before {
+            content: ""; position: absolute; inset: 0;
+            background: radial-gradient(circle at 80% 20%, rgba(124, 58, 237, 0.4), transparent 50%);
+            pointer-events: none;
+        }
+        .vr-card-content { position: relative; z-index: 1; }
     </style>
 </head>
 <body>
 
 <div class="ambient-bg"></div>
 
+<!-- 顶部统一导航 -->
+<div class="top-nav" id="topNav" style="display:none;">
+    <div class="top-nav-brand">FLY <b>YUN</b> · 候选人空间</div>
+    <div class="top-nav-divider"></div>
+    <div class="top-nav-links">
+        <a href="index.html" class="top-nav-link">主站</a>
+        <a href="F.html" class="top-nav-link">顾问站</a>
+        <a href="X.html" class="top-nav-link">寻访</a>
+        <a href="M.html" class="top-nav-link">看板</a>
+        <a href="Z.html" class="top-nav-link current">候选人</a>
+        <a href="admin.html" class="top-nav-link vr">管理终端</a>
+    </div>
+</div>
+
 <div id="loginOverlay">
     <div class="spatial-card">
         <h1>FLY YUN</h1>
-        <p>Your Private Intelligence Space</p>
+        <p>候选人专属空间 · 加密私人通道</p>
         <input type="password" id="sysPass" class="ios-input" placeholder="输入访问密码" onkeydown="if(event.keyCode==13) handleLogin()">
         <button class="btn-ios" style="width: 100%; margin-top: 30px;" onclick="handleLogin()">解锁空间</button>
-        <div style="margin-top: 25px; font-size: 12px; color: var(--ios-blue); cursor: pointer; font-weight: 600;" onclick="toggleAdmin()">超级管理中心</div>
+        <div style="margin-top:24px; font-size:11px; color:var(--ios-sub); display:flex; justify-content:center; gap:12px; flex-wrap:wrap;">
+            <a href="index.html" style="color:var(--ios-blue); text-decoration:none; font-weight:600;">← 返回主站</a>
+            <span style="color:#ddd;">·</span>
+            <a href="job.html" style="color:var(--ios-blue); text-decoration:none; font-weight:600;">查看岗位</a>
+        </div>
+        <div style="margin-top: 16px; font-size: 12px; color: var(--ios-blue); cursor: pointer; font-weight: 600;" onclick="toggleAdmin()">超级管理中心</div>
     </div>
 </div>
 
 <div class="app-shell" id="app">
     <header style="margin-bottom: 45px; padding: 0 10px;">
-        <h2 style="font-size: 34px; font-weight: 900; letter-spacing: -2px; margin: 0;">FLY YUN</h2>
-        <div id="userDisplay" style="color: var(--ios-sub); font-weight: 600; font-size: 13px; margin-top: 6px;"></div>
+        <div style="display:flex; align-items:flex-start; justify-content:space-between; flex-wrap:wrap; gap:16px;">
+            <div>
+                <h2 style="font-size: 34px; font-weight: 900; letter-spacing: -2px; margin: 0;">FLY YUN · 候选人空间</h2>
+                <div id="userDisplay" style="color: var(--ios-sub); font-weight: 600; font-size: 13px; margin-top: 6px;"></div>
+            </div>
+            <div class="vr-banner">
+                <span class="pulse"></span>
+                您可在浏览器或 Vision Pro 接入 VR 面试
+            </div>
+        </div>
     </header>
+
+    <!-- VR 面试入口卡 -->
+    <div class="vr-card">
+        <div class="vr-card-content">
+            <div style="font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 12px;">VR / AR · 沉浸面试通道</div>
+            <h3 style="font-size: 26px; font-weight: 800; letter-spacing: -1px; margin-bottom: 12px;">您的下一场面试，<br/>可以在<span style="color: #c8b3ff;">虚拟空间</span>里进行</h3>
+            <p style="color: rgba(255,255,255,0.7); font-size: 14px; line-height: 1.7; margin-bottom: 20px; max-width: 600px;">
+                FLYUN 已与多家头部企业开通 VR 沉浸面试通道。无需差旅，您可在自家戴上 Vision Pro / Quest，或直接在浏览器进入虚拟空间，与面试官「同处一室」完成面谈。
+            </p>
+            <div style="display:flex; gap:12px; flex-wrap:wrap;">
+                <a href="F.html" target="_blank" style="background:#7c3aed; color:#fff; padding:12px 22px; border-radius:14px; text-decoration:none; font-size:13px; font-weight:700; display:inline-flex; align-items:center; gap:8px;">查看我的面试日程 →</a>
+                <button style="background:rgba(255,255,255,0.1); color:#fff; padding:12px 22px; border-radius:14px; border:1px solid rgba(255,255,255,0.2); font-size:13px; font-weight:700; cursor:pointer;">设备测试</button>
+            </div>
+        </div>
+    </div>
 
     <div class="dashboard">
         <div class="ios-card chart-box">
@@ -233,8 +325,11 @@
 
     function toggleAdmin() {
         isAdmin = !isAdmin;
-        document.getElementById('mainTitle').innerText = isAdmin ? "ADMIN" : "FLY YUN";
-        document.getElementById('mainTitle').style.color = isAdmin ? "#AF52DE" : "#1D1D1F";
+        const t = document.querySelector('.spatial-card h1');
+        if (t) {
+            t.innerText = isAdmin ? "ADMIN" : "FLY YUN";
+            t.style.color = isAdmin ? "#AF52DE" : "#1D1D1F";
+        }
     }
 
     async function handleLogin() {
@@ -249,7 +344,8 @@
                 document.getElementById('loginOverlay').style.display='none';
                 document.getElementById('app').style.display='block';
                 document.getElementById('userDock').style.display='flex';
-                document.getElementById('userDisplay').innerText = "Security Key: " + p;
+                document.getElementById('topNav').style.display='flex';
+                document.getElementById('userDisplay').innerText = "您的安全密钥 · " + p;
                 initApp();
             }, 500);
         }
@@ -308,6 +404,22 @@
             type: type, data: { labels, datasets: [{ data, backgroundColor: colors, borderRadius: 10 }] },
             options: { maintainAspectRatio:false, cutout: isD?'80%':0, plugins:{ legend:{ display:isD, position:'bottom', labels:{boxWidth:8, font:{size:10}}} }, scales:{ y:{ display:!isD, beginAtZero:true}, x:{display:!isD}} }
         });
+    }
+
+    function exportXLS() {
+        if(data.length === 0) return alert("暂无数据可导出");
+        const headers = ["客户", "岗位", "姓名", "性别", "状态", "出生年", "年龄", "现公司", "联系方式", "学历", "入学年", "资历", "所在地", "备注"];
+        const rows = [headers, ...data.map(i => [
+            i.f1, i.f2, i.f3, i.f4, i.f5, i.f6,
+            i.f6 ? (curY - parseInt(i.f6)) : "",
+            i.f10, i.f11, i.f13, i.f14,
+            i.f14 ? (curY - parseInt(i.f14)) : "",
+            i.f8, i.f16
+        ])];
+        const ws = XLSX.utils.aoa_to_sheet(rows);
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "候选人名单");
+        XLSX.writeFile(wb, `候选人空间导出_${new Date().toISOString().split('T')[0]}.xlsx`);
     }
 </script>
 </body>

@@ -1,139 +1,996 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flyun Studio | Core System</title>
+    <title>飞云核心终端 · FLYUN Admin</title>
+    <link rel="icon" href="image/favicon.png" type="image/png">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        /* 赛博极简风格 CSS */
-        body {
-            background-color: #050505;
-            color: #e0e0e0;
-            font-family: 'Courier New', Courier, monospace; /* 程序员等宽字体 */
-            margin: 0;
-            padding: 40px;
-            display: flex;
-            justify-content: center;
+        :root {
+            --bg: #050505;
+            --panel: #0a0a0a;
+            --line: #1f1f1f;
+            --line-strong: #2a2a2a;
+            --text: #e0e0e0;
+            --text-dim: #888;
+            --text-mute: #555;
+            --accent: #00ff41;
+            --accent-warm: #ff8800;
+            --accent-cool: #00b8ff;
+            --danger: #ff3366;
+            --mono: 'JetBrains Mono', 'Courier New', monospace;
+            --sans: 'Inter', sans-serif;
         }
-        .admin-container {
-            width: 100%;
-            max-width: 600px;
-            border: 1px solid #333;
-            padding: 30px;
-            background: #0a0a0a;
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: var(--bg); color: var(--text); font-family: var(--mono);
+            min-height: 100vh; padding: 30px;
+        }
+
+        /* 扫描线背景效果 */
+        body::before {
+            content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 0;
+            background: repeating-linear-gradient(0deg, rgba(0,255,65,0.02) 0, rgba(0,255,65,0.02) 1px, transparent 1px, transparent 4px);
+        }
+
+        .terminal-shell {
+            max-width: 1400px; margin: 0 auto; position: relative; z-index: 1;
+        }
+
+        /* 顶部 Bar */
+        .term-header {
+            border: 1px solid var(--accent);
+            padding: 18px 24px;
+            display: flex; justify-content: space-between; align-items: center;
+            background: rgba(0, 255, 65, 0.02);
+            margin-bottom: 24px;
             box-shadow: 0 0 20px rgba(0, 255, 65, 0.05);
         }
-        .header {
-            border-bottom: 1px solid #00ff41; /* 黑客绿边缘 */
-            padding-bottom: 10px;
-            margin-bottom: 30px;
+        .term-title h1 {
+            color: var(--accent); font-size: 18px; letter-spacing: 3px; font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 2px;
         }
-        .header h1 {
-            color: #00ff41;
-            font-size: 24px;
-            margin: 0;
+        .term-title p { font-size: 11px; color: var(--text-dim); margin-top: 4px; letter-spacing: 1px; }
+        .term-status {
+            display: flex; gap: 18px; font-size: 11px;
         }
-        .form-group {
-            margin-bottom: 20px;
+        .status-pill {
+            display: inline-flex; align-items: center; gap: 6px;
+            padding: 4px 10px; border: 1px solid var(--line-strong);
         }
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-size: 14px;
-            color: #888;
+        .pill-dot {
+            width: 6px; height: 6px; border-radius: 50%; background: var(--accent);
+            box-shadow: 0 0 6px var(--accent);
+            animation: pulse 1.6s ease-in-out infinite;
         }
-        input[type="text"], input[type="number"], textarea {
-            width: 100%;
-            padding: 12px;
-            background-color: #000;
-            border: 1px solid #333;
-            color: #fff;
-            font-family: 'Courier New', Courier, monospace;
-            box-sizing: border-box;
-            transition: border 0.3s;
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+        .term-back {
+            color: var(--text-dim); text-decoration: none; font-size: 11px;
+            padding: 6px 14px; border: 1px solid var(--line-strong); transition: 0.2s;
         }
-        input:focus, textarea:focus {
-            outline: none;
-            border-color: #00ff41; /* 聚焦时亮绿灯 */
+        .term-back:hover { color: var(--accent); border-color: var(--accent); }
+
+        /* Tab 导航 */
+        .term-tabs {
+            display: flex; gap: 4px; margin-bottom: 24px;
+            border-bottom: 1px solid var(--line); padding-bottom: 0;
         }
-        textarea {
-            height: 120px;
-            resize: vertical;
+        .term-tab {
+            padding: 12px 20px; cursor: pointer;
+            background: transparent; border: 1px solid var(--line); border-bottom: none;
+            color: var(--text-dim); font-family: var(--mono); font-size: 11px;
+            letter-spacing: 2px; text-transform: uppercase;
+            transition: 0.2s;
         }
-        button {
-            background-color: #00ff41;
-            color: #000;
-            border: none;
-            padding: 12px 24px;
-            font-weight: bold;
-            font-family: 'Courier New', Courier, monospace;
-            cursor: pointer;
-            width: 100%;
-            text-transform: uppercase;
-            transition: background 0.3s, color 0.3s;
+        .term-tab:hover { color: var(--text); }
+        .term-tab.active {
+            background: var(--accent); color: #000; border-color: var(--accent);
+            font-weight: 700;
         }
-        button:hover {
-            background-color: #fff;
-            color: #000;
+
+        /* 模块容器 */
+        .module { display: none; }
+        .module.active { display: block; }
+
+        /* 数据看板 */
+        .stats-grid {
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 24px;
         }
-        .status {
-            margin-top: 15px;
-            font-size: 12px;
-            color: #00ff41;
-            text-align: center;
+        .stat-card {
+            border: 1px solid var(--line); padding: 22px; background: var(--panel);
+            position: relative; overflow: hidden;
+        }
+        .stat-card::before {
+            content: ""; position: absolute; top: 0; left: 0; width: 4px; height: 100%;
+            background: var(--accent);
+        }
+        .stat-card.warm::before { background: var(--accent-warm); }
+        .stat-card.cool::before { background: var(--accent-cool); }
+        .stat-card.danger::before { background: var(--danger); }
+        .stat-label { font-size: 10px; color: var(--text-dim); letter-spacing: 2px; margin-bottom: 12px; }
+        .stat-value { font-size: 36px; font-weight: 700; color: var(--text); letter-spacing: -1px; }
+        .stat-value .unit { font-size: 14px; color: var(--text-dim); margin-left: 4px; }
+        .stat-trend { font-size: 11px; color: var(--accent); margin-top: 8px; }
+        .stat-trend.down { color: var(--danger); }
+
+        /* 主面板 */
+        .panel {
+            border: 1px solid var(--line); background: var(--panel);
+            margin-bottom: 18px;
+        }
+        .panel-header {
+            padding: 14px 20px; border-bottom: 1px solid var(--line);
+            display: flex; justify-content: space-between; align-items: center;
+            background: rgba(255,255,255,0.01);
+        }
+        .panel-title {
+            font-size: 11px; color: var(--accent); letter-spacing: 2.5px; text-transform: uppercase;
+            display: flex; align-items: center; gap: 8px;
+        }
+        .panel-title::before { content: ">"; color: var(--accent); }
+        .panel-actions { display: flex; gap: 8px; }
+        .panel-body { padding: 24px; }
+
+        /* 表单 */
+        .form-row {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 14px;
+        }
+        .form-row.cols-2 { grid-template-columns: 1fr 1fr; }
+        .form-row.cols-1 { grid-template-columns: 1fr; }
+        .form-group label {
+            display: block; font-size: 10px; color: var(--text-dim);
+            letter-spacing: 2px; margin-bottom: 6px; text-transform: uppercase;
+        }
+        input, select, textarea {
+            width: 100%; padding: 10px 12px; background: #000;
+            border: 1px solid var(--line-strong); color: var(--text);
+            font-family: var(--mono); font-size: 13px; outline: none;
+            transition: 0.2s;
+        }
+        input:focus, select:focus, textarea:focus { border-color: var(--accent); }
+        textarea { resize: vertical; min-height: 90px; }
+        select option { background: #000; }
+
+        /* 按钮 */
+        .btn {
+            background: transparent; color: var(--accent);
+            border: 1px solid var(--accent); padding: 9px 18px;
+            font-family: var(--mono); font-size: 11px; letter-spacing: 2px;
+            text-transform: uppercase; cursor: pointer; transition: 0.2s; font-weight: 600;
+        }
+        .btn:hover { background: var(--accent); color: #000; }
+        .btn-warm { color: var(--accent-warm); border-color: var(--accent-warm); }
+        .btn-warm:hover { background: var(--accent-warm); color: #000; }
+        .btn-cool { color: var(--accent-cool); border-color: var(--accent-cool); }
+        .btn-cool:hover { background: var(--accent-cool); color: #000; }
+        .btn-danger { color: var(--danger); border-color: var(--danger); }
+        .btn-danger:hover { background: var(--danger); color: #fff; }
+        .btn-ghost { color: var(--text-dim); border-color: var(--line-strong); }
+        .btn-ghost:hover { color: var(--text); border-color: var(--text-dim); background: transparent; }
+
+        /* 表格 */
+        .data-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+        .data-table th, .data-table td {
+            padding: 12px 14px; text-align: left; border-bottom: 1px solid var(--line);
+        }
+        .data-table th {
+            color: var(--text-dim); font-weight: 600; font-size: 10px;
+            letter-spacing: 2px; text-transform: uppercase;
+            background: rgba(0,0,0,0.4);
+        }
+        .data-table tr:hover td { background: rgba(0, 255, 65, 0.03); }
+        .data-table .badge {
+            display: inline-block; padding: 3px 8px; font-size: 10px;
+            border: 1px solid; letter-spacing: 1px;
+        }
+        .badge-active { color: var(--accent); border-color: var(--accent); }
+        .badge-pending { color: var(--accent-warm); border-color: var(--accent-warm); }
+        .badge-closed { color: var(--text-mute); border-color: var(--text-mute); }
+        .badge-vr { color: var(--accent-cool); border-color: var(--accent-cool); }
+
+        .row-action {
+            background: none; border: none; color: var(--text-dim);
+            cursor: pointer; font-family: var(--mono); font-size: 11px;
+            margin-right: 10px; transition: 0.2s;
+        }
+        .row-action:hover { color: var(--accent); }
+        .row-action.delete:hover { color: var(--danger); }
+
+        /* Status console */
+        .console {
+            margin-top: 24px; border: 1px solid var(--line); padding: 18px 20px;
+            font-size: 11px; color: var(--text-dim); background: rgba(0,0,0,0.4);
+            min-height: 80px; max-height: 200px; overflow-y: auto;
+        }
+        .console-line { padding: 3px 0; line-height: 1.6; }
+        .console-line .ts { color: var(--text-mute); margin-right: 10px; }
+        .console-line.success { color: var(--accent); }
+        .console-line.warn { color: var(--accent-warm); }
+        .console-line.err { color: var(--danger); }
+
+        /* Pricing edit */
+        .product-list { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 16px; }
+        .product-item {
+            border: 1px solid var(--line); padding: 16px; display: flex; justify-content: space-between; align-items: center;
+        }
+        .product-name { font-size: 13px; }
+        .product-price { color: var(--accent); font-weight: 600; }
+
+        @media (max-width: 1024px) {
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .form-row { grid-template-columns: 1fr; }
+            .product-list { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 640px) {
+            body { padding: 14px; }
+            .term-header { flex-direction: column; align-items: flex-start; gap: 12px; }
+            .term-tabs { flex-wrap: wrap; }
+            .stats-grid { grid-template-columns: 1fr; }
+            .panel-body { padding: 16px; }
         }
     </style>
 </head>
 <body>
 
-<div class="admin-container">
-    <div class="header">
-        <h1>[ Flyun_Admin_Terminal ]</h1>
-        <p style="font-size: 12px; color: #555;">> Establish connection to main frame...</p>
+<div class="terminal-shell">
+
+    <!-- 顶部状态条 -->
+    <div class="term-header">
+        <div class="term-title">
+            <h1>[ FLYUN_CORE_TERMINAL ]</h1>
+            <p>&gt; 飞云核心管理终端 · v2.0 · admin@flyun.studio</p>
+        </div>
+        <div class="term-status">
+            <span class="status-pill"><span class="pill-dot"></span> 系统在线</span>
+            <span class="status-pill" id="termClock">--:--:--</span>
+            <a href="index.html" class="term-back">← 返回主站</a>
+        </div>
     </div>
 
-    <div class="form-group">
-        <label>> Product_Name (产品名称)</label>
-        <input type="text" id="productName" placeholder="e.g. Algorithmic Toothbrush V1">
+    <!-- Tabs -->
+    <div class="term-tabs">
+        <div class="term-tab active" data-module="dashboard">总览看板</div>
+        <div class="term-tab" data-module="spatial">空间项目</div>
+        <div class="term-tab" data-module="xr">VR / AR 资产</div>
+        <div class="term-tab" data-module="talent">猎头业务</div>
+        <div class="term-tab" data-module="content">内容 / IP</div>
+        <div class="term-tab" data-module="settings">系统配置</div>
     </div>
 
-    <div class="form-group">
-        <label>> Price_USD (售价 - 美元)</label>
-        <input type="number" id="productPrice" placeholder="e.g. 59">
+    <!-- ================= 总览 ================= -->
+    <div class="module active" id="m-dashboard">
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-label">空间项目 / 进行中</div>
+                <div class="stat-value" id="kpiSpatial">07<span class="unit">个</span></div>
+                <div class="stat-trend">+ 2 vs 上月</div>
+            </div>
+            <div class="stat-card warm">
+                <div class="stat-label">VR / AR 资产</div>
+                <div class="stat-value" id="kpiXR">42<span class="unit">资产</span></div>
+                <div class="stat-trend">+ 15 vs 上月</div>
+            </div>
+            <div class="stat-card cool">
+                <div class="stat-label">猎头岗位 / 活跃</div>
+                <div class="stat-value" id="kpiJobs">23<span class="unit">岗位</span></div>
+                <div class="stat-trend">+ 5 vs 上月</div>
+            </div>
+            <div class="stat-card danger">
+                <div class="stat-label">本月营收</div>
+                <div class="stat-value" id="kpiRev">¥186K</div>
+                <div class="stat-trend">+ 18.6%</div>
+            </div>
+        </div>
+
+        <div class="panel">
+            <div class="panel-header">
+                <div class="panel-title">最新动态 · LIVE FEED</div>
+                <div class="panel-actions">
+                    <button class="btn btn-ghost" onclick="refreshFeed()">刷新</button>
+                </div>
+            </div>
+            <div class="panel-body">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>时间</th>
+                            <th>模块</th>
+                            <th>事件</th>
+                            <th>负责人</th>
+                            <th>状态</th>
+                        </tr>
+                    </thead>
+                    <tbody id="feedBody">
+                        <tr><td>14:32</td><td>SPATIAL</td><td>「回声之间」装置原型完成第二轮迭代</td><td>Leo</td><td><span class="badge badge-active">进行中</span></td></tr>
+                        <tr><td>13:08</td><td>VR / AR</td><td>新增 Vision Pro 沉浸展厅资产 12 项</td><td>Mia</td><td><span class="badge badge-vr">同步</span></td></tr>
+                        <tr><td>11:45</td><td>TALENT</td><td>字节跳动 · 高级 XR 工程师候选人推进至终面</td><td>Tom</td><td><span class="badge badge-pending">面试中</span></td></tr>
+                        <tr><td>10:12</td><td>CONTENT</td><td>「光的剧本」第 3 期内容上线</td><td>Vivi</td><td><span class="badge badge-active">已发布</span></td></tr>
+                        <tr><td>09:30</td><td>TALENT</td><td>新增 8 位设计赛道候选人入库</td><td>Tom</td><td><span class="badge badge-active">已入库</span></td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="panel">
+            <div class="panel-header">
+                <div class="panel-title">业务分布 · 收入结构</div>
+            </div>
+            <div class="panel-body">
+                <div id="revenueBars"></div>
+            </div>
+        </div>
     </div>
 
-    <div class="form-group">
-        <label>> Manifesto_Text (白皮书/宣传文案更新)</label>
-        <textarea id="manifestoText" placeholder="Enter new manifesto text here..."></textarea>
+    <!-- ================= 空间项目 ================= -->
+    <div class="module" id="m-spatial">
+        <div class="panel">
+            <div class="panel-header">
+                <div class="panel-title">新增 · 空间项目</div>
+            </div>
+            <div class="panel-body">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>项目名称</label>
+                        <input type="text" id="spName" placeholder="例如 回声之间">
+                    </div>
+                    <div class="form-group">
+                        <label>客户 / 品牌</label>
+                        <input type="text" id="spClient" placeholder="例如 OPPO / 武汉大学">
+                    </div>
+                    <div class="form-group">
+                        <label>项目类型</label>
+                        <select id="spType">
+                            <option>沉浸装置</option>
+                            <option>品牌空间</option>
+                            <option>数字物理融合</option>
+                            <option>文旅空间</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>预算 (¥)</label>
+                        <input type="number" id="spBudget" placeholder="例如 280000">
+                    </div>
+                    <div class="form-group">
+                        <label>周期 (周)</label>
+                        <input type="number" id="spWeeks" placeholder="例如 12">
+                    </div>
+                    <div class="form-group">
+                        <label>状态</label>
+                        <select id="spStatus">
+                            <option>立项中</option>
+                            <option>设计中</option>
+                            <option>制作中</option>
+                            <option>验收</option>
+                            <option>已交付</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row cols-1">
+                    <div class="form-group">
+                        <label>项目说明</label>
+                        <textarea id="spDesc" placeholder="项目目标 / 主要交付物 / 备注..."></textarea>
+                    </div>
+                </div>
+                <div style="display:flex; gap:8px; margin-top:14px;">
+                    <button class="btn" onclick="addSpatial()">[ 创建项目 ]</button>
+                    <button class="btn btn-ghost" onclick="clearSpatial()">清空</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel">
+            <div class="panel-header">
+                <div class="panel-title">空间项目列表</div>
+            </div>
+            <table class="data-table">
+                <thead>
+                    <tr><th>名称</th><th>客户</th><th>类型</th><th>预算</th><th>周期</th><th>状态</th><th>操作</th></tr>
+                </thead>
+                <tbody id="spatialBody"></tbody>
+            </table>
+        </div>
     </div>
 
-    <button onclick="saveData()">[ EXECUTE_UPDATE ]</button>
-    
-    <div class="status" id="statusMessage"></div>
+    <!-- ================= VR / AR ================= -->
+    <div class="module" id="m-xr">
+        <div class="stats-grid">
+            <div class="stat-card cool">
+                <div class="stat-label">VR 项目</div>
+                <div class="stat-value" id="kpiVR">12<span class="unit">个</span></div>
+            </div>
+            <div class="stat-card warm">
+                <div class="stat-label">AR 项目</div>
+                <div class="stat-value" id="kpiAR">18<span class="unit">个</span></div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">3D 资产</div>
+                <div class="stat-value" id="kpiAssets">340<span class="unit">个</span></div>
+            </div>
+            <div class="stat-card danger">
+                <div class="stat-label">头显设备</div>
+                <div class="stat-value" id="kpiDevice">8<span class="unit">台</span></div>
+            </div>
+        </div>
+
+        <div class="panel">
+            <div class="panel-header">
+                <div class="panel-title">新增 · XR 资产 / 项目</div>
+            </div>
+            <div class="panel-body">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>资产名称</label>
+                        <input type="text" id="xrName" placeholder="例如 PRISM HALL">
+                    </div>
+                    <div class="form-group">
+                        <label>分类</label>
+                        <select id="xrType">
+                            <option>VR · 全沉浸</option>
+                            <option>AR · 增强现实</option>
+                            <option>MR · 混合现实</option>
+                            <option>WebXR</option>
+                            <option>3D 模型 / 资产</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>目标平台</label>
+                        <select id="xrPlatform">
+                            <option>Apple Vision Pro</option>
+                            <option>Meta Quest</option>
+                            <option>PICO</option>
+                            <option>iOS / Android (AR)</option>
+                            <option>WebXR / 浏览器</option>
+                            <option>跨平台</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>引擎 / 工具</label>
+                        <select id="xrEngine">
+                            <option>Unity</option>
+                            <option>Unreal</option>
+                            <option>Three.js</option>
+                            <option>Babylon.js</option>
+                            <option>Reality Composer</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>关联客户</label>
+                        <input type="text" id="xrClient" placeholder="客户名">
+                    </div>
+                    <div class="form-group">
+                        <label>状态</label>
+                        <select id="xrStatus">
+                            <option>开发中</option>
+                            <option>测试中</option>
+                            <option>已上线</option>
+                            <option>归档</option>
+                        </select>
+                    </div>
+                </div>
+                <div style="margin-top:14px;">
+                    <button class="btn btn-cool" onclick="addXR()">[ 入库 ]</button>
+                    <button class="btn btn-ghost" onclick="clearXR()">清空</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel">
+            <div class="panel-header">
+                <div class="panel-title">XR 资产清单</div>
+            </div>
+            <table class="data-table">
+                <thead>
+                    <tr><th>名称</th><th>分类</th><th>平台</th><th>引擎</th><th>客户</th><th>状态</th><th>操作</th></tr>
+                </thead>
+                <tbody id="xrBody"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- ================= 猎头 ================= -->
+    <div class="module" id="m-talent">
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-label">活跃岗位</div>
+                <div class="stat-value" id="kpiOpenJobs">23</div>
+            </div>
+            <div class="stat-card warm">
+                <div class="stat-label">候选人 / 库存</div>
+                <div class="stat-value" id="kpiCands">3,128</div>
+            </div>
+            <div class="stat-card cool">
+                <div class="stat-label">本月入职</div>
+                <div class="stat-value" id="kpiOnboard">6</div>
+            </div>
+            <div class="stat-card danger">
+                <div class="stat-label">90 天交付率</div>
+                <div class="stat-value" id="kpiSLA">86%</div>
+            </div>
+        </div>
+
+        <div class="panel">
+            <div class="panel-header">
+                <div class="panel-title">新增 · 客户岗位</div>
+            </div>
+            <div class="panel-body">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>客户公司</label>
+                        <input type="text" id="tComp" placeholder="例如 字节跳动">
+                    </div>
+                    <div class="form-group">
+                        <label>岗位名称</label>
+                        <input type="text" id="tRole" placeholder="例如 高级 XR 工程师">
+                    </div>
+                    <div class="form-group">
+                        <label>赛道</label>
+                        <select id="tTrack">
+                            <option>AI / 算法</option>
+                            <option>空间计算 / XR</option>
+                            <option>设计 / 创意</option>
+                            <option>零售科技</option>
+                            <option>其他</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>年薪范围 (万)</label>
+                        <input type="text" id="tSalary" placeholder="例如 50 - 80">
+                    </div>
+                    <div class="form-group">
+                        <label>服务费率</label>
+                        <select id="tFee">
+                            <option>20%</option>
+                            <option>22%</option>
+                            <option>25%</option>
+                            <option>面议</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>岗位状态</label>
+                        <select id="tJobStatus">
+                            <option>开放中</option>
+                            <option>面试中</option>
+                            <option>Offer 谈判</option>
+                            <option>已关闭</option>
+                            <option>暂停</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row cols-1">
+                    <div class="form-group">
+                        <label>岗位描述 / JD 摘要</label>
+                        <textarea id="tDesc" placeholder="核心要求、关键能力、隐藏期待..."></textarea>
+                    </div>
+                </div>
+                <div style="margin-top:14px;">
+                    <button class="btn btn-warm" onclick="addJob()">[ 创建岗位 ]</button>
+                    <button class="btn btn-ghost" onclick="clearJob()">清空</button>
+                    <a href="F.html" class="btn btn-ghost" target="_blank" style="text-decoration:none; display:inline-block;">→ 顾问工作站 (F.html)</a>
+                    <a href="X.html" class="btn btn-ghost" target="_blank" style="text-decoration:none; display:inline-block;">→ 寻访空间 (X.html)</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel">
+            <div class="panel-header">
+                <div class="panel-title">岗位列表</div>
+            </div>
+            <table class="data-table">
+                <thead>
+                    <tr><th>客户</th><th>岗位</th><th>赛道</th><th>年薪</th><th>费率</th><th>状态</th><th>操作</th></tr>
+                </thead>
+                <tbody id="jobBody"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- ================= 内容 / IP ================= -->
+    <div class="module" id="m-content">
+        <div class="panel">
+            <div class="panel-header">
+                <div class="panel-title">FLYUN 自有 IP · 「光的剧本」</div>
+            </div>
+            <div class="panel-body">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>期号</label>
+                        <input type="text" placeholder="例如 第 04 期" value="第 04 期">
+                    </div>
+                    <div class="form-group">
+                        <label>主题</label>
+                        <input type="text" placeholder="例如 当 VR 走出展厅" value="当 VR 走出展厅">
+                    </div>
+                    <div class="form-group">
+                        <label>发布状态</label>
+                        <select>
+                            <option>策划中</option>
+                            <option selected>制作中</option>
+                            <option>待发布</option>
+                            <option>已发布</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row cols-1">
+                    <div class="form-group">
+                        <label>主张文案 (Manifesto)</label>
+                        <textarea id="manifestoText" rows="4" placeholder="在此处更新 FLYUN 的最新主张...">FLYUN 不只是把空间数字化 —— 我们让人、空间、虚拟、现实，在同一句话里一起说话。</textarea>
+                    </div>
+                </div>
+                <div style="margin-top:14px;">
+                    <button class="btn" onclick="saveManifesto()">[ 同步到主站 ]</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel">
+            <div class="panel-header">
+                <div class="panel-title">衍生产品 / 价格管理</div>
+            </div>
+            <div class="panel-body">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>产品名称</label>
+                        <input type="text" id="productName" placeholder="例如 算法之刷 V1">
+                    </div>
+                    <div class="form-group">
+                        <label>售价 (¥)</label>
+                        <input type="number" id="productPrice" placeholder="例如 399">
+                    </div>
+                    <div class="form-group">
+                        <label>分类</label>
+                        <select id="productCat">
+                            <option>衍生硬件</option>
+                            <option>限量印刷品</option>
+                            <option>课程</option>
+                            <option>NFT / 数字藏品</option>
+                        </select>
+                    </div>
+                </div>
+                <div style="margin-top:14px;">
+                    <button class="btn" onclick="addProduct()">[ 上架 ]</button>
+                </div>
+                <div class="product-list" id="productList"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= 系统设置 ================= -->
+    <div class="module" id="m-settings">
+        <div class="panel">
+            <div class="panel-header">
+                <div class="panel-title">系统配置 · 全局参数</div>
+            </div>
+            <div class="panel-body">
+                <div class="form-row cols-2">
+                    <div class="form-group">
+                        <label>工作室名称</label>
+                        <input type="text" value="FLYUN STUDIO 飞云" />
+                    </div>
+                    <div class="form-group">
+                        <label>对外联系邮箱</label>
+                        <input type="email" value="hello@flyun.studio" />
+                    </div>
+                </div>
+                <div class="form-row cols-2">
+                    <div class="form-group">
+                        <label>主站维护模式</label>
+                        <select><option>关闭</option><option>开启</option></select>
+                    </div>
+                    <div class="form-group">
+                        <label>新岗位邮件提醒</label>
+                        <select><option>开启</option><option>关闭</option></select>
+                    </div>
+                </div>
+                <div style="margin-top:14px; display:flex; gap:8px;">
+                    <button class="btn">[ 保存配置 ]</button>
+                    <button class="btn btn-danger" onclick="clearAllData()">[ 清空所有本地数据 ]</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel">
+            <div class="panel-header">
+                <div class="panel-title">数据导出 · 备份</div>
+            </div>
+            <div class="panel-body">
+                <p style="font-size:12px; color:var(--text-dim); margin-bottom:14px;">
+                    所有数据当前以本地存储 (localStorage) 形式保存于浏览器。导出后可作为备份或迁移到正式数据库。
+                </p>
+                <button class="btn btn-cool" onclick="exportAll()">[ 导出 JSON ]</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 控制台 -->
+    <div class="console" id="console">
+        <div class="console-line"><span class="ts">[INIT]</span> 终端启动 · FLYUN_CORE v2.0 · 全部模块就绪</div>
+    </div>
+
 </div>
 
 <script>
-    // 这里是我们下一步要放 Firebase 数据库连接代码的地方
-    // 现在点击按钮只会显示一个虚假的成功提示，让你感受一下交互
-    function saveData() {
-        const btn = document.querySelector('button');
-        const status = document.getElementById('statusMessage');
-        
-        btn.innerText = "[ PROCESSING... ]";
-        
-        setTimeout(() => {
-            btn.innerText = "[ EXECUTE_UPDATE ]";
-            status.innerText = "> SYSTEM_UPDATE_SUCCESSFUL: Data pushed to frontend.";
-            // 3秒后清除提示
-            setTimeout(() => { status.innerText = ""; }, 3000);
-        }, 1000);
-    }
-</script>
+    /* ============ STATE ============ */
+    const STORE = {
+        spatial: 'FLYUN_ADMIN_SPATIAL',
+        xr: 'FLYUN_ADMIN_XR',
+        jobs: 'FLYUN_ADMIN_JOBS',
+        products: 'FLYUN_ADMIN_PRODUCTS',
+        manifesto: 'FLYUN_ADMIN_MANIFESTO'
+    };
+    const consoleEl = document.getElementById('console');
 
-</body>
-</html>
+    function log(msg, type='info') {
+        const ts = new Date().toLocaleTimeString('zh-CN', { hour12: false });
+        const line = document.createElement('div');
+        line.className = 'console-line ' + type;
+        line.innerHTML = `<span class="ts">[${ts}]</span> ${msg}`;
+        consoleEl.insertBefore(line, consoleEl.firstChild);
+        // 限制条数
+        while (consoleEl.children.length > 30) consoleEl.removeChild(consoleEl.lastChild);
+    }
+
+    function load(key) { return JSON.parse(localStorage.getItem(key) || '[]'); }
+    function save(key, data) { localStorage.setItem(key, JSON.stringify(data)); }
+
+    /* ============ TABS ============ */
+    document.querySelectorAll('.term-tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+            document.querySelectorAll('.term-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.module').forEach(m => m.classList.remove('active'));
+            tab.classList.add('active');
+            document.getElementById('m-' + tab.dataset.module).classList.add('active');
+            log(`切换至模块: ${tab.textContent.trim()}`);
+        });
+    });
+
+    /* ============ CLOCK ============ */
+    function tickClock() {
+        const d = new Date();
+        const t = d.toLocaleTimeString('zh-CN', { hour12: false });
+        document.getElementById('termClock').innerHTML = '<span class="pill-dot"></span> ' + t;
+    }
+    setInterval(tickClock, 1000); tickClock();
+
+    /* ============ DASHBOARD ============ */
+    function renderRevenue() {
+        const items = [
+            { name: '空间设计 / 品牌空间', pct: 40, color: '#00ff41' },
+            { name: 'VR / AR · XR 内容', pct: 22, color: '#ff8800' },
+            { name: '高端猎头 / 人才业务', pct: 26, color: '#00b8ff' },
+            { name: '内容 IP / 课程', pct: 12, color: '#ff3366' }
+        ];
+        document.getElementById('revenueBars').innerHTML = items.map(i => `
+            <div style="margin-bottom:14px;">
+                <div style="display:flex; justify-content:space-between; font-size:11px; color:#888; margin-bottom:6px; letter-spacing:1.5px;">
+                    <span>${i.name}</span><span>${i.pct}%</span>
+                </div>
+                <div style="height:6px; background:#1a1a1a; overflow:hidden;">
+                    <div style="height:100%; width:${i.pct}%; background:${i.color}; transition:1s;"></div>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    function refreshFeed() {
+        log('Live feed 已刷新', 'success');
+    }
+
+    /* ============ SPATIAL ============ */
+    function renderSpatial() {
+        const list = load(STORE.spatial);
+        const tbody = document.getElementById('spatialBody');
+        if (list.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; color:#555; padding:30px;">暂无项目记录 · 在上方添加</td></tr>`;
+            return;
+        }
+        tbody.innerHTML = list.map(i => `
+            <tr>
+                <td><b>${i.name}</b></td>
+                <td>${i.client}</td>
+                <td>${i.type}</td>
+                <td>¥${(i.budget||0).toLocaleString()}</td>
+                <td>${i.weeks} 周</td>
+                <td><span class="badge badge-active">${i.status}</span></td>
+                <td><button class="row-action delete" onclick="delSpatial(${i.id})">删除</button></td>
+            </tr>
+        `).join('');
+        document.getElementById('kpiSpatial').innerHTML = String(list.length).padStart(2, '0') + '<span class="unit">个</span>';
+    }
+    function addSpatial() {
+        const name = document.getElementById('spName').value.trim();
+        if (!name) return log('项目名称必填', 'err');
+        const item = {
+            id: Date.now(),
+            name,
+            client: document.getElementById('spClient').value,
+            type: document.getElementById('spType').value,
+            budget: +document.getElementById('spBudget').value || 0,
+            weeks: +document.getElementById('spWeeks').value || 0,
+            status: document.getElementById('spStatus').value,
+            desc: document.getElementById('spDesc').value
+        };
+        const list = load(STORE.spatial); list.push(item); save(STORE.spatial, list);
+        clearSpatial(); renderSpatial();
+        log(`空间项目「${name}」已创建`, 'success');
+    }
+    function delSpatial(id) {
+        if (!confirm('确认删除该项目?')) return;
+        save(STORE.spatial, load(STORE.spatial).filter(x => x.id !== id));
+        renderSpatial(); log('项目已删除', 'warn');
+    }
+    function clearSpatial() {
+        ['spName','spClient','spBudget','spWeeks','spDesc'].forEach(id => document.getElementById(id).value = '');
+    }
+
+    /* ============ XR ============ */
+    function renderXR() {
+        const list = load(STORE.xr);
+        const tbody = document.getElementById('xrBody');
+        if (list.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; color:#555; padding:30px;">暂无 XR 资产 · 入库后显示</td></tr>`;
+            return;
+        }
+        tbody.innerHTML = list.map(i => `
+            <tr>
+                <td><b>${i.name}</b></td>
+                <td><span class="badge badge-vr">${i.type}</span></td>
+                <td>${i.platform}</td>
+                <td>${i.engine}</td>
+                <td>${i.client || '-'}</td>
+                <td><span class="badge badge-active">${i.status}</span></td>
+                <td><button class="row-action delete" onclick="delXR(${i.id})">删除</button></td>
+            </tr>
+        `).join('');
+        document.getElementById('kpiXR').innerHTML = list.length + '<span class="unit">资产</span>';
+    }
+    function addXR() {
+        const name = document.getElementById('xrName').value.trim();
+        if (!name) return log('资产名称必填', 'err');
+        const item = {
+            id: Date.now(),
+            name,
+            type: document.getElementById('xrType').value,
+            platform: document.getElementById('xrPlatform').value,
+            engine: document.getElementById('xrEngine').value,
+            client: document.getElementById('xrClient').value,
+            status: document.getElementById('xrStatus').value
+        };
+        const list = load(STORE.xr); list.push(item); save(STORE.xr, list);
+        clearXR(); renderXR();
+        log(`XR 资产「${name}」已入库`, 'success');
+    }
+    function delXR(id) {
+        if (!confirm('确认删除该资产?')) return;
+        save(STORE.xr, load(STORE.xr).filter(x => x.id !== id));
+        renderXR(); log('资产已删除', 'warn');
+    }
+    function clearXR() {
+        ['xrName','xrClient'].forEach(id => document.getElementById(id).value = '');
+    }
+
+    /* ============ TALENT JOBS ============ */
+    function renderJobs() {
+        const list = load(STORE.jobs);
+        const tbody = document.getElementById('jobBody');
+        if (list.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; color:#555; padding:30px;">暂无岗位 · 在上方添加</td></tr>`;
+            return;
+        }
+        tbody.innerHTML = list.map(i => `
+            <tr>
+                <td><b>${i.comp}</b></td>
+                <td>${i.role}</td>
+                <td>${i.track}</td>
+                <td>${i.salary} 万</td>
+                <td>${i.fee}</td>
+                <td><span class="badge ${i.status==='已关闭'?'badge-closed':'badge-pending'}">${i.status}</span></td>
+                <td><button class="row-action delete" onclick="delJob(${i.id})">删除</button></td>
+            </tr>
+        `).join('');
+        document.getElementById('kpiOpenJobs').textContent = list.filter(x => x.status !== '已关闭').length || 23;
+    }
+    function addJob() {
+        const comp = document.getElementById('tComp').value.trim();
+        const role = document.getElementById('tRole').value.trim();
+        if (!comp || !role) return log('客户与岗位名必填', 'err');
+        const item = {
+            id: Date.now(),
+            comp, role,
+            track: document.getElementById('tTrack').value,
+            salary: document.getElementById('tSalary').value,
+            fee: document.getElementById('tFee').value,
+            status: document.getElementById('tJobStatus').value,
+            desc: document.getElementById('tDesc').value
+        };
+        const list = load(STORE.jobs); list.push(item); save(STORE.jobs, list);
+        clearJob(); renderJobs();
+        log(`岗位「${comp} · ${role}」已创建`, 'success');
+    }
+    function delJob(id) {
+        if (!confirm('确认删除该岗位?')) return;
+        save(STORE.jobs, load(STORE.jobs).filter(x => x.id !== id));
+        renderJobs(); log('岗位已删除', 'warn');
+    }
+    function clearJob() {
+        ['tComp','tRole','tSalary','tDesc'].forEach(id => document.getElementById(id).value = '');
+    }
+
+    /* ============ CONTENT ============ */
+    function renderProducts() {
+        const list = load(STORE.products);
+        const el = document.getElementById('productList');
+        if (list.length === 0) { el.innerHTML = `<div style="color:#555; font-size:12px;">暂无衍生产品 · 在上方添加</div>`; return; }
+        el.innerHTML = list.map(p => `
+            <div class="product-item">
+                <div>
+                    <div class="product-name">${p.name}</div>
+                    <div style="font-size:10px; color:#666; margin-top:3px;">${p.cat}</div>
+                </div>
+                <div style="display:flex; align-items:center; gap:14px;">
+                    <span class="product-price">¥${p.price}</span>
+                    <button class="row-action delete" onclick="delProduct(${p.id})">删除</button>
+                </div>
+            </div>
+        `).join('');
+    }
+    function addProduct() {
+        const name = document.getElementById('productName').value.trim();
+        const price = +document.getElementById('productPrice').value;
+        if (!name || !price) return log('产品名称与售价必填', 'err');
+        const item = {
+            id: Date.now(), name, price,
+            cat: document.getElementById('productCat').value
+        };
+        const list = load(STORE.products); list.push(item); save(STORE.products, list);
+        document.getElementById('productName').value = '';
+        document.getElementById('productPrice').value = '';
+        renderProducts();
+        log(`产品「${name}」已上架 · ¥${price}`, 'success');
+    }
+    function delProduct(id) {
+        save(STORE.products, load(STORE.products).filter(x => x.id !== id));
+        renderProducts(); log('产品已下架', 'warn');
+    }
+    function saveManifesto() {
+        const text = document.getElementById('manifestoText').value;
+        localStorage.setItem(STORE.manifesto, text);
+        log('主张文案已同步到主站', 'success');
+    }
+
+    /* ============ SETTINGS ============ */
+    function clearAllData() {
+        if (!confirm('确认清空所有本地数据? 此操作不可恢复')) return;
+        Object.values(STORE).forEach(k => localStorage.removeItem(k));
+        renderSpatial(); renderXR(); renderJobs(); renderProducts();
+        log('所有本地数据已清空', 'err');
+    }
+    function exportAll() {
+        const dump = {};
+        Object.entries(STORE).forEach(([k, v]) => dump[k] = JSON.parse(localStorage.getItem(v) || 'null'));
+        const blob = new Blob([JSON.stringify(dump, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url; a.download = `flyun_admin_export_${new Date().toISOString().split('T')[0]}.json`;
+        a.click(); URL.revokeObjectURL(url);
+        log('数据已导出 JSON', 'success');
+    }
+
+    /* ============ INIT ============ */
+    renderRevenue();
+    renderSpatial(); renderXR(); renderJobs(); renderProducts();
+    log('数据加载完成', 'success');
+    // 加载已保存 manifesto
+    const savedManifesto = localStorage.getItem(STORE.manifesto);
+    if (savedManifesto) document.getElementById('manifestoText').value = savedManifesto;
+</script>
 
 </body>
 </html>

@@ -604,6 +604,178 @@ section{padding:140px 32px;position:relative;}
   .revenue{grid-template-columns:1fr;gap:32px;}
 }
 
+/* ===== XR / VR · AR ===== */
+.xr-grid{
+  display:grid;grid-template-columns:repeat(2,1fr);gap:18px;
+}
+.xr-card{
+  position:relative;padding:36px;border-radius:24px;
+  background:var(--surface);border:1px solid var(--border);
+  backdrop-filter:blur(20px);
+  transition:.4s var(--ease);overflow:hidden;
+}
+.xr-card::before{
+  content:"";position:absolute;inset:0;border-radius:24px;
+  background:linear-gradient(135deg,rgba(255,77,46,.08),transparent 60%);
+  opacity:0;transition:.4s;pointer-events:none;
+}
+.xr-card:hover{border-color:var(--border-strong);transform:translateY(-6px);}
+.xr-card:hover::before{opacity:1;}
+.xr-card.vr-card::before{background:linear-gradient(135deg,rgba(255,77,46,.12),transparent 60%);}
+.xr-card.ar-card::before{background:linear-gradient(135deg,rgba(244,184,96,.12),transparent 60%);}
+.xr-card.mr-card::before{background:linear-gradient(135deg,rgba(200,255,77,.10),transparent 60%);}
+.xr-card.web-card::before{background:linear-gradient(135deg,rgba(122,226,160,.10),transparent 60%);}
+.xr-tag{
+  font-family:var(--mono);font-size:11px;letter-spacing:.25em;color:var(--accent);
+  padding:6px 12px;border:1px solid rgba(255,77,46,.3);border-radius:999px;
+  display:inline-block;margin-bottom:18px;
+}
+.vr-card .xr-tag{color:var(--accent);border-color:rgba(255,77,46,.3);}
+.ar-card .xr-tag{color:var(--accent-warm);border-color:rgba(244,184,96,.3);}
+.mr-card .xr-tag{color:var(--accent-2);border-color:rgba(200,255,77,.3);}
+.web-card .xr-tag{color:#7AE2A0;border-color:rgba(122,226,160,.3);}
+.xr-name{
+  font-family:var(--serif);font-size:34px;font-weight:300;letter-spacing:-.02em;
+  margin-bottom:12px;line-height:1.05;
+}
+.xr-desc{
+  font-size:14.5px;line-height:1.75;color:var(--text-dim);margin-bottom:20px;
+}
+.xr-list{list-style:none;}
+.xr-list li{
+  font-size:13px;color:var(--text);padding:7px 0;border-top:1px dashed var(--border);
+  display:flex;align-items:center;gap:12px;
+}
+.xr-list li::before{
+  content:"";width:5px;height:5px;border-radius:50%;background:var(--accent);
+  flex-shrink:0;
+}
+.ar-card .xr-list li::before{background:var(--accent-warm);}
+.mr-card .xr-list li::before{background:var(--accent-2);}
+.web-card .xr-list li::before{background:#7AE2A0;}
+
+/* ===== TALENT · 猎头 ===== */
+.talent-stats{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:60px;
+}
+.t-stat{
+  padding:30px 24px;border:1px solid var(--border);border-radius:20px;
+  background:var(--surface);transition:.3s var(--ease);
+}
+.t-stat:hover{border-color:var(--accent);transform:translateY(-4px);}
+.t-num{
+  font-family:var(--serif);font-size:54px;font-weight:300;letter-spacing:-.03em;
+  line-height:1;color:var(--text);
+}
+.t-num span{color:var(--accent);font-weight:400;font-size:32px;margin-left:2px;}
+.t-label{
+  font-family:var(--mono);font-size:11px;color:var(--text-mute);letter-spacing:.2em;
+  margin-top:14px;line-height:1.5;
+}
+
+.talent-flow{
+  display:grid;grid-template-columns:1fr auto 1fr auto 1fr auto 1fr;gap:14px;
+  align-items:stretch;margin-bottom:60px;
+}
+.t-step{
+  padding:28px;border:1px solid var(--border);border-radius:20px;
+  background:var(--surface);transition:.3s var(--ease);
+  display:flex;flex-direction:column;gap:10px;
+}
+.t-step:hover{border-color:var(--accent-2);transform:translateY(-3px);}
+.t-step-no{
+  font-family:var(--mono);font-size:11px;color:var(--accent-2);letter-spacing:.25em;
+}
+.t-step-name{
+  font-family:var(--serif);font-size:22px;font-weight:400;letter-spacing:-.01em;
+  color:var(--text);
+}
+.t-step-desc{
+  font-size:13px;line-height:1.65;color:var(--text-dim);
+}
+.t-arrow{
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--serif);font-size:24px;color:var(--text-mute);
+}
+@media(max-width:1024px){
+  .talent-stats{grid-template-columns:repeat(2,1fr);}
+  .talent-flow{grid-template-columns:1fr;}
+  .t-arrow{display:none;}
+}
+
+.talent-cards{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:18px;
+}
+.talent-card{
+  position:relative;padding:36px;border-radius:24px;
+  background:var(--surface);border:1px solid var(--border);
+  transition:.4s var(--ease);text-decoration:none;color:var(--text);
+  display:flex;flex-direction:column;
+}
+.talent-card:hover{border-color:var(--accent-2);transform:translateY(-6px);}
+.talent-card.featured{border-color:rgba(200,255,77,.3);
+  background:linear-gradient(180deg,rgba(200,255,77,.04),var(--surface));}
+.tc-tag{
+  font-family:var(--mono);font-size:10px;color:var(--accent-2);letter-spacing:.25em;
+  margin-bottom:14px;
+}
+.tc-name{
+  font-family:var(--serif);font-size:30px;font-weight:300;letter-spacing:-.02em;
+  margin-bottom:14px;
+}
+.talent-card p{
+  font-size:14px;line-height:1.75;color:var(--text-dim);flex:1;margin-bottom:24px;
+}
+.tc-cta{
+  display:inline-flex;align-items:center;justify-content:space-between;
+  padding:14px 18px;border:1px solid var(--border-strong);border-radius:12px;
+  text-decoration:none;color:var(--text);font-size:13px;font-weight:600;
+  transition:.3s var(--ease);
+}
+.tc-cta:hover{background:var(--accent-2);color:#0a0908;border-color:var(--accent-2);}
+
+/* ===== TOOLS ===== */
+.tools-grid{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:14px;
+}
+.tool-card{
+  padding:32px 28px;border:1px solid var(--border);border-radius:22px;
+  background:var(--surface);text-decoration:none;color:var(--text);
+  transition:.3s var(--ease);
+  display:flex;flex-direction:column;gap:12px;
+}
+.tool-card:hover{border-color:var(--accent);transform:translateY(-5px);background:rgba(255,77,46,.04);}
+.tool-mark{
+  width:46px;height:46px;border-radius:14px;
+  background:#0a0908;border:1px solid var(--border-strong);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--serif);font-size:22px;font-weight:600;
+  color:var(--accent);margin-bottom:6px;
+}
+.tool-tag{
+  font-family:var(--mono);font-size:10px;color:var(--text-mute);letter-spacing:.25em;
+}
+.tool-name{
+  font-family:var(--serif);font-size:24px;font-weight:400;letter-spacing:-.01em;
+  line-height:1.1;
+}
+.tool-desc{
+  font-size:13px;line-height:1.65;color:var(--text-dim);flex:1;
+}
+.tool-foot{
+  font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:.2em;
+  display:flex;justify-content:space-between;align-items:center;
+  padding-top:14px;border-top:1px dashed var(--border);
+}
+@media(max-width:1024px){
+  .xr-grid,.tools-grid,.talent-cards{grid-template-columns:1fr;}
+}
+
+/* ===== 4-tier pricing ===== */
+.pricing-grid-4{grid-template-columns:repeat(4,1fr);}
+@media(max-width:1280px){.pricing-grid-4{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:640px){.pricing-grid-4{grid-template-columns:1fr;}}
+
 /* ===== ROADMAP ===== */
 .roadmap{position:relative;}
 .roadmap-track{
@@ -749,7 +921,7 @@ footer a:hover{color:var(--accent);}
 <div id="boot">
   <div class="boot-mark">FLY<span>·</span>UN</div>
   <div class="boot-bar"></div>
-  <div class="boot-text" id="bootText">CALIBRATING SPATIAL INTERFACE</div>
+  <div class="boot-text" id="bootText">校准空间界面中</div>
 </div>
 
 <!-- ===== NAV ===== -->
@@ -764,10 +936,12 @@ footer a:hover{color:var(--accent);}
   <div class="nav-links">
     <a href="#about" data-hover>关于</a>
     <a href="#services" data-hover>业务</a>
+    <a href="#xr" data-hover>VR/AR</a>
+    <a href="#talent" data-hover>猎头</a>
     <a href="#showcase" data-hover>项目</a>
-    <a href="#process" data-hover>流程</a>
+    <a href="#tools" data-hover>工具</a>
     <a href="#pricing" data-hover>合作</a>
-    <a href="#roadmap" data-hover>路线图</a>
+    <a href="job.html" data-hover>加入我们</a>
   </div>
   <a href="#contact" class="nav-cta" data-hover>
     建立对话
@@ -781,34 +955,34 @@ footer a:hover{color:var(--accent);}
     <div class="hero-meta reveal">
       <div class="hero-coords">
         <div>N <span>30.5928°</span> · E <span>114.3055°</span></div>
-        <div>FLYUN STUDIO · EST. 2026</div>
-        <div>SPATIAL · DIGITAL · TEMPORAL</div>
+        <div>FLYUN 飞云工作室 · 创立于 2026</div>
+        <div>空间 · VR · AR · 猎头</div>
       </div>
       <div class="hero-status">
         <span class="dot-live"></span>
-        <span>ACCEPTING NEW COMMISSIONS · 2026 Q3</span>
+        <span>2026 Q3 项目位与人才合作开放中</span>
       </div>
     </div>
 
     <h1 class="hero-title reveal" data-delay="1">
-      <span class="row">We design</span>
-      <span class="row indent"><em>spaces</em> that</span>
-      <span class="row">talk <span class="stroke">back</span>.</span>
+      <span class="row">让空间</span>
+      <span class="row indent">学会 <em>回应</em>，</span>
+      <span class="row">让人才 <span class="stroke">被看见</span>。</span>
     </h1>
 
     <div class="hero-bottom">
       <p class="hero-manifesto reveal" data-delay="2">
-        <strong>FLYUN</strong> 是一间专注于「交互空间」的独立设计工作室。
-        我们把数字交互的逻辑带进物理空间，把空间叙事的语言带回数字界面 ——
-        让每一次靠近、每一次触碰、每一次停留，都成为一次被设计过的对话。
+        <strong>FLYUN 飞云</strong> 是一间立足武汉、面向全球的复合型工作室。
+        我们以「<strong style="color:var(--accent);">空间交互设计</strong> · <strong style="color:var(--accent-warm);">VR/AR 沉浸体验</strong> · <strong style="color:var(--accent-2);">高端猎头人才</strong>」三条业务线，
+        把数字、物理与人三者编织成可被感受、可被使用、可被记忆的体验。
       </p>
       <div class="hero-actions reveal" data-delay="3">
         <a href="#services" class="btn btn-primary" data-hover>
           看我们能做什么
           <span class="arrow">↗</span>
         </a>
-        <a href="#contact" class="btn btn-ghost" data-hover>
-          一个想法 →
+        <a href="#talent" class="btn btn-ghost" data-hover>
+          猎头业务 →
         </a>
       </div>
     </div>
@@ -825,13 +999,13 @@ footer a:hover{color:var(--accent);}
     <div class="section-head reveal">
       <div>
         <div class="eyebrow">01 · FOUNDER</div>
-        <h2 class="section-title">A designer<br/>between <em>screens</em><br/>and <em>walls</em>.</h2>
+        <h2 class="section-title">游走于<br/><em>屏幕</em>、<em>墙面</em><br/>与<em>人</em>之间。</h2>
       </div>
       <p class="section-desc">
-        我是 Leo —— FLYUN 的创始人 / 主创设计师。
-        过去七年我在交互设计、品牌空间与创意技术之间游走，
+        我是 Leo —— FLYUN 飞云的创始人 / 主创设计师。
+        过去七年我在交互设计、品牌空间与人才业务之间游走，
         现在我把这些经验聚拢，做一件简单的事:
-        <strong style="color:var(--text);">让空间会回应人</strong>。
+        <strong style="color:var(--text);">让空间会回应人，让对的人被看见</strong>。
       </p>
     </div>
 
@@ -920,6 +1094,16 @@ footer a:hover{color:var(--accent);}
             <div class="skill-name">空间策展 / Spatial</div>
             <div class="skill-bar"><div class="skill-fill"></div></div>
           </div>
+          <div class="skill" data-skill="82">
+            <div class="skill-tag">XR</div>
+            <div class="skill-name">VR / AR 沉浸体验</div>
+            <div class="skill-bar"><div class="skill-fill"></div></div>
+          </div>
+          <div class="skill" data-skill="78">
+            <div class="skill-tag">TALENT</div>
+            <div class="skill-name">高端猎头 / Headhunting</div>
+            <div class="skill-bar"><div class="skill-fill"></div></div>
+          </div>
           <div class="skill" data-skill="80">
             <div class="skill-tag">CRAFT</div>
             <div class="skill-name">创意编程 / Creative Coding</div>
@@ -942,12 +1126,12 @@ footer a:hover{color:var(--accent);}
     <div class="section-head reveal">
       <div>
         <div class="eyebrow">02 · WHAT WE DO</div>
-        <h2 class="section-title">Four ways<br/>to make a <em>space</em><br/>respond.</h2>
+        <h2 class="section-title">六条业务线，<br/>同一种<em>专注</em>。</h2>
       </div>
       <p class="section-desc">
-        FLYUN 的业务围绕「人 — 空间 — 数字」三角展开，
+        FLYUN 的业务围绕「人 — 空间 — 数字 — 现实延伸」展开。
+        从一次沉浸装置到一座 VR 展厅，从一个空间体验到一位关键岗位人才——
         每条线都可以独立交付，也可以组合成完整的品牌空间体系。
-        欢迎从单点装置开始，验证一次再继续走下去。
       </p>
     </div>
 
@@ -973,9 +1157,31 @@ footer a:hover{color:var(--accent);}
         </div>
       </div>
 
-      <!-- Service 02 -->
+      <!-- Service 02 - NEW: VR/AR -->
       <div class="service reveal" data-delay="1" data-hover>
-        <div class="service-no">SERVICE / 02</div>
+        <div class="service-no">SERVICE / 02 · NEW</div>
+        <div class="service-title"><em>VR / AR</em></div>
+        <div class="service-zh">虚拟现实 · 增强现实 · 空间计算</div>
+        <div class="service-desc">
+          为品牌、文旅、教育与零售客户搭建跨设备的 XR 体验 ——
+          从 Apple Vision Pro / Quest 全沉浸场景，到手机 AR 滤镜 / WebXR 展厅，
+          让一段叙事可以被「走进去」。
+        </div>
+        <ul class="service-list">
+          <li>VR 沉浸展厅 / 全息发布舱</li>
+          <li>WebXR / AR 滤镜 / Snap Lens</li>
+          <li>Vision Pro 空间应用原型</li>
+          <li>3D 数字资产与 IP 衍生</li>
+        </ul>
+        <div class="service-foot">
+          <span>周期 6 — 12 周</span>
+          <strong>↗ FROM ¥150K</strong>
+        </div>
+      </div>
+
+      <!-- Service 03 -->
+      <div class="service reveal" data-hover>
+        <div class="service-no">SERVICE / 03</div>
         <div class="service-title"><em>Phygital</em></div>
         <div class="service-zh">数字物理融合 · 体验店与文旅</div>
         <div class="service-desc">
@@ -994,9 +1200,9 @@ footer a:hover{color:var(--accent);}
         </div>
       </div>
 
-      <!-- Service 03 -->
-      <div class="service reveal" data-hover>
-        <div class="service-no">SERVICE / 03</div>
+      <!-- Service 04 -->
+      <div class="service reveal" data-delay="1" data-hover>
+        <div class="service-no">SERVICE / 04</div>
         <div class="service-title"><em>Brand Space</em></div>
         <div class="service-zh">品牌空间 · 概念店与发布会</div>
         <div class="service-desc">
@@ -1015,9 +1221,31 @@ footer a:hover{color:var(--accent);}
         </div>
       </div>
 
-      <!-- Service 04 -->
+      <!-- Service 05 - NEW: TALENT / 猎头 -->
+      <div class="service reveal" data-hover>
+        <div class="service-no">SERVICE / 05 · NEW</div>
+        <div class="service-title"><em>Headhunting</em></div>
+        <div class="service-zh">高端猎头 · 设计与科技人才</div>
+        <div class="service-desc">
+          FLYUN 的另一半，是一支专注于「设计 + 科技 + XR」赛道的猎头团队 ——
+          为 AI、空间计算、品牌创意、零售科技品牌寻访关键岗位人才，
+          从 JD 解析到入职陪跑，全链路交付。
+        </div>
+        <ul class="service-list">
+          <li>JD 智能解析与人才画像</li>
+          <li>独家人才库 · 全网寻访 · 暗渠推荐</li>
+          <li>VR 沉浸面试 / 远程评估</li>
+          <li>Offer 谈判与入职 90 天陪跑</li>
+        </ul>
+        <div class="service-foot">
+          <span>周期 4 — 12 周</span>
+          <strong>↗ 年薪 20% — 25%</strong>
+        </div>
+      </div>
+
+      <!-- Service 06 -->
       <div class="service reveal" data-delay="1" data-hover>
-        <div class="service-no">SERVICE / 04</div>
+        <div class="service-no">SERVICE / 06</div>
         <div class="service-title"><em>Content IP</em></div>
         <div class="service-zh">内容与 IP · 长期合作</div>
         <div class="service-desc">
@@ -1039,17 +1267,199 @@ footer a:hover{color:var(--accent);}
   </div>
 </section>
 
+<!-- ===== XR / VR · AR FOCUS ===== -->
+<section id="xr" style="padding-top:80px;">
+  <div class="container">
+    <div class="section-head reveal">
+      <div>
+        <div class="eyebrow">03 · VR / AR · 空间计算</div>
+        <h2 class="section-title">把叙事<br/>装进<em>另一层</em><br/>现实里。</h2>
+      </div>
+      <p class="section-desc">
+        头显之外，有更广义的 XR ——
+        墙上的 AR、镜子里的 MR、手机里的 WebAR、Vision Pro 上的空间应用。
+        FLYUN 把这些设备视为同一种「叙事容器」，按场景调用，而不是按设备炫技。
+      </p>
+    </div>
+
+    <div class="xr-grid reveal">
+      <div class="xr-card vr-card" data-hover>
+        <div class="xr-tag">VR · 全沉浸</div>
+        <div class="xr-name">沉浸展厅 / 发布会</div>
+        <div class="xr-desc">
+          为品牌打造 Vision Pro / Quest 上的全沉浸展厅与发布会场景 ——
+          线下空间不够大？我们把它复制进虚拟里，再让全球观众戴上头显走进来。
+        </div>
+        <ul class="xr-list">
+          <li>多平台 VR 内容 (Vision OS / Quest / PICO)</li>
+          <li>双人 / 多人协同沉浸场景</li>
+          <li>线下展厅同步孪生</li>
+        </ul>
+      </div>
+
+      <div class="xr-card ar-card" data-hover>
+        <div class="xr-tag">AR · 增强现实</div>
+        <div class="xr-name">门店 AR · IP 滤镜</div>
+        <div class="xr-desc">
+          手机 AR 与门店 AR ——
+          扫一扫海报让 IP 跳出来，照镜子让虚拟服饰穿上身，
+          让线下流量变成可被传播的内容。
+        </div>
+        <ul class="xr-list">
+          <li>Snap Lens / Instagram / 微信 AR</li>
+          <li>虚拟试穿 / IP 形象互动</li>
+          <li>门店 AR 寻宝活动</li>
+        </ul>
+      </div>
+
+      <div class="xr-card mr-card" data-hover>
+        <div class="xr-tag">MR · 混合现实</div>
+        <div class="xr-name">空间应用 · 协作</div>
+        <div class="xr-desc">
+          Apple Vision Pro 时代的混合办公与协同评审 ——
+          为设计、教育、医疗客户搭建混合现实工作流，
+          把屏幕外的协作搬进真实空间。
+        </div>
+        <ul class="xr-list">
+          <li>Vision Pro 空间应用原型</li>
+          <li>3D 模型评审 / 远程协同</li>
+          <li>面试 / 培训沉浸场景</li>
+        </ul>
+      </div>
+
+      <div class="xr-card web-card" data-hover>
+        <div class="xr-tag">WebXR · 轻量入口</div>
+        <div class="xr-name">网页即体验</div>
+        <div class="xr-desc">
+          不想让客户先下载 App？
+          用 WebXR 把虚拟空间直接嵌进官网，
+          一键走进 3D 展厅 / 数字孪生 / 互动叙事。
+        </div>
+        <ul class="xr-list">
+          <li>Three.js / WebGL / Babylon.js</li>
+          <li>无需安装的 3D 沉浸体验</li>
+          <li>跨设备 (PC / 手机 / 头显) 适配</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== TALENT · 猎头业务 ===== -->
+<section id="talent">
+  <div class="container">
+    <div class="section-head reveal">
+      <div>
+        <div class="eyebrow">04 · TALENT · 高端猎头</div>
+        <h2 class="section-title">让对的人，<br/>走进对的<em>空间</em>。</h2>
+      </div>
+      <p class="section-desc">
+        FLYUN 的另一支「设计 + 科技 + XR」赛道猎头团队 ——
+        服务 AI、空间计算、品牌创意、零售科技领域的成长型企业，
+        既是猎头，也是行业的合作者。
+      </p>
+    </div>
+
+    <div class="talent-stats reveal">
+      <div class="t-stat">
+        <div class="t-num">120<span>+</span></div>
+        <div class="t-label">已合作企业 / 客户</div>
+      </div>
+      <div class="t-stat">
+        <div class="t-num">3000<span>+</span></div>
+        <div class="t-label">活跃候选人 · 设计与科技赛道</div>
+      </div>
+      <div class="t-stat">
+        <div class="t-num">86<span>%</span></div>
+        <div class="t-label">关键岗位 90 天交付率</div>
+      </div>
+      <div class="t-stat">
+        <div class="t-num">25<span>%</span></div>
+        <div class="t-label">人才年薪服务费率</div>
+      </div>
+    </div>
+
+    <div class="talent-flow reveal" data-delay="1">
+      <div class="t-step">
+        <div class="t-step-no">01</div>
+        <div class="t-step-name">JD 智能解析</div>
+        <div class="t-step-desc">用 FLYUN 自研引擎拆解岗位画像、关键能力、隐藏期待。</div>
+      </div>
+      <div class="t-arrow">→</div>
+      <div class="t-step">
+        <div class="t-step-no">02</div>
+        <div class="t-step-name">全网寻访</div>
+        <div class="t-step-desc">独家库 + 暗渠推荐 + AI 主动触达，覆盖被动求职者。</div>
+      </div>
+      <div class="t-arrow">→</div>
+      <div class="t-step">
+        <div class="t-step-no">03</div>
+        <div class="t-step-name">VR 沉浸面试</div>
+        <div class="t-step-desc">远程候选人在 VR 空间完成情境面试，看技能也看气场。</div>
+      </div>
+      <div class="t-arrow">→</div>
+      <div class="t-step">
+        <div class="t-step-no">04</div>
+        <div class="t-step-name">入职 90 天陪跑</div>
+        <div class="t-step-desc">不是把人送进去就走，而是陪跑到候选人真正落地为止。</div>
+      </div>
+    </div>
+
+    <div class="talent-cards reveal" data-delay="2">
+      <div class="talent-card" data-hover>
+        <div class="tc-tag">客户侧 · 企业 HR</div>
+        <div class="tc-name">企业人才地图</div>
+        <p>
+          为正在融资 / 扩张期的科技与设计公司，
+          搭建一份清晰、可被持续更新的「人才地图」——
+          下一个关键岗位是谁、在哪、有多远，一目了然。
+        </p>
+        <a href="F.html" class="tc-cta" data-hover target="_blank" rel="noopener">
+          打开 HR 工作站
+          <span>↗</span>
+        </a>
+      </div>
+      <div class="talent-card featured" data-hover>
+        <div class="tc-tag">合伙人侧 · 顾问工作台</div>
+        <div class="tc-name">猎头顾问工作台</div>
+        <p>
+          为顾问团队定制的全维度 CRM ——
+          客户、岗位、候选人、状态、面试反馈、Offer 进展，
+          所有寻访动作都可以被结构化、被复盘。
+        </p>
+        <a href="X.html" class="tc-cta" data-hover target="_blank" rel="noopener">
+          进入顾问工作台
+          <span>↗</span>
+        </a>
+      </div>
+      <div class="talent-card" data-hover>
+        <div class="tc-tag">候选人侧 · 个人空间</div>
+        <div class="tc-name">候选人智能空间</div>
+        <p>
+          被推荐的候选人会拥有一个加密的私人空间 ——
+          实时查看面试反馈、岗位匹配、Offer 谈判进度，
+          知情权和体验感同样重要。
+        </p>
+        <a href="Z.html" class="tc-cta" data-hover target="_blank" rel="noopener">
+          进入候选人空间
+          <span>↗</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ===== SHOWCASE ===== -->
 <section class="showcase" id="showcase">
   <div class="container">
     <div class="section-head reveal">
       <div>
-        <div class="eyebrow">03 · CASES & CONCEPTS</div>
-        <h2 class="section-title">Selected <em>work</em><br/>& open <em>concepts</em>.</h2>
+        <div class="eyebrow">05 · CASES & CONCEPTS</div>
+        <h2 class="section-title">精选项目<br/>与公开<em>概念</em>。</h2>
       </div>
       <p class="section-desc">
-        FLYUN 处于早期，下面既有过往项目的提炼，也有正在公开孵化的概念。
-        欢迎以任何一个为起点，与我们对话。
+        FLYUN 处于早期，下面既有过往项目的提炼，也有正在公开孵化的概念 ——
+        覆盖空间装置、VR/AR 体验与高端人才寻访。欢迎以任何一个为起点，与我们对话。
       </p>
     </div>
 
@@ -1073,10 +1483,10 @@ footer a:hover{color:var(--accent);}
         <div class="case-arrow">↗</div>
         <div class="case-info">
           <div class="case-meta">
-            <span>FEATURED · IMMERSIVE</span>
+            <span>FEATURED · 沉浸装置</span>
             <span class="tag">2025 / CONCEPT</span>
           </div>
-          <div class="case-name">ECHO <em>ROOM</em></div>
+          <div class="case-name">回声 <em>之间</em></div>
           <div class="case-sub">声光沉浸装置 · 让一句呼吸变成一面墙的回响</div>
         </div>
       </a>
@@ -1096,83 +1506,98 @@ footer a:hover{color:var(--accent);}
         <div class="case-arrow">↗</div>
         <div class="case-info">
           <div class="case-meta">
-            <span>PHYGITAL</span>
-            <span class="tag">2025 / IN PROGRESS</span>
+            <span>WebXR · 数字孪生</span>
+            <span class="tag">2025 / 进行中</span>
           </div>
-          <div class="case-name">MIRROR <em>CITY</em></div>
-          <div class="case-sub">城市数字孪生体验</div>
+          <div class="case-name">镜像 <em>之城</em></div>
+          <div class="case-sub">城市 WebXR 数字孪生体验</div>
         </div>
       </a>
 
-      <!-- Case 3 -->
-      <a href="#contact" class="case case-3 reveal" data-hover>
+      <!-- Case 3 - AR -->
+      <a href="#xr" class="case case-3 reveal" data-hover>
         <div class="case-canvas case-bg-3"></div>
         <svg class="case-svg" viewBox="0 0 400 400" preserveAspectRatio="xMidYMid slice">
-          <g opacity=".7">
-            <ellipse cx="200" cy="200" rx="140" ry="40" fill="none" stroke="#F4B860" stroke-width=".6"/>
-            <ellipse cx="200" cy="200" rx="100" ry="100" fill="none" stroke="#F4B860" stroke-width=".6" transform="rotate(60 200 200)"/>
-            <ellipse cx="200" cy="200" rx="100" ry="100" fill="none" stroke="#F4B860" stroke-width=".6" transform="rotate(120 200 200)"/>
+          <g opacity=".7" fill="none" stroke="#F4B860" stroke-width=".7">
+            <rect x="120" y="80" width="160" height="240" rx="14"/>
+            <rect x="140" y="100" width="120" height="200" rx="6" opacity=".6"/>
+            <circle cx="200" cy="200" r="38"/>
+            <line x1="200" y1="158" x2="200" y2="242"/>
+            <line x1="158" y1="200" x2="242" y2="200"/>
           </g>
           <circle cx="200" cy="200" r="4" fill="#F4B860"/>
+          <g fill="#F4B860" opacity=".7">
+            <circle cx="160" cy="120" r="2"/>
+            <circle cx="240" cy="120" r="2"/>
+            <circle cx="160" cy="280" r="2"/>
+            <circle cx="240" cy="280" r="2"/>
+          </g>
         </svg>
         <div class="case-arrow">↗</div>
         <div class="case-info">
           <div class="case-meta">
-            <span>BRAND SPACE</span>
+            <span>AR · 门店滤镜</span>
             <span class="tag">2025</span>
           </div>
-          <div class="case-name">HOLO <em>PAVILION</em></div>
-          <div class="case-sub">全息品牌发布舱</div>
+          <div class="case-name">MIRROR <em>LENS</em></div>
+          <div class="case-sub">门店 AR 试穿与 IP 滤镜</div>
         </div>
       </a>
 
-      <!-- Case 4 -->
-      <a href="#contact" class="case case-4 reveal" data-delay="1" data-hover>
+      <!-- Case 4 - VR/AR -->
+      <a href="#xr" class="case case-4 reveal" data-delay="1" data-hover>
         <div class="case-canvas case-bg-4"></div>
         <svg class="case-svg" viewBox="0 0 400 400" preserveAspectRatio="xMidYMid slice">
-          <g stroke="#FF4D2E" fill="none" opacity=".6" stroke-width=".5">
-            <path d="M50 350 Q100 200 150 350 Q200 200 250 350 Q300 200 350 350"/>
-            <path d="M50 320 Q100 170 150 320 Q200 170 250 320 Q300 170 350 320" opacity=".5"/>
-            <path d="M50 290 Q100 140 150 290 Q200 140 250 290 Q300 140 350 290" opacity=".3"/>
+          <g stroke="#FF4D2E" fill="none" opacity=".6" stroke-width=".6">
+            <path d="M80 200 Q200 80 320 200 Q200 320 80 200 Z"/>
+            <path d="M120 200 Q200 130 280 200 Q200 270 120 200 Z" opacity=".7"/>
+            <ellipse cx="200" cy="200" rx="50" ry="50" stroke-dasharray="4 4"/>
           </g>
           <g fill="#FF4D2E">
-            <circle cx="100" cy="200" r="3"/>
-            <circle cx="200" cy="200" r="3"/>
-            <circle cx="300" cy="200" r="3"/>
+            <circle cx="160" cy="200" r="3"><animate attributeName="cx" values="160;240;160" dur="3s" repeatCount="indefinite"/></circle>
+            <circle cx="200" cy="200" r="4"/>
           </g>
         </svg>
         <div class="case-arrow">↗</div>
         <div class="case-info">
           <div class="case-meta">
-            <span>IMMERSIVE</span>
-            <span class="tag">CONCEPT</span>
+            <span>VR · 沉浸展厅</span>
+            <span class="tag">2026 / CONCEPT</span>
           </div>
-          <div class="case-name">PULSE <em>GARDEN</em></div>
-          <div class="case-sub">互动光影花园</div>
+          <div class="case-name">PRISM <em>HALL</em></div>
+          <div class="case-sub">Vision Pro 全沉浸品牌发布舱</div>
         </div>
       </a>
 
       <!-- Case 5 -->
-      <a href="#contact" class="case case-5 reveal" data-delay="2" data-hover>
+      <a href="#talent" class="case case-5 reveal" data-delay="2" data-hover>
         <div class="case-canvas case-bg-5"></div>
         <svg class="case-svg" viewBox="0 0 400 400" preserveAspectRatio="xMidYMid slice">
           <g stroke="#C8FF4D" stroke-width=".5" fill="none" opacity=".6">
-            <rect x="80" y="80" width="240" height="240"/>
-            <rect x="120" y="120" width="160" height="160"/>
-            <rect x="160" y="160" width="80" height="80"/>
-            <line x1="80" y1="80" x2="320" y2="320"/>
-            <line x1="320" y1="80" x2="80" y2="320"/>
+            <circle cx="200" cy="200" r="60"/>
+            <circle cx="200" cy="200" r="100"/>
+            <circle cx="200" cy="200" r="140"/>
           </g>
-          <circle cx="200" cy="200" r="6" fill="#C8FF4D"/>
+          <g fill="#C8FF4D">
+            <circle cx="120" cy="160" r="3"/>
+            <circle cx="280" cy="160" r="3"/>
+            <circle cx="200" cy="280" r="3"/>
+            <circle cx="200" cy="200" r="5"/>
+          </g>
+          <g stroke="#C8FF4D" stroke-width=".4" opacity=".5">
+            <line x1="120" y1="160" x2="200" y2="200"/>
+            <line x1="280" y1="160" x2="200" y2="200"/>
+            <line x1="200" y1="280" x2="200" y2="200"/>
+          </g>
         </svg>
         <div class="case-arrow">↗</div>
         <div class="case-info">
           <div class="case-meta">
-            <span>BRAND SPACE</span>
-            <span class="tag">CONCEPT</span>
+            <span>TALENT · 猎头</span>
+            <span class="tag">2026 / ONGOING</span>
           </div>
-          <div class="case-name">VOID <em>WALK</em></div>
-          <div class="case-sub">未来零售概念店</div>
+          <div class="case-name">TALENT <em>MAP</em></div>
+          <div class="case-sub">设计与科技赛道人才地图</div>
         </div>
       </a>
 
@@ -1201,10 +1626,10 @@ footer a:hover{color:var(--accent);}
         <div class="case-arrow">↗</div>
         <div class="case-info">
           <div class="case-meta">
-            <span>CONTENT IP · ONGOING</span>
+            <span>CONTENT IP · 进行中</span>
             <span class="tag">FLYUN ORIGINAL</span>
           </div>
-          <div class="case-name">LIGHT <em>SCRIPT</em></div>
+          <div class="case-name">光的 <em>剧本</em></div>
           <div class="case-sub">FLYUN 自有数字策展品牌 · 双月一刊 · 城市间巡回</div>
         </div>
       </a>
@@ -1217,12 +1642,12 @@ footer a:hover{color:var(--accent);}
   <div class="container">
     <div class="section-head reveal">
       <div>
-        <div class="eyebrow">04 · HOW WE WORK</div>
-        <h2 class="section-title">Five steps,<br/>one <em>spatial</em><br/>conversation.</h2>
+        <div class="eyebrow">06 · HOW WE WORK</div>
+        <h2 class="section-title">五步流程，<br/>一次<em>空间</em>的对话。</h2>
       </div>
       <p class="section-desc">
         FLYUN 的工作流是一段被设计过的旅程 ——
-        从「理解你」到「让人理解你」，每一步都有可交付物，每一步都可以中止或延展。
+        无论是空间项目、VR/AR 内容还是猎头人才寻访，每一步都有可交付物，每一步都可以中止或延展。
       </p>
     </div>
 
@@ -1271,22 +1696,69 @@ footer a:hover{color:var(--accent);}
   </div>
 </section>
 
+<!-- ===== TOOLS · 业务工作站 ===== -->
+<section id="tools">
+  <div class="container">
+    <div class="section-head reveal">
+      <div>
+        <div class="eyebrow">07 · TOOLS · 业务工作站</div>
+        <h2 class="section-title">为内部协作<br/>而生的<em>工具</em>。</h2>
+      </div>
+      <p class="section-desc">
+        FLYUN 把日常运转的工作流也变成一组工具 ——
+        客户、岗位、候选人、项目，全部通过加密空间分发。
+        下面是猎头业务侧的四个核心入口，各自对应不同角色。
+      </p>
+    </div>
+
+    <div class="tools-grid reveal">
+      <a href="F.html" class="tool-card" data-hover target="_blank" rel="noopener">
+        <div class="tool-mark">F</div>
+        <div class="tool-tag">猎头顾问 · AI 增效</div>
+        <div class="tool-name">飞云 Pro 工作站</div>
+        <p class="tool-desc">JD 智能解析、勾搭话术、面试锦囊与简历脱敏，一站式提升顾问产能。</p>
+        <div class="tool-foot">打开 <span>↗</span></div>
+      </a>
+      <a href="X.html" class="tool-card" data-hover target="_blank" rel="noopener">
+        <div class="tool-mark">X</div>
+        <div class="tool-tag">顾问工作台 · 16 维寻访</div>
+        <div class="tool-name">智能寻访空间</div>
+        <p class="tool-desc">客户、岗位、候选人三层联动，16 个维度全量录入与多维筛选。</p>
+        <div class="tool-foot">打开 <span>↗</span></div>
+      </a>
+      <a href="M.html" class="tool-card" data-hover target="_blank" rel="noopener">
+        <div class="tool-mark">M</div>
+        <div class="tool-tag">顾问看板 · 数据视图</div>
+        <div class="tool-name">空间数据看板</div>
+        <p class="tool-desc">寻访状态、学历画像、项目分布三屏看板，让管理者一眼看清整体节奏。</p>
+        <div class="tool-foot">打开 <span>↗</span></div>
+      </a>
+      <a href="Z.html" class="tool-card" data-hover target="_blank" rel="noopener">
+        <div class="tool-mark">Z</div>
+        <div class="tool-tag">候选人侧 · 私人空间</div>
+        <div class="tool-name">候选人智能空间</div>
+        <p class="tool-desc">候选人专属加密入口，可查看面试进度、Offer 状态与匹配岗位。</p>
+        <div class="tool-foot">打开 <span>↗</span></div>
+      </a>
+    </div>
+  </div>
+</section>
+
 <!-- ===== PRICING ===== -->
 <section id="pricing">
   <div class="container">
     <div class="section-head reveal">
       <div>
-        <div class="eyebrow">05 · ENGAGEMENT</div>
-        <h2 class="section-title">Three ways<br/>to <em>start</em>.</h2>
+        <div class="eyebrow">08 · ENGAGEMENT</div>
+        <h2 class="section-title">四种合作<br/><em>起点</em>。</h2>
       </div>
       <p class="section-desc">
-        FLYUN 把合作分成三档 —— 你可以从最轻的 SPARK 开始验证一次合作，
-        逐步走向 STORY 和 SYSTEM。每一档都包含完整的概念到落地服务，
-        没有「设计完就跑路」的版本。
+        从最轻的单点装置到长期空间体系，从一个 VR 内容到一个关键岗位 ——
+        每一档都是完整闭环，没有「设计完就跑路」、也没有「只发简历不复盘」的版本。
       </p>
     </div>
 
-    <div class="pricing-grid">
+    <div class="pricing-grid pricing-grid-4">
       <!-- Tier 1 -->
       <div class="tier reveal" data-hover>
         <div class="tier-name"><em>Spark</em></div>
@@ -1295,7 +1767,7 @@ footer a:hover{color:var(--accent);}
           <span class="amount">¥80K</span>
           <span class="unit">— ¥200K</span>
         </div>
-        <div class="tier-period">· 4 — 8 WEEKS</div>
+        <div class="tier-period">· 4 — 8 周</div>
         <ul class="tier-list">
           <li>1 个核心装置 / 快闪体验</li>
           <li>概念脚本 + 设计图 + 原型</li>
@@ -1309,8 +1781,30 @@ footer a:hover{color:var(--accent);}
         </a>
       </div>
 
-      <!-- Tier 2 -->
-      <div class="tier featured reveal" data-delay="1" data-hover>
+      <!-- Tier 2 - VR/AR -->
+      <div class="tier reveal" data-delay="1" data-hover>
+        <div class="tier-name"><em>XR Pack</em></div>
+        <div class="tier-zh">VR / AR 体验包</div>
+        <div class="tier-price">
+          <span class="amount">¥150K</span>
+          <span class="unit">— ¥600K</span>
+        </div>
+        <div class="tier-period">· 6 — 12 周</div>
+        <ul class="tier-list">
+          <li>VR 沉浸展厅 / Vision Pro 应用</li>
+          <li>AR 滤镜 / Web AR 嵌入</li>
+          <li>3D 资产 + 多平台适配</li>
+          <li>线下空间数字孪生</li>
+          <li>内容更新 SOP</li>
+        </ul>
+        <a href="#contact" class="tier-cta" data-hover>
+          配一套 XR Pack
+          <span>→</span>
+        </a>
+      </div>
+
+      <!-- Tier 3 - Story -->
+      <div class="tier featured reveal" data-delay="2" data-hover>
         <div class="tier-badge">推荐</div>
         <div class="tier-name"><em>Story</em></div>
         <div class="tier-zh">主题空间 · 体验店 / 发布会</div>
@@ -1318,7 +1812,7 @@ footer a:hover{color:var(--accent);}
           <span class="amount">¥300K</span>
           <span class="unit">— ¥800K</span>
         </div>
-        <div class="tier-period">· 8 — 16 WEEKS</div>
+        <div class="tier-period">· 8 — 16 周</div>
         <ul class="tier-list">
           <li>整个主题空间 / 发布会全案</li>
           <li>3 — 5 个交互触点</li>
@@ -1333,25 +1827,25 @@ footer a:hover{color:var(--accent);}
         </a>
       </div>
 
-      <!-- Tier 3 -->
-      <div class="tier reveal" data-delay="2" data-hover>
-        <div class="tier-name"><em>System</em></div>
-        <div class="tier-zh">空间品牌体系 · 长期合作</div>
+      <!-- Tier 4 - Talent -->
+      <div class="tier reveal" data-delay="3" data-hover>
+        <div class="tier-name"><em>Talent</em></div>
+        <div class="tier-zh">高端猎头 · 关键岗位寻访</div>
         <div class="tier-price">
-          <span class="amount">¥1M</span>
-          <span class="unit">+ / 年</span>
+          <span class="amount">20%</span>
+          <span class="unit">— 25% 年薪</span>
         </div>
-        <div class="tier-period">· 16+ WEEKS · ANNUAL</div>
+        <div class="tier-period">· 4 — 12 周</div>
         <ul class="tier-list">
-          <li>品牌空间体系 / 多门店标准化</li>
-          <li>持续内容更新机制</li>
-          <li>FLYUN 团队驻场 / Retainer</li>
-          <li>季度迭代 + 年度大展</li>
-          <li>分成 / 入股可议</li>
-          <li>优先孵化自有 IP 共创</li>
+          <li>JD 解析 + 人才画像</li>
+          <li>独家库 + 暗渠 + AI 寻访</li>
+          <li>VR 沉浸面试 (可选)</li>
+          <li>Offer 谈判与 Background Check</li>
+          <li>入职 90 天陪跑</li>
+          <li>不入职不收费</li>
         </ul>
         <a href="#contact" class="tier-cta" data-hover>
-          聊聊 System
+          找一个对的人
           <span>→</span>
         </a>
       </div>
@@ -1361,28 +1855,28 @@ footer a:hover{color:var(--accent);}
     <div class="revenue reveal">
       <div>
         <h3>收入结构 · <em style="color:var(--accent);font-style:italic;">Revenue Mix</em></h3>
-        <p>FLYUN 不靠单一项目费撑起团队 —— 60% 服务、20% 内容、20% 长期合作与自有 IP，让工作室既有现金流，也有自己的故事可讲。</p>
+        <p>FLYUN 不靠单一项目费撑起团队 —— 空间设计、VR/AR、猎头、内容 IP 四条腿走路，让工作室既有现金流，也有自己的故事可讲。</p>
       </div>
       <div class="revenue-bars">
         <div class="rev-row">
-          <div class="rev-label">PROJECT FEE / 项目设计费</div>
-          <div class="rev-bar"><div class="rev-fill" data-pct="60"></div></div>
-          <div class="rev-pct">60%</div>
+          <div class="rev-label">空间设计 / 品牌空间</div>
+          <div class="rev-bar"><div class="rev-fill" data-pct="40"></div></div>
+          <div class="rev-pct">40%</div>
         </div>
         <div class="rev-row">
-          <div class="rev-label">CUSTOM INSTALLATION</div>
-          <div class="rev-bar"><div class="rev-fill warm" data-pct="20"></div></div>
-          <div class="rev-pct">20%</div>
+          <div class="rev-label">VR / AR · XR 内容</div>
+          <div class="rev-bar"><div class="rev-fill warm" data-pct="22"></div></div>
+          <div class="rev-pct">22%</div>
         </div>
         <div class="rev-row">
-          <div class="rev-label">LONG-TERM IP / 分成</div>
-          <div class="rev-bar"><div class="rev-fill cool" data-pct="12"></div></div>
+          <div class="rev-label">高端猎头 / 人才业务</div>
+          <div class="rev-bar"><div class="rev-fill cool" data-pct="26"></div></div>
+          <div class="rev-pct">26%</div>
+        </div>
+        <div class="rev-row">
+          <div class="rev-label">内容 IP / 课程</div>
+          <div class="rev-bar"><div class="rev-fill dim" data-pct="12"></div></div>
           <div class="rev-pct">12%</div>
-        </div>
-        <div class="rev-row">
-          <div class="rev-label">CONTENT / 课程</div>
-          <div class="rev-bar"><div class="rev-fill dim" data-pct="8"></div></div>
-          <div class="rev-pct">8%</div>
         </div>
       </div>
     </div>
@@ -1394,8 +1888,8 @@ footer a:hover{color:var(--accent);}
   <div class="container">
     <div class="section-head reveal">
       <div>
-        <div class="eyebrow">06 · ROADMAP</div>
-        <h2 class="section-title">18 months,<br/>from a <em>desk</em><br/>to a <em>studio</em>.</h2>
+        <div class="eyebrow">09 · ROADMAP</div>
+        <h2 class="section-title">18 个月，<br/>从一张<em>桌</em><br/>到一支<em>团队</em>。</h2>
       </div>
       <p class="section-desc">
         FLYUN 的第一年半被切成五个阶段。
@@ -1422,10 +1916,10 @@ footer a:hover{color:var(--accent);}
         <div class="phase-time">Q2 · 4 — 6M</div>
         <div class="phase-title"><em>Validate</em> · 验证</div>
         <ul class="phase-list">
-          <li>完成 3 — 5 个付费项目</li>
-          <li>案例库 v1 上线 + 复盘内容</li>
-          <li>1 — 2 家品牌长期合作意向</li>
-          <li>Spark 服务定价稳定</li>
+          <li>完成 3 — 5 个付费空间项目</li>
+          <li>第一个 VR 沉浸体验交付</li>
+          <li>猎头业务首批 10 个 Offer 兑现</li>
+          <li>Spark / XR Pack 服务定价稳定</li>
         </ul>
       </div>
 
@@ -1434,9 +1928,9 @@ footer a:hover{color:var(--accent);}
         <div class="phase-time">Q3 · 7 — 9M</div>
         <div class="phase-title"><em>Expand</em> · 扩张</div>
         <ul class="phase-list">
-          <li>核心 3 人小团队成型 (空间 / 技术 / 内容)</li>
+          <li>核心 5 人小团队成型 (空间 / XR / 猎头 / 内容)</li>
           <li>第一个百万级 Story 项目</li>
-          <li>受邀行业活动 / 演讲</li>
+          <li>VR 沉浸面试上线 · 头部客户合作</li>
           <li>FLYUN Letter 创刊</li>
         </ul>
       </div>
@@ -1446,10 +1940,10 @@ footer a:hover{color:var(--accent);}
         <div class="phase-time">Q4 · 10 — 12M</div>
         <div class="phase-title"><em>Systemize</em> · 体系</div>
         <ul class="phase-list">
-          <li>三档服务模板化 (Spark / Story / System)</li>
+          <li>四档服务模板化 (Spark / XR Pack / Story / Talent)</li>
           <li>第一个 System 级长期合作</li>
-          <li>自有 IP「LIGHT SCRIPT」首站落地</li>
-          <li>海外项目接洽</li>
+          <li>自有 IP「光的剧本」首站落地</li>
+          <li>设计 + 科技人才地图发布</li>
         </ul>
       </div>
 
@@ -1458,8 +1952,8 @@ footer a:hover{color:var(--accent);}
         <div class="phase-time">Y2 · 13 — 18M</div>
         <div class="phase-title"><em>Beyond</em> · 出圈</div>
         <ul class="phase-list">
-          <li>团队扩张至 8 — 10 人</li>
-          <li>自有 IP 衍生硬件 / 产品发布</li>
+          <li>团队扩张至 12 — 15 人 (含猎头顾问 4 人)</li>
+          <li>自有 VR 内容 IP / 衍生硬件发布</li>
           <li>海外首个落地项目</li>
           <li>FLYUN 品牌十年大展概念立项</li>
         </ul>
@@ -1471,11 +1965,11 @@ footer a:hover{color:var(--accent);}
 <!-- ===== CONTACT ===== -->
 <section class="contact" id="contact">
   <div class="contact-inner">
-    <div class="contact-eyebrow reveal">07 · LET'S TALK</div>
+    <div class="contact-eyebrow reveal">10 · LET'S TALK</div>
     <h2 class="contact-title reveal" data-delay="1">
-      你有一个<br/>
-      <em>空间</em>，<br/>
-      我们让它<em>说话</em>。
+      你有一个<em>空间</em>，<br/>
+      或者一个<em>关键岗位</em>，<br/>
+      我们都<em>聊聊</em>。
     </h2>
     <a href="mailto:hello@flyun.studio" class="btn btn-primary reveal" data-delay="2" data-hover>
       hello@flyun.studio
@@ -1498,10 +1992,10 @@ footer a:hover{color:var(--accent);}
         <div class="channel-name">小红书</div>
         <div class="channel-handle">@FLYUN STUDIO</div>
       </a>
-      <a href="#" class="channel reveal" data-delay="4" data-hover>
+      <a href="job.html" class="channel reveal" data-delay="4" data-hover>
         <div class="channel-tag">CONTACT / 04</div>
-        <div class="channel-name">Instagram</div>
-        <div class="channel-handle">@flyun.studio</div>
+        <div class="channel-name">加入 FLYUN</div>
+        <div class="channel-handle">职业机会 / 自荐入口</div>
       </a>
     </div>
   </div>
@@ -1509,18 +2003,19 @@ footer a:hover{color:var(--accent);}
 
 <!-- ===== FOOTER ===== -->
 <footer>
-  <div>© 2026 FLYUN STUDIO · ALL RIGHTS RESERVED</div>
-  <div>BUILT IN <span style="color:var(--accent);">WUHAN</span> · WORKING WORLDWIDE</div>
-  <div>v1.0 · <a href="#hero">↑ BACK TO TOP</a></div>
+  <div>© 2026 FLYUN STUDIO 飞云 · 保留全部权利</div>
+  <div>立足 <span style="color:var(--accent);">武汉</span> · 服务全球 · 空间 / VR · AR / 猎头</div>
+  <div>v2.0 · <a href="#hero">↑ 回到顶部</a></div>
 </footer>
 
 <script>
 /* ===== BOOT ===== */
 const bootSteps = [
-  ['CALIBRATING SPATIAL INTERFACE', 320],
-  ['LOADING DESIGN PRINCIPLES', 260],
-  ['SYNCING INTERACTION LAYER', 240],
-  ['READY', 200]
+  ['校准空间界面中', 320],
+  ['加载设计原则中', 260],
+  ['同步 VR / AR 模块', 240],
+  ['对接猎头数据库', 240],
+  ['就绪', 200]
 ];
 let bs=0; const bootText=document.getElementById('bootText');
 function nextBoot(){
@@ -1570,13 +2065,15 @@ addEventListener('scroll',()=>{
 /* ===== STRIP TICKER ===== */
 const stripData = [
   ['IMMERSIVE','沉浸装置'],
+  ['VR / AR','虚拟现实 · 增强现实'],
+  ['SPATIAL UI','空间界面'],
   ['PHYGITAL','数字物理融合'],
+  ['HEADHUNTING','高端猎头'],
+  ['TALENT MAPPING','人才地图'],
   ['BRAND SPACE','品牌空间'],
   ['CONTENT IP','内容与 IP'],
-  ['SPATIAL UI','空间界面'],
   ['NARRATIVE','空间叙事'],
-  ['INTERACTION','可被回应'],
-  ['CRAFT','慢工出细活']
+  ['INTERACTION','可被回应']
 ];
 const stripTrack = document.getElementById('stripTrack');
 const html = stripData.map(t=>
