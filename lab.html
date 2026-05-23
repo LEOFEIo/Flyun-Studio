@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="description" content="FLYUN LAB · 飞云实验室 —— 公开孵化中的空间装置、XR 原型、人才工作站与硬件实验。先做出来，再被看见。" />
+<title>飞云实验室 · FLYUN Lab · 公开孵化中的实验</title>
+<link rel="icon" type="image/svg+xml"
+href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 128 128'%3E%3Crect width='128' height='128' rx='28' fill='%230A0908'/%3E%3Cpath d='M36 30v68m0-68h56m-56 32h44' stroke='%23FF4D2E' stroke-width='10' stroke-linecap='square' fill='none'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,300..900,0..100&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Noto+Serif+SC:wght@300;400;500;600&family=Noto+Sans+SC:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0A0908;--bg-2:#13110F;
+  --surface:rgba(28,24,20,.55);--surface-2:rgba(40,34,28,.45);
+  --border:rgba(237,230,214,.08);--border-strong:rgba(237,230,214,.18);
+  --text:#EDE6D6;--text-dim:#9B9285;--text-mute:#6B6359;
+  --accent:#FF4D2E;--accent-2:#C8FF4D;--accent-warm:#F4B860;
+  --ease:cubic-bezier(.22,.61,.36,1);
+  --serif:'Fraunces','Noto Serif SC',Georgia,serif;
+  --sans:'Inter','Noto Sans SC',-apple-system,BlinkMacSystemFont,sans-serif;
+  --mono:'JetBrains Mono',monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-font-smoothing:antialiased;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:var(--sans);background:var(--bg);color:var(--text);
+  overflow-x:hidden;min-height:100vh;
+  font-feature-settings:"ss01","cv11";
+}
+::selection{background:var(--accent);color:#fff;}
+
+/* atmosphere */
+.aura{position:fixed;inset:0;z-index:-2;overflow:hidden;pointer-events:none;}
+.aura::before,.aura::after{content:"";position:absolute;width:60vw;height:60vw;border-radius:50%;filter:blur(140px);opacity:.18;}
+.aura::before{background:radial-gradient(circle,#C8FF4D,transparent 60%);top:-25%;left:-15%;animation:floatA 28s ease-in-out infinite;}
+.aura::after{background:radial-gradient(circle,#FF4D2E,transparent 60%);bottom:-30%;right:-20%;animation:floatB 32s ease-in-out infinite;}
+@keyframes floatA{0%,100%{transform:translate(0,0) scale(1);}50%{transform:translate(8vw,4vw) scale(1.15);}}
+@keyframes floatB{0%,100%{transform:translate(0,0) scale(1);}50%{transform:translate(-6vw,-4vw) scale(1.1);}}
+.grid-bg{
+  position:fixed;inset:0;z-index:-3;pointer-events:none;
+  background-image:linear-gradient(rgba(237,230,214,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(237,230,214,.025) 1px,transparent 1px);
+  background-size:80px 80px;mask-image:radial-gradient(ellipse at center,black 30%,transparent 75%);
+}
+.noise{
+  position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.04;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence baseFrequency='.9' numOctaves='2'/></filter><rect width='200' height='200' filter='url(%23n)'/></svg>");
+  mix-blend-mode:overlay;
+}
+
+/* nav */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:1000;padding:18px 32px;
+  display:flex;align-items:center;justify-content:space-between;
+  background:rgba(10,9,8,.7);backdrop-filter:blur(24px) saturate(140%);
+  -webkit-backdrop-filter:blur(24px) saturate(140%);
+  border-bottom:1px solid var(--border);
+}
+.nav-logo{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--text);}
+.nav-mark{
+  width:36px;height:36px;border-radius:10px;background:var(--bg);
+  border:1px solid var(--border-strong);display:flex;align-items:center;justify-content:center;
+  font-family:var(--serif);font-size:18px;font-weight:600;position:relative;
+}
+.nav-mark::after{
+  content:"";position:absolute;width:6px;height:6px;border-radius:50%;
+  background:var(--accent-2);right:-2px;top:-2px;box-shadow:0 0 10px var(--accent-2);
+}
+.nav-name{font-family:var(--serif);font-size:15px;line-height:1.1;}
+.nav-name small{display:block;font-family:var(--mono);font-size:9px;color:var(--text-mute);letter-spacing:.25em;margin-top:3px;}
+.nav-back{
+  font-family:var(--mono);font-size:11px;color:var(--text-dim);text-decoration:none;
+  padding:8px 14px;border:1px solid var(--border);border-radius:999px;transition:.3s;
+}
+.nav-back:hover{color:var(--accent);border-color:var(--accent);}
+
+.container{max-width:1200px;margin:0 auto;padding:140px 32px 100px;}
+
+/* hero */
+.hero{margin-bottom:72px;}
+.eyebrow{
+  font-family:var(--mono);font-size:11px;letter-spacing:.3em;color:var(--text-mute);
+  text-transform:uppercase;display:inline-flex;align-items:center;gap:10px;margin-bottom:24px;
+}
+.eyebrow::before{content:"";width:24px;height:1px;background:var(--accent-2);}
+.hero-title{
+  font-family:var(--serif);font-weight:300;font-size:clamp(48px,9vw,128px);
+  line-height:.95;letter-spacing:-.04em;margin-bottom:32px;
+  font-variation-settings:"opsz" 144,"SOFT" 30;
+}
+.hero-title em{font-style:italic;color:var(--accent-2);font-weight:400;}
+.hero-sub{font-size:17px;line-height:1.75;color:var(--text-dim);max-width:640px;}
+.hero-sub strong{color:var(--text);font-weight:500;}
+
+.live-tag{
+  display:inline-flex;align-items:center;gap:10px;
+  font-family:var(--mono);font-size:11px;letter-spacing:.25em;color:var(--text-dim);
+  padding:8px 14px;border:1px solid var(--border);border-radius:999px;margin-bottom:24px;
+}
+.dot{
+  width:8px;height:8px;border-radius:50%;background:var(--accent-2);
+  box-shadow:0 0 10px var(--accent-2);position:relative;
+}
+.dot::after{
+  content:"";position:absolute;inset:-4px;border-radius:50%;
+  border:2px solid var(--accent-2);animation:livePulse 2.2s ease-out infinite;
+}
+@keyframes livePulse{0%{transform:scale(.8);opacity:1;}100%{transform:scale(2.2);opacity:0;}}
+
+/* manifesto */
+.manifesto{
+  margin:80px 0;padding:48px;border:1px solid var(--border);border-radius:24px;
+  background:var(--surface);font-family:var(--serif);font-style:italic;font-weight:300;
+  font-size:clamp(20px,2.4vw,32px);line-height:1.5;color:var(--text);
+  border-left:3px solid var(--accent-2);
+}
+.manifesto em{color:var(--accent-2);font-style:italic;}
+.manifesto cite{
+  display:block;margin-top:24px;font-family:var(--mono);font-style:normal;font-size:11px;
+  color:var(--text-mute);letter-spacing:.25em;
+}
+
+/* lab grid */
+.lab-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;}
+.exp{
+  position:relative;padding:36px;border-radius:24px;
+  background:var(--surface);border:1px solid var(--border);
+  backdrop-filter:blur(20px);transition:.4s var(--ease);overflow:hidden;
+  display:flex;flex-direction:column;min-height:380px;
+}
+.exp::before{
+  content:"";position:absolute;inset:0;border-radius:24px;
+  background:linear-gradient(135deg,rgba(200,255,77,.06),transparent 60%);
+  opacity:0;transition:.4s;pointer-events:none;
+}
+.exp:hover{border-color:var(--border-strong);transform:translateY(-6px);}
+.exp:hover::before{opacity:1;}
+.exp-meta{
+  display:flex;justify-content:space-between;align-items:center;
+  font-family:var(--mono);font-size:10px;letter-spacing:.25em;color:var(--text-mute);
+  margin-bottom:18px;
+}
+.exp-meta .stage{
+  padding:4px 10px;border-radius:6px;background:rgba(200,255,77,.1);
+  border:1px solid rgba(200,255,77,.3);color:var(--accent-2);
+}
+.exp-meta .stage.alpha{background:rgba(255,77,46,.1);border-color:rgba(255,77,46,.3);color:var(--accent);}
+.exp-meta .stage.beta{background:rgba(244,184,96,.1);border-color:rgba(244,184,96,.3);color:var(--accent-warm);}
+.exp-no{color:var(--accent-2);}
+.exp-name{
+  font-family:var(--serif);font-size:32px;font-weight:300;line-height:1.1;
+  letter-spacing:-.02em;margin-bottom:6px;
+}
+.exp-name em{font-style:italic;color:var(--accent-2);}
+.exp-en{
+  font-family:var(--mono);font-size:11px;color:var(--text-mute);
+  letter-spacing:.2em;margin-bottom:18px;
+}
+.exp-desc{font-size:14.5px;line-height:1.7;color:var(--text-dim);margin-bottom:20px;}
+.exp-list{list-style:none;margin-bottom:auto;}
+.exp-list li{
+  font-size:13px;color:var(--text);padding:8px 0;border-top:1px dashed var(--border);
+  display:flex;align-items:center;gap:12px;
+}
+.exp-list li::before{
+  content:"";width:5px;height:5px;border-radius:50%;background:var(--accent-2);
+  flex-shrink:0;
+}
+.exp-foot{
+  margin-top:24px;padding-top:18px;border-top:1px solid var(--border);
+  display:flex;justify-content:space-between;align-items:center;
+  font-family:var(--mono);font-size:11px;color:var(--text-mute);letter-spacing:.18em;
+}
+.exp-foot strong{color:var(--text);font-weight:500;}
+
+/* progress bar in card */
+.exp-progress{
+  margin-top:14px;height:3px;background:rgba(237,230,214,.05);border-radius:3px;overflow:hidden;
+}
+.exp-progress span{
+  display:block;height:100%;background:linear-gradient(90deg,var(--accent-2),var(--accent-warm));
+  width:0;transition:width 1.2s var(--ease);
+}
+
+/* changelog */
+.changelog{
+  margin-top:96px;padding:48px;border:1px solid var(--border);border-radius:24px;
+  background:var(--surface);
+}
+.changelog h3{
+  font-family:var(--serif);font-size:36px;font-weight:300;letter-spacing:-.02em;
+  margin-bottom:32px;
+}
+.changelog h3 em{font-style:italic;color:var(--accent-2);}
+.log-item{
+  display:grid;grid-template-columns:140px 1fr;gap:32px;align-items:start;
+  padding:18px 0;border-top:1px dashed var(--border);
+}
+.log-item:first-of-type{border-top:1px solid var(--border-strong);}
+.log-date{
+  font-family:var(--mono);font-size:11px;color:var(--accent-2);letter-spacing:.2em;
+  padding-top:2px;
+}
+.log-body{font-size:14px;line-height:1.7;color:var(--text-dim);}
+.log-body strong{color:var(--text);font-weight:500;}
+.log-tag{
+  display:inline-block;padding:2px 8px;margin-right:6px;border-radius:4px;
+  font-family:var(--mono);font-size:9.5px;letter-spacing:.15em;
+  background:rgba(237,230,214,.06);color:var(--text-dim);
+}
+.log-tag.ship{background:rgba(200,255,77,.12);color:var(--accent-2);}
+.log-tag.fix{background:rgba(244,184,96,.12);color:var(--accent-warm);}
+.log-tag.exp{background:rgba(255,77,46,.12);color:var(--accent);}
+
+/* cta */
+.cta{
+  margin-top:80px;padding:64px 48px;border-radius:24px;
+  background:radial-gradient(ellipse at center,rgba(200,255,77,.08),transparent 70%),var(--surface);
+  border:1px solid var(--border);text-align:center;
+}
+.cta h3{
+  font-family:var(--serif);font-size:clamp(28px,4.5vw,52px);font-weight:300;
+  letter-spacing:-.02em;line-height:1.15;margin-bottom:18px;
+}
+.cta h3 em{font-style:italic;color:var(--accent-2);}
+.cta p{color:var(--text-dim);font-size:15px;line-height:1.7;max-width:540px;margin:0 auto 32px;}
+.btn{
+  height:54px;padding:0 28px;border-radius:14px;
+  display:inline-flex;align-items:center;justify-content:center;gap:10px;
+  text-decoration:none;font-weight:600;font-size:14px;letter-spacing:.02em;
+  transition:.3s var(--ease);background:var(--accent-2);color:#0A0908;
+  box-shadow:0 12px 36px rgba(200,255,77,.25);
+}
+.btn:hover{transform:translateY(-3px);box-shadow:0 20px 50px rgba(200,255,77,.4);}
+
+footer{
+  padding:48px 32px;border-top:1px solid var(--border);
+  display:flex;justify-content:space-between;align-items:center;
+  font-family:var(--mono);font-size:11px;letter-spacing:.2em;color:var(--text-mute);
+  flex-wrap:wrap;gap:18px;
+}
+footer a{color:var(--text-mute);text-decoration:none;transition:.2s;}
+footer a:hover{color:var(--accent-2);}
+
+@media(max-width:768px){
+  .lab-grid{grid-template-columns:1fr;}
+  .log-item{grid-template-columns:1fr;gap:6px;}
+  nav{padding:14px 18px;}
+  .container{padding:110px 18px 60px;}
+  .manifesto{padding:32px;}
+  .changelog{padding:32px 24px;}
+  .cta{padding:40px 24px;}
+  footer{flex-direction:column;text-align:center;}
+}
+</style>
+</head>
+<body>
+
+<div class="aura"></div>
+<div class="grid-bg"></div>
+<div class="noise"></div>
+
+<nav>
+  <a href="index.html" class="nav-logo">
+    <div class="nav-mark">F</div>
+    <div class="nav-name">飞云 Flyun Studio<small>SPATIAL · XR · TALENT</small></div>
+  </a>
+  <a href="index.html" class="nav-back">← 返回主站</a>
+</nav>
+
+<div class="container">
+
+  <header class="hero">
+    <div class="live-tag"><span class="dot"></span><span>LAB · 04 EXPERIMENTS LIVE</span></div>
+    <div class="eyebrow">FLYUN LAB · 飞云实验室</div>
+    <h1 class="hero-title">
+      先<em>做出来</em>，<br/>
+      再被<em>看见</em>。
+    </h1>
+    <p class="hero-sub">
+      <strong>飞云实验室 (FLYUN Lab)</strong> 是 FLYUN 公开孵化的实验区 ——
+      所有还没成形的<strong>沉浸装置原型、XR 玩具、AI 工作站、硬件草稿</strong>都被放在这里。
+      它们不一定能成为产品；但它们一定会被记录、被打磨、被一次又一次重新做。
+    </p>
+  </header>
+
+  <div class="manifesto">
+    "实验室不是一个房间，是一种<em>不害怕半成品</em>的节奏 —— 我们把每一周做出来的小东西放在这里，
+    让它被看见、被反驳、被继续做。"
+    <cite>— FLYUN · LAB MANIFESTO</cite>
+  </div>
+
+  <div class="lab-grid">
+
+    <div class="exp">
+      <div class="exp-meta">
+        <span class="exp-no">EXP / 01</span>
+        <span class="stage">RC</span>
+      </div>
+      <div class="exp-name"><em>飞云 Pro</em> · AI 工作站</div>
+      <div class="exp-en">FLYUN PRO · HEADHUNTER OS</div>
+      <p class="exp-desc">
+        给猎头顾问的 AI 增效工作台 —— JD 解析、勾搭话术、简历脱敏、面试锦囊一站式。
+        已有 12+ 顾问实测，正逼近 1.0。
+      </p>
+      <ul class="exp-list">
+        <li>JD → 候选人画像智能解析</li>
+        <li>差异化勾搭话术生成 v3</li>
+        <li>简历自动脱敏与排版</li>
+        <li>三回合面试提分锦囊</li>
+      </ul>
+      <div class="exp-progress"><span data-pct="88"></span></div>
+      <div class="exp-foot">
+        <span>READY · 0.92 → 1.0</span>
+        <strong><a href="F.html" style="color:inherit;text-decoration:none;">↗ 进入工作站</a></strong>
+      </div>
+    </div>
+
+    <div class="exp">
+      <div class="exp-meta">
+        <span class="exp-no">EXP / 02</span>
+        <span class="stage">RC</span>
+      </div>
+      <div class="exp-name"><em>智能寻访</em> 空间</div>
+      <div class="exp-en">SEARCH SPACE · TALENT CLOUD</div>
+      <p class="exp-desc">
+        每一位 / 每一组猎头的私人云 —— 16 维候选人档案、岗位树、可视化看板，
+        本地加密，密码即空间。
+      </p>
+      <ul class="exp-list">
+        <li>客户 → 岗位 → 候选人树</li>
+        <li>三表联动可视化看板</li>
+        <li>多维搜索与档案自动计算</li>
+        <li>报告一键导出 Excel</li>
+      </ul>
+      <div class="exp-progress"><span data-pct="82"></span></div>
+      <div class="exp-foot">
+        <span>READY · 0.82</span>
+        <strong><a href="X.html" style="color:inherit;text-decoration:none;">↗ 解锁空间</a></strong>
+      </div>
+    </div>
+
+    <div class="exp">
+      <div class="exp-meta">
+        <span class="exp-no">EXP / 03</span>
+        <span class="stage beta">BETA</span>
+      </div>
+      <div class="exp-name"><em>Vision</em> Gate</div>
+      <div class="exp-en">visionOS · SPATIAL ENTRY</div>
+      <p class="exp-desc">
+        在 Vision Pro 上「打开品牌」的实验 —— 不是把网站搬进头显，
+        而是让一个手势成为门，一段呼吸成为通道。
+      </p>
+      <ul class="exp-list">
+        <li>visionOS 手部 / 眼动联合触发</li>
+        <li>空间锚点驱动的叙事节拍</li>
+        <li>共享空间多人协同尝试</li>
+      </ul>
+      <div class="exp-progress"><span data-pct="55"></span></div>
+      <div class="exp-foot">
+        <span>BETA · 0.55</span>
+        <strong>↗ 内部 demo 中</strong>
+      </div>
+    </div>
+
+    <div class="exp">
+      <div class="exp-meta">
+        <span class="exp-no">EXP / 04</span>
+        <span class="stage beta">BETA</span>
+      </div>
+      <div class="exp-name"><em>Echo</em> Room</div>
+      <div class="exp-en">SPATIAL · BREATH × LIGHT</div>
+      <p class="exp-desc">
+        把麦克风、灯带、投影、墙面一起编排 —— 让一句呼吸变成一面墙的回响。
+        小尺度装置原型已在飞云工位试运行。
+      </p>
+      <ul class="exp-list">
+        <li>声场分析 → 灯光 / 投影响应</li>
+        <li>体感传感器空间感知</li>
+        <li>多人同时呼吸的共振模式</li>
+      </ul>
+      <div class="exp-progress"><span data-pct="40"></span></div>
+      <div class="exp-foot">
+        <span>BETA · 0.40</span>
+        <strong>↗ 寻找首个落地空间</strong>
+      </div>
+    </div>
+
+    <div class="exp">
+      <div class="exp-meta">
+        <span class="exp-no">EXP / 05</span>
+        <span class="stage alpha">ALPHA</span>
+      </div>
+      <div class="exp-name"><em>Pulse</em> Garden</div>
+      <div class="exp-en">INTERACTIVE LIGHT GARDEN</div>
+      <p class="exp-desc">
+        户外光影花园概念 —— 由步入者的步速和心率驱动，
+        让一片广场长出一座只属于此刻的花园。
+      </p>
+      <ul class="exp-list">
+        <li>压感地砖 + 心率手环数据驱动</li>
+        <li>WebGL 投影模拟器先行</li>
+        <li>城市公共空间合作版本</li>
+      </ul>
+      <div class="exp-progress"><span data-pct="22"></span></div>
+      <div class="exp-foot">
+        <span>ALPHA · 0.22</span>
+        <strong>↗ 寻合作单位</strong>
+      </div>
+    </div>
+
+    <div class="exp">
+      <div class="exp-meta">
+        <span class="exp-no">EXP / 06</span>
+        <span class="stage alpha">ALPHA</span>
+      </div>
+      <div class="exp-name"><em>Letter</em> Engine</div>
+      <div class="exp-en">FLYUN LETTER · CMS PROTOTYPE</div>
+      <p class="exp-desc">
+        给 FLYUN Letter 双月刊用的极简发布工具 —— 一篇文章对应一个空间页，
+        排版、配色、动效都跟字体一起呼吸。
+      </p>
+      <ul class="exp-list">
+        <li>Markdown → 空间排版引擎</li>
+        <li>每篇文章生成独立 OG / 海报</li>
+        <li>RSS / 邮件订阅 / 长期归档</li>
+      </ul>
+      <div class="exp-progress"><span data-pct="18"></span></div>
+      <div class="exp-foot">
+        <span>ALPHA · 0.18</span>
+        <strong><a href="letter.html" style="color:inherit;text-decoration:none;">↗ 看 Letter</a></strong>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="changelog">
+    <h3><em>Changelog</em> · 实验日志</h3>
+
+    <div class="log-item">
+      <div class="log-date">2026 · 05 · 18</div>
+      <div class="log-body">
+        <span class="log-tag ship">SHIP</span><strong>飞云 Pro · 0.92 候选版</strong>上线 ——
+        勾搭话术 v3 增加「岗位语境」开关，简历脱敏支持自动遮罩 6 类敏感字段。
+      </div>
+    </div>
+
+    <div class="log-item">
+      <div class="log-date">2026 · 05 · 04</div>
+      <div class="log-body">
+        <span class="log-tag exp">EXP</span><strong>Vision Gate · v0.55</strong> ——
+        新增空间锚 + 双人共享场景，初次跑通跨头显的同一个「门」。
+      </div>
+    </div>
+
+    <div class="log-item">
+      <div class="log-date">2026 · 04 · 22</div>
+      <div class="log-body">
+        <span class="log-tag fix">FIX</span><strong>智能寻访空间</strong>修复多终端同步冲突；
+        档案树支持折叠 / 收藏夹 / 批量导出 PDF。
+      </div>
+    </div>
+
+    <div class="log-item">
+      <div class="log-date">2026 · 04 · 09</div>
+      <div class="log-body">
+        <span class="log-tag exp">EXP</span><strong>Echo Room</strong>第一版工位原型 ——
+        一根灯带 + 一只麦 + Python 信号链，三天做出可用 demo。
+      </div>
+    </div>
+
+    <div class="log-item">
+      <div class="log-date">2026 · 03 · 21</div>
+      <div class="log-body">
+        <span class="log-tag ship">SHIP</span><strong>FLYUN Letter · Issue 00</strong>创刊号开闸 ——
+        正在写第一期长文《空间是被低估的界面》。
+      </div>
+    </div>
+
+  </div>
+
+  <div class="cta">
+    <h3>有<em>想法</em>但没空间，<br/>或有<em>空间</em>但没玩法？</h3>
+    <p>实验室欢迎合作型实验：你提供场地 / 数据 / 预算，我们提供原型 / 设计 / 工程。</p>
+    <a href="index.html#contact" class="btn">提一个实验 ↗</a>
+  </div>
+
+</div>
+
+<footer>
+  <div>© 2026 FLYUN STUDIO · 飞云工作室</div>
+  <div>武汉 <span style="color:var(--accent-2);">·</span> WUHAN · 服务全球</div>
+  <div><a href="index.html">↑ 主站</a> · <a href="cases.html">案例</a> · <a href="letter.html">Letter</a></div>
+</footer>
+
+<script>
+  // animate progress bars on load
+  setTimeout(() => {
+    document.querySelectorAll('.exp-progress span').forEach(s => {
+      s.style.width = s.dataset.pct + '%';
+    });
+  }, 250);
+</script>
+</body>
+</html>

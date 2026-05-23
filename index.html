@@ -12,7 +12,7 @@ href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,300..900,0..100&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Noto+Serif+SC:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
 :root{
@@ -31,8 +31,8 @@ href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 
   --grad:linear-gradient(135deg,#FF4D2E 0%,#F4B860 100%);
   --grad-cool:linear-gradient(135deg,#C8FF4D 0%,#7AE2A0 100%);
   --ease:cubic-bezier(.22,.61,.36,1);
-  --serif:'Fraunces',Georgia,serif;
-  --sans:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+  --serif:'Fraunces','Noto Serif SC',Georgia,serif;
+  --sans:'Inter','Noto Sans SC',-apple-system,BlinkMacSystemFont,sans-serif;
   --mono:'JetBrains Mono',monospace;
 }
 *{margin:0;padding:0;box-sizing:border-box;}
@@ -46,7 +46,10 @@ body{
   cursor:none;
   -webkit-font-smoothing:antialiased;
   -moz-osx-font-smoothing:grayscale;
+  font-feature-settings:"ss01","cv11","calt";
+  text-rendering:optimizeLegibility;
 }
+.mono,code,kbd{font-variant-numeric:tabular-nums;}
 ::selection{background:var(--accent);color:#fff;}
 
 /* ===== BACKGROUND TEXTURE ===== */
@@ -175,7 +178,7 @@ nav.scrolled{
 .nav-cta:hover{background:transparent;color:var(--accent);}
 
 /* ===== TYPOGRAPHY UTILS ===== */
-.serif{font-family:var(--serif);}
+.serif{font-family:var(--serif);font-variation-settings:"opsz" 144,"SOFT" 30;}
 .italic{font-style:italic;}
 .mono{font-family:var(--mono);}
 .eyebrow{
@@ -190,6 +193,7 @@ nav.scrolled{
   font-family:var(--serif);font-weight:300;
   font-size:clamp(38px,6vw,80px);line-height:1;letter-spacing:-.03em;
   margin-bottom:28px;
+  font-variation-settings:"opsz" 144,"SOFT" 30;
 }
 .section-title em{font-style:italic;color:var(--accent);font-weight:400;}
 .section-desc{
@@ -229,6 +233,7 @@ nav.scrolled{
   font-family:var(--serif);font-weight:300;
   font-size:clamp(60px,11vw,180px);line-height:.92;letter-spacing:-.045em;
   margin-bottom:48px;
+  font-variation-settings:"opsz" 144,"SOFT" 50;
 }
 .hero-title .row{display:block;}
 .hero-title .row.indent{padding-left:clamp(40px,12vw,200px);}
@@ -665,6 +670,7 @@ section{padding:140px 32px;position:relative;}
 .contact-title{
   font-family:var(--serif);font-size:clamp(48px,8vw,120px);font-weight:300;
   line-height:.95;letter-spacing:-.04em;margin-bottom:48px;
+  font-variation-settings:"opsz" 144,"SOFT" 60;
 }
 .contact-title em{font-style:italic;color:var(--accent);}
 .contact-channels{
@@ -767,8 +773,9 @@ footer a:hover{color:var(--accent);}
     <a href="#services" data-hover>业务</a>
     <a href="#xr" data-hover>VR·AR</a>
     <a href="#talent" data-hover>猎头</a>
-    <a href="#showcase" data-hover>项目</a>
-    <a href="#process" data-hover>流程</a>
+    <a href="cases.html" data-hover>案例</a>
+    <a href="lab.html" data-hover>实验室</a>
+    <a href="letter.html" data-hover>Letter</a>
     <a href="#pricing" data-hover>合作</a>
   </div>
   <a href="#contact" class="nav-cta" data-hover>
@@ -1215,13 +1222,18 @@ footer a:hover{color:var(--accent);}
       </div>
       <p class="section-desc">
         FLYUN 飞云处于早期，下面既有过往项目的提炼，也有正在公开孵化的 VR/AR 与人才体系概念。
-        欢迎以任何一个为起点，与我们对话。
+        欢迎以任何一个为起点，与我们对话。<br/>
+        <a href="cases.html" style="color:var(--accent);text-decoration:none;border-bottom:1px solid var(--accent);">→ 全部案例档案</a>
+        &nbsp;·&nbsp;
+        <a href="lab.html" style="color:var(--accent-2);text-decoration:none;border-bottom:1px solid var(--accent-2);">→ 进入实验室</a>
+        &nbsp;·&nbsp;
+        <a href="letter.html" style="color:var(--accent-warm);text-decoration:none;border-bottom:1px solid var(--accent-warm);">→ 订阅 Letter</a>
       </p>
     </div>
 
     <div class="showcase-grid">
       <!-- Case 1 -->
-      <a href="#contact" class="case case-1 reveal" data-hover>
+      <a href="cases.html" class="case case-1 reveal" data-hover>
         <div class="case-canvas case-bg-1"></div>
         <svg class="case-svg" viewBox="0 0 800 500" preserveAspectRatio="xMidYMid slice">
           <g opacity=".5" stroke="#EDE6D6" stroke-width=".5" fill="none">
@@ -1293,7 +1305,7 @@ footer a:hover{color:var(--accent);}
       </a>
 
       <!-- Case 4 -->
-      <a href="#contact" class="case case-4 reveal" data-delay="1" data-hover>
+      <a href="lab.html" class="case case-4 reveal" data-delay="1" data-hover>
         <div class="case-canvas case-bg-4"></div>
         <svg class="case-svg" viewBox="0 0 400 400" preserveAspectRatio="xMidYMid slice">
           <g stroke="#FF4D2E" fill="none" opacity=".6" stroke-width=".5">
@@ -1343,7 +1355,7 @@ footer a:hover{color:var(--accent);}
       </a>
 
       <!-- Case 6 (full-width) -->
-      <a href="#contact" class="case case-6 reveal" data-hover>
+      <a href="letter.html" class="case case-6 reveal" data-hover>
         <div class="case-canvas case-bg-6"></div>
         <svg class="case-svg" viewBox="0 0 1200 500" preserveAspectRatio="xMidYMid slice">
           <g stroke="#FF4D2E" stroke-width=".4" fill="none" opacity=".5">
@@ -1679,7 +1691,7 @@ footer a:hover{color:var(--accent);}
 <footer>
   <div>© 2026 FLYUN STUDIO · 飞云工作室 · 保留全部权利</div>
   <div>武汉 <span style="color:var(--accent);">·</span> WUHAN · 服务全球</div>
-  <div>v1.1 · <a href="#hero">↑ 回到顶部</a></div>
+  <div>v1.2 · <a href="#hero">↑ 回到顶部</a></div>
 </footer>
 
 <script>
