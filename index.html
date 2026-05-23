@@ -3,1192 +3,1537 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<meta name="description" content="LEO OS - AI 时代的人才智能操作系统。覆盖自动驾驶、AGI、具身智能与新能源核心技术人才网络。" />
-<title>LEO OS · AI Talent Intelligence System</title>
+<meta name="description" content="FLYUN STUDIO - 交互空间设计工作室。在数字与物理之间，构建可被感受的体验。" />
+<title>FLYUN STUDIO · 交互空间设计 / Spatial Interaction Design</title>
 
 <link rel="icon" type="image/svg+xml"
-href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 128 128'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' x2='1' y1='0' y2='1'%3E%3Cstop offset='0' stop-color='%2300E5FF'/%3E%3Cstop offset='1' stop-color='%230A84FF'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect rx='28' width='128' height='128' fill='url(%23g)'/%3E%3Cpath d='M38 32v64h52v-12H52V32z' fill='white'/%3E%3C/svg%3E">
+href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 128 128'%3E%3Crect width='128' height='128' rx='28' fill='%230A0908'/%3E%3Cpath d='M36 30v68m0-68h56m-56 32h44' stroke='%23FF4D2E' stroke-width='10' stroke-linecap='square' fill='none'/%3E%3C/svg%3E">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,300..900,0..100&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 
 <style>
 :root{
-  --bg:#05060A;
-  --bg-elev:#0B0D14;
-  --surface:rgba(18,21,32,.6);
-  --surface-2:rgba(28,32,48,.5);
-  --border:rgba(255,255,255,.08);
-  --border-strong:rgba(255,255,255,.14);
-  --text:#E8ECF5;
-  --text-dim:#94A3B8;
-  --text-mute:#64748B;
-  --blue:#0A84FF;
-  --cyan:#00E5FF;
-  --purple:#7C5CFF;
-  --pink:#FF3D9A;
-  --green:#00E5A0;
-  --amber:#FFB020;
-  --grad: linear-gradient(135deg,#00E5FF 0%,#0A84FF 50%,#7C5CFF 100%);
-  --grad-warm: linear-gradient(135deg,#FF3D9A 0%,#FFB020 100%);
-  --shadow-lg: 0 30px 80px rgba(0,0,0,.5);
+  --bg:#0A0908;
+  --bg-2:#13110F;
+  --surface:rgba(28,24,20,.55);
+  --surface-2:rgba(40,34,28,.45);
+  --border:rgba(237,230,214,.08);
+  --border-strong:rgba(237,230,214,.18);
+  --text:#EDE6D6;
+  --text-dim:#9B9285;
+  --text-mute:#6B6359;
+  --accent:#FF4D2E;
+  --accent-2:#C8FF4D;
+  --accent-warm:#F4B860;
+  --grad:linear-gradient(135deg,#FF4D2E 0%,#F4B860 100%);
+  --grad-cool:linear-gradient(135deg,#C8FF4D 0%,#7AE2A0 100%);
   --ease:cubic-bezier(.22,.61,.36,1);
+  --serif:'Fraunces',Georgia,serif;
+  --sans:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+  --mono:'JetBrains Mono',monospace;
 }
-
 *{margin:0;padding:0;box-sizing:border-box;}
 html{scroll-behavior:smooth;}
 body{
-  font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+  font-family:var(--sans);
   background:var(--bg);
   color:var(--text);
   overflow-x:hidden;
   min-height:100vh;
   cursor:none;
   -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
 }
-::selection{background:var(--cyan);color:var(--bg);}
+::selection{background:var(--accent);color:#fff;}
 
-/* ===== BOOT SCREEN ===== */
-#boot{
-  position:fixed;inset:0;z-index:99999;
-  background:#05060A;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  gap:32px;
-  transition:opacity .8s var(--ease), visibility .8s var(--ease);
+/* ===== BACKGROUND TEXTURE ===== */
+.noise{
+  position:fixed;inset:0;z-index:-6;pointer-events:none;opacity:.04;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence baseFrequency='.9' numOctaves='2'/></filter><rect width='200' height='200' filter='url(%23n)'/></svg>");
+  mix-blend-mode:overlay;
 }
-#boot.done{opacity:0;visibility:hidden;pointer-events:none;}
-.boot-logo{
-  width:88px;height:88px;border-radius:24px;
-  background:var(--grad);
-  display:flex;align-items:center;justify-content:center;
-  font-size:38px;font-weight:900;color:#fff;
-  box-shadow:0 0 60px rgba(0,229,255,.6);
-  animation:bootPulse 1.6s var(--ease) infinite;
+.aura{
+  position:fixed;inset:0;z-index:-5;overflow:hidden;pointer-events:none;
 }
-@keyframes bootPulse{
-  0%,100%{transform:scale(1);box-shadow:0 0 60px rgba(0,229,255,.6);}
-  50%{transform:scale(1.06);box-shadow:0 0 90px rgba(0,229,255,.9);}
+.aura::before,.aura::after{
+  content:"";position:absolute;width:60vw;height:60vw;border-radius:50%;
+  filter:blur(140px);opacity:.18;
 }
-.boot-text{
-  font-family:'JetBrains Mono',monospace;
-  font-size:13px;color:var(--text-dim);
-  letter-spacing:.18em;
+.aura::before{
+  background:radial-gradient(circle,#FF4D2E,transparent 60%);
+  top:-25%;left:-15%;animation:floatA 28s ease-in-out infinite;
 }
-.boot-text .ok{color:var(--green);}
-.boot-bar{
-  width:280px;height:2px;border-radius:2px;
-  background:rgba(255,255,255,.06);overflow:hidden;
+.aura::after{
+  background:radial-gradient(circle,#F4B860,transparent 60%);
+  bottom:-30%;right:-20%;animation:floatB 32s ease-in-out infinite;
 }
-.boot-bar::after{
-  content:"";display:block;height:100%;width:30%;
-  background:var(--grad);
-  animation:bootBar 1.4s var(--ease) infinite;
-}
-@keyframes bootBar{
-  0%{transform:translateX(-100%);}
-  100%{transform:translateX(450%);}
-}
-
-/* ===== BACKGROUND ===== */
-.aurora{
-  position:fixed;inset:0;z-index:-5;overflow:hidden;
-}
-.aurora::before,.aurora::after{
-  content:"";position:absolute;
-  width:60vw;height:60vw;border-radius:50%;
-  filter:blur(120px);opacity:.35;
-}
-.aurora::before{
-  background:radial-gradient(circle,#0A84FF,transparent 60%);
-  top:-20%;left:-15%;
-  animation:auroraA 22s ease-in-out infinite;
-}
-.aurora::after{
-  background:radial-gradient(circle,#7C5CFF,transparent 60%);
-  bottom:-30%;right:-15%;
-  animation:auroraB 26s ease-in-out infinite;
-}
-.aurora .glow3{
-  position:absolute;width:50vw;height:50vw;border-radius:50%;
-  background:radial-gradient(circle,#00E5FF,transparent 60%);
-  filter:blur(120px);opacity:.18;
-  top:30%;left:30%;
-  animation:auroraC 28s ease-in-out infinite;
-}
-@keyframes auroraA{0%,100%{transform:translate(0,0) scale(1);}50%{transform:translate(8vw,6vw) scale(1.1);}}
-@keyframes auroraB{0%,100%{transform:translate(0,0) scale(1);}50%{transform:translate(-6vw,-4vw) scale(1.15);}}
-@keyframes auroraC{0%,100%{transform:translate(-50%,-50%) scale(1);}50%{transform:translate(-30%,-60%) scale(1.2);}}
-
+@keyframes floatA{0%,100%{transform:translate(0,0) scale(1);}50%{transform:translate(8vw,4vw) scale(1.15);}}
+@keyframes floatB{0%,100%{transform:translate(0,0) scale(1);}50%{transform:translate(-6vw,-4vw) scale(1.1);}}
 .grid-bg{
-  position:fixed;inset:0;z-index:-4;
+  position:fixed;inset:0;z-index:-4;pointer-events:none;
   background-image:
-    linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);
-  background-size:64px 64px;
-  mask-image:radial-gradient(ellipse at center,black 30%,transparent 80%);
+    linear-gradient(rgba(237,230,214,.025) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(237,230,214,.025) 1px,transparent 1px);
+  background-size:80px 80px;
+  mask-image:radial-gradient(ellipse at center,black 30%,transparent 75%);
 }
-#particles{position:fixed;inset:0;z-index:-3;}
-
-.scanline{
-  position:fixed;left:0;right:0;height:100px;z-index:-2;
-  background:linear-gradient(180deg,transparent,rgba(0,229,255,.06),transparent);
-  pointer-events:none;
-  animation:scan 8s linear infinite;
+.spotlight{
+  position:fixed;inset:0;z-index:-3;pointer-events:none;
+  background:radial-gradient(600px circle at var(--mx,50%) var(--my,50%),rgba(255,77,46,.08),transparent 60%);
+  transition:opacity .4s;
 }
-@keyframes scan{0%{top:-100px;}100%{top:100vh;}}
 
 /* ===== CURSOR ===== */
-.cursor,.cursor-dot{position:fixed;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);}
+.cursor,.cursor-dot{position:fixed;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);will-change:transform;}
 .cursor{
-  width:32px;height:32px;border:1.5px solid rgba(0,229,255,.6);border-radius:50%;
+  width:36px;height:36px;border:1px solid rgba(255,77,46,.5);border-radius:50%;
   transition:width .25s,height .25s,background .25s,border-color .25s;
-  mix-blend-mode:screen;
+  mix-blend-mode:difference;
 }
-.cursor-dot{width:6px;height:6px;background:var(--cyan);border-radius:50%;box-shadow:0 0 12px var(--cyan);}
-.cursor.hover{width:64px;height:64px;background:rgba(0,229,255,.08);border-color:var(--cyan);}
-
+.cursor-dot{width:5px;height:5px;background:var(--accent);border-radius:50%;box-shadow:0 0 14px var(--accent);}
+.cursor.hover{width:80px;height:80px;background:rgba(255,77,46,.06);border-color:var(--accent);}
+.cursor.text{width:6px;height:32px;border-radius:2px;background:var(--accent);border:none;}
 @media(hover:none){body{cursor:auto;}.cursor,.cursor-dot{display:none;}}
+
+/* ===== BOOT ===== */
+#boot{
+  position:fixed;inset:0;z-index:99999;background:var(--bg);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px;
+  transition:opacity .8s var(--ease),visibility .8s var(--ease);
+}
+#boot.done{opacity:0;visibility:hidden;pointer-events:none;}
+.boot-mark{
+  font-family:var(--serif);font-size:54px;font-weight:300;letter-spacing:-.02em;
+  color:var(--text);position:relative;
+}
+.boot-mark span{color:var(--accent);font-style:italic;}
+.boot-bar{
+  width:240px;height:1px;background:rgba(237,230,214,.08);overflow:hidden;
+}
+.boot-bar::after{
+  content:"";display:block;height:100%;width:30%;background:var(--accent);
+  animation:bootBar 1.2s var(--ease) infinite;
+}
+@keyframes bootBar{0%{transform:translateX(-100%);}100%{transform:translateX(450%);}}
+.boot-text{
+  font-family:var(--mono);font-size:11px;color:var(--text-mute);letter-spacing:.25em;
+}
 
 /* ===== NAV ===== */
 nav{
-  position:fixed;top:18px;left:50%;transform:translateX(-50%);
-  width:calc(100% - 32px);max-width:1380px;height:64px;z-index:1000;
-  background:rgba(11,13,20,.7);
-  backdrop-filter:blur(24px) saturate(160%);
-  -webkit-backdrop-filter:blur(24px) saturate(160%);
-  border:1px solid var(--border);border-radius:20px;
-  box-shadow:0 8px 30px rgba(0,0,0,.4);
+  position:fixed;top:0;left:0;right:0;z-index:1000;
+  padding:18px 32px;
+  display:flex;align-items:center;justify-content:space-between;
   transition:.4s var(--ease);
 }
-.nav-inner{height:100%;display:flex;align-items:center;justify-content:space-between;padding:0 18px;}
-.logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:14px;letter-spacing:.16em;}
-.logo-icon{
-  width:32px;height:32px;border-radius:10px;background:var(--grad);
-  display:flex;align-items:center;justify-content:center;color:#fff;font-weight:900;
-  box-shadow:0 4px 16px rgba(10,132,255,.4);
+nav.scrolled{
+  padding:12px 32px;
+  background:rgba(10,9,8,.7);
+  backdrop-filter:blur(24px) saturate(140%);
+  -webkit-backdrop-filter:blur(24px) saturate(140%);
+  border-bottom:1px solid var(--border);
+}
+.nav-logo{
+  display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--text);
+}
+.nav-mark{
+  width:36px;height:36px;border-radius:10px;
+  background:var(--bg);border:1px solid var(--border-strong);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--serif);font-size:18px;font-weight:600;
   position:relative;
 }
-.logo-icon::after{
-  content:"";position:absolute;inset:-2px;border-radius:12px;
-  background:var(--grad);filter:blur(10px);opacity:.5;z-index:-1;
+.nav-mark::after{
+  content:"";position:absolute;width:6px;height:6px;border-radius:50%;
+  background:var(--accent);right:-2px;top:-2px;
+  box-shadow:0 0 10px var(--accent);
 }
-.logo-text{display:flex;flex-direction:column;line-height:1;}
-.logo-text small{font-size:9px;color:var(--text-mute);letter-spacing:.3em;margin-top:3px;}
-.nav-links{display:flex;gap:4px;}
+.nav-name{
+  font-family:var(--serif);font-size:15px;font-weight:500;letter-spacing:.04em;line-height:1.1;
+}
+.nav-name small{
+  display:block;font-family:var(--mono);font-size:9px;color:var(--text-mute);
+  letter-spacing:.25em;margin-top:3px;font-weight:400;
+}
+.nav-links{display:flex;gap:6px;}
 .nav-links a{
-  height:40px;padding:0 14px;border-radius:12px;
-  display:flex;align-items:center;justify-content:center;
+  padding:10px 16px;border-radius:10px;
   text-decoration:none;color:var(--text-dim);font-size:13px;font-weight:500;
+  transition:.25s var(--ease);font-family:var(--mono);letter-spacing:.04em;
+}
+.nav-links a:hover{color:var(--text);background:rgba(237,230,214,.04);}
+.nav-cta{
+  padding:10px 18px;border-radius:10px;
+  background:var(--accent);color:#fff;font-size:13px;font-weight:600;
+  text-decoration:none;border:1px solid var(--accent);
   transition:.25s var(--ease);
+  display:inline-flex;align-items:center;gap:8px;
 }
-.nav-links a:hover{background:rgba(255,255,255,.05);color:var(--text);}
-.nav-cta{display:flex;align-items:center;gap:10px;}
-.kbd{
-  display:inline-flex;align-items:center;gap:6px;
-  height:34px;padding:0 12px;border-radius:10px;
-  background:rgba(255,255,255,.04);border:1px solid var(--border);
-  font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-dim);
-  cursor:pointer;transition:.25s;
+.nav-cta:hover{background:transparent;color:var(--accent);}
+
+/* ===== TYPOGRAPHY UTILS ===== */
+.serif{font-family:var(--serif);}
+.italic{font-style:italic;}
+.mono{font-family:var(--mono);}
+.eyebrow{
+  font-family:var(--mono);font-size:11px;letter-spacing:.3em;
+  color:var(--text-mute);text-transform:uppercase;
+  display:inline-flex;align-items:center;gap:10px;margin-bottom:24px;
 }
-.kbd:hover{background:rgba(255,255,255,.08);color:var(--text);border-color:var(--border-strong);}
-.kbd kbd{
-  background:rgba(255,255,255,.06);padding:1px 6px;border-radius:5px;
-  border:1px solid var(--border);font-family:inherit;font-size:10px;
+.eyebrow::before{
+  content:"";width:24px;height:1px;background:var(--accent);
+}
+.section-title{
+  font-family:var(--serif);font-weight:300;
+  font-size:clamp(38px,6vw,80px);line-height:1;letter-spacing:-.03em;
+  margin-bottom:28px;
+}
+.section-title em{font-style:italic;color:var(--accent);font-weight:400;}
+.section-desc{
+  font-size:17px;line-height:1.75;max-width:600px;color:var(--text-dim);
 }
 
 /* ===== HERO ===== */
 .hero{
-  min-height:100vh;display:flex;align-items:center;justify-content:center;
-  padding:140px 24px 80px;position:relative;
+  min-height:100vh;padding:160px 32px 80px;
+  display:flex;flex-direction:column;justify-content:center;
+  position:relative;
 }
-.hero-content{max-width:1280px;width:100%;text-align:center;position:relative;z-index:2;}
-.hero-badge{
+.hero-meta{
+  display:flex;justify-content:space-between;align-items:flex-end;
+  margin-bottom:48px;flex-wrap:wrap;gap:24px;
+}
+.hero-coords{
+  font-family:var(--mono);font-size:11px;color:var(--text-mute);letter-spacing:.25em;line-height:2;
+}
+.hero-coords span{color:var(--accent);}
+.hero-status{
   display:inline-flex;align-items:center;gap:10px;
-  padding:8px 16px;
-  background:rgba(0,229,255,.06);
-  border:1px solid rgba(0,229,255,.2);
-  border-radius:999px;
-  font-family:'JetBrains Mono',monospace;
-  font-size:11px;font-weight:500;letter-spacing:.18em;
-  color:var(--cyan);
-  margin-bottom:36px;
-  position:relative;
+  font-family:var(--mono);font-size:11px;letter-spacing:.25em;color:var(--text-dim);
+  padding:8px 14px;border:1px solid var(--border);border-radius:999px;
 }
-.live-dot{
-  position:relative;width:8px;height:8px;border-radius:50%;background:var(--green);
-  box-shadow:0 0 10px var(--green);
+.dot-live{
+  width:8px;height:8px;border-radius:50%;background:var(--accent-2);
+  box-shadow:0 0 10px var(--accent-2);position:relative;
 }
-.live-dot::after{
+.dot-live::after{
   content:"";position:absolute;inset:-4px;border-radius:50%;
-  border:2px solid var(--green);
-  animation:livePulse 2s ease-out infinite;
+  border:2px solid var(--accent-2);animation:livePulse 2.2s ease-out infinite;
 }
-@keyframes livePulse{
-  0%{transform:scale(.8);opacity:1;}
-  100%{transform:scale(2);opacity:0;}
+@keyframes livePulse{0%{transform:scale(.8);opacity:1;}100%{transform:scale(2.2);opacity:0;}}
+
+.hero-title{
+  font-family:var(--serif);font-weight:300;
+  font-size:clamp(60px,11vw,180px);line-height:.92;letter-spacing:-.045em;
+  margin-bottom:48px;
+}
+.hero-title .row{display:block;}
+.hero-title .row.indent{padding-left:clamp(40px,12vw,200px);}
+.hero-title em{font-style:italic;font-weight:400;color:var(--accent);}
+.hero-title .stroke{
+  -webkit-text-stroke:1.5px var(--text);
+  -webkit-text-fill-color:transparent;
 }
 
-.hero h1{
-  font-size:clamp(48px,8.5vw,128px);line-height:.95;letter-spacing:-.05em;font-weight:800;
-  margin-bottom:28px;
+.hero-bottom{
+  display:grid;grid-template-columns:1.4fr 1fr;gap:60px;
+  align-items:end;margin-top:auto;
 }
-.hero h1 .line{display:block;}
-.hero h1 .grad{
-  background:var(--grad);
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-  background-clip:text;
-  position:relative;
+.hero-manifesto{
+  font-size:18px;line-height:1.7;color:var(--text-dim);max-width:520px;
 }
-.hero h1 .typing{
-  display:inline-block;min-height:1em;
-  background:var(--grad);
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-  background-clip:text;
-}
-.hero h1 .caret{
-  display:inline-block;width:5px;height:.85em;background:var(--cyan);
-  margin-left:4px;vertical-align:-8%;
-  animation:caret 1s step-end infinite;
-  box-shadow:0 0 16px var(--cyan);
-}
-@keyframes caret{50%{opacity:0;}}
+.hero-manifesto strong{color:var(--text);font-weight:500;}
+.hero-actions{display:flex;gap:14px;flex-wrap:wrap;justify-self:end;}
 
-.hero p{
-  font-size:clamp(15px,1.4vw,19px);line-height:1.75;
-  max-width:760px;margin:0 auto;color:var(--text-dim);
-}
-.hero-actions{
-  margin-top:48px;display:flex;justify-content:center;gap:14px;flex-wrap:wrap;
-}
 .btn{
-  position:relative;height:54px;padding:0 28px;border-radius:14px;
+  position:relative;height:56px;padding:0 28px;border-radius:14px;
   display:inline-flex;align-items:center;justify-content:center;gap:10px;
-  text-decoration:none;font-weight:600;font-size:14px;
+  text-decoration:none;font-weight:600;font-size:14px;letter-spacing:.02em;
   transition:.3s var(--ease);overflow:hidden;border:none;cursor:none;
 }
 .btn-primary{
-  background:var(--grad);color:#fff;
-  box-shadow:0 10px 30px rgba(10,132,255,.4);
+  background:var(--accent);color:#fff;
+  box-shadow:0 12px 36px rgba(255,77,46,.3);
 }
+.btn-primary:hover{transform:translateY(-3px);box-shadow:0 20px 50px rgba(255,77,46,.5);}
 .btn-primary::after{
   content:"";position:absolute;inset:0;
-  background:linear-gradient(120deg,transparent,rgba(255,255,255,.3),transparent);
+  background:linear-gradient(120deg,transparent,rgba(255,255,255,.25),transparent);
   transform:translateX(-100%);transition:.7s;
 }
-.btn-primary:hover{transform:translateY(-3px);box-shadow:0 18px 50px rgba(10,132,255,.6);}
 .btn-primary:hover::after{transform:translateX(100%);}
-.btn-secondary{
-  background:rgba(255,255,255,.04);color:var(--text);
-  border:1px solid var(--border-strong);backdrop-filter:blur(10px);
+.btn-ghost{
+  background:transparent;color:var(--text);
+  border:1px solid var(--border-strong);
 }
-.btn-secondary:hover{background:rgba(255,255,255,.08);border-color:var(--cyan);transform:translateY(-3px);}
+.btn-ghost:hover{border-color:var(--text);background:rgba(237,230,214,.04);}
+.btn .arrow{
+  display:inline-block;transition:.3s var(--ease);
+}
+.btn:hover .arrow{transform:translate(4px,-4px);}
 
-/* ===== TICKER ===== */
-.ticker{
-  margin-top:64px;padding:14px 0;
-  border-top:1px solid var(--border);
-  border-bottom:1px solid var(--border);
-  background:rgba(11,13,20,.4);
-  overflow:hidden;position:relative;
-  mask-image:linear-gradient(90deg,transparent,black 10%,black 90%,transparent);
-}
-.ticker-track{
-  display:flex;gap:40px;
-  animation:tickerScroll 50s linear infinite;
-  white-space:nowrap;width:max-content;
-}
-.ticker:hover .ticker-track{animation-play-state:paused;}
-@keyframes tickerScroll{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
-.ticker-item{
-  display:inline-flex;align-items:center;gap:10px;
-  font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text-dim);
-}
-.ticker-item .co{color:var(--cyan);font-weight:600;}
-.ticker-item .arrow{color:var(--green);}
-.ticker-item .down{color:var(--pink);}
-
-/* ===== STATS ===== */
-.status-grid{
-  display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:48px;
-}
-.status-card{
-  position:relative;padding:24px;border-radius:18px;
-  background:var(--surface);
-  border:1px solid var(--border);
-  backdrop-filter:blur(16px);
-  transition:.4s var(--ease);
-  text-align:left;
+/* ===== TICKER STRIP ===== */
+.strip{
+  margin:96px 0 0;padding:24px 0;
+  border-top:1px solid var(--border);border-bottom:1px solid var(--border);
   overflow:hidden;
+  mask-image:linear-gradient(90deg,transparent,black 8%,black 92%,transparent);
 }
-.status-card::before{
-  content:"";position:absolute;top:0;left:0;right:0;height:1px;
-  background:linear-gradient(90deg,transparent,rgba(0,229,255,.5),transparent);
+.strip-track{
+  display:flex;gap:64px;
+  animation:strip 60s linear infinite;
+  width:max-content;white-space:nowrap;
 }
-.status-card:hover{transform:translateY(-4px);border-color:var(--border-strong);}
-.status-label{
-  font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-mute);
-  letter-spacing:.2em;text-transform:uppercase;margin-bottom:14px;
+@keyframes strip{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
+.strip-item{
+  display:inline-flex;align-items:center;gap:14px;
+  font-family:var(--serif);font-size:24px;font-weight:300;font-style:italic;
+  color:var(--text-dim);
 }
-.status-number{
-  font-size:38px;font-weight:800;letter-spacing:-.03em;
-  background:var(--grad);
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-  background-clip:text;
+.strip-item .sym{color:var(--accent);font-style:normal;font-family:var(--sans);font-weight:400;}
+
+/* ===== SECTION FRAME ===== */
+section{padding:140px 32px;position:relative;}
+.container{max-width:1320px;margin:0 auto;}
+.section-head{
+  display:grid;grid-template-columns:1fr 1.2fr;gap:80px;align-items:end;
+  margin-bottom:80px;
 }
-.status-text{font-size:12px;color:var(--text-dim);margin-top:4px;}
-.spark{
-  position:absolute;right:16px;bottom:16px;width:80px;height:30px;
-  opacity:.6;
+@media(max-width:900px){.section-head{grid-template-columns:1fr;gap:32px;}}
+
+/* ===== ABOUT ===== */
+.about{position:relative;}
+.about-grid{
+  display:grid;grid-template-columns:1.1fr 1fr;gap:80px;align-items:start;
+}
+.about-portrait{
+  position:relative;aspect-ratio:4/5;border-radius:24px;overflow:hidden;
+  background:linear-gradient(135deg,#1a1612,#0d0b09);
+  border:1px solid var(--border);
+}
+.portrait-svg{
+  position:absolute;inset:0;width:100%;height:100%;
+}
+.about-portrait::after{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(180deg,transparent 50%,rgba(10,9,8,.6) 100%);
+}
+.portrait-meta{
+  position:absolute;bottom:24px;left:24px;right:24px;z-index:2;
+  display:flex;justify-content:space-between;align-items:flex-end;
+  font-family:var(--mono);font-size:11px;letter-spacing:.18em;color:var(--text-dim);
+}
+.portrait-meta .name{
+  font-family:var(--serif);font-size:22px;font-weight:400;color:var(--text);
+  letter-spacing:-.01em;
+}
+.portrait-meta .name em{color:var(--accent);font-weight:500;}
+
+.about-body p{
+  font-size:17px;line-height:1.85;color:var(--text-dim);margin-bottom:24px;
+}
+.about-body p strong{color:var(--text);font-weight:500;}
+.about-body .pull{
+  font-family:var(--serif);font-style:italic;font-weight:300;
+  font-size:28px;line-height:1.4;color:var(--text);
+  padding:24px 0 24px 24px;border-left:2px solid var(--accent);margin:32px 0;
 }
 
-/* ===== SECTION ===== */
-section{padding:120px 24px;position:relative;}
-.container{max-width:1280px;margin:0 auto;}
-.section-eyebrow{
-  display:inline-flex;align-items:center;gap:8px;
-  font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.25em;
-  color:var(--cyan);margin-bottom:18px;text-transform:uppercase;
+.skills{
+  margin-top:40px;display:grid;grid-template-columns:repeat(2,1fr);gap:14px;
 }
-.section-eyebrow::before{
-  content:"";width:24px;height:1px;background:var(--cyan);
+.skill{
+  padding:18px;border:1px solid var(--border);border-radius:14px;
+  background:var(--surface);transition:.3s var(--ease);
 }
-.section-title{
-  font-size:clamp(36px,5.5vw,68px);line-height:1.05;letter-spacing:-.04em;
-  font-weight:700;margin-bottom:20px;
+.skill:hover{border-color:var(--accent);transform:translateY(-3px);}
+.skill-tag{
+  font-family:var(--mono);font-size:10px;color:var(--accent);letter-spacing:.25em;
 }
-.section-title .grad{
-  background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+.skill-name{
+  font-family:var(--serif);font-size:18px;font-weight:500;margin-top:8px;
 }
-.section-desc{
-  font-size:17px;line-height:1.75;max-width:640px;color:var(--text-dim);margin-bottom:60px;
+.skill-bar{
+  height:2px;background:rgba(237,230,214,.08);border-radius:2px;margin-top:14px;overflow:hidden;
+}
+.skill-fill{
+  height:100%;background:var(--accent);width:0;transition:width 1.4s var(--ease);
 }
 
-/* ===== CARDS ===== */
-.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
-.card{
-  position:relative;padding:32px;border-radius:24px;min-height:340px;
+/* ===== SERVICES ===== */
+.services-grid{
+  display:grid;grid-template-columns:repeat(2,1fr);gap:18px;
+}
+.service{
+  position:relative;padding:40px;border-radius:24px;
   background:var(--surface);
   border:1px solid var(--border);
   backdrop-filter:blur(20px);
+  transition:.4s var(--ease);overflow:hidden;
+  display:flex;flex-direction:column;min-height:440px;
+}
+.service::before{
+  content:"";position:absolute;inset:0;border-radius:24px;
+  background:linear-gradient(135deg,rgba(255,77,46,.06),transparent 60%);
+  opacity:0;transition:.4s;pointer-events:none;
+}
+.service:hover{border-color:var(--border-strong);transform:translateY(-6px);}
+.service:hover::before{opacity:1;}
+.service-no{
+  font-family:var(--mono);font-size:11px;color:var(--text-mute);letter-spacing:.3em;
+  margin-bottom:16px;
+}
+.service-title{
+  font-family:var(--serif);font-size:42px;line-height:1;font-weight:300;letter-spacing:-.02em;
+  margin-bottom:8px;
+}
+.service-title em{font-style:italic;color:var(--accent);}
+.service-zh{
+  font-family:var(--serif);font-size:18px;color:var(--text-dim);font-weight:400;
+  margin-bottom:24px;
+}
+.service-desc{
+  font-size:14.5px;line-height:1.75;color:var(--text-dim);margin-bottom:24px;
+}
+.service-list{
+  list-style:none;margin-bottom:auto;
+}
+.service-list li{
+  font-size:13px;color:var(--text);padding:8px 0;border-top:1px dashed var(--border);
+  display:flex;align-items:center;gap:12px;
+}
+.service-list li::before{
+  content:"";width:5px;height:5px;border-radius:50%;background:var(--accent);
+  flex-shrink:0;
+}
+.service-foot{
+  margin-top:24px;padding-top:24px;border-top:1px solid var(--border);
+  display:flex;justify-content:space-between;align-items:center;
+  font-family:var(--mono);font-size:11px;color:var(--text-mute);letter-spacing:.18em;
+}
+.service-foot strong{color:var(--accent-2);font-weight:500;}
+
+/* ===== SHOWCASE ===== */
+.showcase{padding:140px 32px;position:relative;}
+.showcase-grid{
+  display:grid;grid-template-columns:repeat(12,1fr);gap:18px;
+}
+.case{
+  position:relative;border-radius:20px;overflow:hidden;
+  background:var(--surface);border:1px solid var(--border);
+  aspect-ratio:4/3;cursor:none;
   transition:.4s var(--ease);
-  overflow:hidden;
+}
+.case:hover{border-color:var(--border-strong);transform:translateY(-4px);}
+.case-1{grid-column:span 7;aspect-ratio:16/10;}
+.case-2{grid-column:span 5;aspect-ratio:8/7;}
+.case-3{grid-column:span 4;}
+.case-4{grid-column:span 4;}
+.case-5{grid-column:span 4;}
+.case-6{grid-column:span 12;aspect-ratio:21/9;}
+
+.case-canvas{
+  position:absolute;inset:0;
+  background:linear-gradient(135deg,#1a1612,#0d0b09);
+}
+.case-bg-1{background:radial-gradient(circle at 30% 40%,rgba(255,77,46,.4),transparent 60%),radial-gradient(circle at 80% 70%,rgba(244,184,96,.3),transparent 60%),#0d0b09;}
+.case-bg-2{background:radial-gradient(circle at 70% 30%,rgba(200,255,77,.3),transparent 60%),#13110F;}
+.case-bg-3{background:radial-gradient(circle at 50% 50%,rgba(244,184,96,.35),transparent 60%),#0d0b09;}
+.case-bg-4{background:radial-gradient(circle at 20% 80%,rgba(255,77,46,.4),transparent 60%),#0d0b09;}
+.case-bg-5{background:radial-gradient(circle at 80% 20%,rgba(200,255,77,.3),transparent 60%),#13110F;}
+.case-bg-6{background:radial-gradient(ellipse at 50% 60%,rgba(255,77,46,.3),transparent 70%),radial-gradient(circle at 15% 30%,rgba(244,184,96,.25),transparent 60%),#0d0b09;}
+
+.case-svg{position:absolute;inset:0;width:100%;height:100%;}
+
+.case-info{
+  position:absolute;left:0;right:0;bottom:0;padding:24px;z-index:2;
+  background:linear-gradient(180deg,transparent,rgba(10,9,8,.85));
+}
+.case-meta{
+  display:flex;justify-content:space-between;align-items:flex-start;
+  font-family:var(--mono);font-size:10px;letter-spacing:.2em;color:var(--text-mute);
+  margin-bottom:10px;
+}
+.case-meta .tag{color:var(--accent);}
+.case-name{
+  font-family:var(--serif);font-size:28px;font-weight:400;letter-spacing:-.01em;
+  line-height:1.1;margin-bottom:4px;
+}
+.case-name em{font-style:italic;color:var(--accent);}
+.case-sub{font-size:13px;color:var(--text-dim);}
+.case-arrow{
+  position:absolute;top:24px;right:24px;
+  width:44px;height:44px;border-radius:50%;
+  border:1px solid var(--border-strong);
+  display:flex;align-items:center;justify-content:center;
+  color:var(--text);transition:.3s var(--ease);
+  background:rgba(10,9,8,.5);backdrop-filter:blur(8px);
+}
+.case:hover .case-arrow{background:var(--accent);border-color:var(--accent);transform:rotate(-45deg);}
+
+/* ===== PROCESS ===== */
+.process-list{
+  list-style:none;
+}
+.process-item{
+  display:grid;grid-template-columns:120px 1fr auto;
+  gap:48px;align-items:center;
+  padding:36px 0;border-top:1px solid var(--border);
+  position:relative;transition:.3s var(--ease);
+  cursor:none;
+}
+.process-item:last-child{border-bottom:1px solid var(--border);}
+.process-item:hover{padding-left:24px;}
+.process-item:hover .process-name{color:var(--accent);}
+.process-item:hover .process-arrow{transform:translateX(8px);color:var(--accent);}
+.process-no{
+  font-family:var(--mono);font-size:13px;color:var(--text-mute);letter-spacing:.2em;
+}
+.process-name{
+  font-family:var(--serif);font-size:clamp(28px,4vw,52px);font-weight:300;
+  letter-spacing:-.02em;line-height:1.1;transition:.3s;
+}
+.process-name em{font-style:italic;color:var(--accent);}
+.process-desc{
+  font-size:14px;color:var(--text-dim);margin-top:8px;line-height:1.6;max-width:480px;
+}
+.process-arrow{
+  font-size:36px;color:var(--text-mute);transition:.3s var(--ease);
+  font-family:var(--serif);font-weight:300;
+}
+@media(max-width:900px){
+  .process-item{grid-template-columns:80px 1fr;gap:24px;}
+  .process-arrow{display:none;}
+}
+
+/* ===== PRICING ===== */
+.pricing-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:18px;
+}
+.tier{
+  position:relative;padding:40px 36px;border-radius:24px;
+  background:var(--surface);border:1px solid var(--border);
   display:flex;flex-direction:column;
+  transition:.4s var(--ease);overflow:hidden;
 }
-.card::before{
-  content:"";position:absolute;inset:0;border-radius:24px;padding:1px;
-  background:linear-gradient(135deg,rgba(0,229,255,.4),transparent 40%,transparent 60%,rgba(124,92,255,.4));
-  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
-  -webkit-mask-composite:xor;mask-composite:exclude;
-  opacity:0;transition:.4s;
+.tier::before{
+  content:"";position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--border-strong),transparent);
 }
-.card:hover::before{opacity:1;}
-.card::after{
-  content:"";position:absolute;width:400px;height:400px;border-radius:50%;
-  background:radial-gradient(circle,rgba(0,229,255,.15),transparent 60%);
-  top:var(--y,50%);left:var(--x,50%);
-  transform:translate(-50%,-50%);
-  opacity:0;transition:opacity .3s;pointer-events:none;
+.tier:hover{transform:translateY(-6px);border-color:var(--border-strong);}
+.tier.featured{
+  background:linear-gradient(180deg,rgba(255,77,46,.06),var(--surface));
+  border-color:rgba(255,77,46,.3);
 }
-.card:hover::after{opacity:1;}
-.card:hover{transform:translateY(-6px);border-color:var(--border-strong);}
-.large{grid-column:span 2;}
-.full{grid-column:span 3;}
-
-.card-icon{
-  width:44px;height:44px;border-radius:12px;
-  background:rgba(0,229,255,.08);border:1px solid rgba(0,229,255,.2);
-  display:flex;align-items:center;justify-content:center;
-  margin-bottom:24px;color:var(--cyan);
-}
-.card-tag{
-  font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.25em;
-  color:var(--text-mute);margin-bottom:16px;text-transform:uppercase;
-}
-.card-title{
-  font-size:26px;line-height:1.2;letter-spacing:-.02em;font-weight:700;margin-bottom:14px;
-}
-.card-desc{font-size:14px;line-height:1.7;color:var(--text-dim);}
-.card-tags{
-  margin-top:auto;padding-top:24px;display:flex;flex-wrap:wrap;gap:6px;
-}
-.chip{
+.tier.featured::before{background:linear-gradient(90deg,transparent,var(--accent),transparent);}
+.tier-badge{
+  position:absolute;top:24px;right:24px;
   padding:5px 10px;border-radius:6px;
-  background:rgba(255,255,255,.04);border:1px solid var(--border);
-  font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-dim);
+  background:var(--accent);color:#fff;
+  font-family:var(--mono);font-size:9px;letter-spacing:.25em;font-weight:600;
 }
-
-/* Special card: Mapping visualization */
-.card-map{
-  background:linear-gradient(135deg,rgba(0,229,255,.06),rgba(124,92,255,.06));
-  min-height:280px;
+.tier-name{
+  font-family:var(--serif);font-size:42px;font-weight:300;letter-spacing:-.02em;
+  margin-bottom:6px;
 }
-.map-viz{
-  position:absolute;inset:0;opacity:.5;pointer-events:none;
+.tier-name em{font-style:italic;color:var(--accent);}
+.tier-zh{
+  font-size:14px;color:var(--text-dim);margin-bottom:32px;
 }
-
-/* ===== CONSOLE / SEARCH ===== */
-.console{
-  padding:6px;border-radius:24px;
-  background:linear-gradient(135deg,rgba(0,229,255,.18),rgba(124,92,255,.18));
+.tier-price{
+  display:flex;align-items:baseline;gap:8px;
+  padding:24px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);
+  margin-bottom:24px;
 }
-.console-inner{
-  background:var(--bg-elev);border-radius:20px;padding:32px;
-  border:1px solid var(--border);
+.tier-price .amount{
+  font-family:var(--serif);font-size:36px;font-weight:400;letter-spacing:-.02em;
 }
-.console-header{
-  display:flex;align-items:center;gap:10px;margin-bottom:24px;
-  font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-mute);
-  letter-spacing:.2em;
+.tier-price .unit{font-family:var(--mono);font-size:12px;color:var(--text-mute);letter-spacing:.18em;}
+.tier-period{
+  font-family:var(--mono);font-size:11px;color:var(--accent-2);letter-spacing:.2em;
+  margin-bottom:24px;
 }
-.console-dot{width:10px;height:10px;border-radius:50%;}
-.dot-r{background:#FF5F57;}
-.dot-y{background:#FEBC2E;}
-.dot-g{background:#28C840;}
-.console-tag{margin-left:auto;color:var(--cyan);}
-
-.search-box{position:relative;}
-.console-input{
-  width:100%;height:64px;padding:0 24px 0 60px;
-  background:rgba(255,255,255,.03);
+.tier-list{list-style:none;margin-bottom:32px;flex:1;}
+.tier-list li{
+  font-size:13.5px;color:var(--text-dim);line-height:1.7;padding:8px 0;
+  display:flex;align-items:flex-start;gap:12px;
+}
+.tier-list li::before{
+  content:"+";color:var(--accent);font-weight:600;flex-shrink:0;
+  font-family:var(--mono);
+}
+.tier-cta{
+  height:48px;padding:0 22px;border-radius:12px;
+  background:transparent;color:var(--text);
   border:1px solid var(--border-strong);
-  border-radius:14px;
-  color:var(--text);font-size:16px;font-family:inherit;
-  outline:none;transition:.3s;
-}
-.console-input::placeholder{color:var(--text-mute);}
-.console-input:focus{border-color:var(--cyan);box-shadow:0 0 0 4px rgba(0,229,255,.1);}
-.search-icon{
-  position:absolute;left:22px;top:50%;transform:translateY(-50%);
-  color:var(--text-mute);font-size:18px;
-}
-.search-suggest{
-  display:flex;flex-wrap:wrap;gap:8px;margin-top:18px;
-}
-.suggest-chip{
-  padding:8px 14px;border-radius:10px;
-  background:rgba(255,255,255,.03);border:1px solid var(--border);
-  font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-dim);
-  cursor:pointer;transition:.25s;
-}
-.suggest-chip:hover{background:rgba(0,229,255,.08);border-color:var(--cyan);color:var(--cyan);transform:translateY(-2px);}
-
-.results{
-  margin-top:28px;display:grid;grid-template-columns:repeat(3,1fr);gap:14px;
-  min-height:200px;
-}
-.result-card{
-  position:relative;padding:20px;border-radius:14px;
-  background:rgba(255,255,255,.03);
-  border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  text-decoration:none;font-weight:500;font-size:13px;cursor:none;
   transition:.3s var(--ease);
-  overflow:hidden;
 }
-.result-card::before{
-  content:"";position:absolute;left:0;top:0;bottom:0;width:3px;
-  background:var(--grad);transform:scaleY(0);transform-origin:top;transition:.3s;
-}
-.result-card:hover{background:rgba(255,255,255,.05);border-color:var(--border-strong);transform:translateY(-3px);}
-.result-card:hover::before{transform:scaleY(1);}
-.result-row{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;}
-.result-company{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--cyan);letter-spacing:.1em;}
-.result-stage{
-  font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-mute);
-  padding:2px 8px;background:rgba(255,255,255,.04);border-radius:4px;
-}
-.result-role{font-size:18px;font-weight:600;margin-bottom:6px;letter-spacing:-.01em;}
-.result-meta{font-size:12px;color:var(--text-mute);margin-bottom:16px;}
-.match-bar{
-  height:4px;background:rgba(255,255,255,.06);border-radius:2px;overflow:hidden;margin-bottom:8px;
-}
-.match-fill{height:100%;background:var(--grad);transition:width 1s var(--ease);}
-.match-text{
-  font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-dim);
-  display:flex;justify-content:space-between;
-}
-.match-text .pct{color:var(--cyan);font-weight:600;}
+.tier-cta:hover{background:var(--accent);border-color:var(--accent);color:#fff;}
+.tier.featured .tier-cta{background:var(--accent);border-color:var(--accent);color:#fff;}
+.tier.featured .tier-cta:hover{background:transparent;color:var(--accent);}
 
-/* ===== LOGOS MARQUEE ===== */
-.logos{
-  margin-top:60px;padding:24px 0;
-  border-top:1px solid var(--border);
-  overflow:hidden;
-  mask-image:linear-gradient(90deg,transparent,black 10%,black 90%,transparent);
+/* Revenue mix */
+.revenue{
+  margin-top:80px;padding:40px;border:1px solid var(--border);border-radius:24px;
+  background:var(--surface);
+  display:grid;grid-template-columns:1fr 1.4fr;gap:60px;align-items:center;
 }
-.logos-track{
-  display:flex;gap:60px;align-items:center;
-  animation:tickerScroll 40s linear infinite;
-  width:max-content;
+.revenue h3{
+  font-family:var(--serif);font-size:32px;font-weight:300;letter-spacing:-.02em;
+  margin-bottom:14px;
 }
-.logos-track span{
-  font-size:20px;font-weight:700;color:var(--text-mute);letter-spacing:-.02em;
-  white-space:nowrap;transition:.3s;
+.revenue p{color:var(--text-dim);font-size:14px;line-height:1.7;}
+.revenue-bars{display:flex;flex-direction:column;gap:18px;}
+.rev-row{display:flex;align-items:center;gap:18px;}
+.rev-label{
+  font-family:var(--mono);font-size:11px;letter-spacing:.18em;color:var(--text-dim);
+  width:180px;flex-shrink:0;
 }
-.logos-track span:hover{color:var(--text);}
+.rev-bar{flex:1;height:8px;background:rgba(237,230,214,.05);border-radius:4px;overflow:hidden;}
+.rev-fill{height:100%;background:var(--accent);width:0;transition:width 1.4s var(--ease);}
+.rev-fill.warm{background:var(--accent-warm);}
+.rev-fill.cool{background:var(--accent-2);}
+.rev-fill.dim{background:var(--text-mute);}
+.rev-pct{font-family:var(--mono);font-size:12px;color:var(--text);width:42px;text-align:right;}
 
-/* ===== TIMELINE ===== */
-.timeline{position:relative;padding-left:32px;}
-.timeline::before{
-  content:"";position:absolute;left:8px;top:8px;bottom:8px;width:2px;
-  background:linear-gradient(180deg,var(--cyan),var(--purple));
-  opacity:.3;
-}
-.t-item{position:relative;padding:18px 0 18px 24px;}
-.t-item::before{
-  content:"";position:absolute;left:-32px;top:24px;width:18px;height:18px;border-radius:50%;
-  background:var(--bg);border:2px solid var(--cyan);
-  box-shadow:0 0 12px var(--cyan);
-}
-.t-time{
-  font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--cyan);
-  letter-spacing:.15em;margin-bottom:6px;
-}
-.t-title{font-size:18px;font-weight:600;margin-bottom:6px;}
-.t-desc{font-size:14px;color:var(--text-dim);line-height:1.7;}
-
-/* ===== AI ASSISTANT ===== */
-.ai-fab{
-  position:fixed;right:24px;bottom:24px;z-index:998;
-  width:60px;height:60px;border-radius:18px;
-  background:var(--grad);
-  display:flex;align-items:center;justify-content:center;
-  box-shadow:0 12px 40px rgba(10,132,255,.5),0 0 30px rgba(0,229,255,.3);
-  cursor:none;transition:.3s var(--ease);
-  border:none;
-}
-.ai-fab:hover{transform:scale(1.08) rotate(8deg);}
-.ai-fab svg{width:28px;height:28px;color:#fff;}
-.ai-fab::after{
-  content:"";position:absolute;inset:-4px;border-radius:22px;
-  border:2px solid var(--cyan);opacity:0;
-  animation:aiPulse 2.4s ease-out infinite;
-}
-@keyframes aiPulse{
-  0%{transform:scale(.95);opacity:.7;}
-  100%{transform:scale(1.4);opacity:0;}
+@media(max-width:900px){
+  .revenue{grid-template-columns:1fr;gap:32px;}
 }
 
-.ai-panel{
-  position:fixed;right:24px;bottom:96px;z-index:997;
-  width:360px;max-width:calc(100vw - 32px);
-  max-height:520px;
-  background:rgba(11,13,20,.95);
-  backdrop-filter:blur(30px);
-  border:1px solid var(--border-strong);
-  border-radius:20px;
-  box-shadow:var(--shadow-lg);
-  display:none;flex-direction:column;
-  overflow:hidden;
+/* ===== ROADMAP ===== */
+.roadmap{position:relative;}
+.roadmap-track{
+  display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-top:60px;
+  position:relative;
 }
-.ai-panel.open{display:flex;animation:aiOpen .35s var(--ease);}
-@keyframes aiOpen{from{opacity:0;transform:translateY(20px) scale(.96);}to{opacity:1;transform:translateY(0) scale(1);}}
-.ai-head{
-  padding:16px 20px;border-bottom:1px solid var(--border);
-  display:flex;align-items:center;gap:10px;
+.roadmap-track::before{
+  content:"";position:absolute;top:24px;left:24px;right:24px;height:1px;
+  background:linear-gradient(90deg,var(--accent),var(--accent-warm),var(--accent-2));
+  opacity:.4;
 }
-.ai-avatar{
-  width:32px;height:32px;border-radius:10px;background:var(--grad);
-  display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;
+.phase{
+  position:relative;padding:24px 0 0;
 }
-.ai-name{font-size:14px;font-weight:600;}
-.ai-name small{display:block;font-size:10px;color:var(--green);font-weight:400;margin-top:2px;}
-.ai-name small::before{content:"●";color:var(--green);margin-right:4px;}
-.ai-close{
-  margin-left:auto;width:28px;height:28px;border-radius:8px;
-  background:rgba(255,255,255,.04);border:none;color:var(--text-dim);
-  display:flex;align-items:center;justify-content:center;cursor:none;transition:.2s;
+.phase-dot{
+  width:14px;height:14px;border-radius:50%;background:var(--bg);
+  border:2px solid var(--accent);position:relative;z-index:1;
+  margin-bottom:24px;
 }
-.ai-close:hover{background:rgba(255,255,255,.08);color:var(--text);}
-.ai-body{
-  flex:1;padding:16px 20px;overflow-y:auto;display:flex;flex-direction:column;gap:12px;
-  scrollbar-width:thin;
+.phase-dot.warm{border-color:var(--accent-warm);}
+.phase-dot.cool{border-color:var(--accent-2);}
+.phase-dot::after{
+  content:"";position:absolute;inset:-6px;border-radius:50%;
+  border:1px solid currentColor;opacity:.3;
 }
-.ai-body::-webkit-scrollbar{width:4px;}
-.ai-body::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:2px;}
-.msg{
-  max-width:85%;padding:10px 14px;border-radius:14px;font-size:13px;line-height:1.6;
-  animation:msgIn .3s var(--ease);
+.phase-time{
+  font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:.2em;
+  margin-bottom:10px;
 }
-@keyframes msgIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
-.msg-bot{
-  background:rgba(255,255,255,.04);border:1px solid var(--border);
-  align-self:flex-start;border-bottom-left-radius:4px;
+.phase-title{
+  font-family:var(--serif);font-size:24px;font-weight:400;letter-spacing:-.01em;
+  margin-bottom:14px;
 }
-.msg-user{
-  background:var(--grad);color:#fff;
-  align-self:flex-end;border-bottom-right-radius:4px;
+.phase-title em{font-style:italic;color:var(--accent);}
+.phase-list{list-style:none;}
+.phase-list li{
+  font-size:13px;color:var(--text-dim);line-height:1.65;padding:6px 0;
+  border-top:1px dashed var(--border);
 }
-.msg-typing{display:inline-flex;gap:4px;}
-.msg-typing span{
-  width:6px;height:6px;border-radius:50%;background:var(--text-dim);
-  animation:typingDot 1.4s ease-in-out infinite;
+.phase-list li:first-child{border-top:none;}
+@media(max-width:900px){
+  .roadmap-track{grid-template-columns:1fr;gap:24px;}
+  .roadmap-track::before{left:7px;right:auto;top:0;bottom:0;width:1px;height:auto;background:linear-gradient(180deg,var(--accent),var(--accent-warm),var(--accent-2));}
 }
-.msg-typing span:nth-child(2){animation-delay:.2s;}
-.msg-typing span:nth-child(3){animation-delay:.4s;}
-@keyframes typingDot{0%,60%,100%{opacity:.3;transform:scale(.8);}30%{opacity:1;transform:scale(1);}}
-.ai-foot{
-  padding:14px 16px;border-top:1px solid var(--border);
-  display:flex;gap:8px;
-}
-.ai-input{
-  flex:1;height:38px;padding:0 14px;border-radius:10px;
-  background:rgba(255,255,255,.04);border:1px solid var(--border);
-  color:var(--text);font-size:13px;outline:none;
-}
-.ai-input:focus{border-color:var(--cyan);}
-.ai-send{
-  width:38px;height:38px;border-radius:10px;background:var(--grad);
-  border:none;color:#fff;cursor:none;display:flex;align-items:center;justify-content:center;
-  transition:.2s;
-}
-.ai-send:hover{transform:scale(1.05);}
 
-/* ===== COMMAND PALETTE ===== */
-.cmdk-overlay{
-  position:fixed;inset:0;z-index:9998;
-  background:rgba(5,6,10,.7);backdrop-filter:blur(8px);
-  display:none;align-items:flex-start;justify-content:center;
-  padding-top:18vh;
+/* ===== CONTACT ===== */
+.contact{
+  padding:140px 32px;border-top:1px solid var(--border);
+  background:radial-gradient(ellipse at center bottom,rgba(255,77,46,.08),transparent 60%);
 }
-.cmdk-overlay.open{display:flex;animation:fadeIn .25s ease;}
-@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
-.cmdk{
-  width:560px;max-width:calc(100vw - 32px);
-  background:rgba(15,18,28,.95);
-  backdrop-filter:blur(24px);
-  border:1px solid var(--border-strong);border-radius:18px;
-  box-shadow:var(--shadow-lg);
-  overflow:hidden;
-  animation:cmdkIn .3s var(--ease);
+.contact-inner{
+  max-width:1100px;margin:0 auto;text-align:center;
 }
-@keyframes cmdkIn{from{transform:translateY(-20px) scale(.96);opacity:0;}to{transform:translateY(0) scale(1);opacity:1;}}
-.cmdk-input{
-  width:100%;height:54px;padding:0 20px;
-  background:transparent;border:none;outline:none;
-  color:var(--text);font-size:15px;font-family:inherit;
-  border-bottom:1px solid var(--border);
+.contact-eyebrow{
+  font-family:var(--mono);font-size:12px;letter-spacing:.3em;color:var(--accent);
+  margin-bottom:32px;
 }
-.cmdk-input::placeholder{color:var(--text-mute);}
-.cmdk-list{padding:8px;max-height:360px;overflow-y:auto;}
-.cmdk-item{
-  display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:10px;
-  cursor:none;transition:.15s;color:var(--text-dim);text-decoration:none;
+.contact-title{
+  font-family:var(--serif);font-size:clamp(48px,8vw,120px);font-weight:300;
+  line-height:.95;letter-spacing:-.04em;margin-bottom:48px;
 }
-.cmdk-item:hover,.cmdk-item.active{background:rgba(0,229,255,.08);color:var(--text);}
-.cmdk-item-icon{
-  width:30px;height:30px;border-radius:8px;
-  background:rgba(255,255,255,.05);display:flex;align-items:center;justify-content:center;
-  color:var(--cyan);
+.contact-title em{font-style:italic;color:var(--accent);}
+.contact-channels{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:64px;
 }
-.cmdk-item-text{flex:1;font-size:13px;}
-.cmdk-item-text small{display:block;color:var(--text-mute);font-size:11px;margin-top:2px;}
-.cmdk-item-shortcut{
-  font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-mute);
+.channel{
+  padding:28px 24px;border:1px solid var(--border);border-radius:18px;
+  background:var(--surface);text-decoration:none;color:var(--text);
+  transition:.3s var(--ease);text-align:left;
+}
+.channel:hover{border-color:var(--accent);transform:translateY(-4px);background:rgba(255,77,46,.04);}
+.channel-tag{
+  font-family:var(--mono);font-size:10px;color:var(--text-mute);letter-spacing:.25em;
+  margin-bottom:14px;
+}
+.channel-name{
+  font-family:var(--serif);font-size:22px;font-weight:400;letter-spacing:-.01em;
+  margin-bottom:8px;
+}
+.channel-handle{
+  font-family:var(--mono);font-size:12px;color:var(--text-dim);
+}
+@media(max-width:900px){
+  .contact-channels{grid-template-columns:repeat(2,1fr);}
 }
 
 /* ===== FOOTER ===== */
 footer{
-  padding:80px 24px 40px;border-top:1px solid var(--border);
-  background:rgba(11,13,20,.4);
-  position:relative;
+  padding:48px 32px;border-top:1px solid var(--border);
+  display:flex;justify-content:space-between;align-items:center;
+  font-family:var(--mono);font-size:11px;letter-spacing:.2em;color:var(--text-mute);
+  flex-wrap:wrap;gap:18px;
 }
-.foot-grid{
-  max-width:1280px;margin:0 auto;
-  display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;
-  margin-bottom:48px;
-}
-.foot-col h4{
-  font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-mute);
-  letter-spacing:.2em;text-transform:uppercase;margin-bottom:16px;
-}
-.foot-col a{
-  display:block;color:var(--text-dim);text-decoration:none;
-  font-size:13px;margin-bottom:10px;transition:.2s;
-}
-.foot-col a:hover{color:var(--cyan);}
-.foot-brand{font-size:14px;line-height:1.7;color:var(--text-dim);}
-.foot-bottom{
-  max-width:1280px;margin:0 auto;padding-top:24px;border-top:1px solid var(--border);
-  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;
-  font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-mute);letter-spacing:.1em;
-}
+footer a{color:var(--text-mute);text-decoration:none;transition:.2s;}
+footer a:hover{color:var(--accent);}
 
 /* ===== REVEAL ===== */
 .reveal{opacity:0;transform:translateY(40px);transition:.9s var(--ease);}
 .reveal.active{opacity:1;transform:translateY(0);}
-.reveal[data-delay="1"]{transition-delay:.1s;}
-.reveal[data-delay="2"]{transition-delay:.2s;}
-.reveal[data-delay="3"]{transition-delay:.3s;}
-.reveal[data-delay="4"]{transition-delay:.4s;}
+.reveal[data-delay="1"]{transition-delay:.08s;}
+.reveal[data-delay="2"]{transition-delay:.16s;}
+.reveal[data-delay="3"]{transition-delay:.24s;}
+.reveal[data-delay="4"]{transition-delay:.32s;}
 
 /* ===== RESPONSIVE ===== */
 @media(max-width:1024px){
-  .grid,.results,.status-grid{grid-template-columns:repeat(2,1fr);}
-  .large,.full{grid-column:span 2;}
-  .foot-grid{grid-template-columns:1fr 1fr;}
+  .services-grid,.pricing-grid{grid-template-columns:1fr;}
+  .about-grid{grid-template-columns:1fr;gap:48px;}
+  .hero-bottom{grid-template-columns:1fr;gap:40px;}
+  .hero-actions{justify-self:start;}
   .nav-links{display:none;}
+  .showcase-grid{grid-template-columns:repeat(6,1fr);}
+  .case-1,.case-6{grid-column:span 6;}
+  .case-2,.case-3,.case-4,.case-5{grid-column:span 3;}
 }
 @media(max-width:640px){
-  .grid,.results,.status-grid,.foot-grid{grid-template-columns:1fr;}
-  .large,.full{grid-column:span 1;}
-  .ai-panel{right:12px;left:12px;width:auto;bottom:90px;}
-  .ai-fab{right:16px;bottom:16px;}
   body{cursor:auto;}
   .cursor,.cursor-dot{display:none;}
-  section{padding:80px 18px;}
-  .hero{padding:120px 18px 60px;}
+  nav,nav.scrolled{padding:14px 18px;}
+  .hero{padding:130px 18px 60px;}
+  section,.showcase,.contact{padding:90px 18px;}
+  .skills{grid-template-columns:1fr;}
+  .showcase-grid{grid-template-columns:1fr;}
+  .case-1,.case-2,.case-3,.case-4,.case-5,.case-6{grid-column:span 1;aspect-ratio:4/3;}
+  footer{flex-direction:column;text-align:center;}
 }
 </style>
 </head>
 
 <body>
 
-<!-- ===== BOOT SCREEN ===== -->
-<div id="boot">
-  <div class="boot-logo">L</div>
-  <div class="boot-text" id="bootText">INITIALIZING LEO OS...</div>
-  <div class="boot-bar"></div>
-</div>
-
-<!-- ===== BACKGROUND ===== -->
-<div class="aurora"><div class="glow3"></div></div>
+<!-- ===== TEXTURE ===== -->
+<div class="noise"></div>
+<div class="aura"></div>
 <div class="grid-bg"></div>
-<canvas id="particles"></canvas>
-<div class="scanline"></div>
+<div class="spotlight" id="spotlight"></div>
 
 <!-- ===== CURSOR ===== -->
 <div class="cursor"></div>
 <div class="cursor-dot"></div>
 
+<!-- ===== BOOT ===== -->
+<div id="boot">
+  <div class="boot-mark">FLY<span>·</span>UN</div>
+  <div class="boot-bar"></div>
+  <div class="boot-text" id="bootText">CALIBRATING SPATIAL INTERFACE</div>
+</div>
+
 <!-- ===== NAV ===== -->
-<nav>
-  <div class="nav-inner">
-    <div class="logo">
-      <div class="logo-icon">L</div>
-      <div class="logo-text">
-        <span>LEO OS</span>
-        <small>v2.6 · INTELLIGENCE</small>
-      </div>
+<nav id="nav">
+  <a href="#hero" class="nav-logo" data-hover>
+    <div class="nav-mark">F</div>
+    <div class="nav-name">
+      Flyun Studio
+      <small>SPATIAL INTERACTION</small>
     </div>
-    <div class="nav-links">
-      <a href="#hero">首页</a>
-      <a href="#intelligence">人才架构</a>
-      <a href="#console">智能搜索</a>
-      <a href="#timeline">演进路径</a>
-      <a href="#contact">联系</a>
-    </div>
-    <div class="nav-cta">
-      <button class="kbd" id="cmdkBtn">
-        <span>搜索</span>
-        <kbd>⌘ K</kbd>
-      </button>
-    </div>
+  </a>
+  <div class="nav-links">
+    <a href="#about" data-hover>关于</a>
+    <a href="#services" data-hover>业务</a>
+    <a href="#showcase" data-hover>项目</a>
+    <a href="#process" data-hover>流程</a>
+    <a href="#pricing" data-hover>合作</a>
+    <a href="#roadmap" data-hover>路线图</a>
   </div>
+  <a href="#contact" class="nav-cta" data-hover>
+    建立对话
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14m-6-6 6 6-6 6"/></svg>
+  </a>
 </nav>
 
 <!-- ===== HERO ===== -->
 <section class="hero" id="hero">
-  <div class="hero-content">
-    <div class="hero-badge reveal">
-      <span class="live-dot"></span>
-      <span>AI EXECUTIVE INTELLIGENCE · LIVE</span>
+  <div class="container">
+    <div class="hero-meta reveal">
+      <div class="hero-coords">
+        <div>N <span>30.5928°</span> · E <span>114.3055°</span></div>
+        <div>FLYUN STUDIO · EST. 2026</div>
+        <div>SPATIAL · DIGITAL · TEMPORAL</div>
+      </div>
+      <div class="hero-status">
+        <span class="dot-live"></span>
+        <span>ACCEPTING NEW COMMISSIONS · 2026 Q3</span>
+      </div>
     </div>
 
-    <h1 class="reveal" data-delay="1">
-      <span class="line">Mapping the human</span>
-      <span class="line"><span class="grad">infrastructure</span></span>
-      <span class="line">behind <span class="typing" id="typing"></span><span class="caret"></span></span>
+    <h1 class="hero-title reveal" data-delay="1">
+      <span class="row">We design</span>
+      <span class="row indent"><em>spaces</em> that</span>
+      <span class="row">talk <span class="stroke">back</span>.</span>
     </h1>
 
-    <p class="reveal" data-delay="2">
-      在自动驾驶、AGI 与具身智能的交汇点，构建下一代 AI 人才基础设施。
-      不只是猎头 —— 而是 AI 时代的人才 Intelligence Network。
-    </p>
+    <div class="hero-bottom">
+      <p class="hero-manifesto reveal" data-delay="2">
+        <strong>FLYUN</strong> 是一间专注于「交互空间」的独立设计工作室。
+        我们把数字交互的逻辑带进物理空间，把空间叙事的语言带回数字界面 ——
+        让每一次靠近、每一次触碰、每一次停留，都成为一次被设计过的对话。
+      </p>
+      <div class="hero-actions reveal" data-delay="3">
+        <a href="#services" class="btn btn-primary" data-hover>
+          看我们能做什么
+          <span class="arrow">↗</span>
+        </a>
+        <a href="#contact" class="btn btn-ghost" data-hover>
+          一个想法 →
+        </a>
+      </div>
+    </div>
 
-    <div class="hero-actions reveal" data-delay="3">
-      <a href="#console" class="btn btn-primary" data-hover>
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
-        启动智能搜索
+    <div class="strip reveal" data-delay="4">
+      <div class="strip-track" id="stripTrack"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== ABOUT ===== -->
+<section class="about" id="about">
+  <div class="container">
+    <div class="section-head reveal">
+      <div>
+        <div class="eyebrow">01 · FOUNDER</div>
+        <h2 class="section-title">A designer<br/>between <em>screens</em><br/>and <em>walls</em>.</h2>
+      </div>
+      <p class="section-desc">
+        我是 Leo —— FLYUN 的创始人 / 主创设计师。
+        过去七年我在交互设计、品牌空间与创意技术之间游走，
+        现在我把这些经验聚拢，做一件简单的事:
+        <strong style="color:var(--text);">让空间会回应人</strong>。
+      </p>
+    </div>
+
+    <div class="about-grid">
+      <div class="about-portrait reveal">
+        <svg class="portrait-svg" viewBox="0 0 400 500" preserveAspectRatio="xMidYMid slice">
+          <defs>
+            <linearGradient id="pg1" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#FF4D2E" stop-opacity=".4"/>
+              <stop offset="1" stop-color="#F4B860" stop-opacity=".15"/>
+            </linearGradient>
+            <radialGradient id="pg2" cx="50%" cy="40%" r="60%">
+              <stop offset="0" stop-color="#1a1612"/>
+              <stop offset="1" stop-color="#0d0b09"/>
+            </radialGradient>
+          </defs>
+          <rect width="400" height="500" fill="url(#pg2)"/>
+          <!-- abstract figure -->
+          <circle cx="200" cy="180" r="58" fill="none" stroke="#FF4D2E" stroke-width="1.2" opacity=".55"/>
+          <circle cx="200" cy="180" r="80" fill="none" stroke="#F4B860" stroke-width="1" opacity=".3"/>
+          <path d="M120 260 Q200 220 280 260 L290 380 Q200 420 110 380 Z" fill="url(#pg1)" stroke="#FF4D2E" stroke-width=".8" opacity=".7"/>
+          <!-- spatial dots -->
+          <g opacity=".5">
+            <circle cx="60" cy="80" r="2" fill="#C8FF4D"/>
+            <circle cx="340" cy="120" r="2" fill="#FF4D2E"/>
+            <circle cx="80" cy="420" r="2" fill="#F4B860"/>
+            <circle cx="320" cy="380" r="2" fill="#C8FF4D"/>
+            <circle cx="200" cy="60" r="1.5" fill="#FF4D2E"/>
+            <circle cx="50" cy="240" r="1.5" fill="#F4B860"/>
+            <circle cx="360" cy="260" r="1.5" fill="#FF4D2E"/>
+          </g>
+          <!-- connecting lines -->
+          <g stroke="#EDE6D6" stroke-width=".4" opacity=".15">
+            <line x1="60" y1="80" x2="200" y2="180"/>
+            <line x1="340" y1="120" x2="200" y2="180"/>
+            <line x1="80" y1="420" x2="200" y2="320"/>
+            <line x1="320" y1="380" x2="200" y2="320"/>
+          </g>
+          <!-- crosshair -->
+          <g stroke="#FF4D2E" stroke-width="1" opacity=".7">
+            <line x1="190" y1="180" x2="210" y2="180"/>
+            <line x1="200" y1="170" x2="200" y2="190"/>
+          </g>
+          <!-- grid overlay -->
+          <g stroke="#EDE6D6" stroke-width=".3" opacity=".06">
+            <line x1="0" y1="125" x2="400" y2="125"/>
+            <line x1="0" y1="250" x2="400" y2="250"/>
+            <line x1="0" y1="375" x2="400" y2="375"/>
+            <line x1="100" y1="0" x2="100" y2="500"/>
+            <line x1="200" y1="0" x2="200" y2="500"/>
+            <line x1="300" y1="0" x2="300" y2="500"/>
+          </g>
+        </svg>
+        <div class="portrait-meta">
+          <div>
+            <div class="name">Leo · <em>Founder</em></div>
+            <div style="margin-top:6px;">SPATIAL INTERACTION DESIGNER</div>
+          </div>
+          <div>WUHAN · CN</div>
+        </div>
+      </div>
+
+      <div class="about-body reveal" data-delay="1">
+        <p>
+          做设计的第一个五年，我在屏幕上画动效、写交互、做产品；
+          后来我开始相信 —— <strong>真正决定体验的不是界面，而是「空间感」</strong>。
+          于是我把设计带进了线下:品牌快闪、装置艺术、零售概念店、文化策展。
+        </p>
+        <p>
+          再后来我意识到，<strong>线上和线下不该被隔开</strong> ——
+          一面墙可以是 UI，一束灯可以是按钮，一段动线可以是用户旅程。
+          数字与物理的边界正在模糊，这中间的空白处，就是 FLYUN 想做的事。
+        </p>
+        <div class="pull">
+          "空间是被低估的界面，<br/>交互是被遗忘的语言。"
+        </div>
+
+        <div class="skills">
+          <div class="skill" data-skill="92">
+            <div class="skill-tag">CORE</div>
+            <div class="skill-name">交互设计 / Interaction</div>
+            <div class="skill-bar"><div class="skill-fill"></div></div>
+          </div>
+          <div class="skill" data-skill="88">
+            <div class="skill-tag">CORE</div>
+            <div class="skill-name">空间策展 / Spatial</div>
+            <div class="skill-bar"><div class="skill-fill"></div></div>
+          </div>
+          <div class="skill" data-skill="80">
+            <div class="skill-tag">CRAFT</div>
+            <div class="skill-name">创意编程 / Creative Coding</div>
+            <div class="skill-bar"><div class="skill-fill"></div></div>
+          </div>
+          <div class="skill" data-skill="85">
+            <div class="skill-tag">CRAFT</div>
+            <div class="skill-name">品牌叙事 / Storytelling</div>
+            <div class="skill-bar"><div class="skill-fill"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SERVICES ===== -->
+<section id="services">
+  <div class="container">
+    <div class="section-head reveal">
+      <div>
+        <div class="eyebrow">02 · WHAT WE DO</div>
+        <h2 class="section-title">Four ways<br/>to make a <em>space</em><br/>respond.</h2>
+      </div>
+      <p class="section-desc">
+        FLYUN 的业务围绕「人 — 空间 — 数字」三角展开，
+        每条线都可以独立交付，也可以组合成完整的品牌空间体系。
+        欢迎从单点装置开始，验证一次再继续走下去。
+      </p>
+    </div>
+
+    <div class="services-grid">
+      <!-- Service 01 -->
+      <div class="service reveal" data-hover>
+        <div class="service-no">SERVICE / 01</div>
+        <div class="service-title"><em>Immersive</em></div>
+        <div class="service-zh">沉浸装置 · 多感官体验</div>
+        <div class="service-desc">
+          为品牌快闪、艺术展、文化活动设计一次性或巡回的沉浸装置 ——
+          光影 / 声场 / 体感联动，让 30 秒驻足变成 30 分钟体验。
+        </div>
+        <ul class="service-list">
+          <li>装置概念与脚本</li>
+          <li>互动机制设计 (体感 / 触控 / 声控)</li>
+          <li>灯光、投影、音场技术整合</li>
+          <li>现场监制与运营手册</li>
+        </ul>
+        <div class="service-foot">
+          <span>周期 4 — 8 周</span>
+          <strong>↗ FROM ¥80K</strong>
+        </div>
+      </div>
+
+      <!-- Service 02 -->
+      <div class="service reveal" data-delay="1" data-hover>
+        <div class="service-no">SERVICE / 02</div>
+        <div class="service-title"><em>Phygital</em></div>
+        <div class="service-zh">数字物理融合 · 体验店与文旅</div>
+        <div class="service-desc">
+          为零售旗舰、文旅 IP、博物馆设计真正打通数字与物理的体验 ——
+          让一面墙能识别人，让一件商品能讲故事，让一个景点拥有数字孪生。
+        </div>
+        <ul class="service-list">
+          <li>数字孪生 / AR 导览 / MR 互动</li>
+          <li>动线 × 触点交互系统</li>
+          <li>内容运营 SOP 与数据看板</li>
+          <li>长期内容更新机制</li>
+        </ul>
+        <div class="service-foot">
+          <span>周期 8 — 16 周</span>
+          <strong>↗ FROM ¥300K</strong>
+        </div>
+      </div>
+
+      <!-- Service 03 -->
+      <div class="service reveal" data-hover>
+        <div class="service-no">SERVICE / 03</div>
+        <div class="service-title"><em>Brand Space</em></div>
+        <div class="service-zh">品牌空间 · 概念店与发布会</div>
+        <div class="service-desc">
+          把品牌主张翻译成可被走入、可被分享、可被记忆的空间叙事 ——
+          从概念店到新品发布，从创始人 Demo Day 到品牌十年大展。
+        </div>
+        <ul class="service-list">
+          <li>品牌空间概念与 Mood Board</li>
+          <li>动线 / 视觉 / 内容三轴策展</li>
+          <li>主视觉 × 空间装置一体化设计</li>
+          <li>开幕活动与传播素材包</li>
+        </ul>
+        <div class="service-foot">
+          <span>周期 6 — 12 周</span>
+          <strong>↗ FROM ¥200K</strong>
+        </div>
+      </div>
+
+      <!-- Service 04 -->
+      <div class="service reveal" data-delay="1" data-hover>
+        <div class="service-no">SERVICE / 04</div>
+        <div class="service-title"><em>Content IP</em></div>
+        <div class="service-zh">内容与 IP · 长期合作</div>
+        <div class="service-desc">
+          除接单外，FLYUN 持续孵化自有内容 IP ——
+          数字策展专栏、衍生硬件、设计课程，以长期合作的方式与品牌共建。
+        </div>
+        <ul class="service-list">
+          <li>FLYUN Letter (双月刊)</li>
+          <li>衍生装置 / 硬件小批量</li>
+          <li>品牌 × IP 联名共创</li>
+          <li>分成 / 入股 / 长期 Retainer</li>
+        </ul>
+        <div class="service-foot">
+          <span>周期 长期</span>
+          <strong>↗ NEGOTIABLE</strong>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SHOWCASE ===== -->
+<section class="showcase" id="showcase">
+  <div class="container">
+    <div class="section-head reveal">
+      <div>
+        <div class="eyebrow">03 · CASES & CONCEPTS</div>
+        <h2 class="section-title">Selected <em>work</em><br/>& open <em>concepts</em>.</h2>
+      </div>
+      <p class="section-desc">
+        FLYUN 处于早期，下面既有过往项目的提炼，也有正在公开孵化的概念。
+        欢迎以任何一个为起点，与我们对话。
+      </p>
+    </div>
+
+    <div class="showcase-grid">
+      <!-- Case 1 -->
+      <a href="#contact" class="case case-1 reveal" data-hover>
+        <div class="case-canvas case-bg-1"></div>
+        <svg class="case-svg" viewBox="0 0 800 500" preserveAspectRatio="xMidYMid slice">
+          <g opacity=".5" stroke="#EDE6D6" stroke-width=".5" fill="none">
+            <circle cx="400" cy="250" r="60"/>
+            <circle cx="400" cy="250" r="120"/>
+            <circle cx="400" cy="250" r="180"/>
+            <circle cx="400" cy="250" r="240"/>
+          </g>
+          <g fill="#FF4D2E">
+            <circle cx="280" cy="180" r="3"><animate attributeName="r" values="3;6;3" dur="3s" repeatCount="indefinite"/></circle>
+            <circle cx="520" cy="320" r="3"><animate attributeName="r" values="3;6;3" dur="2.4s" repeatCount="indefinite"/></circle>
+            <circle cx="350" cy="380" r="2"><animate attributeName="r" values="2;5;2" dur="2.8s" repeatCount="indefinite"/></circle>
+          </g>
+        </svg>
+        <div class="case-arrow">↗</div>
+        <div class="case-info">
+          <div class="case-meta">
+            <span>FEATURED · IMMERSIVE</span>
+            <span class="tag">2025 / CONCEPT</span>
+          </div>
+          <div class="case-name">ECHO <em>ROOM</em></div>
+          <div class="case-sub">声光沉浸装置 · 让一句呼吸变成一面墙的回响</div>
+        </div>
       </a>
-      <a href="mailto:supkefly@gmail.com" class="btn btn-secondary" data-hover>
-        建立私密对话
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14m-6-6 6 6-6 6"/></svg>
+
+      <!-- Case 2 -->
+      <a href="#contact" class="case case-2 reveal" data-delay="1" data-hover>
+        <div class="case-canvas case-bg-2"></div>
+        <svg class="case-svg" viewBox="0 0 600 500" preserveAspectRatio="xMidYMid slice">
+          <g stroke="#C8FF4D" stroke-width=".6" fill="none" opacity=".6">
+            <path d="M50 250 L300 100 L550 250 L300 400 Z"/>
+            <path d="M150 250 L300 175 L450 250 L300 325 Z"/>
+            <line x1="50" y1="250" x2="550" y2="250"/>
+            <line x1="300" y1="100" x2="300" y2="400"/>
+          </g>
+          <circle cx="300" cy="250" r="6" fill="#C8FF4D"/>
+        </svg>
+        <div class="case-arrow">↗</div>
+        <div class="case-info">
+          <div class="case-meta">
+            <span>PHYGITAL</span>
+            <span class="tag">2025 / IN PROGRESS</span>
+          </div>
+          <div class="case-name">MIRROR <em>CITY</em></div>
+          <div class="case-sub">城市数字孪生体验</div>
+        </div>
+      </a>
+
+      <!-- Case 3 -->
+      <a href="#contact" class="case case-3 reveal" data-hover>
+        <div class="case-canvas case-bg-3"></div>
+        <svg class="case-svg" viewBox="0 0 400 400" preserveAspectRatio="xMidYMid slice">
+          <g opacity=".7">
+            <ellipse cx="200" cy="200" rx="140" ry="40" fill="none" stroke="#F4B860" stroke-width=".6"/>
+            <ellipse cx="200" cy="200" rx="100" ry="100" fill="none" stroke="#F4B860" stroke-width=".6" transform="rotate(60 200 200)"/>
+            <ellipse cx="200" cy="200" rx="100" ry="100" fill="none" stroke="#F4B860" stroke-width=".6" transform="rotate(120 200 200)"/>
+          </g>
+          <circle cx="200" cy="200" r="4" fill="#F4B860"/>
+        </svg>
+        <div class="case-arrow">↗</div>
+        <div class="case-info">
+          <div class="case-meta">
+            <span>BRAND SPACE</span>
+            <span class="tag">2025</span>
+          </div>
+          <div class="case-name">HOLO <em>PAVILION</em></div>
+          <div class="case-sub">全息品牌发布舱</div>
+        </div>
+      </a>
+
+      <!-- Case 4 -->
+      <a href="#contact" class="case case-4 reveal" data-delay="1" data-hover>
+        <div class="case-canvas case-bg-4"></div>
+        <svg class="case-svg" viewBox="0 0 400 400" preserveAspectRatio="xMidYMid slice">
+          <g stroke="#FF4D2E" fill="none" opacity=".6" stroke-width=".5">
+            <path d="M50 350 Q100 200 150 350 Q200 200 250 350 Q300 200 350 350"/>
+            <path d="M50 320 Q100 170 150 320 Q200 170 250 320 Q300 170 350 320" opacity=".5"/>
+            <path d="M50 290 Q100 140 150 290 Q200 140 250 290 Q300 140 350 290" opacity=".3"/>
+          </g>
+          <g fill="#FF4D2E">
+            <circle cx="100" cy="200" r="3"/>
+            <circle cx="200" cy="200" r="3"/>
+            <circle cx="300" cy="200" r="3"/>
+          </g>
+        </svg>
+        <div class="case-arrow">↗</div>
+        <div class="case-info">
+          <div class="case-meta">
+            <span>IMMERSIVE</span>
+            <span class="tag">CONCEPT</span>
+          </div>
+          <div class="case-name">PULSE <em>GARDEN</em></div>
+          <div class="case-sub">互动光影花园</div>
+        </div>
+      </a>
+
+      <!-- Case 5 -->
+      <a href="#contact" class="case case-5 reveal" data-delay="2" data-hover>
+        <div class="case-canvas case-bg-5"></div>
+        <svg class="case-svg" viewBox="0 0 400 400" preserveAspectRatio="xMidYMid slice">
+          <g stroke="#C8FF4D" stroke-width=".5" fill="none" opacity=".6">
+            <rect x="80" y="80" width="240" height="240"/>
+            <rect x="120" y="120" width="160" height="160"/>
+            <rect x="160" y="160" width="80" height="80"/>
+            <line x1="80" y1="80" x2="320" y2="320"/>
+            <line x1="320" y1="80" x2="80" y2="320"/>
+          </g>
+          <circle cx="200" cy="200" r="6" fill="#C8FF4D"/>
+        </svg>
+        <div class="case-arrow">↗</div>
+        <div class="case-info">
+          <div class="case-meta">
+            <span>BRAND SPACE</span>
+            <span class="tag">CONCEPT</span>
+          </div>
+          <div class="case-name">VOID <em>WALK</em></div>
+          <div class="case-sub">未来零售概念店</div>
+        </div>
+      </a>
+
+      <!-- Case 6 (full-width) -->
+      <a href="#contact" class="case case-6 reveal" data-hover>
+        <div class="case-canvas case-bg-6"></div>
+        <svg class="case-svg" viewBox="0 0 1200 500" preserveAspectRatio="xMidYMid slice">
+          <g stroke="#FF4D2E" stroke-width=".4" fill="none" opacity=".5">
+            <line x1="0" y1="100" x2="1200" y2="100"/>
+            <line x1="0" y1="200" x2="1200" y2="200"/>
+            <line x1="0" y1="300" x2="1200" y2="300"/>
+            <line x1="0" y1="400" x2="1200" y2="400"/>
+          </g>
+          <g fill="#FF4D2E">
+            <circle cx="120" cy="100" r="4"><animate attributeName="opacity" values=".3;1;.3" dur="3s" repeatCount="indefinite"/></circle>
+            <circle cx="320" cy="200" r="4"><animate attributeName="opacity" values=".3;1;.3" dur="3s" begin=".5s" repeatCount="indefinite"/></circle>
+            <circle cx="520" cy="300" r="4"><animate attributeName="opacity" values=".3;1;.3" dur="3s" begin="1s" repeatCount="indefinite"/></circle>
+            <circle cx="720" cy="200" r="4"><animate attributeName="opacity" values=".3;1;.3" dur="3s" begin="1.5s" repeatCount="indefinite"/></circle>
+            <circle cx="920" cy="100" r="4"><animate attributeName="opacity" values=".3;1;.3" dur="3s" begin="2s" repeatCount="indefinite"/></circle>
+            <circle cx="1080" cy="300" r="4"><animate attributeName="opacity" values=".3;1;.3" dur="3s" begin="2.5s" repeatCount="indefinite"/></circle>
+          </g>
+          <g stroke="#F4B860" stroke-width=".6" fill="none" opacity=".5">
+            <path d="M120 100 L320 200 L520 300 L720 200 L920 100 L1080 300"/>
+          </g>
+        </svg>
+        <div class="case-arrow">↗</div>
+        <div class="case-info">
+          <div class="case-meta">
+            <span>CONTENT IP · ONGOING</span>
+            <span class="tag">FLYUN ORIGINAL</span>
+          </div>
+          <div class="case-name">LIGHT <em>SCRIPT</em></div>
+          <div class="case-sub">FLYUN 自有数字策展品牌 · 双月一刊 · 城市间巡回</div>
+        </div>
       </a>
     </div>
+  </div>
+</section>
 
-    <!-- TICKER -->
-    <div class="ticker reveal" data-delay="4">
-      <div class="ticker-track" id="tickerTrack"></div>
+<!-- ===== PROCESS ===== -->
+<section id="process">
+  <div class="container">
+    <div class="section-head reveal">
+      <div>
+        <div class="eyebrow">04 · HOW WE WORK</div>
+        <h2 class="section-title">Five steps,<br/>one <em>spatial</em><br/>conversation.</h2>
+      </div>
+      <p class="section-desc">
+        FLYUN 的工作流是一段被设计过的旅程 ——
+        从「理解你」到「让人理解你」，每一步都有可交付物，每一步都可以中止或延展。
+      </p>
     </div>
 
-    <!-- STATS -->
-    <div class="status-grid reveal" data-delay="4">
-      <div class="status-card" data-hover>
-        <div class="status-label">ACTIVE SEARCH</div>
-        <div class="status-number" data-count="128">0</div>
-        <div class="status-text">活跃岗位搜索</div>
-        <svg class="spark" viewBox="0 0 80 30"><polyline fill="none" stroke="url(#sg1)" stroke-width="2" points="0,22 12,18 24,20 36,12 48,15 60,8 72,11 80,5"/><defs><linearGradient id="sg1"><stop offset="0" stop-color="#0A84FF"/><stop offset="1" stop-color="#00E5FF"/></linearGradient></defs></svg>
+    <ul class="process-list">
+      <li class="process-item reveal" data-hover>
+        <div class="process-no">/ 01</div>
+        <div>
+          <div class="process-name"><em>Decode</em> · 解码</div>
+          <div class="process-desc">用 1 到 2 周深度访谈品牌、用户、场地。我们不画任何东西，只听你讲故事。</div>
+        </div>
+        <div class="process-arrow">→</div>
+      </li>
+      <li class="process-item reveal" data-hover>
+        <div class="process-no">/ 02</div>
+        <div>
+          <div class="process-name"><em>Spatial Concept</em> · 空间概念</div>
+          <div class="process-desc">输出 2 — 3 套空间叙事概念，每套都包含 Mood、动线、装置原型与气质参考。</div>
+        </div>
+        <div class="process-arrow">→</div>
+      </li>
+      <li class="process-item reveal" data-hover>
+        <div class="process-no">/ 03</div>
+        <div>
+          <div class="process-name"><em>Interaction Script</em> · 交互脚本</div>
+          <div class="process-desc">把空间分解成触点 —— 谁会在第几秒看到什么、做什么、获得什么反馈。</div>
+        </div>
+        <div class="process-arrow">→</div>
+      </li>
+      <li class="process-item reveal" data-hover>
+        <div class="process-no">/ 04</div>
+        <div>
+          <div class="process-name"><em>Prototype</em> · 原型</div>
+          <div class="process-desc">小尺度搭建关键装置原型，做现场可用性测试，必要时返工 1 — 2 轮。</div>
+        </div>
+        <div class="process-arrow">→</div>
+      </li>
+      <li class="process-item reveal" data-hover>
+        <div class="process-no">/ 05</div>
+        <div>
+          <div class="process-name"><em>Deliver & Run</em> · 落地与陪跑</div>
+          <div class="process-desc">现场监制、开幕陪跑、传播素材、运营手册 —— 我们陪你走完最容易掉链子的最后 10%。</div>
+        </div>
+        <div class="process-arrow">→</div>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- ===== PRICING ===== -->
+<section id="pricing">
+  <div class="container">
+    <div class="section-head reveal">
+      <div>
+        <div class="eyebrow">05 · ENGAGEMENT</div>
+        <h2 class="section-title">Three ways<br/>to <em>start</em>.</h2>
       </div>
-      <div class="status-card" data-hover>
-        <div class="status-label">MATCH PRECISION</div>
-        <div class="status-number" data-count="93" data-suffix="%">0</div>
-        <div class="status-text">智能匹配精度</div>
-        <svg class="spark" viewBox="0 0 80 30"><polyline fill="none" stroke="#00E5A0" stroke-width="2" points="0,20 10,15 22,18 34,10 46,8 58,12 70,6 80,4"/></svg>
+      <p class="section-desc">
+        FLYUN 把合作分成三档 —— 你可以从最轻的 SPARK 开始验证一次合作，
+        逐步走向 STORY 和 SYSTEM。每一档都包含完整的概念到落地服务，
+        没有「设计完就跑路」的版本。
+      </p>
+    </div>
+
+    <div class="pricing-grid">
+      <!-- Tier 1 -->
+      <div class="tier reveal" data-hover>
+        <div class="tier-name"><em>Spark</em></div>
+        <div class="tier-zh">单点装置 · 验证一次合作</div>
+        <div class="tier-price">
+          <span class="amount">¥80K</span>
+          <span class="unit">— ¥200K</span>
+        </div>
+        <div class="tier-period">· 4 — 8 WEEKS</div>
+        <ul class="tier-list">
+          <li>1 个核心装置 / 快闪体验</li>
+          <li>概念脚本 + 设计图 + 原型</li>
+          <li>1 轮现场监制</li>
+          <li>2 套传播素材</li>
+          <li>30 天后体验复盘</li>
+        </ul>
+        <a href="#contact" class="tier-cta" data-hover>
+          从 Spark 开始
+          <span>→</span>
+        </a>
       </div>
-      <div class="status-card" data-hover>
-        <div class="status-label">TALENT GRAPH</div>
-        <div class="status-number" data-count="2800" data-suffix="+">0</div>
-        <div class="status-text">AI 人才节点</div>
-        <svg class="spark" viewBox="0 0 80 30"><polyline fill="none" stroke="#7C5CFF" stroke-width="2" points="0,25 12,20 24,22 36,15 48,10 60,12 72,6 80,4"/></svg>
+
+      <!-- Tier 2 -->
+      <div class="tier featured reveal" data-delay="1" data-hover>
+        <div class="tier-badge">推荐</div>
+        <div class="tier-name"><em>Story</em></div>
+        <div class="tier-zh">主题空间 · 体验店 / 发布会</div>
+        <div class="tier-price">
+          <span class="amount">¥300K</span>
+          <span class="unit">— ¥800K</span>
+        </div>
+        <div class="tier-period">· 8 — 16 WEEKS</div>
+        <ul class="tier-list">
+          <li>整个主题空间 / 发布会全案</li>
+          <li>3 — 5 个交互触点</li>
+          <li>动线策展 + 视觉系统</li>
+          <li>全程现场监制 + 开幕陪跑</li>
+          <li>完整传播素材 + 运营手册</li>
+          <li>90 天数据复盘</li>
+        </ul>
+        <a href="#contact" class="tier-cta" data-hover>
+          做一次 Story
+          <span>→</span>
+        </a>
       </div>
-      <div class="status-card" data-hover>
-        <div class="status-label">RESPONSE TIME</div>
-        <div class="status-number" data-count="48" data-suffix="h">0</div>
-        <div class="status-text">高端职位响应</div>
-        <svg class="spark" viewBox="0 0 80 30"><polyline fill="none" stroke="#FFB020" stroke-width="2" points="0,12 12,15 24,10 36,18 48,12 60,8 72,14 80,10"/></svg>
+
+      <!-- Tier 3 -->
+      <div class="tier reveal" data-delay="2" data-hover>
+        <div class="tier-name"><em>System</em></div>
+        <div class="tier-zh">空间品牌体系 · 长期合作</div>
+        <div class="tier-price">
+          <span class="amount">¥1M</span>
+          <span class="unit">+ / 年</span>
+        </div>
+        <div class="tier-period">· 16+ WEEKS · ANNUAL</div>
+        <ul class="tier-list">
+          <li>品牌空间体系 / 多门店标准化</li>
+          <li>持续内容更新机制</li>
+          <li>FLYUN 团队驻场 / Retainer</li>
+          <li>季度迭代 + 年度大展</li>
+          <li>分成 / 入股可议</li>
+          <li>优先孵化自有 IP 共创</li>
+        </ul>
+        <a href="#contact" class="tier-cta" data-hover>
+          聊聊 System
+          <span>→</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Revenue mix -->
+    <div class="revenue reveal">
+      <div>
+        <h3>收入结构 · <em style="color:var(--accent);font-style:italic;">Revenue Mix</em></h3>
+        <p>FLYUN 不靠单一项目费撑起团队 —— 60% 服务、20% 内容、20% 长期合作与自有 IP，让工作室既有现金流，也有自己的故事可讲。</p>
+      </div>
+      <div class="revenue-bars">
+        <div class="rev-row">
+          <div class="rev-label">PROJECT FEE / 项目设计费</div>
+          <div class="rev-bar"><div class="rev-fill" data-pct="60"></div></div>
+          <div class="rev-pct">60%</div>
+        </div>
+        <div class="rev-row">
+          <div class="rev-label">CUSTOM INSTALLATION</div>
+          <div class="rev-bar"><div class="rev-fill warm" data-pct="20"></div></div>
+          <div class="rev-pct">20%</div>
+        </div>
+        <div class="rev-row">
+          <div class="rev-label">LONG-TERM IP / 分成</div>
+          <div class="rev-bar"><div class="rev-fill cool" data-pct="12"></div></div>
+          <div class="rev-pct">12%</div>
+        </div>
+        <div class="rev-row">
+          <div class="rev-label">CONTENT / 课程</div>
+          <div class="rev-bar"><div class="rev-fill dim" data-pct="8"></div></div>
+          <div class="rev-pct">8%</div>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ===== INTELLIGENCE ===== -->
-<section id="intelligence">
+<!-- ===== ROADMAP ===== -->
+<section class="roadmap" id="roadmap">
   <div class="container">
-    <div class="reveal">
-      <div class="section-eyebrow">01 · TALENT INTELLIGENCE ARCHITECTURE</div>
-      <h2 class="section-title">AI 人才情报<br/><span class="grad">深度架构</span></h2>
+    <div class="section-head reveal">
+      <div>
+        <div class="eyebrow">06 · ROADMAP</div>
+        <h2 class="section-title">18 months,<br/>from a <em>desk</em><br/>to a <em>studio</em>.</h2>
+      </div>
       <p class="section-desc">
-        基于技术路线、组织演进与产业链的多维 Mapping，
-        持续追踪 AI 与新能源核心技术人才流向，构建可执行的人才情报网络。
+        FLYUN 的第一年半被切成五个阶段。
+        每个阶段都有一个唯一的目标，达不成就不进入下一阶段 ——
+        这不是 PPT 上的口号，而是工作室真实的节奏。
       </p>
     </div>
 
-    <div class="grid">
-      <!-- Card 1: large -->
-      <div class="card large reveal" data-hover>
-        <div class="card-icon">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/><circle cx="7" cy="6" r="1.5" fill="currentColor"/><circle cx="14" cy="12" r="1.5" fill="currentColor"/><circle cx="10" cy="18" r="1.5" fill="currentColor"/></svg>
-        </div>
-        <div class="card-tag">AUTONOMOUS SYSTEMS</div>
-        <div class="card-title">智能驾驶与端到端架构</div>
-        <div class="card-desc">
-          深度覆盖 ADS、BEV、Occupancy Network、世界模型、端到端自动驾驶、
-          EEA 与智能整车架构核心岗位 —— 从感知到规划，从芯片到云端。
-        </div>
-        <div class="card-tags">
-          <span class="chip">E2E Driving</span>
-          <span class="chip">BEV / Occupancy</span>
-          <span class="chip">World Model</span>
-          <span class="chip">VLA</span>
-          <span class="chip">EEA 3.0</span>
-        </div>
+    <div class="roadmap-track">
+      <div class="phase reveal" data-hover>
+        <div class="phase-dot"></div>
+        <div class="phase-time">Q1 · 0 — 3M</div>
+        <div class="phase-title"><em>Ignite</em> · 起步</div>
+        <ul class="phase-list">
+          <li>工作室成立 · 视觉与官网上线</li>
+          <li>个人 IP 内容启动 (小红书 / B 站 / Newsletter)</li>
+          <li>2 个免费 / 低价 showcase 项目</li>
+          <li>第一支签约客户</li>
+        </ul>
       </div>
 
-      <!-- Card 2 -->
-      <div class="card reveal" data-delay="1" data-hover>
-        <div class="card-icon">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48 2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48 2.83-2.83"/></svg>
-        </div>
-        <div class="card-tag">FOUNDATION MODEL</div>
-        <div class="card-title">AGI 与多模态前沿</div>
-        <div class="card-desc">
-          LLM、Agent、推理优化、RLHF、多模态生成、AI Infra —— 前沿研究与工程化落地的关键人才。
-        </div>
-        <div class="card-tags">
-          <span class="chip">LLM</span>
-          <span class="chip">Agent</span>
-          <span class="chip">RLHF</span>
-          <span class="chip">AI Infra</span>
-        </div>
+      <div class="phase reveal" data-delay="1" data-hover>
+        <div class="phase-dot warm"></div>
+        <div class="phase-time">Q2 · 4 — 6M</div>
+        <div class="phase-title"><em>Validate</em> · 验证</div>
+        <ul class="phase-list">
+          <li>完成 3 — 5 个付费项目</li>
+          <li>案例库 v1 上线 + 复盘内容</li>
+          <li>1 — 2 家品牌长期合作意向</li>
+          <li>Spark 服务定价稳定</li>
+        </ul>
       </div>
 
-      <!-- Card 3 -->
-      <div class="card reveal" data-delay="2" data-hover>
-        <div class="card-icon">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="6" cy="6" r="2"/><circle cx="18" cy="6" r="2"/><circle cx="6" cy="18" r="2"/><circle cx="18" cy="18" r="2"/><circle cx="12" cy="12" r="2"/><path d="M8 6h8M6 8v8m12-8v8M8 18h8M7.5 7.5l3 3m3 3 3 3m0-9-3 3m-3 3-3 3"/></svg>
-        </div>
-        <div class="card-tag">GRAPH OS</div>
-        <div class="card-title">智能人才图谱</div>
-        <div class="card-desc">
-          基于知识图谱与本地化 AI Agent 的人才搜索系统，从公开信号到组织洞察。
-        </div>
-        <div class="card-tags">
-          <span class="chip">Knowledge Graph</span>
-          <span class="chip">Local AI</span>
-          <span class="chip">Signal Mining</span>
-        </div>
+      <div class="phase reveal" data-delay="2" data-hover>
+        <div class="phase-dot warm"></div>
+        <div class="phase-time">Q3 · 7 — 9M</div>
+        <div class="phase-title"><em>Expand</em> · 扩张</div>
+        <ul class="phase-list">
+          <li>核心 3 人小团队成型 (空间 / 技术 / 内容)</li>
+          <li>第一个百万级 Story 项目</li>
+          <li>受邀行业活动 / 演讲</li>
+          <li>FLYUN Letter 创刊</li>
+        </ul>
       </div>
 
-      <!-- Card 4 -->
-      <div class="card reveal" data-hover>
-        <div class="card-icon">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2 4 7v6c0 5 3.5 8.5 8 9 4.5-.5 8-4 8-9V7l-8-5z"/><path d="m9 12 2 2 4-4"/></svg>
-        </div>
-        <div class="card-tag">EXECUTIVE NETWORK</div>
-        <div class="card-title">高端技术圈层</div>
-        <div class="card-desc">
-          长期深耕 AI、机器人、新能源与科技高管生态，
-          积累从 IC 到 VP 的多层级私域人脉。
-        </div>
-        <div class="card-tags">
-          <span class="chip">CTO / VP</span>
-          <span class="chip">Tech Director</span>
-          <span class="chip">Founding Eng</span>
-        </div>
+      <div class="phase reveal" data-delay="3" data-hover>
+        <div class="phase-dot cool"></div>
+        <div class="phase-time">Q4 · 10 — 12M</div>
+        <div class="phase-title"><em>Systemize</em> · 体系</div>
+        <ul class="phase-list">
+          <li>三档服务模板化 (Spark / Story / System)</li>
+          <li>第一个 System 级长期合作</li>
+          <li>自有 IP「LIGHT SCRIPT」首站落地</li>
+          <li>海外项目接洽</li>
+        </ul>
       </div>
 
-      <!-- Card 5 -->
-      <div class="card reveal" data-delay="1" data-hover>
-        <div class="card-icon">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
-        </div>
-        <div class="card-tag">EMBODIED AI</div>
-        <div class="card-title">具身智能与机器人</div>
-        <div class="card-desc">
-          人形机器人、操作策略、运动控制、强化学习、Sim2Real —— AI 落地物理世界的关键路径。
-        </div>
-        <div class="card-tags">
-          <span class="chip">Humanoid</span>
-          <span class="chip">RL</span>
-          <span class="chip">Sim2Real</span>
-        </div>
-      </div>
-
-      <!-- Card 6: full -->
-      <div class="card full card-map reveal" data-hover>
-        <svg class="map-viz" id="mapViz" viewBox="0 0 1200 280" preserveAspectRatio="xMidYMid slice"></svg>
-        <div style="position:relative;z-index:1;">
-          <div class="card-tag">INDUSTRY INTELLIGENCE</div>
-          <div class="card-title" style="font-size:34px;max-width:760px;">
-            企业真正需要的，已不是传统 JD 匹配 —— <br/>
-            <span class="grad">而是理解技术演进与组织升级的人才 Intelligence System。</span>
-          </div>
-          <div class="card-desc" style="max-width:560px;margin-top:18px;">
-            从技术路线图反推人才地图，从组织升级反推关键岗位 —— 这是 LEO OS 的核心方法论。
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Logos Marquee -->
-    <div class="logos">
-      <div class="logos-track" id="logosTrack"></div>
-    </div>
-  </div>
-</section>
-
-<!-- ===== CONSOLE ===== -->
-<section id="console">
-  <div class="container">
-    <div class="reveal">
-      <div class="section-eyebrow">02 · INTELLIGENCE CONSOLE</div>
-      <h2 class="section-title">AI <span class="grad">智能搜索</span> 系统</h2>
-      <p class="section-desc">
-        输入技术方向、公司或岗位，AI Agent 实时调用人才图谱进行多维度匹配。
-      </p>
-    </div>
-
-    <div class="console reveal">
-      <div class="console-inner">
-        <div class="console-header">
-          <span class="console-dot dot-r"></span>
-          <span class="console-dot dot-y"></span>
-          <span class="console-dot dot-g"></span>
-          <span style="margin-left:12px;">leo-os://console/talent-search</span>
-          <span class="console-tag">● ONLINE</span>
-        </div>
-
-        <div class="search-box">
-          <div class="search-icon">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
-          </div>
-          <input type="text" class="console-input" id="searchInput"
-                 placeholder="输入技术方向，例如: autonomous · multimodal · embodied · infra ..." />
-        </div>
-
-        <div class="search-suggest">
-          <span class="suggest-chip" data-q="autonomous" data-hover># autonomous</span>
-          <span class="suggest-chip" data-q="multimodal" data-hover># multimodal</span>
-          <span class="suggest-chip" data-q="embodied" data-hover># embodied AI</span>
-          <span class="suggest-chip" data-q="infra" data-hover># AI infra</span>
-          <span class="suggest-chip" data-q="agent" data-hover># agent</span>
-          <span class="suggest-chip" data-q="chip" data-hover># AI chip</span>
-        </div>
-
-        <div class="results" id="results"></div>
+      <div class="phase reveal" data-delay="4" data-hover>
+        <div class="phase-dot cool"></div>
+        <div class="phase-time">Y2 · 13 — 18M</div>
+        <div class="phase-title"><em>Beyond</em> · 出圈</div>
+        <ul class="phase-list">
+          <li>团队扩张至 8 — 10 人</li>
+          <li>自有 IP 衍生硬件 / 产品发布</li>
+          <li>海外首个落地项目</li>
+          <li>FLYUN 品牌十年大展概念立项</li>
+        </ul>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ===== TIMELINE ===== -->
-<section id="timeline">
-  <div class="container">
-    <div class="reveal">
-      <div class="section-eyebrow">03 · ENGAGEMENT FLOW</div>
-      <h2 class="section-title">智能化<span class="grad"> 4 步流程</span></h2>
-      <p class="section-desc">
-        从需求理解到人才交付，每一步都由 AI 与资深顾问双轨驱动。
-      </p>
-    </div>
+<!-- ===== CONTACT ===== -->
+<section class="contact" id="contact">
+  <div class="contact-inner">
+    <div class="contact-eyebrow reveal">07 · LET'S TALK</div>
+    <h2 class="contact-title reveal" data-delay="1">
+      你有一个<br/>
+      <em>空间</em>，<br/>
+      我们让它<em>说话</em>。
+    </h2>
+    <a href="mailto:hello@flyun.studio" class="btn btn-primary reveal" data-delay="2" data-hover>
+      hello@flyun.studio
+      <span class="arrow">↗</span>
+    </a>
 
-    <div class="grid">
-      <div class="card reveal" data-hover>
-        <div class="t-time">STEP 01</div>
-        <div class="card-title" style="font-size:22px;">技术解构</div>
-        <div class="card-desc">
-          深入企业技术栈与组织架构，AI 辅助提取核心能力图谱与隐性需求。
-        </div>
-      </div>
-      <div class="card reveal" data-delay="1" data-hover>
-        <div class="t-time">STEP 02</div>
-        <div class="card-title" style="font-size:22px;">人才 Mapping</div>
-        <div class="card-desc">
-          基于知识图谱锁定目标圈层，AI 多维评分排序候选清单。
-        </div>
-      </div>
-      <div class="card reveal" data-delay="2" data-hover>
-        <div class="t-time">STEP 03</div>
-        <div class="card-title" style="font-size:22px;">深度对齐</div>
-        <div class="card-desc">
-          顾问深度沟通技术方向、组织文化与个人发展路径，三维匹配。
-        </div>
-      </div>
-      <div class="card reveal" data-delay="3" data-hover>
-        <div class="t-time">STEP 04</div>
-        <div class="card-title" style="font-size:22px;">交付与陪跑</div>
-        <div class="card-desc">
-          Offer 谈判、入职过渡、90 天融入跟踪 —— 闭环保障入职成功率。
-        </div>
-      </div>
+    <div class="contact-channels">
+      <a href="mailto:hello@flyun.studio" class="channel reveal" data-delay="1" data-hover>
+        <div class="channel-tag">CONTACT / 01</div>
+        <div class="channel-name">Email</div>
+        <div class="channel-handle">hello@flyun.studio</div>
+      </a>
+      <a href="#" class="channel reveal" data-delay="2" data-hover>
+        <div class="channel-tag">CONTACT / 02</div>
+        <div class="channel-name">微信 / WeChat</div>
+        <div class="channel-handle">flyun_studio</div>
+      </a>
+      <a href="#" class="channel reveal" data-delay="3" data-hover>
+        <div class="channel-tag">CONTACT / 03</div>
+        <div class="channel-name">小红书</div>
+        <div class="channel-handle">@FLYUN STUDIO</div>
+      </a>
+      <a href="#" class="channel reveal" data-delay="4" data-hover>
+        <div class="channel-tag">CONTACT / 04</div>
+        <div class="channel-name">Instagram</div>
+        <div class="channel-handle">@flyun.studio</div>
+      </a>
     </div>
   </div>
 </section>
 
 <!-- ===== FOOTER ===== -->
-<footer id="contact">
-  <div class="foot-grid">
-    <div class="foot-col">
-      <div class="logo" style="margin-bottom:18px;">
-        <div class="logo-icon">L</div>
-        <div class="logo-text">
-          <span>LEO OS</span>
-          <small>AI TALENT INTELLIGENCE</small>
-        </div>
-      </div>
-      <div class="foot-brand">
-        AI 时代的人才智能操作系统。<br/>
-        我们不是猎头，是技术人才的情报网络。
-      </div>
-    </div>
-    <div class="foot-col">
-      <h4>领域</h4>
-      <a href="#">自动驾驶</a>
-      <a href="#">AGI / 多模态</a>
-      <a href="#">具身智能</a>
-      <a href="#">AI Infra</a>
-    </div>
-    <div class="foot-col">
-      <h4>系统</h4>
-      <a href="#hero">首页</a>
-      <a href="#intelligence">人才架构</a>
-      <a href="#console">智能搜索</a>
-      <a href="#timeline">流程</a>
-    </div>
-    <div class="foot-col">
-      <h4>联系</h4>
-      <a href="mailto:supkefly@gmail.com">supkefly@gmail.com</a>
-      <a href="#">私密咨询</a>
-      <a href="#">合作申请</a>
-    </div>
-  </div>
-  <div class="foot-bottom">
-    <div>© 2026 LEO OS · ALL SYSTEMS OPERATIONAL</div>
-    <div>BUILT WITH INTELLIGENCE · v2.6.0</div>
-  </div>
+<footer>
+  <div>© 2026 FLYUN STUDIO · ALL RIGHTS RESERVED</div>
+  <div>BUILT IN <span style="color:var(--accent);">WUHAN</span> · WORKING WORLDWIDE</div>
+  <div>v1.0 · <a href="#hero">↑ BACK TO TOP</a></div>
 </footer>
 
-<!-- ===== AI ASSISTANT ===== -->
-<button class="ai-fab" id="aiFab" data-hover aria-label="AI Assistant">
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a3 3 0 0 1 3 3v1h2a2 2 0 0 1 2 2v3h1a1 1 0 0 1 0 2h-1v3a2 2 0 0 1-2 2h-2v1a3 3 0 0 1-6 0v-1H7a2 2 0 0 1-2-2v-3H4a1 1 0 0 1 0-2h1V8a2 2 0 0 1 2-2h2V5a3 3 0 0 1 3-3z"/><circle cx="9" cy="11" r="1.2" fill="currentColor"/><circle cx="15" cy="11" r="1.2" fill="currentColor"/><path d="M9.5 15h5"/></svg>
-</button>
-
-<div class="ai-panel" id="aiPanel">
-  <div class="ai-head">
-    <div class="ai-avatar">L</div>
-    <div class="ai-name">
-      LEO Intelligence
-      <small>在线 · 平均响应 1.2s</small>
-    </div>
-    <button class="ai-close" id="aiClose" data-hover>✕</button>
-  </div>
-  <div class="ai-body" id="aiBody">
-    <div class="msg msg-bot">
-      你好，我是 LEO Intelligence。<br/>
-      我可以帮你理解 AI 人才市场、解读技术方向、推荐人选画像。试试问我：
-    </div>
-    <div class="msg msg-bot" style="background:transparent;border:none;padding:4px 0;">
-      <div class="search-suggest" style="margin:0;">
-        <span class="suggest-chip" data-ai="自动驾驶人才现状">自动驾驶人才现状</span>
-        <span class="suggest-chip" data-ai="如何招到端到端专家">如何招到端到端专家</span>
-        <span class="suggest-chip" data-ai="具身智能赛道梳理">具身智能赛道</span>
-      </div>
-    </div>
-  </div>
-  <div class="ai-foot">
-    <input type="text" class="ai-input" id="aiInput" placeholder="询问 AI 人才情报..."/>
-    <button class="ai-send" id="aiSend" data-hover>
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="m5 12 14-7-7 14-2-7-5-0z"/></svg>
-    </button>
-  </div>
-</div>
-
-<!-- ===== COMMAND PALETTE ===== -->
-<div class="cmdk-overlay" id="cmdkOverlay">
-  <div class="cmdk">
-    <input type="text" class="cmdk-input" id="cmdkInput" placeholder="搜索功能、跳转或执行命令..." autocomplete="off"/>
-    <div class="cmdk-list" id="cmdkList"></div>
-  </div>
-</div>
-
 <script>
-/* ===== BOOT SEQUENCE ===== */
+/* ===== BOOT ===== */
 const bootSteps = [
-  ['LOADING NEURAL NETWORK', 280],
-  ['CONNECTING TO TALENT GRAPH', 320],
-  ['INITIALIZING AI AGENTS', 280],
-  ['SYSTEMS READY', 200]
+  ['CALIBRATING SPATIAL INTERFACE', 320],
+  ['LOADING DESIGN PRINCIPLES', 260],
+  ['SYNCING INTERACTION LAYER', 240],
+  ['READY', 200]
 ];
-let bs = 0;
-const bootText = document.getElementById('bootText');
+let bs=0; const bootText=document.getElementById('bootText');
 function nextBoot(){
-  if(bs >= bootSteps.length){
+  if(bs>=bootSteps.length){
     document.getElementById('boot').classList.add('done');
-    document.body.style.overflow = '';
+    document.body.style.overflow='';
     return;
   }
-  bootText.innerHTML = bootSteps[bs][0] + ' <span class="ok">●</span>';
+  bootText.textContent = bootSteps[bs][0];
   setTimeout(()=>{bs++; nextBoot();}, bootSteps[bs][1]);
 }
-document.body.style.overflow = 'hidden';
+document.body.style.overflow='hidden';
 setTimeout(nextBoot, 200);
-
-/* ===== TYPING ===== */
-const phrases = ['Autonomy','AGI','Embodied AI','New Energy'];
-const typing = document.getElementById('typing');
-let pIdx=0, cIdx=0, deleting=false;
-function typeLoop(){
-  const cur = phrases[pIdx];
-  if(!deleting){
-    typing.textContent = cur.slice(0,++cIdx);
-    if(cIdx === cur.length){deleting=true; setTimeout(typeLoop, 1600); return;}
-  } else {
-    typing.textContent = cur.slice(0,--cIdx);
-    if(cIdx === 0){deleting=false; pIdx=(pIdx+1)%phrases.length;}
-  }
-  setTimeout(typeLoop, deleting? 40 : 80);
-}
-typeLoop();
 
 /* ===== CURSOR ===== */
 const cursor = document.querySelector('.cursor');
@@ -1197,418 +1542,106 @@ let cx=0,cy=0,tx=0,ty=0;
 document.addEventListener('mousemove',e=>{
   tx=e.clientX; ty=e.clientY;
   dot.style.left=tx+'px'; dot.style.top=ty+'px';
+  document.documentElement.style.setProperty('--mx',tx+'px');
+  document.documentElement.style.setProperty('--my',ty+'px');
 });
 function followCursor(){
-  cx += (tx-cx)*0.18; cy += (ty-cy)*0.18;
+  cx += (tx-cx)*0.16; cy += (ty-cy)*0.16;
   cursor.style.left=cx+'px'; cursor.style.top=cy+'px';
   requestAnimationFrame(followCursor);
 }
 followCursor();
 document.addEventListener('mouseover',e=>{
-  if(e.target.closest('a,button,.card,.suggest-chip,[data-hover]')) cursor.classList.add('hover');
+  if(e.target.closest('a,button,[data-hover]')) cursor.classList.add('hover');
   else cursor.classList.remove('hover');
 });
-
-/* ===== PARTICLES (Neural Network) ===== */
-const canvas = document.getElementById('particles');
-const ctx = canvas.getContext('2d');
-function resizeCanvas(){canvas.width=innerWidth; canvas.height=innerHeight;}
-resizeCanvas();
-addEventListener('resize', resizeCanvas);
-
-const N = Math.min(80, Math.floor(innerWidth/22));
-const particles = Array.from({length:N},()=>({
-  x:Math.random()*canvas.width,
-  y:Math.random()*canvas.height,
-  vx:(Math.random()-.5)*.4,
-  vy:(Math.random()-.5)*.4,
-  r:Math.random()*1.5+.5
-}));
-let mouseX = innerWidth/2, mouseY = innerHeight/2;
-document.addEventListener('mousemove',e=>{mouseX=e.clientX; mouseY=e.clientY;});
-
-function animate(){
-  ctx.clearRect(0,0,canvas.width,canvas.height);
-  particles.forEach(p=>{
-    p.x+=p.vx; p.y+=p.vy;
-    if(p.x<0||p.x>canvas.width) p.vx*=-1;
-    if(p.y<0||p.y>canvas.height) p.vy*=-1;
-
-    const dxm=p.x-mouseX, dym=p.y-mouseY;
-    const dm=Math.sqrt(dxm*dxm+dym*dym);
-    if(dm<140){
-      const f=(140-dm)/140 * 0.8;
-      p.x += dxm/dm * f; p.y += dym/dm * f;
-    }
-
-    ctx.beginPath();
-    ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-    ctx.fillStyle='rgba(0,229,255,.6)';
-    ctx.fill();
-  });
-
-  for(let i=0;i<particles.length;i++){
-    for(let j=i+1;j<particles.length;j++){
-      const dx=particles[i].x-particles[j].x;
-      const dy=particles[i].y-particles[j].y;
-      const d=Math.sqrt(dx*dx+dy*dy);
-      if(d<140){
-        ctx.beginPath();
-        ctx.moveTo(particles[i].x,particles[i].y);
-        ctx.lineTo(particles[j].x,particles[j].y);
-        ctx.strokeStyle=`rgba(0,229,255,${(1-d/140)*0.18})`;
-        ctx.lineWidth=.6;
-        ctx.stroke();
-      }
-    }
-  }
-  requestAnimationFrame(animate);
-}
-animate();
-
-/* ===== MAP VIZ (Card 6 background) ===== */
-(function(){
-  const svg = document.getElementById('mapViz');
-  if(!svg) return;
-  const W=1200,H=280;
-  const nodes = Array.from({length:24},()=>({
-    x:Math.random()*W, y:Math.random()*H, r:Math.random()*3+2
-  }));
-  let s='';
-  // edges
-  for(let i=0;i<nodes.length;i++){
-    for(let j=i+1;j<nodes.length;j++){
-      const d=Math.hypot(nodes[i].x-nodes[j].x,nodes[i].y-nodes[j].y);
-      if(d<200){
-        s+=`<line x1="${nodes[i].x}" y1="${nodes[i].y}" x2="${nodes[j].x}" y2="${nodes[j].y}" stroke="rgba(0,229,255,${(1-d/200)*0.3})" stroke-width="1"/>`;
-      }
-    }
-  }
-  // nodes
-  nodes.forEach((n,i)=>{
-    s+=`<circle cx="${n.x}" cy="${n.y}" r="${n.r}" fill="${i%3===0?'#00E5FF':i%3===1?'#7C5CFF':'#0A84FF'}" opacity=".7">
-      <animate attributeName="opacity" values=".4;1;.4" dur="${2+Math.random()*2}s" repeatCount="indefinite"/>
-    </circle>`;
-  });
-  svg.innerHTML = s;
-})();
-
-/* ===== TICKER ===== */
-const tickerData = [
-  ['Tesla AP','Planning Architect','▲','▲ Hiring'],
-  ['Figure AI','Robotics Lead','▲','▲ Active'],
-  ['OpenAI','Multimodal Sci','●','● Live'],
-  ['Anthropic','Agent Engineer','▲','▲ Open'],
-  ['ByteDance Seed','RL Research','●','● Live'],
-  ['Huawei ADS','Perception','▲','▲ Hiring'],
-  ['Momenta','BEV Engineer','▲','▲ Active'],
-  ['Unitree','Embodied RL','●','● Live'],
-  ['Google DeepMind','VL Model','▲','▲ Open'],
-  ['NVIDIA','AI Infra','▲','▲ Active'],
-  ['XPENG','E2E Driving','●','● Live'],
-  ['Li Auto','World Model','▲','▲ Hiring']
-];
-const tickerTrack = document.getElementById('tickerTrack');
-const tHTML = tickerData.map(t=>
-  `<span class="ticker-item"><span class="co">${t[0]}</span><span>${t[1]}</span><span class="${t[2]==='▲'?'arrow':'down'}">${t[3]}</span></span>`
-).join('');
-tickerTrack.innerHTML = tHTML + tHTML;
-
-/* ===== LOGOS MARQUEE ===== */
-const logos = ['Tesla','OpenAI','Anthropic','Figure AI','Huawei','NVIDIA','Google DeepMind','Momenta','XPENG','Li Auto','ByteDance','Unitree','Meta AI','xAI','Waymo'];
-const logosTrack = document.getElementById('logosTrack');
-logosTrack.innerHTML = (logos.map(l=>`<span>${l}</span>`).join('') + logos.map(l=>`<span>${l}</span>`).join(''));
-
-/* ===== CARD 3D HOVER ===== */
-document.querySelectorAll('.card').forEach(card=>{
-  card.addEventListener('mousemove',e=>{
-    const r=card.getBoundingClientRect();
-    const x=e.clientX-r.left, y=e.clientY-r.top;
-    card.style.setProperty('--x',x+'px');
-    card.style.setProperty('--y',y+'px');
-    const rx=(y-r.height/2)/22, ry=-(x-r.width/2)/22;
-    card.style.transform=`perspective(1000px) rotateX(${rx}deg) rotateY(${ry}deg) translateY(-6px)`;
-  });
-  card.addEventListener('mouseleave',()=>{card.style.transform='';});
+document.querySelectorAll('input,textarea,p,h1,h2,h3').forEach(el=>{
+  el.addEventListener('mouseenter',()=>cursor.classList.add('text'));
+  el.addEventListener('mouseleave',()=>cursor.classList.remove('text'));
 });
+
+/* ===== NAV SCROLL ===== */
+const nav = document.getElementById('nav');
+addEventListener('scroll',()=>{
+  if(scrollY>40) nav.classList.add('scrolled');
+  else nav.classList.remove('scrolled');
+});
+
+/* ===== STRIP TICKER ===== */
+const stripData = [
+  ['IMMERSIVE','沉浸装置'],
+  ['PHYGITAL','数字物理融合'],
+  ['BRAND SPACE','品牌空间'],
+  ['CONTENT IP','内容与 IP'],
+  ['SPATIAL UI','空间界面'],
+  ['NARRATIVE','空间叙事'],
+  ['INTERACTION','可被回应'],
+  ['CRAFT','慢工出细活']
+];
+const stripTrack = document.getElementById('stripTrack');
+const html = stripData.map(t=>
+  `<span class="strip-item"><span class="sym">✦</span>${t[0]} <span class="sym">·</span> <span class="italic">${t[1]}</span></span>`
+).join('');
+stripTrack.innerHTML = html + html;
 
 /* ===== REVEAL ===== */
 const io = new IntersectionObserver(entries=>{
-  entries.forEach(e=>{if(e.isIntersecting) e.target.classList.add('active');});
+  entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('active'); });
 },{threshold:.12});
 document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 
-/* ===== COUNTERS ===== */
-const counters = document.querySelectorAll('.status-number');
-const counterIO = new IntersectionObserver(entries=>{
+/* ===== SKILL BARS ===== */
+const skillIO = new IntersectionObserver(entries=>{
   entries.forEach(e=>{
     if(!e.isIntersecting || e.target.dataset.done) return;
     e.target.dataset.done='1';
-    const target=+e.target.dataset.count;
-    const suffix=e.target.dataset.suffix||'';
-    let count=0;
-    const dur=1400, start=performance.now();
-    function tick(now){
-      const p=Math.min((now-start)/dur,1);
-      const ease=1-Math.pow(1-p,3);
-      count=Math.floor(target*ease);
-      e.target.textContent = count + suffix;
-      if(p<1) requestAnimationFrame(tick);
-      else e.target.textContent = target + suffix;
-    }
-    requestAnimationFrame(tick);
+    const fill = e.target.querySelector('.skill-fill');
+    fill.style.width = e.target.dataset.skill + '%';
   });
 },{threshold:.4});
-counters.forEach(c=>counterIO.observe(c));
+document.querySelectorAll('.skill').forEach(s=>skillIO.observe(s));
 
-/* fluctuate stats */
-setInterval(()=>{
-  counters.forEach(el=>{
-    if(!el.dataset.done) return;
-    const base=+el.dataset.count;
-    const suffix=el.dataset.suffix||'';
-    el.textContent = (base + Math.floor(Math.random()*5)) + suffix;
-  });
-}, 2400);
-
-/* ===== SEARCH ===== */
-const database = {
-  autonomous:[
-    ['Tesla AP','Planning Architect','SF · Senior','98','SERIES PUBLIC'],
-    ['Huawei ADS','Perception Tech Lead','深圳 · Principal','95','BU'],
-    ['Momenta','BEV Engineer','北京/苏州 · Senior','94','SERIES C'],
-    ['XPENG XNGP','E2E Engineer','广州 · Staff','92','PUBLIC'],
-    ['Li Auto MEGA','World Model Researcher','北京 · Senior','91','PUBLIC'],
-    ['Waymo','Motion Planning','MTV · Staff','90','SUBSIDIARY']
-  ],
-  multimodal:[
-    ['OpenAI','Multimodal Researcher','SF · Senior','97','PRIVATE'],
-    ['Google DeepMind','Vision-Language Sci','London · L6','95','PUBLIC'],
-    ['Anthropic','Agent Engineer','SF · Senior','93','SERIES E'],
-    ['ByteDance Seed','VL Researcher','北京 · Tech Lead','91','PRIVATE']
-  ],
-  embodied:[
-    ['Figure AI','Robotics AI Lead','Sunnyvale · Principal','96','SERIES B'],
-    ['Tesla Optimus','Motion Planning','SF · Senior','94','PUBLIC'],
-    ['Unitree','Embodied RL Engineer','杭州 · Senior','91','SERIES B'],
-    ['1X','Humanoid Control','Oslo · Staff','90','SERIES B']
-  ],
-  infra:[
-    ['NVIDIA','GPU Infra Architect','Santa Clara · Principal','96','PUBLIC'],
-    ['AI Infra Startup','Distributed Training','北京 · Tech Lead','93','SERIES A'],
-    ['Anthropic','Inference Optimization','SF · Senior','92','SERIES E']
-  ],
-  agent:[
-    ['OpenAI','Agent Researcher','SF · Senior','97','PRIVATE'],
-    ['Anthropic','Agent Eng Lead','SF · Principal','95','SERIES E'],
-    ['xAI','Agent Platform','Bay Area · Staff','92','PRIVATE']
-  ],
-  chip:[
-    ['Cerebras','AI Chip Architect','Sunnyvale · Principal','95','SERIES F'],
-    ['Tenstorrent','Compiler Lead','Toronto · Staff','93','SERIES D'],
-    ['Moore Threads','GPU IP Engineer','北京 · Senior','90','SERIES B']
-  ]
-};
-
-const searchInput = document.getElementById('searchInput');
-const results = document.getElementById('results');
-
-function renderResults(items){
-  if(!items.length){
-    results.innerHTML = `
-      <div class="result-card" style="grid-column:span 3;text-align:center;padding:40px;">
-        <div class="result-company">LEO INTELLIGENCE</div>
-        <div class="result-role" style="margin:12px 0;">人才图谱扩展中…</div>
-        <div class="result-meta">尝试: autonomous / multimodal / embodied / infra / agent / chip</div>
-      </div>`;
-    return;
-  }
-  results.innerHTML = items.map((it,i)=>`
-    <div class="result-card" style="animation:msgIn .4s ${i*0.06}s both var(--ease);">
-      <div class="result-row">
-        <div class="result-company">${it[0]}</div>
-        <div class="result-stage">${it[4]}</div>
-      </div>
-      <div class="result-role">${it[1]}</div>
-      <div class="result-meta">${it[2]}</div>
-      <div class="match-bar"><div class="match-fill" style="width:0"></div></div>
-      <div class="match-text">
-        <span>MATCH SCORE</span>
-        <span class="pct">${it[3]}%</span>
-      </div>
-    </div>
-  `).join('');
-  setTimeout(()=>{
-    document.querySelectorAll('.match-fill').forEach((el,i)=>{
-      el.style.width = items[i][3] + '%';
-    });
-  }, 200);
-}
-
-function runSearch(value){
-  results.innerHTML = `
-    <div class="result-card" style="grid-column:span 3;text-align:center;padding:30px;">
-      <div class="msg-typing" style="justify-content:center;display:flex;">
-        <span></span><span></span><span></span>
-      </div>
-      <div class="result-meta" style="margin-top:14px;">AI Intelligence searching talent graph…</div>
-    </div>`;
-  setTimeout(()=>{
-    let found=[];
-    Object.keys(database).forEach(k=>{
-      if(value.toLowerCase().includes(k)) found = found.concat(database[k]);
-    });
-    renderResults(found);
-  }, 600);
-}
-
-searchInput.addEventListener('input',e=>{
-  const v = e.target.value.trim();
-  if(!v){
-    results.innerHTML='';
-    renderResults(database.autonomous.slice(0,3).concat(database.multimodal.slice(0,2)).concat(database.embodied.slice(0,1)));
-    return;
-  }
-  runSearch(v);
-});
-
-document.querySelectorAll('.suggest-chip[data-q]').forEach(c=>{
-  c.addEventListener('click',()=>{
-    searchInput.value = c.dataset.q;
-    runSearch(c.dataset.q);
-    document.getElementById('console').scrollIntoView({behavior:'smooth'});
-  });
-});
-
-// initial results
-renderResults(database.autonomous.slice(0,3).concat(database.multimodal.slice(0,2)).concat(database.embodied.slice(0,1)));
-
-/* ===== NAV SCROLL ===== */
-const navEl = document.querySelector('nav');
-addEventListener('scroll',()=>{
-  if(scrollY>40){navEl.style.background='rgba(11,13,20,.9)';navEl.style.transform='translateX(-50%) scale(.98)';}
-  else{navEl.style.background='rgba(11,13,20,.7)';navEl.style.transform='translateX(-50%) scale(1)';}
-});
-
-/* ===== AI ASSISTANT ===== */
-const aiFab = document.getElementById('aiFab');
-const aiPanel = document.getElementById('aiPanel');
-const aiClose = document.getElementById('aiClose');
-const aiBody = document.getElementById('aiBody');
-const aiInput = document.getElementById('aiInput');
-const aiSend = document.getElementById('aiSend');
-
-aiFab.addEventListener('click',()=>aiPanel.classList.add('open'));
-aiClose.addEventListener('click',()=>aiPanel.classList.remove('open'));
-
-const aiResponses = {
-  '自动驾驶': '当前自动驾驶人才市场呈现两极分化:头部车企争夺端到端 (E2E) 与世界模型方向 IC,而 Tier1 与初创则集中在 BEV、Occupancy 与规划控制。VLA(视觉-语言-动作)成为新热点,Tesla / 小鹏 / 理想 / Wayve 是参照系。',
-  '端到端': '招到端到端专家的关键 3 点: ①目标公司圈层精准 (Tesla AI、Wayve、Comma、毫末、小鹏 XNGP);②背景画像清晰 (大规模数据驱动 + 模型架构 + 仿真闭环);③用技术深度做钩子 —— 而不是薪酬。LEO OS 已积累此领域 200+ 候选人。',
-  '具身智能': '具身智能赛道核心三层: ①基础模型层 (Figure / 1X / Physical Intelligence);②本体层 (宇树 / 智元 / 小米);③控制策略层 (Diffusion Policy / VLA)。人才主要来自伯克利、CMU、清华等机器人 Lab,以及 Tesla Optimus 系。',
-  'agi': 'AGI 路线两条: 一条是 Scaling Law 主导 (OpenAI/Anthropic),一条是世界模型 + 具身 (DeepMind/Meta)。中国玩家 ByteDance Seed、月之暗面、智谱、阶跃在多模态 Agent 方向积极布局。',
-  '芯片': 'AI 芯片人才稀缺等级: Architect > Compiler > Verification > IP。中国玩家 (壁仞/燧原/Moore Threads/Cerebras 中国) 主要从 NVIDIA/AMD/Intel/Google TPU 团队挖人,Package + RoE 已显著高于美元包。',
-  '': '我可以帮你解读 AI 人才市场动态、行业 Mapping 与候选人画像。你也可以直接联系 supkefly@gmail.com 进行私密咨询。'
-};
-
-function aiReply(q){
-  const key = Object.keys(aiResponses).find(k=>k && q.includes(k)) || '';
-  return aiResponses[key] || `关于"${q}",建议先明确技术方向(如自动驾驶、AGI、具身、芯片),我可以提供更深入的人才情报。或联系 supkefly@gmail.com 进行私密对话。`;
-}
-
-function pushMsg(text, role){
-  const div = document.createElement('div');
-  div.className = 'msg msg-' + role;
-  div.innerHTML = text;
-  aiBody.appendChild(div);
-  aiBody.scrollTop = aiBody.scrollHeight;
-  return div;
-}
-
-function pushTyping(){
-  return pushMsg('<div class="msg-typing"><span></span><span></span><span></span></div>', 'bot');
-}
-
-function sendAI(text){
-  if(!text.trim()) return;
-  pushMsg(text, 'user');
-  aiInput.value = '';
-  const t = pushTyping();
-  setTimeout(()=>{
-    t.innerHTML = aiReply(text);
-  }, 900 + Math.random()*600);
-}
-
-aiSend.addEventListener('click',()=>sendAI(aiInput.value));
-aiInput.addEventListener('keydown',e=>{if(e.key==='Enter') sendAI(aiInput.value);});
-document.querySelectorAll('.suggest-chip[data-ai]').forEach(c=>{
-  c.addEventListener('click',()=>{aiPanel.classList.add('open'); sendAI(c.dataset.ai);});
-});
-
-/* ===== COMMAND PALETTE ===== */
-const cmdkOverlay = document.getElementById('cmdkOverlay');
-const cmdkInput = document.getElementById('cmdkInput');
-const cmdkList = document.getElementById('cmdkList');
-const cmdkBtn = document.getElementById('cmdkBtn');
-
-const cmdItems = [
-  {icon:'⌂', text:'回到首页', sub:'#hero', action:()=>document.getElementById('hero').scrollIntoView({behavior:'smooth'})},
-  {icon:'◇', text:'人才架构', sub:'#intelligence', action:()=>document.getElementById('intelligence').scrollIntoView({behavior:'smooth'})},
-  {icon:'⌕', text:'智能搜索', sub:'#console', action:()=>{document.getElementById('console').scrollIntoView({behavior:'smooth'}); setTimeout(()=>searchInput.focus(),600);}},
-  {icon:'↻', text:'演进流程', sub:'#timeline', action:()=>document.getElementById('timeline').scrollIntoView({behavior:'smooth'})},
-  {icon:'✦', text:'打开 AI 助手', sub:'LEO Intelligence', action:()=>aiPanel.classList.add('open')},
-  {icon:'✉', text:'发送邮件', sub:'supkefly@gmail.com', action:()=>location.href='mailto:supkefly@gmail.com'},
-  {icon:'⚡', text:'搜索: autonomous', sub:'自动驾驶人才', action:()=>{searchInput.value='autonomous'; runSearch('autonomous'); document.getElementById('console').scrollIntoView({behavior:'smooth'});}},
-  {icon:'⚡', text:'搜索: multimodal', sub:'多模态 AI', action:()=>{searchInput.value='multimodal'; runSearch('multimodal'); document.getElementById('console').scrollIntoView({behavior:'smooth'});}},
-  {icon:'⚡', text:'搜索: embodied', sub:'具身智能', action:()=>{searchInput.value='embodied'; runSearch('embodied'); document.getElementById('console').scrollIntoView({behavior:'smooth'});}}
-];
-
-function renderCmdk(filter=''){
-  const f = filter.toLowerCase();
-  const filtered = cmdItems.filter(i=>!f || i.text.toLowerCase().includes(f) || i.sub.toLowerCase().includes(f));
-  cmdkList.innerHTML = filtered.map((i,idx)=>`
-    <div class="cmdk-item ${idx===0?'active':''}" data-idx="${cmdItems.indexOf(i)}" data-hover>
-      <div class="cmdk-item-icon">${i.icon}</div>
-      <div class="cmdk-item-text">${i.text}<small>${i.sub}</small></div>
-      <div class="cmdk-item-shortcut">↵</div>
-    </div>
-  `).join('') || '<div class="cmdk-item" style="justify-content:center;color:var(--text-mute);">无匹配命令</div>';
-  cmdkList.querySelectorAll('.cmdk-item[data-idx]').forEach(el=>{
-    el.addEventListener('click',()=>{
-      cmdItems[+el.dataset.idx].action();
-      closeCmdk();
+/* ===== REVENUE BARS ===== */
+const revIO = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(!e.isIntersecting || e.target.dataset.done) return;
+    e.target.dataset.done='1';
+    e.target.querySelectorAll('.rev-fill').forEach(b=>{
+      b.style.width = b.dataset.pct + '%';
     });
   });
-}
-function openCmdk(){
-  cmdkOverlay.classList.add('open');
-  cmdkInput.value=''; renderCmdk();
-  setTimeout(()=>cmdkInput.focus(),100);
-}
-function closeCmdk(){cmdkOverlay.classList.remove('open');}
+},{threshold:.3});
+document.querySelectorAll('.revenue').forEach(r=>revIO.observe(r));
 
-cmdkBtn.addEventListener('click', openCmdk);
-cmdkOverlay.addEventListener('click',e=>{if(e.target===cmdkOverlay) closeCmdk();});
-cmdkInput.addEventListener('input',e=>renderCmdk(e.target.value));
-
-document.addEventListener('keydown',e=>{
-  if((e.metaKey||e.ctrlKey) && e.key.toLowerCase()==='k'){
-    e.preventDefault();
-    cmdkOverlay.classList.contains('open') ? closeCmdk() : openCmdk();
-  }
-  if(e.key==='Escape'){closeCmdk(); aiPanel.classList.remove('open');}
-  if(cmdkOverlay.classList.contains('open') && e.key==='Enter'){
-    const active = cmdkList.querySelector('.cmdk-item.active');
-    if(active && active.dataset.idx){
-      cmdItems[+active.dataset.idx].action();
-      closeCmdk();
-    }
-  }
+/* ===== HERO PARALLAX ===== */
+const heroTitle = document.querySelector('.hero-title');
+addEventListener('mousemove',e=>{
+  const x = (e.clientX/innerWidth - .5) * 16;
+  const y = (e.clientY/innerHeight - .5) * 10;
+  if(heroTitle) heroTitle.style.transform = `translate3d(${x}px,${y}px,0)`;
 });
 
-/* ===== TOUCH FALLBACK ===== */
-if(matchMedia('(hover:none)').matches){
-  document.body.style.cursor='auto';
-}
+/* ===== CASE TILT ===== */
+document.querySelectorAll('.case').forEach(c=>{
+  c.addEventListener('mousemove',e=>{
+    const r = c.getBoundingClientRect();
+    const x = (e.clientX-r.left)/r.width - .5;
+    const y = (e.clientY-r.top)/r.height - .5;
+    c.style.transform = `perspective(1000px) rotateX(${-y*4}deg) rotateY(${x*6}deg) translateY(-4px)`;
+  });
+  c.addEventListener('mouseleave',()=>{ c.style.transform=''; });
+});
+
+/* ===== SERVICE TILT ===== */
+document.querySelectorAll('.service,.tier').forEach(c=>{
+  c.addEventListener('mousemove',e=>{
+    const r = c.getBoundingClientRect();
+    const x = (e.clientX-r.left)/r.width - .5;
+    const y = (e.clientY-r.top)/r.height - .5;
+    c.style.transform = `perspective(1200px) rotateX(${-y*2.5}deg) rotateY(${x*3.5}deg) translateY(-6px)`;
+  });
+  c.addEventListener('mouseleave',()=>{ c.style.transform=''; });
+});
 </script>
 
 </body>
