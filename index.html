@@ -715,27 +715,102 @@ footer a:hover{color:var(--accent);}
 .reveal[data-delay="3"]{transition-delay:.24s;}
 .reveal[data-delay="4"]{transition-delay:.32s;}
 
+/* ===== LANG TOGGLE & HAMBURGER ===== */
+.nav-actions{display:flex;align-items:center;gap:10px;}
+.lang-toggle{
+  width:42px;height:38px;border-radius:10px;
+  background:transparent;border:1px solid var(--border-strong);
+  color:var(--text);font-family:var(--mono);font-size:12px;font-weight:600;
+  letter-spacing:.04em;cursor:none;transition:.25s var(--ease);
+  display:inline-flex;align-items:center;justify-content:center;
+}
+.lang-toggle:hover{border-color:var(--accent);color:var(--accent);}
+.nav-burger{
+  display:none;width:42px;height:38px;border-radius:10px;
+  background:transparent;border:1px solid var(--border-strong);
+  align-items:center;justify-content:center;cursor:pointer;
+  flex-direction:column;gap:5px;padding:0;
+}
+.nav-burger span{
+  display:block;width:18px;height:1.5px;background:var(--text);
+  transition:.3s var(--ease);
+}
+.nav-burger.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg);}
+.nav-burger.open span:nth-child(2){opacity:0;}
+.nav-burger.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg);}
+
+.nav-mobile{
+  position:fixed;inset:0;z-index:999;
+  background:rgba(10,9,8,.96);backdrop-filter:blur(28px);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;
+  opacity:0;visibility:hidden;transition:.4s var(--ease);
+}
+.nav-mobile.open{opacity:1;visibility:visible;}
+.nav-mobile a{
+  font-family:var(--serif);font-size:32px;font-weight:300;
+  color:var(--text);text-decoration:none;padding:14px 24px;
+  letter-spacing:-.01em;transition:.2s;
+}
+.nav-mobile a:hover,.nav-mobile a.cta{color:var(--accent);}
+.nav-mobile .meta{
+  font-family:var(--mono);font-size:11px;color:var(--text-mute);
+  letter-spacing:.25em;margin-top:32px;
+}
+
 /* ===== RESPONSIVE ===== */
+@media(max-width:1100px){
+  .nav-links{display:none;}
+  .nav-burger{display:flex;}
+  .nav-cta{display:none;}
+}
 @media(max-width:1024px){
   .services-grid,.pricing-grid{grid-template-columns:1fr;}
   .about-grid{grid-template-columns:1fr;gap:48px;}
   .hero-bottom{grid-template-columns:1fr;gap:40px;}
   .hero-actions{justify-self:start;}
-  .nav-links{display:none;}
   .showcase-grid{grid-template-columns:repeat(6,1fr);}
   .case-1,.case-6{grid-column:span 6;}
   .case-2,.case-3,.case-4,.case-5{grid-column:span 3;}
+  .contact-channels{grid-template-columns:repeat(2,1fr);}
+}
+@media(max-width:768px){
+  .hero-meta{flex-direction:column;align-items:flex-start;}
+  .hero-coords{font-size:10px;}
+  section{padding:100px 22px;}
+  .showcase{padding:100px 22px;}
+  .section-head{margin-bottom:56px;}
+  .service{padding:32px 26px;min-height:auto;}
+  .service-title{font-size:36px;}
+  .tier{padding:32px 26px;}
 }
 @media(max-width:640px){
   body{cursor:auto;}
   .cursor,.cursor-dot{display:none;}
-  nav,nav.scrolled{padding:14px 18px;}
-  .hero{padding:130px 18px 60px;}
-  section,.showcase,.contact{padding:90px 18px;}
+  *{cursor:auto !important;}
+  nav,nav.scrolled{padding:12px 16px;}
+  .nav-name small{display:none;}
+  .nav-name{font-size:14px;}
+  .hero{padding:120px 18px 60px;min-height:auto;}
+  .hero-title{margin-bottom:36px;}
+  .hero-title .row.indent{padding-left:32px;}
+  .hero-manifesto{font-size:15.5px;}
+  .hero-actions{flex-direction:column;width:100%;}
+  .btn{width:100%;justify-content:center;}
+  section,.showcase,.contact{padding:80px 18px;}
   .skills{grid-template-columns:1fr;}
   .showcase-grid{grid-template-columns:1fr;}
   .case-1,.case-2,.case-3,.case-4,.case-5,.case-6{grid-column:span 1;aspect-ratio:4/3;}
-  footer{flex-direction:column;text-align:center;}
+  .case-name{font-size:22px;}
+  .strip{margin-top:64px;}
+  .strip-item{font-size:18px;}
+  .contact-channels{grid-template-columns:1fr;gap:10px;}
+  .channel{padding:22px 20px;}
+  footer{flex-direction:column;text-align:center;padding:36px 18px;font-size:10px;}
+  .pull{font-size:22px !important;}
+  .tier-name,.service-title{font-size:34px;}
+  .revenue{padding:28px 22px;}
+  .rev-label{width:auto;font-size:10px;}
+  .rev-row{flex-wrap:wrap;}
 }
 </style>
 </head>
@@ -769,20 +844,39 @@ footer a:hover{color:var(--accent);}
     </div>
   </a>
   <div class="nav-links">
-    <a href="#about" data-hover>关于</a>
-    <a href="#services" data-hover>业务</a>
-    <a href="#xr" data-hover>VR·AR</a>
-    <a href="#talent" data-hover>猎头</a>
-    <a href="cases.html" data-hover>案例</a>
-    <a href="lab.html" data-hover>实验室</a>
-    <a href="letter.html" data-hover>Letter</a>
-    <a href="#pricing" data-hover>合作</a>
+    <a href="#about" data-hover data-i18n="nav.about">关于</a>
+    <a href="#services" data-hover data-i18n="nav.services">业务</a>
+    <a href="#xr" data-hover data-i18n="nav.xr">VR·AR</a>
+    <a href="#talent" data-hover data-i18n="nav.talent">猎头</a>
+    <a href="cases.html" data-hover data-i18n="nav.cases">案例</a>
+    <a href="blog.html" data-hover data-i18n="nav.blog">博客</a>
+    <a href="lab.html" data-hover data-i18n="nav.lab">实验室</a>
+    <a href="letter.html" data-hover data-i18n="nav.letter">Letter</a>
   </div>
-  <a href="#contact" class="nav-cta" data-hover>
-    建立合作
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14m-6-6 6 6-6 6"/></svg>
-  </a>
+  <div class="nav-actions" data-lang-mount>
+    <a href="#contact" class="nav-cta" data-hover>
+      <span data-i18n="nav.cta">建立合作</span>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14m-6-6 6 6-6 6"/></svg>
+    </a>
+    <button class="nav-burger" id="navBurger" aria-label="menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
 </nav>
+
+<!-- ===== MOBILE NAV ===== -->
+<div class="nav-mobile" id="navMobile">
+  <a href="#about" data-i18n="nav.about">关于</a>
+  <a href="#services" data-i18n="nav.services">业务</a>
+  <a href="#xr" data-i18n="nav.xr">VR·AR</a>
+  <a href="#talent" data-i18n="nav.talent">猎头</a>
+  <a href="cases.html" data-i18n="nav.cases">案例</a>
+  <a href="blog.html" data-i18n="nav.blog">博客</a>
+  <a href="lab.html" data-i18n="nav.lab">实验室</a>
+  <a href="letter.html" data-i18n="nav.letter">Letter</a>
+  <a href="#contact" class="cta" data-i18n="nav.cta">建立合作</a>
+  <div class="meta">FLYUN STUDIO · 2026</div>
+</div>
 
 <!-- ===== HERO ===== -->
 <section class="hero" id="hero">
@@ -790,34 +884,31 @@ footer a:hover{color:var(--accent);}
     <div class="hero-meta reveal">
       <div class="hero-coords">
         <div>N <span>30.5928°</span> · E <span>114.3055°</span></div>
-        <div>FLYUN 飞云工作室 · EST. 2026</div>
-        <div>空间 · XR · 人才</div>
+        <div data-i18n="hero.coord1">FLYUN 飞云工作室 · EST. 2026</div>
+        <div data-i18n="hero.coord2">空间 · XR · 人才</div>
       </div>
       <div class="hero-status">
         <span class="dot-live"></span>
-        <span>2026 Q3 · 接受新合作 · XR / 空间 / 猎头</span>
+        <span data-i18n="hero.status">2026 Q3 · 接受新合作 · XR / 空间 / 猎头</span>
       </div>
     </div>
 
     <h1 class="hero-title reveal" data-delay="1">
-      <span class="row">让<em>空间</em>开口，</span>
-      <span class="row indent">让<em>像素</em>有体温，</span>
-      <span class="row">让对的人 <span class="stroke">在场</span>。</span>
+      <span class="row"><span data-i18n="hero.title.row1.pre">让</span><em data-i18n="hero.title.row1.em">空间</em><span data-i18n="hero.title.row1.post">开口，</span></span>
+      <span class="row indent"><span data-i18n="hero.title.row2.pre">让</span><em data-i18n="hero.title.row2.em">像素</em><span data-i18n="hero.title.row2.post">有体温，</span></span>
+      <span class="row"><span data-i18n="hero.title.row3.pre">让对的人 </span><span class="stroke" data-i18n="hero.title.row3.em">在场</span><span data-i18n="hero.title.row3.post">。</span></span>
     </h1>
 
     <div class="hero-bottom">
-      <p class="hero-manifesto reveal" data-delay="2">
-        <strong>FLYUN 飞云</strong> 是一间专注于「交互空间 × XR × 人才」的独立设计工作室。
-        我们用 <strong>VR / AR / 空间计算</strong> 把数字交互的逻辑带进物理场域，
-        用<strong>猎头与人才网络</strong>把对的人放进对的故事里 ——
-        让每一次靠近、每一次戴上头显、每一次面试，都成为一次被设计过的对话。
+      <p class="hero-manifesto reveal" data-delay="2" data-cms="hero.manifesto" data-i18n="hero.manifesto">
+        FLYUN 飞云 是一间专注于「交互空间 × XR × 人才」的独立设计工作室。我们用 VR / AR / 空间计算 把数字交互的逻辑带进物理场域，用猎头与人才网络把对的人放进对的故事里 —— 让每一次靠近、每一次戴上头显、每一次面试，都成为一次被设计过的对话。
       </p>
       <div class="hero-actions reveal" data-delay="3">
         <a href="#services" class="btn btn-primary" data-hover>
-          看我们能做什么
+          <span data-i18n="hero.cta.primary">看我们能做什么</span>
           <span class="arrow">↗</span>
         </a>
-        <a href="#talent" class="btn btn-ghost" data-hover>
+        <a href="#talent" class="btn btn-ghost" data-hover data-i18n="hero.cta.secondary">
           猎头业务 →
         </a>
       </div>
@@ -834,14 +925,11 @@ footer a:hover{color:var(--accent);}
   <div class="container">
     <div class="section-head reveal">
       <div>
-        <div class="eyebrow">01 · 主创 / FOUNDER</div>
-        <h2 class="section-title">游走在<br/><em>屏幕</em>、<em>头显</em><br/>与<em>真人</em>之间。</h2>
+        <div class="eyebrow" data-i18n="about.eyebrow">01 · 主创 / FOUNDER</div>
+        <h2 class="section-title" data-i18n="about.title.html" data-i18n-mode="html">游走在<br/><em>屏幕</em>、<em>头显</em><br/>与<em>真人</em>之间。</h2>
       </div>
-      <p class="section-desc">
-        我是 Leo —— FLYUN 飞云的创始人 / 主创设计师。
-        过去七年我在交互设计、品牌空间、XR 体验与人才业务之间游走，
-        现在我把这些经验聚拢，做一件简单的事:
-        <strong style="color:var(--text);">让空间会回应人，让对的人在场</strong>。
+      <p class="section-desc" data-cms="about.desc" data-i18n="about.desc">
+        我是 Leo —— FLYUN 飞云的创始人 / 主创设计师。过去七年我在交互设计、品牌空间、XR 体验与人才业务之间游走，现在我把这些经验聚拢，做一件简单的事：让空间会回应人，让对的人在场。
       </p>
     </div>
 
@@ -952,13 +1040,11 @@ footer a:hover{color:var(--accent);}
   <div class="container">
     <div class="section-head reveal">
       <div>
-        <div class="eyebrow">02 · 业务 / WHAT WE DO</div>
-        <h2 class="section-title">六种<br/>让<em>空间</em>与<em>人</em><br/>互相回应的方式。</h2>
+        <div class="eyebrow" data-i18n="services.eyebrow">02 · 业务 / WHAT WE DO</div>
+        <h2 class="section-title" data-i18n="services.title.html" data-i18n-mode="html">六种<br/>让<em>空间</em>与<em>人</em><br/>互相回应的方式。</h2>
       </div>
-      <p class="section-desc">
-        FLYUN 飞云的业务围绕「人 — 空间 — 数字」三角展开 ——
-        左手做交互空间与 VR/AR 体验，右手做人才网络与猎头服务。
-        每条线都可以独立交付，也可以组合成完整的品牌空间 + 人才体系。
+      <p class="section-desc" data-i18n="services.desc">
+        FLYUN 飞云的业务围绕「人 — 空间 — 数字」三角展开 —— 左手做交互空间与 VR/AR 体验，右手做人才网络与猎头服务。每条线都可以独立交付，也可以组合成完整的品牌空间 + 人才体系。
       </p>
     </div>
 
@@ -1099,13 +1185,11 @@ footer a:hover{color:var(--accent);}
   <div class="container">
     <div class="section-head reveal">
       <div>
-        <div class="eyebrow">02.5 · XR / VR · AR</div>
-        <h2 class="section-title">把<em>头显</em><br/>当作新的<em>大门</em>。</h2>
+        <div class="eyebrow" data-i18n="xr.eyebrow">02.5 · XR / VR · AR</div>
+        <h2 class="section-title" data-i18n="xr.title.html" data-i18n-mode="html">把<em>头显</em><br/>当作新的<em>大门</em>。</h2>
       </div>
-      <p class="section-desc">
-        Apple Vision Pro 与 Meta Quest 的出现，让「空间」第一次可以被分发、被打开、被合并。
-        FLYUN 把过去做品牌空间的方法，搬进了头显里 ——
-        不做炫技 demo，只做能被记住的空间叙事。
+      <p class="section-desc" data-i18n="xr.desc">
+        Apple Vision Pro 与 Meta Quest 的出现，让「空间」第一次可以被分发、被打开、被合并。FLYUN 把过去做品牌空间的方法，搬进了头显里 —— 不做炫技 demo，只做能被记住的空间叙事。
       </p>
     </div>
 
@@ -1156,14 +1240,11 @@ footer a:hover{color:var(--accent);}
   <div class="container">
     <div class="section-head reveal">
       <div>
-        <div class="eyebrow">02.8 · TALENT / 猎头人才</div>
-        <h2 class="section-title">把对的<em>人</em><br/>放进对的<em>故事</em>里。</h2>
+        <div class="eyebrow" data-i18n="talent.eyebrow">02.8 · TALENT / 猎头人才</div>
+        <h2 class="section-title" data-i18n="talent.title.html" data-i18n-mode="html">把对的<em>人</em><br/>放进对的<em>故事</em>里。</h2>
       </div>
-      <p class="section-desc">
-        飞云猎头是 FLYUN 的人才业务线 ——
-        我们不做大而全的招聘，只在自己懂的领域做深 ——
-        数字创意、XR / 空间计算、品牌与体验设计。
-        飞云自研的 AI 寻访工作站让每一位顾问都像带着「外骨骼」工作。
+      <p class="section-desc" data-i18n="talent.desc">
+        飞云猎头是 FLYUN 的人才业务线 —— 我们不做大而全的招聘，只在自己懂的领域做深 —— 数字创意、XR / 空间计算、品牌与体验设计。飞云自研的 AI 寻访工作站让每一位顾问都像带着「外骨骼」工作。
       </p>
     </div>
 
@@ -1217,8 +1298,8 @@ footer a:hover{color:var(--accent);}
   <div class="container">
     <div class="section-head reveal">
       <div>
-        <div class="eyebrow">03 · 案例与孵化 / CASES & CONCEPTS</div>
-        <h2 class="section-title">精选<em>项目</em><br/>与孵化中的<em>概念</em>。</h2>
+        <div class="eyebrow" data-i18n="showcase.eyebrow">03 · 案例与孵化 / CASES & CONCEPTS</div>
+        <h2 class="section-title" data-i18n="showcase.title.html" data-i18n-mode="html">精选<em>项目</em><br/>与孵化中的<em>概念</em>。</h2>
       </div>
       <p class="section-desc">
         FLYUN 飞云处于早期，下面既有过往项目的提炼，也有正在公开孵化的 VR/AR 与人才体系概念。
@@ -1395,8 +1476,8 @@ footer a:hover{color:var(--accent);}
   <div class="container">
     <div class="section-head reveal">
       <div>
-        <div class="eyebrow">04 · 工作流 / HOW WE WORK</div>
-        <h2 class="section-title">五步，<br/>一段被设计过<br/>的<em>空间对话</em>。</h2>
+        <div class="eyebrow" data-i18n="process.eyebrow">04 · 工作流 / HOW WE WORK</div>
+        <h2 class="section-title" data-i18n="process.title.html" data-i18n-mode="html">五步，<br/>一段被设计过<br/>的<em>空间对话</em>。</h2>
       </div>
       <p class="section-desc">
         FLYUN 飞云的工作流是一段被设计过的旅程 ——
@@ -1455,8 +1536,8 @@ footer a:hover{color:var(--accent);}
   <div class="container">
     <div class="section-head reveal">
       <div>
-        <div class="eyebrow">05 · 合作方式 / ENGAGEMENT</div>
-        <h2 class="section-title">三种<br/><em>开始</em>合作的方式。</h2>
+        <div class="eyebrow" data-i18n="pricing.eyebrow">05 · 合作方式 / ENGAGEMENT</div>
+        <h2 class="section-title" data-i18n="pricing.title.html" data-i18n-mode="html">三种<br/><em>开始</em>合作的方式。</h2>
       </div>
       <p class="section-desc">
         FLYUN 飞云把合作分成三档 —— 你可以从最轻的 SPARK 开始验证一次合作，
@@ -1573,8 +1654,8 @@ footer a:hover{color:var(--accent);}
   <div class="container">
     <div class="section-head reveal">
       <div>
-        <div class="eyebrow">06 · 路线图 / ROADMAP</div>
-        <h2 class="section-title">十八个月，<br/>从一张<em>桌</em><br/>到一间<em>工作室</em>。</h2>
+        <div class="eyebrow" data-i18n="roadmap.eyebrow">06 · 路线图 / ROADMAP</div>
+        <h2 class="section-title" data-i18n="roadmap.title.html" data-i18n-mode="html">十八个月，<br/>从一张<em>桌</em><br/>到一间<em>工作室</em>。</h2>
       </div>
       <p class="section-desc">
         FLYUN 飞云的第一年半被切成五个阶段。
@@ -1650,8 +1731,8 @@ footer a:hover{color:var(--accent);}
 <!-- ===== CONTACT ===== -->
 <section class="contact" id="contact">
   <div class="contact-inner">
-    <div class="contact-eyebrow reveal">07 · 建立对话 / LET'S TALK</div>
-    <h2 class="contact-title reveal" data-delay="1">
+    <div class="contact-eyebrow reveal" data-i18n="contact.eyebrow">07 · 建立对话 / LET'S TALK</div>
+    <h2 class="contact-title reveal" data-delay="1" data-i18n="contact.title.html" data-i18n-mode="html">
       你有一个<br/>
       <em>空间</em>、一副<em>头显</em><br/>
       或一个<em>岗位</em>，<br/>
@@ -1689,9 +1770,9 @@ footer a:hover{color:var(--accent);}
 
 <!-- ===== FOOTER ===== -->
 <footer>
-  <div>© 2026 FLYUN STUDIO · 飞云工作室 · 保留全部权利</div>
-  <div>武汉 <span style="color:var(--accent);">·</span> WUHAN · 服务全球</div>
-  <div>v1.2 · <a href="#hero">↑ 回到顶部</a></div>
+  <div data-i18n="footer.copyright">© 2026 FLYUN STUDIO · 飞云工作室 · 保留全部权利</div>
+  <div data-i18n="footer.location">武汉 · WUHAN · 服务全球</div>
+  <div>v1.3 · <a href="#hero" data-i18n="footer.back">↑ 回到顶部</a> · <a href="admin.html" style="color:var(--text-mute);">admin</a></div>
 </footer>
 
 <script>
@@ -1823,7 +1904,33 @@ document.querySelectorAll('.service,.tier').forEach(c=>{
   });
   c.addEventListener('mouseleave',()=>{ c.style.transform=''; });
 });
+
+/* ===== MOBILE NAV ===== */
+const burger = document.getElementById('navBurger');
+const mobile = document.getElementById('navMobile');
+if(burger && mobile){
+  burger.addEventListener('click',()=>{
+    burger.classList.toggle('open');
+    mobile.classList.toggle('open');
+    document.body.style.overflow = mobile.classList.contains('open') ? 'hidden' : '';
+  });
+  mobile.querySelectorAll('a').forEach(a=>{
+    a.addEventListener('click',()=>{
+      burger.classList.remove('open');
+      mobile.classList.remove('open');
+      document.body.style.overflow = '';
+    });
+  });
+}
+
+/* ===== TOUCH DEVICE ===== */
+if(matchMedia('(hover:none)').matches || matchMedia('(max-width:640px)').matches){
+  document.body.style.cursor='auto';
+}
 </script>
+
+<!-- ===== FLYUN CMS · I18N ===== -->
+<script src="assets/flyun-cms.js"></script>
 
 </body>
 </html>
