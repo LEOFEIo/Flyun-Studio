@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="description" content="联系 FLYUN STUDIO · 提交项目 brief 或合作申请。我们在 7 个工作日内回复。" />
+<title>建立合作 · FLYUN STUDIO</title>
+
+<link rel="icon" type="image/svg+xml"
+href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 128 128'%3E%3Crect width='128' height='128' rx='28' fill='%230A0908'/%3E%3Cpath d='M36 30v68m0-68h56m-56 32h44' stroke='%23FF4D2E' stroke-width='10' stroke-linecap='square' fill='none'/%3E%3C/svg%3E">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,300..900,0..100&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Noto+Serif+SC:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&family=LXGW+WenKai+TC:wght@300;400;700&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --bg:#0A0908; --surface:rgba(28,24,20,.55);
+  --border:rgba(237,230,214,.08); --border-strong:rgba(237,230,214,.18);
+  --text:#EDE6D6; --text-dim:#9B9285; --text-mute:#6B6359;
+  --accent:#FF4D2E; --accent-2:#C8FF4D; --accent-warm:#F4B860;
+  --ease:cubic-bezier(.22,.61,.36,1);
+  --serif:'Fraunces','Noto Serif SC',Georgia,serif;
+  --sans:'Inter','Noto Sans SC',-apple-system,'PingFang SC',sans-serif;
+  --mono:'JetBrains Mono',monospace;
+  --kai:'LXGW WenKai TC','Noto Serif SC','KaiTi',serif;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:100vh;
+  overflow-x:hidden;-webkit-font-smoothing:antialiased;letter-spacing:.005em;
+  font-feature-settings:"palt" 1,"kern" 1;text-rendering:optimizeLegibility;}
+::selection{background:var(--accent);color:#fff;}
+
+.aura,.grid-bg,.noise{position:fixed;inset:0;pointer-events:none;}
+.aura{z-index:-3;overflow:hidden;}
+.aura::before,.aura::after{content:"";position:absolute;width:60vw;height:60vw;border-radius:50%;filter:blur(140px);opacity:.18;}
+.aura::before{background:radial-gradient(circle,#FF4D2E,transparent 60%);top:-25%;left:-15%;animation:fA 28s ease-in-out infinite;}
+.aura::after{background:radial-gradient(circle,#F4B860,transparent 60%);bottom:-30%;right:-20%;animation:fB 32s ease-in-out infinite;}
+@keyframes fA{0%,100%{transform:translate(0,0) scale(1);}50%{transform:translate(8vw,4vw) scale(1.15);}}
+@keyframes fB{0%,100%{transform:translate(0,0) scale(1);}50%{transform:translate(-6vw,-4vw) scale(1.1);}}
+.grid-bg{z-index:-2;
+  background-image:linear-gradient(rgba(237,230,214,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(237,230,214,.025) 1px,transparent 1px);
+  background-size:80px 80px;mask-image:radial-gradient(ellipse at center,black 30%,transparent 75%);}
+.noise{z-index:-1;opacity:.04;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence baseFrequency='.9' numOctaves='2'/></filter><rect width='200' height='200' filter='url(%23n)'/></svg>");}
+
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:18px 32px;
+  display:flex;align-items:center;justify-content:space-between;
+  background:rgba(10,9,8,.7);backdrop-filter:blur(24px) saturate(140%);
+  border-bottom:1px solid var(--border);}
+.nav-logo{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--text);}
+.nav-mark{width:36px;height:36px;border-radius:10px;background:var(--bg);
+  border:1px solid var(--border-strong);display:flex;align-items:center;justify-content:center;
+  font-family:var(--serif);font-size:18px;font-weight:600;position:relative;}
+.nav-mark::after{content:"";position:absolute;width:6px;height:6px;border-radius:50%;
+  background:var(--accent);right:-2px;top:-2px;box-shadow:0 0 10px var(--accent);}
+.nav-name{font-family:var(--serif);font-size:15px;line-height:1.1;}
+.nav-name small{display:block;font-family:var(--mono);font-size:9px;color:var(--text-mute);letter-spacing:.25em;margin-top:3px;}
+.nav-back{font-family:var(--mono);font-size:11px;color:var(--text-dim);text-decoration:none;
+  padding:8px 14px;border:1px solid var(--border);border-radius:999px;transition:.3s;}
+.nav-back:hover{color:var(--accent);border-color:var(--accent);}
+
+.container{max-width:1320px;margin:0 auto;padding:0 32px;}
+
+/* hero */
+.page-hero{padding:160px 32px 60px;text-align:center;}
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.3em;color:var(--text-mute);
+  text-transform:uppercase;display:inline-flex;align-items:center;gap:10px;margin-bottom:24px;}
+.eyebrow::before,.eyebrow::after{content:"";width:32px;height:1px;background:var(--accent);}
+.page-title{font-family:var(--serif);font-weight:300;
+  font-size:clamp(48px,8vw,108px);line-height:1.02;letter-spacing:-.025em;margin-bottom:32px;}
+.page-title em{font-style:italic;color:var(--accent);font-family:var(--kai);letter-spacing:0;
+  background:linear-gradient(135deg,#FF4D2E,#F4B860);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
+.page-sub{font-size:17px;line-height:1.85;color:var(--text-dim);max-width:640px;margin:0 auto;letter-spacing:.015em;}
+.page-sub strong{color:var(--text);font-weight:500;}
+
+/* layout */
+.contact-layout{display:grid;grid-template-columns:1.4fr 1fr;gap:48px;padding:64px 0 100px;}
+
+/* form */
+.brief-form{
+  background:var(--surface);backdrop-filter:blur(40px);
+  border:1px solid var(--border);border-radius:32px;padding:48px;
+}
+.form-eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.3em;color:var(--accent);margin-bottom:14px;}
+.form-title{font-family:var(--serif);font-size:clamp(28px,4vw,42px);font-weight:300;letter-spacing:-.02em;line-height:1.05;margin-bottom:14px;}
+.form-title em{font-style:italic;color:var(--accent);font-family:var(--kai);}
+.form-desc{font-size:14px;color:var(--text-dim);line-height:1.85;margin-bottom:36px;letter-spacing:.015em;}
+
+.input-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.input-group{margin-bottom:22px;}
+.input-group label{
+  display:block;font-family:var(--mono);font-size:10.5px;
+  letter-spacing:.22em;color:var(--text-mute);margin-bottom:8px;margin-left:4px;
+  text-transform:uppercase;
+}
+.input-group label .req{color:var(--accent);margin-left:4px;}
+input,select,textarea{
+  width:100%;background:rgba(237,230,214,.04);
+  border:1px solid var(--border);border-radius:14px;
+  padding:16px 20px;color:var(--text);font-size:14.5px;
+  font-family:var(--sans);outline:none;transition:.3s;letter-spacing:.01em;
+}
+input::placeholder,textarea::placeholder{color:var(--text-mute);}
+input:focus,select:focus,textarea:focus{
+  border-color:var(--accent);background:rgba(237,230,214,.06);
+}
+textarea{resize:vertical;min-height:120px;line-height:1.7;}
+select{appearance:none;-webkit-appearance:none;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path d='M1 1l5 5 5-5' stroke='%239B9285' stroke-width='1.5' fill='none'/></svg>");
+  background-repeat:no-repeat;background-position:right 20px center;padding-right:48px;}
+select option{background:#13110F;color:var(--text);}
+
+/* radio chips */
+.chip-row{display:flex;flex-wrap:wrap;gap:8px;}
+.chip{
+  padding:11px 16px;border-radius:12px;border:1px solid var(--border-strong);
+  background:rgba(237,230,214,.03);font-size:13px;color:var(--text-dim);
+  cursor:pointer;transition:.2s;font-family:var(--sans);user-select:none;
+}
+.chip:hover{color:var(--text);border-color:var(--text);}
+.chip input{display:none;}
+.chip.active{background:var(--accent);border-color:var(--accent);color:#fff;}
+
+.submit-btn{
+  width:100%;background:var(--accent);color:#fff;border:none;
+  padding:20px;border-radius:14px;font-weight:600;font-size:15px;
+  cursor:pointer;margin-top:14px;transition:.3s;font-family:var(--sans);
+  box-shadow:0 12px 36px rgba(255,77,46,.25);
+  display:flex;align-items:center;justify-content:center;gap:10px;letter-spacing:.05em;
+}
+.submit-btn:hover{transform:translateY(-2px);box-shadow:0 20px 50px rgba(255,77,46,.4);}
+.submit-btn:disabled{opacity:.7;transform:none;cursor:default;}
+
+.legal{font-family:var(--mono);font-size:10.5px;color:var(--text-mute);letter-spacing:.15em;
+  text-align:center;margin-top:20px;line-height:1.8;}
+
+/* side */
+.side-info{display:flex;flex-direction:column;gap:18px;}
+.info-card{
+  background:var(--surface);border:1px solid var(--border);border-radius:24px;padding:28px;
+  transition:.3s var(--ease);
+}
+.info-card:hover{border-color:var(--border-strong);transform:translateY(-2px);}
+.info-card .tag{font-family:var(--mono);font-size:10.5px;color:var(--text-mute);letter-spacing:.22em;margin-bottom:12px;}
+.info-card .tag em{color:var(--accent);font-style:normal;}
+.info-card h4{font-family:var(--serif);font-size:22px;font-weight:400;letter-spacing:-.01em;margin-bottom:8px;}
+.info-card h4 em{font-style:italic;color:var(--accent);font-family:var(--kai);}
+.info-card p{font-size:13.5px;color:var(--text-dim);line-height:1.85;letter-spacing:.015em;}
+.info-card a.linkout{display:inline-flex;align-items:center;gap:6px;margin-top:14px;
+  font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:.18em;text-decoration:none;
+  padding-top:14px;border-top:1px dashed var(--border);width:100%;}
+
+.expectations{
+  background:linear-gradient(180deg,rgba(255,77,46,.06),var(--surface));
+  border:1px solid rgba(255,77,46,.18);border-radius:24px;padding:28px;
+}
+.expectations h4{font-family:var(--serif);font-size:20px;font-weight:400;margin-bottom:16px;letter-spacing:-.01em;}
+.expectations h4 em{font-style:italic;color:var(--accent);font-family:var(--kai);}
+.expectations ol{list-style:none;counter-reset:exp;}
+.expectations li{
+  counter-increment:exp;padding:14px 0;border-top:1px dashed var(--border);
+  font-size:13px;color:var(--text-dim);line-height:1.7;letter-spacing:.015em;
+  display:flex;gap:14px;
+}
+.expectations li::before{
+  content:counter(exp,decimal-leading-zero);
+  font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:.15em;flex-shrink:0;width:28px;
+}
+.expectations li:first-child{border-top:none;padding-top:0;}
+
+/* success */
+.success{display:none;text-align:center;padding:48px 24px;}
+.success.show{display:block;}
+.success .ico{width:72px;height:72px;border-radius:50%;background:rgba(200,255,77,.15);
+  display:flex;align-items:center;justify-content:center;margin:0 auto 20px;
+  font-size:32px;color:var(--accent-2);font-family:var(--serif);}
+.success h3{font-family:var(--serif);font-size:32px;font-weight:300;letter-spacing:-.02em;margin-bottom:14px;}
+.success h3 em{font-style:italic;color:var(--accent);font-family:var(--kai);}
+.success p{color:var(--text-dim);font-size:14px;line-height:1.85;max-width:420px;margin:0 auto;letter-spacing:.015em;}
+
+footer{padding:48px 32px;border-top:1px solid var(--border);
+  display:flex;justify-content:space-between;flex-wrap:wrap;gap:18px;
+  font-family:var(--mono);font-size:11px;letter-spacing:.2em;color:var(--text-mute);}
+footer a{color:var(--text-mute);text-decoration:none;transition:.2s;}
+footer a:hover{color:var(--accent);}
+
+@media(max-width:980px){
+  .contact-layout{grid-template-columns:1fr;}
+  .brief-form{padding:32px;}
+  .input-row{grid-template-columns:1fr;}
+  nav{padding:14px 18px;}
+  .container{padding:0 18px;}
+  .page-hero{padding:120px 18px 40px;}
+}
+</style>
+</head>
+
+<body>
+<div class="aura"></div>
+<div class="grid-bg"></div>
+<div class="noise"></div>
+
+<nav>
+  <a href="index.html" class="nav-logo">
+    <div class="nav-mark">F</div>
+    <div class="nav-name">飞云 Flyun Studio<small>SPATIAL · XR · TALENT</small></div>
+  </a>
+  <a href="index.html" class="nav-back">← 返回主站</a>
+</nav>
+
+<header class="page-hero">
+  <div class="container">
+    <div class="eyebrow">CONTACT · 建立对话</div>
+    <h1 class="page-title">告诉我们一个<em>空间</em>、<br/>一副<em>头显</em>、或一个<em>岗位</em>。</h1>
+    <p class="page-sub">
+      把你的想法 / 项目 / 困惑写下来，<strong>我们会在 7 个工作日内回复</strong>。
+      不接 brief 先打分，也不强推服务 —— 只回复值得回复的对话。
+    </p>
+  </div>
+</header>
+
+<div class="container">
+  <div class="contact-layout">
+
+    <!-- 表单 -->
+    <div class="brief-form" id="briefBox">
+      <div class="form-eyebrow">/ BRIEF · 项目问询</div>
+      <h2 class="form-title">让我们<em>认识</em>你。</h2>
+      <p class="form-desc">
+        信息越具体，我们能给的回复越具体。
+        如果还在很早的阶段，只填一句话也欢迎 —— 我们也常常被一句话打动。
+      </p>
+
+      <form id="briefForm">
+
+        <div class="input-group">
+          <label>合作方向<span class="req">*</span></label>
+          <div class="chip-row" id="topicChips">
+            <label class="chip"><input type="radio" name="topic" value="immersive" required>沉浸装置</label>
+            <label class="chip"><input type="radio" name="topic" value="xr">VR · AR · 头显</label>
+            <label class="chip"><input type="radio" name="topic" value="brand">品牌空间</label>
+            <label class="chip"><input type="radio" name="topic" value="phygital">数字物理融合</label>
+            <label class="chip"><input type="radio" name="topic" value="talent">猎头 · 人才</label>
+            <label class="chip"><input type="radio" name="topic" value="content">内容 · IP</label>
+            <label class="chip"><input type="radio" name="topic" value="other">其他</label>
+          </div>
+        </div>
+
+        <div class="input-row">
+          <div class="input-group">
+            <label>姓名 / 昵称<span class="req">*</span></label>
+            <input type="text" name="name" placeholder="如何称呼你？" required>
+          </div>
+          <div class="input-group">
+            <label>公司 / 团队</label>
+            <input type="text" name="company" placeholder="可以是个人，也可以是品牌">
+          </div>
+        </div>
+
+        <div class="input-row">
+          <div class="input-group">
+            <label>邮箱<span class="req">*</span></label>
+            <input type="email" name="email" placeholder="hello@yourdomain.com" required>
+          </div>
+          <div class="input-group">
+            <label>微信 / 电话</label>
+            <input type="text" name="phone" placeholder="可选 · 方便快速对齐">
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label>项目简介<span class="req">*</span></label>
+          <textarea name="brief" placeholder="一段话描述你想做的事情、目标人群、关键场景，越具体越好" required></textarea>
+        </div>
+
+        <div class="input-row">
+          <div class="input-group">
+            <label>预算范围</label>
+            <select name="budget">
+              <option value="">还没想好 · 想先聊聊</option>
+              <option>10 万以下 · 试一次</option>
+              <option>10 — 30 万 · Spark</option>
+              <option>30 — 80 万 · Story 起步</option>
+              <option>80 — 200 万 · Story 完整</option>
+              <option>200 万以上 · System</option>
+              <option>分成 / 入股 / Retainer 可议</option>
+            </select>
+          </div>
+          <div class="input-group">
+            <label>期望时间</label>
+            <select name="timeline">
+              <option value="">还在很早期</option>
+              <option>1 个月内必须落地</option>
+              <option>1 — 3 个月</option>
+              <option>3 — 6 个月</option>
+              <option>半年以上 / 长期合作</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label>参考链接 / 灵感</label>
+          <textarea name="refs" rows="2" placeholder="贴上你看到的好作品、品牌站点或者一段描述都可以"></textarea>
+        </div>
+
+        <button type="submit" class="submit-btn" id="submitBtn">
+          提交 brief · 进入对话
+          <span>↗</span>
+        </button>
+        <div class="legal">数据本地处理 · 仅用于 FLYUN 工作室回复 · 不会被分享给第三方</div>
+      </form>
+    </div>
+
+    <!-- 成功提示（隐藏） -->
+    <div class="success" id="successPanel" style="background:var(--surface);border:1px solid var(--border);border-radius:32px;">
+      <div class="ico">✓</div>
+      <h3>已收到 · <em>7 天内</em>回复你</h3>
+      <p>我们看到你了。<br/>飞云会优先用邮件给到第一手回应；如果你留了微信 / 电话，我们也会在合适的时间补一通电话。</p>
+    </div>
+
+    <!-- 侧边信息 -->
+    <aside class="side-info">
+
+      <div class="info-card">
+        <div class="tag"><em>01</em> · 邮件</div>
+        <h4>空间 · XR <em>项目咨询</em></h4>
+        <p>沉浸装置、VR / AR、品牌空间、文旅 IP 等业务咨询，最快通道是邮件。</p>
+        <a href="mailto:hello@flyun.studio" class="linkout">hello@flyun.studio ↗</a>
+      </div>
+
+      <div class="info-card">
+        <div class="tag"><em>02</em> · 工作站</div>
+        <h4>猎头 · <em>飞云 Pro</em></h4>
+        <p>猎头与人才合作可直接进入飞云 Pro 工作站；同时支持品牌方提交关键岗位寻访需求。</p>
+        <a href="F.html" class="linkout">飞云 Pro 工作站 ↗</a>
+      </div>
+
+      <div class="info-card">
+        <div class="tag"><em>03</em> · 招募</div>
+        <h4>加入<em>飞云</em> · 想成为同行者</h4>
+        <p>如果你想做空间、做 XR、做猎头，看看我们正在招的岗位 —— 或者直接毛遂自荐。</p>
+        <a href="job.html" class="linkout">查看招募 · 8 个岗位 ↗</a>
+      </div>
+
+      <div class="expectations">
+        <h4>提交后会<em>发生什么</em>？</h4>
+        <ol>
+          <li>24 小时内收到一封自动确认邮件，确认我们读到了。</li>
+          <li>3 个工作日内由 Leo 或对应业务线主理人亲自回复。</li>
+          <li>如果方向匹配，我们会约 30 分钟视频聊一次，不收费、无 NDA。</li>
+          <li>双方都觉得对，我们会出一份正式 proposal；不合适也会礼貌互相放过。</li>
+        </ol>
+      </div>
+
+    </aside>
+  </div>
+</div>
+
+<footer>
+  <div>© 2026 FLYUN STUDIO · 飞云工作室</div>
+  <div>武汉 · WUHAN · 服务全球</div>
+  <div><a href="index.html">↑ 返回主站</a> · <a href="cases.html">案例</a> · <a href="letter.html">通讯</a></div>
+</footer>
+
+<script>
+// chip selector
+document.querySelectorAll('#topicChips .chip').forEach(label => {
+  label.addEventListener('click', () => {
+    document.querySelectorAll('#topicChips .chip').forEach(c => c.classList.remove('active'));
+    label.classList.add('active');
+  });
+});
+
+// pre-fill from ?ref=
+const params = new URLSearchParams(location.search);
+const ref = params.get('ref');
+if (ref) {
+  const ta = document.querySelector('textarea[name="brief"]');
+  ta.value = '通过案例「' + ref + '」过来 —— ';
+  ta.focus();
+  // best-guess topic
+  const topicMap = {
+    'echo-room':'immersive','pulse-garden':'immersive',
+    'vision-gate':'xr','holo-pavilion':'xr',
+    'talent-grid':'talent','light-script':'content',
+  };
+  const topic = topicMap[ref] || (ref.startsWith('letter-') ? 'content' : null);
+  if (topic) {
+    const chip = document.querySelector('#topicChips input[value="'+topic+'"]');
+    if (chip) { chip.checked = true; chip.closest('label').classList.add('active'); }
+  }
+}
+
+// submit
+document.getElementById('briefForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+  btn.innerHTML = '提交中 · ···';
+  setTimeout(() => {
+    document.getElementById('briefBox').style.display = 'none';
+    document.getElementById('successPanel').classList.add('show');
+    document.getElementById('successPanel').scrollIntoView({behavior:'smooth', block:'center'});
+  }, 800);
+});
+</script>
+</body>
+</html>

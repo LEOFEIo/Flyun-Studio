@@ -12,7 +12,7 @@ href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,300..900,0..100&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,300..900,0..100&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Noto+Serif+SC:wght@300;400;500;600;700;900&family=Noto+Sans+SC:wght@300;400;500;600;700;900&family=LXGW+WenKai+TC:wght@300;400;700&display=swap" rel="stylesheet">
 
 <style>
 :root{
@@ -31,9 +31,10 @@ href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 
   --grad:linear-gradient(135deg,#FF4D2E 0%,#F4B860 100%);
   --grad-cool:linear-gradient(135deg,#C8FF4D 0%,#7AE2A0 100%);
   --ease:cubic-bezier(.22,.61,.36,1);
-  --serif:'Fraunces',Georgia,serif;
-  --sans:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+  --serif:'Fraunces','Noto Serif SC',Georgia,'Songti SC','STSong',serif;
+  --sans:'Inter','Noto Sans SC',-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif;
   --mono:'JetBrains Mono',monospace;
+  --kai:'LXGW WenKai TC','Noto Serif SC','KaiTi','STKaiti',serif;
 }
 *{margin:0;padding:0;box-sizing:border-box;}
 html{scroll-behavior:smooth;}
@@ -46,6 +47,9 @@ body{
   cursor:none;
   -webkit-font-smoothing:antialiased;
   -moz-osx-font-smoothing:grayscale;
+  text-rendering:optimizeLegibility;
+  font-feature-settings:"palt" 1,"kern" 1;
+  letter-spacing:.005em;
 }
 ::selection{background:var(--accent);color:#fff;}
 
@@ -178,6 +182,7 @@ nav.scrolled{
 .serif{font-family:var(--serif);}
 .italic{font-style:italic;}
 .mono{font-family:var(--mono);}
+.kai{font-family:var(--kai);}
 .eyebrow{
   font-family:var(--mono);font-size:11px;letter-spacing:.3em;
   color:var(--text-mute);text-transform:uppercase;
@@ -188,12 +193,14 @@ nav.scrolled{
 }
 .section-title{
   font-family:var(--serif);font-weight:300;
-  font-size:clamp(38px,6vw,80px);line-height:1;letter-spacing:-.03em;
+  font-size:clamp(38px,6vw,80px);line-height:1.05;letter-spacing:-.02em;
   margin-bottom:28px;
+  font-feature-settings:"palt" 1,"kern" 1;
 }
-.section-title em{font-style:italic;color:var(--accent);font-weight:400;}
+.section-title em{font-style:italic;color:var(--accent);font-weight:400;font-family:var(--kai);letter-spacing:0;}
 .section-desc{
-  font-size:17px;line-height:1.75;max-width:600px;color:var(--text-dim);
+  font-size:17px;line-height:1.85;max-width:600px;color:var(--text-dim);
+  letter-spacing:.01em;font-feature-settings:"palt" 1;
 }
 
 /* ===== HERO ===== */
@@ -227,15 +234,23 @@ nav.scrolled{
 
 .hero-title{
   font-family:var(--serif);font-weight:300;
-  font-size:clamp(60px,11vw,180px);line-height:.92;letter-spacing:-.045em;
+  font-size:clamp(56px,10vw,168px);line-height:.96;letter-spacing:-.035em;
   margin-bottom:48px;
+  font-feature-settings:"palt" 1,"kern" 1,"ss01" 1;
 }
 .hero-title .row{display:block;}
 .hero-title .row.indent{padding-left:clamp(40px,12vw,200px);}
-.hero-title em{font-style:italic;font-weight:400;color:var(--accent);}
-.hero-title .stroke{
-  -webkit-text-stroke:1.5px var(--text);
+.hero-title em{
+  font-style:italic;font-weight:400;color:var(--accent);
+  font-family:var(--kai);letter-spacing:0;
+  background:linear-gradient(135deg,#FF4D2E 0%,#F4B860 60%,#FF4D2E 100%);
+  -webkit-background-clip:text;background-clip:text;
   -webkit-text-fill-color:transparent;
+}
+.hero-title .stroke{
+  -webkit-text-stroke:1.2px var(--text);
+  -webkit-text-fill-color:transparent;
+  font-style:italic;
 }
 
 .hero-bottom{
@@ -243,7 +258,8 @@ nav.scrolled{
   align-items:end;margin-top:auto;
 }
 .hero-manifesto{
-  font-size:18px;line-height:1.7;color:var(--text-dim);max-width:520px;
+  font-size:18px;line-height:1.85;color:var(--text-dim);max-width:540px;
+  letter-spacing:.015em;font-feature-settings:"palt" 1;
 }
 .hero-manifesto strong{color:var(--text);font-weight:500;}
 .hero-actions{display:flex;gap:14px;flex-wrap:wrap;justify-self:end;}
@@ -333,13 +349,19 @@ section{padding:140px 32px;position:relative;}
 .portrait-meta .name em{color:var(--accent);font-weight:500;}
 
 .about-body p{
-  font-size:17px;line-height:1.85;color:var(--text-dim);margin-bottom:24px;
+  font-size:17px;line-height:1.95;color:var(--text-dim);margin-bottom:24px;
+  letter-spacing:.015em;font-feature-settings:"palt" 1;
 }
 .about-body p strong{color:var(--text);font-weight:500;}
 .about-body .pull{
-  font-family:var(--serif);font-style:italic;font-weight:300;
-  font-size:28px;line-height:1.4;color:var(--text);
-  padding:24px 0 24px 24px;border-left:2px solid var(--accent);margin:32px 0;
+  font-family:var(--kai);font-style:normal;font-weight:400;
+  font-size:30px;line-height:1.55;color:var(--text);letter-spacing:.02em;
+  padding:24px 0 24px 28px;border-left:2px solid var(--accent);margin:32px 0;
+  position:relative;
+}
+.about-body .pull::before{
+  content:"\201C";position:absolute;left:6px;top:-8px;
+  font-family:var(--serif);font-size:48px;color:var(--accent);opacity:.25;line-height:1;
 }
 
 .skills{
@@ -387,16 +409,17 @@ section{padding:140px 32px;position:relative;}
   margin-bottom:16px;
 }
 .service-title{
-  font-family:var(--serif);font-size:42px;line-height:1;font-weight:300;letter-spacing:-.02em;
+  font-family:var(--serif);font-size:42px;line-height:1.05;font-weight:300;letter-spacing:-.015em;
   margin-bottom:8px;
 }
-.service-title em{font-style:italic;color:var(--accent);}
+.service-title em{font-style:italic;color:var(--accent);font-family:var(--kai);}
 .service-zh{
-  font-family:var(--serif);font-size:18px;color:var(--text-dim);font-weight:400;
+  font-family:var(--kai);font-size:19px;color:var(--text-dim);font-weight:400;letter-spacing:.04em;
   margin-bottom:24px;
 }
 .service-desc{
-  font-size:14.5px;line-height:1.75;color:var(--text-dim);margin-bottom:24px;
+  font-size:14.5px;line-height:1.85;color:var(--text-dim);margin-bottom:24px;
+  letter-spacing:.015em;
 }
 .service-list{
   list-style:none;margin-bottom:auto;
@@ -462,7 +485,7 @@ section{padding:140px 32px;position:relative;}
   font-family:var(--serif);font-size:28px;font-weight:400;letter-spacing:-.01em;
   line-height:1.1;margin-bottom:4px;
 }
-.case-name em{font-style:italic;color:var(--accent);}
+.case-name em{font-style:italic;color:var(--accent);font-family:var(--kai);}
 .case-sub{font-size:13px;color:var(--text-dim);}
 .case-arrow{
   position:absolute;top:24px;right:24px;
@@ -494,9 +517,9 @@ section{padding:140px 32px;position:relative;}
 }
 .process-name{
   font-family:var(--serif);font-size:clamp(28px,4vw,52px);font-weight:300;
-  letter-spacing:-.02em;line-height:1.1;transition:.3s;
+  letter-spacing:-.015em;line-height:1.1;transition:.3s;
 }
-.process-name em{font-style:italic;color:var(--accent);}
+.process-name em{font-style:italic;color:var(--accent);font-family:var(--kai);}
 .process-desc{
   font-size:14px;color:var(--text-dim);margin-top:8px;line-height:1.6;max-width:480px;
 }
@@ -536,10 +559,10 @@ section{padding:140px 32px;position:relative;}
   font-family:var(--mono);font-size:9px;letter-spacing:.25em;font-weight:600;
 }
 .tier-name{
-  font-family:var(--serif);font-size:42px;font-weight:300;letter-spacing:-.02em;
+  font-family:var(--serif);font-size:42px;font-weight:300;letter-spacing:-.015em;
   margin-bottom:6px;
 }
-.tier-name em{font-style:italic;color:var(--accent);}
+.tier-name em{font-style:italic;color:var(--accent);font-family:var(--kai);}
 .tier-zh{
   font-size:14px;color:var(--text-dim);margin-bottom:32px;
 }
@@ -638,7 +661,7 @@ section{padding:140px 32px;position:relative;}
   font-family:var(--serif);font-size:24px;font-weight:400;letter-spacing:-.01em;
   margin-bottom:14px;
 }
-.phase-title em{font-style:italic;color:var(--accent);}
+.phase-title em{font-style:italic;color:var(--accent);font-family:var(--kai);}
 .phase-list{list-style:none;}
 .phase-list li{
   font-size:13px;color:var(--text-dim);line-height:1.65;padding:6px 0;
@@ -663,10 +686,11 @@ section{padding:140px 32px;position:relative;}
   margin-bottom:32px;
 }
 .contact-title{
-  font-family:var(--serif);font-size:clamp(48px,8vw,120px);font-weight:300;
-  line-height:.95;letter-spacing:-.04em;margin-bottom:48px;
+  font-family:var(--serif);font-size:clamp(48px,8vw,116px);font-weight:300;
+  line-height:1.02;letter-spacing:-.025em;margin-bottom:48px;
+  font-feature-settings:"palt" 1;
 }
-.contact-title em{font-style:italic;color:var(--accent);}
+.contact-title em{font-style:italic;color:var(--accent);font-family:var(--kai);}
 .contact-channels{
   display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:64px;
 }
@@ -766,12 +790,12 @@ footer a:hover{color:var(--accent);}
     <a href="#about" data-hover>关于</a>
     <a href="#services" data-hover>业务</a>
     <a href="#xr" data-hover>VR·AR</a>
-    <a href="#talent" data-hover>猎头</a>
-    <a href="#showcase" data-hover>项目</a>
-    <a href="#process" data-hover>流程</a>
-    <a href="#pricing" data-hover>合作</a>
+    <a href="cases.html" data-hover>案例</a>
+    <a href="letter.html" data-hover>通讯</a>
+    <a href="job.html" data-hover>招募</a>
+    <a href="contact.html" data-hover>联系</a>
   </div>
-  <a href="#contact" class="nav-cta" data-hover>
+  <a href="contact.html" class="nav-cta" data-hover>
     建立合作
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14m-6-6 6 6-6 6"/></svg>
   </a>
@@ -1221,7 +1245,7 @@ footer a:hover{color:var(--accent);}
 
     <div class="showcase-grid">
       <!-- Case 1 -->
-      <a href="#contact" class="case case-1 reveal" data-hover>
+      <a href="cases.html" class="case case-1 reveal" data-hover>
         <div class="case-canvas case-bg-1"></div>
         <svg class="case-svg" viewBox="0 0 800 500" preserveAspectRatio="xMidYMid slice">
           <g opacity=".5" stroke="#EDE6D6" stroke-width=".5" fill="none">
@@ -1248,7 +1272,7 @@ footer a:hover{color:var(--accent);}
       </a>
 
       <!-- Case 2 -->
-      <a href="#contact" class="case case-2 reveal" data-delay="1" data-hover>
+      <a href="cases.html" class="case case-2 reveal" data-delay="1" data-hover>
         <div class="case-canvas case-bg-2"></div>
         <svg class="case-svg" viewBox="0 0 600 500" preserveAspectRatio="xMidYMid slice">
           <g stroke="#C8FF4D" stroke-width=".6" fill="none" opacity=".6">
@@ -1271,7 +1295,7 @@ footer a:hover{color:var(--accent);}
       </a>
 
       <!-- Case 3 -->
-      <a href="#contact" class="case case-3 reveal" data-hover>
+      <a href="cases.html" class="case case-3 reveal" data-hover>
         <div class="case-canvas case-bg-3"></div>
         <svg class="case-svg" viewBox="0 0 400 400" preserveAspectRatio="xMidYMid slice">
           <g opacity=".7">
@@ -1293,7 +1317,7 @@ footer a:hover{color:var(--accent);}
       </a>
 
       <!-- Case 4 -->
-      <a href="#contact" class="case case-4 reveal" data-delay="1" data-hover>
+      <a href="cases.html" class="case case-4 reveal" data-delay="1" data-hover>
         <div class="case-canvas case-bg-4"></div>
         <svg class="case-svg" viewBox="0 0 400 400" preserveAspectRatio="xMidYMid slice">
           <g stroke="#FF4D2E" fill="none" opacity=".6" stroke-width=".5">
@@ -1343,7 +1367,7 @@ footer a:hover{color:var(--accent);}
       </a>
 
       <!-- Case 6 (full-width) -->
-      <a href="#contact" class="case case-6 reveal" data-hover>
+      <a href="cases.html" class="case case-6 reveal" data-hover>
         <div class="case-canvas case-bg-6"></div>
         <svg class="case-svg" viewBox="0 0 1200 500" preserveAspectRatio="xMidYMid slice">
           <g stroke="#FF4D2E" stroke-width=".4" fill="none" opacity=".5">
