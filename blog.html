@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="description" content="FLYUN STUDIO 博客 · 设计、XR、研究生日常与工作室笔记。" />
+<title>FLYUN · 博客 / Journal</title>
+<link rel="icon" type="image/svg+xml"
+href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 128 128'%3E%3Crect width='128' height='128' rx='28' fill='%230A0908'/%3E%3Cpath d='M36 30v68m0-68h56m-56 32h44' stroke='%23FF4D2E' stroke-width='10' stroke-linecap='square' fill='none'/%3E%3C/svg%3E">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Noto+Serif+SC:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --bg:#0A0908; --bg-2:#13110F;
+  --surface:rgba(28,24,20,.55); --surface-2:rgba(40,34,28,.45);
+  --border:rgba(237,230,214,.08); --border-strong:rgba(237,230,214,.18);
+  --text:#EDE6D6; --text-dim:#9B9285; --text-mute:#6B6359;
+  --accent:#FF4D2E; --accent-2:#C8FF4D; --accent-warm:#F4B860;
+  --ease:cubic-bezier(.22,.61,.36,1);
+  --serif:'Fraunces','Noto Serif SC',Georgia,serif;
+  --sans:'Inter','Noto Sans SC',-apple-system,BlinkMacSystemFont,sans-serif;
+  --mono:'JetBrains Mono',monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:var(--sans);background:var(--bg);color:var(--text);
+  min-height:100vh;-webkit-font-smoothing:antialiased;
+  font-feature-settings:"ss01","cv11","calt";
+  text-rendering:optimizeLegibility;
+}
+::selection{background:var(--accent);color:#fff;}
+a{color:inherit;text-decoration:none;}
+
+/* texture */
+.aura{position:fixed;inset:0;z-index:-5;overflow:hidden;pointer-events:none;}
+.aura::before,.aura::after{
+  content:"";position:absolute;width:60vw;height:60vw;border-radius:50%;
+  filter:blur(140px);opacity:.15;
+}
+.aura::before{background:radial-gradient(circle,#FF4D2E,transparent 60%);top:-25%;left:-15%;}
+.aura::after{background:radial-gradient(circle,#F4B860,transparent 60%);bottom:-30%;right:-20%;}
+.grid-bg{
+  position:fixed;inset:0;z-index:-4;pointer-events:none;
+  background-image:
+    linear-gradient(rgba(237,230,214,.025) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(237,230,214,.025) 1px,transparent 1px);
+  background-size:80px 80px;
+  mask-image:radial-gradient(ellipse at center,black 30%,transparent 75%);
+}
+
+/* nav */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:1000;
+  padding:18px 32px;display:flex;align-items:center;justify-content:space-between;
+  transition:.4s var(--ease);
+}
+nav.scrolled{
+  padding:12px 32px;background:rgba(10,9,8,.7);
+  backdrop-filter:blur(24px) saturate(140%);
+  border-bottom:1px solid var(--border);
+}
+.nav-logo{display:flex;align-items:center;gap:12px;color:var(--text);}
+.nav-mark{
+  width:36px;height:36px;border-radius:10px;background:var(--bg);
+  border:1px solid var(--border-strong);display:flex;align-items:center;justify-content:center;
+  font-family:var(--serif);font-size:18px;font-weight:600;position:relative;
+}
+.nav-mark::after{
+  content:"";position:absolute;width:6px;height:6px;border-radius:50%;
+  background:var(--accent);right:-2px;top:-2px;box-shadow:0 0 10px var(--accent);
+}
+.nav-name{font-family:var(--serif);font-size:15px;font-weight:500;letter-spacing:.04em;line-height:1.1;}
+.nav-name small{
+  display:block;font-family:var(--mono);font-size:9px;color:var(--text-mute);
+  letter-spacing:.25em;margin-top:3px;font-weight:400;
+}
+.nav-links{display:flex;gap:6px;}
+.nav-links a{
+  padding:10px 16px;border-radius:10px;color:var(--text-dim);
+  font-size:13px;font-weight:500;font-family:var(--mono);letter-spacing:.04em;
+  transition:.25s var(--ease);
+}
+.nav-links a:hover,.nav-links a.active{color:var(--text);background:rgba(237,230,214,.04);}
+.nav-actions{display:flex;align-items:center;gap:10px;}
+.lang-toggle{
+  width:42px;height:38px;border-radius:10px;
+  background:transparent;border:1px solid var(--border-strong);
+  color:var(--text);font-family:var(--mono);font-size:12px;font-weight:600;
+  cursor:pointer;display:inline-flex;align-items:center;justify-content:center;
+  transition:.25s var(--ease);
+}
+.lang-toggle:hover{border-color:var(--accent);color:var(--accent);}
+.nav-burger{
+  display:none;width:42px;height:38px;border-radius:10px;
+  background:transparent;border:1px solid var(--border-strong);
+  align-items:center;justify-content:center;cursor:pointer;
+  flex-direction:column;gap:5px;padding:0;
+}
+.nav-burger span{display:block;width:18px;height:1.5px;background:var(--text);transition:.3s;}
+.nav-burger.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg);}
+.nav-burger.open span:nth-child(2){opacity:0;}
+.nav-burger.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg);}
+.nav-mobile{
+  position:fixed;inset:0;z-index:999;background:rgba(10,9,8,.96);
+  backdrop-filter:blur(28px);display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:8px;
+  opacity:0;visibility:hidden;transition:.4s var(--ease);
+}
+.nav-mobile.open{opacity:1;visibility:visible;}
+.nav-mobile a{
+  font-family:var(--serif);font-size:32px;font-weight:300;
+  color:var(--text);padding:14px 24px;
+}
+
+/* layout */
+.wrap{max-width:1100px;margin:0 auto;padding:140px 32px 80px;}
+
+.eyebrow{
+  font-family:var(--mono);font-size:11px;letter-spacing:.3em;
+  color:var(--text-mute);text-transform:uppercase;
+  display:inline-flex;align-items:center;gap:10px;margin-bottom:24px;
+}
+.eyebrow::before{content:"";width:24px;height:1px;background:var(--accent);}
+.page-title{
+  font-family:var(--serif);font-weight:300;
+  font-size:clamp(48px,8vw,96px);line-height:.95;letter-spacing:-.04em;
+  margin-bottom:24px;font-variation-settings:"opsz" 144,"SOFT" 30;
+}
+.page-title em{font-style:italic;color:var(--accent);font-weight:400;}
+.page-sub{font-size:17px;line-height:1.7;color:var(--text-dim);max-width:640px;}
+
+/* filter bar */
+.filter-bar{
+  display:flex;gap:10px;flex-wrap:wrap;
+  margin:60px 0 36px;padding:14px;border:1px solid var(--border);
+  border-radius:16px;background:var(--surface);align-items:center;
+}
+.filter-bar input{
+  flex:1;min-width:200px;padding:10px 14px;background:transparent;
+  border:none;color:var(--text);font-family:var(--mono);font-size:13px;
+}
+.filter-bar input:focus{outline:none;}
+.filter-bar input::placeholder{color:var(--text-mute);}
+.tag-chip{
+  padding:7px 14px;border:1px solid var(--border-strong);border-radius:999px;
+  font-family:var(--mono);font-size:11px;letter-spacing:.1em;
+  color:var(--text-dim);cursor:pointer;transition:.2s;
+}
+.tag-chip:hover{color:var(--text);border-color:var(--text);}
+.tag-chip.active{background:var(--accent);color:#fff;border-color:var(--accent);}
+
+/* posts grid */
+.posts{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;}
+.post-card{
+  display:flex;flex-direction:column;
+  border:1px solid var(--border);border-radius:20px;
+  background:var(--surface);overflow:hidden;
+  transition:.4s var(--ease);cursor:pointer;
+}
+.post-card:hover{border-color:var(--border-strong);transform:translateY(-4px);}
+.post-cover{
+  aspect-ratio:16/9;background:linear-gradient(135deg,#1a1612,#0d0b09);
+  background-size:cover;background-position:center;position:relative;
+}
+.post-cover.placeholder::after{
+  content:"";position:absolute;inset:0;
+  background:radial-gradient(circle at 30% 40%,rgba(255,77,46,.4),transparent 60%),radial-gradient(circle at 80% 70%,rgba(244,184,96,.3),transparent 60%);
+}
+.post-body{padding:28px 28px 32px;flex:1;display:flex;flex-direction:column;}
+.post-meta{
+  display:flex;justify-content:space-between;align-items:center;
+  font-family:var(--mono);font-size:10px;letter-spacing:.18em;
+  color:var(--text-mute);margin-bottom:14px;
+}
+.post-meta .draft{color:var(--accent-warm);}
+.post-title{
+  font-family:var(--serif);font-size:28px;font-weight:400;line-height:1.2;
+  letter-spacing:-.01em;margin-bottom:10px;
+}
+.post-title em{font-style:italic;color:var(--accent);}
+.post-excerpt{
+  font-size:14px;line-height:1.7;color:var(--text-dim);
+  flex:1;margin-bottom:18px;
+}
+.post-foot{display:flex;justify-content:space-between;align-items:center;}
+.post-tags{display:flex;gap:6px;flex-wrap:wrap;}
+.post-tag{
+  font-family:var(--mono);font-size:10px;color:var(--accent);letter-spacing:.12em;
+}
+.post-arrow{
+  font-family:var(--serif);font-size:20px;color:var(--text);
+  transition:.3s;
+}
+.post-card:hover .post-arrow{color:var(--accent);transform:translate(4px,-4px);}
+
+.empty{
+  padding:80px 24px;text-align:center;border:1px dashed var(--border-strong);
+  border-radius:20px;color:var(--text-mute);font-family:var(--mono);
+  font-size:13px;letter-spacing:.15em;
+}
+.empty a{color:var(--accent);}
+
+/* article view */
+.article{max-width:780px;margin:0 auto;padding:140px 32px 100px;}
+.article .back{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:var(--mono);font-size:12px;letter-spacing:.18em;
+  color:var(--text-dim);margin-bottom:32px;transition:.2s;
+}
+.article .back:hover{color:var(--accent);}
+.article-header{margin-bottom:48px;padding-bottom:36px;border-bottom:1px solid var(--border);}
+.article-meta{
+  display:flex;gap:14px;align-items:center;flex-wrap:wrap;
+  font-family:var(--mono);font-size:11px;letter-spacing:.15em;
+  color:var(--text-mute);margin-bottom:24px;
+}
+.article-meta .tag-pill{
+  padding:5px 10px;border:1px solid var(--border-strong);border-radius:999px;
+  color:var(--accent);
+}
+.article-title{
+  font-family:var(--serif);font-weight:300;font-size:clamp(36px,5vw,64px);
+  line-height:1.1;letter-spacing:-.03em;margin-bottom:20px;
+  font-variation-settings:"opsz" 144,"SOFT" 30;
+}
+.article-title em{font-style:italic;color:var(--accent);font-weight:400;}
+.article-excerpt{
+  font-family:var(--serif);font-style:italic;font-size:20px;
+  line-height:1.6;color:var(--text-dim);
+}
+.article-cover{
+  width:100%;aspect-ratio:21/9;border-radius:20px;
+  background-size:cover;background-position:center;
+  border:1px solid var(--border);margin-bottom:36px;
+}
+.article-body{
+  font-size:17px;line-height:1.85;color:var(--text);max-width:none;
+}
+.article-body h1,.article-body h2,.article-body h3{
+  font-family:var(--serif);font-weight:500;letter-spacing:-.01em;
+  margin:48px 0 18px;line-height:1.2;
+}
+.article-body h1{font-size:36px;}
+.article-body h2{font-size:28px;color:var(--text);}
+.article-body h3{font-size:22px;color:var(--text-dim);}
+.article-body p{margin:18px 0;color:var(--text-dim);}
+.article-body p strong{color:var(--text);font-weight:600;}
+.article-body em{color:var(--accent);font-style:italic;}
+.article-body a{color:var(--accent);border-bottom:1px solid rgba(255,77,46,.4);}
+.article-body a:hover{border-bottom-color:var(--accent);}
+.article-body ul,.article-body ol{margin:18px 0 18px 24px;color:var(--text-dim);}
+.article-body li{margin:8px 0;line-height:1.7;}
+.article-body img{
+  max-width:100%;border-radius:12px;margin:24px 0;border:1px solid var(--border);
+}
+.article-body blockquote{
+  border-left:2px solid var(--accent);padding:8px 0 8px 24px;margin:24px 0;
+  font-family:var(--serif);font-style:italic;font-size:20px;color:var(--text);
+}
+.article-body code{
+  font-family:var(--mono);font-size:14px;
+  background:rgba(237,230,214,.06);padding:2px 8px;border-radius:4px;color:var(--accent-2);
+}
+.article-body hr{border:none;border-top:1px dashed var(--border);margin:48px 0;}
+
+/* footer */
+footer{
+  padding:48px 32px;border-top:1px solid var(--border);
+  display:flex;justify-content:space-between;align-items:center;
+  font-family:var(--mono);font-size:11px;letter-spacing:.2em;
+  color:var(--text-mute);flex-wrap:wrap;gap:18px;
+}
+footer a{color:var(--text-mute);}
+footer a:hover{color:var(--accent);}
+
+/* responsive */
+@media(max-width:1100px){
+  .nav-links{display:none;}.nav-burger{display:flex;}
+}
+@media(max-width:768px){
+  nav,nav.scrolled{padding:12px 16px;}
+  .wrap{padding:120px 22px 60px;}
+  .article{padding:120px 22px 80px;}
+  .posts{grid-template-columns:1fr;gap:14px;}
+  .post-body{padding:22px 22px 26px;}
+  .post-title{font-size:24px;}
+  .article-title{font-size:32px;}
+  .article-body{font-size:16px;}
+  footer{flex-direction:column;text-align:center;font-size:10px;padding:32px 18px;}
+  .nav-name small{display:none;}
+}
+</style>
+</head>
+<body>
+
+<div class="aura"></div>
+<div class="grid-bg"></div>
+
+<!-- ===== NAV ===== -->
+<nav id="nav">
+  <a href="index.html" class="nav-logo">
+    <div class="nav-mark">F</div>
+    <div class="nav-name">Flyun Studio<small>SPATIAL · XR · TALENT</small></div>
+  </a>
+  <div class="nav-links">
+    <a href="index.html#about" data-i18n="nav.about">关于</a>
+    <a href="index.html#services" data-i18n="nav.services">业务</a>
+    <a href="index.html#xr" data-i18n="nav.xr">VR·AR</a>
+    <a href="index.html#talent" data-i18n="nav.talent">猎头</a>
+    <a href="cases.html" data-i18n="nav.cases">案例</a>
+    <a href="blog.html" class="active" data-i18n="nav.blog">博客</a>
+    <a href="lab.html" data-i18n="nav.lab">实验室</a>
+    <a href="letter.html" data-i18n="nav.letter">Letter</a>
+  </div>
+  <div class="nav-actions" data-lang-mount>
+    <button class="nav-burger" id="navBurger" aria-label="menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<div class="nav-mobile" id="navMobile">
+  <a href="index.html" data-i18n="nav.about">主页</a>
+  <a href="index.html#services" data-i18n="nav.services">业务</a>
+  <a href="index.html#xr" data-i18n="nav.xr">VR·AR</a>
+  <a href="index.html#talent" data-i18n="nav.talent">猎头</a>
+  <a href="cases.html" data-i18n="nav.cases">案例</a>
+  <a href="blog.html" data-i18n="nav.blog">博客</a>
+  <a href="lab.html" data-i18n="nav.lab">实验室</a>
+  <a href="letter.html" data-i18n="nav.letter">Letter</a>
+</div>
+
+<!-- ===== LIST VIEW ===== -->
+<section class="wrap" id="listView">
+  <div class="eyebrow">JOURNAL · 飞云博客</div>
+  <h1 class="page-title">
+    <span data-i18n="blog.title">飞云博客</span><br/>
+    <em>·</em> <span style="font-size:.6em;font-style:italic;">notes from a studio</span>
+  </h1>
+  <p class="page-sub" data-i18n="blog.subtitle">设计、XR、人才与一些研究生日记。</p>
+
+  <div class="filter-bar">
+    <input type="text" id="search" placeholder="搜索 / search · 标题 · 标签 · 内容">
+    <div id="tagBar" style="display:flex;gap:8px;flex-wrap:wrap;"></div>
+  </div>
+
+  <div class="posts" id="posts"></div>
+</section>
+
+<!-- ===== ARTICLE VIEW ===== -->
+<article class="article" id="articleView" style="display:none;">
+  <a href="blog.html" class="back" data-i18n="blog.back">← 返回博客</a>
+  <div id="articleCover"></div>
+  <header class="article-header">
+    <div class="article-meta" id="articleMeta"></div>
+    <h1 class="article-title" id="articleTitle"></h1>
+    <p class="article-excerpt" id="articleExcerpt"></p>
+  </header>
+  <div class="article-body" id="articleBody"></div>
+</article>
+
+<footer>
+  <div data-i18n="footer.copyright">© 2026 FLYUN STUDIO · 飞云工作室 · 保留全部权利</div>
+  <div data-i18n="footer.location">武汉 · WUHAN · 服务全球</div>
+  <div><a href="index.html">↑ 主站</a> · <a href="admin.html">admin</a></div>
+</footer>
+
+<script src="assets/flyun-cms.js"></script>
+<script>
+/* ===== NAV SCROLL ===== */
+const nav = document.getElementById('nav');
+addEventListener('scroll',()=>nav.classList.toggle('scrolled', scrollY > 40));
+
+/* ===== MOBILE MENU ===== */
+const burger = document.getElementById('navBurger');
+const mobile = document.getElementById('navMobile');
+if(burger){
+  burger.addEventListener('click', ()=>{
+    burger.classList.toggle('open');
+    mobile.classList.toggle('open');
+    document.body.style.overflow = mobile.classList.contains('open') ? 'hidden' : '';
+  });
+  mobile.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{
+    burger.classList.remove('open');mobile.classList.remove('open');document.body.style.overflow='';
+  }));
+}
+
+/* ===== Mini-Markdown (safe-ish) ===== */
+function escapeHtml(s){
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+function mdToHtml(md){
+  if(!md) return '';
+  let s = escapeHtml(md);
+  // images
+  s = s.replace(/!\[([^\]]*)\]\(([^)\s]+)\)/g, '<img alt="$1" src="$2"/>');
+  // links
+  s = s.replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
+  // bold / italic / code
+  s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+  s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+  s = s.replace(/`([^`]+)`/g, '<code>$1</code>');
+  // headings
+  s = s.replace(/^###\s+(.+)$/gm, '<h3>$1</h3>');
+  s = s.replace(/^##\s+(.+)$/gm, '<h2>$1</h2>');
+  s = s.replace(/^#\s+(.+)$/gm, '<h1>$1</h1>');
+  // hr
+  s = s.replace(/^---+$/gm, '<hr/>');
+  // blockquote
+  s = s.replace(/^>\s+(.+)$/gm, '<blockquote>$1</blockquote>');
+  // unordered list
+  s = s.replace(/(^|\n)((?:\s*[-*]\s+.+\n?)+)/g, (m, pre, block)=>{
+    const items = block.trim().split(/\n/).map(l=>l.replace(/^\s*[-*]\s+/, '')).map(t=>'<li>'+t+'</li>').join('');
+    return pre + '<ul>' + items + '</ul>';
+  });
+  // paragraphs (split by blank lines, skip if already block)
+  s = s.split(/\n{2,}/).map(p=>{
+    const t = p.trim();
+    if(!t) return '';
+    if(/^<(h\d|ul|ol|li|hr|blockquote|img|p)/.test(t)) return t;
+    return '<p>'+t.replace(/\n/g,'<br/>')+'</p>';
+  }).join('\n');
+  return s;
+}
+
+/* ===== POST RENDER ===== */
+function pickLang(post, field){
+  const lang = FlyunCMS.getLang();
+  return (post[field] && post[field][lang]) ||
+         (post[field] && post[field].zh) ||
+         (post[field] && post[field].en) || '';
+}
+
+let activeTag = null;
+function getAllTags(posts){
+  const set = new Set();
+  posts.forEach(p => (p.tags||[]).forEach(t => set.add(t)));
+  return Array.from(set);
+}
+function renderTagBar(posts){
+  const bar = document.getElementById('tagBar');
+  const tags = getAllTags(posts);
+  bar.innerHTML = '';
+  if (!tags.length) return;
+  const all = document.createElement('span');
+  all.className = 'tag-chip' + (activeTag===null ? ' active' : '');
+  all.textContent = 'ALL';
+  all.addEventListener('click', ()=>{ activeTag = null; renderList(); });
+  bar.appendChild(all);
+  tags.forEach(t=>{
+    const c = document.createElement('span');
+    c.className = 'tag-chip' + (activeTag===t ? ' active' : '');
+    c.textContent = '#' + t;
+    c.addEventListener('click', ()=>{ activeTag = (activeTag===t ? null : t); renderList(); });
+    bar.appendChild(c);
+  });
+}
+function renderList(){
+  const all = FlyunCMS.getPosts().filter(p => p.status !== 'draft');
+  const q = (document.getElementById('search').value || '').trim().toLowerCase();
+  let posts = all;
+  if (activeTag) posts = posts.filter(p => (p.tags||[]).includes(activeTag));
+  if (q) posts = posts.filter(p => {
+    const blob = [
+      p.title?.zh, p.title?.en, p.excerpt?.zh, p.excerpt?.en,
+      p.body?.zh, p.body?.en, (p.tags||[]).join(' ')
+    ].filter(Boolean).join(' ').toLowerCase();
+    return blob.includes(q);
+  });
+  renderTagBar(all);
+  const host = document.getElementById('posts');
+  if (!posts.length) {
+    host.innerHTML = '<div class="empty" style="grid-column:1/-1;">' +
+      '<span data-i18n="blog.empty">暂无文章，去后台发布第一篇吧。</span><br/><br/>' +
+      '<a href="admin.html">→ 进入后台</a></div>';
+    FlyunCMS.applyI18n(host);
+    return;
+  }
+  host.innerHTML = '';
+  posts.forEach(p => {
+    const title = pickLang(p, 'title');
+    const excerpt = pickLang(p, 'excerpt');
+    const card = document.createElement('a');
+    card.className = 'post-card';
+    card.href = '?p=' + encodeURIComponent(p.id);
+    card.innerHTML = `
+      <div class="post-cover ${p.cover ? '' : 'placeholder'}" ${p.cover ? 'style="background-image:url(\''+p.cover.replace(/'/g,"\\'")+'\');"' : ''}></div>
+      <div class="post-body">
+        <div class="post-meta">
+          <span>${p.date || ''}</span>
+          <span>${(p.tags||[]).slice(0,2).map(t=>'#'+t).join(' ')}</span>
+        </div>
+        <h2 class="post-title">${escapeHtml(title) || '(untitled)'}</h2>
+        <p class="post-excerpt">${escapeHtml(excerpt)}</p>
+        <div class="post-foot">
+          <span class="post-tag" data-i18n="blog.read">阅读全文</span>
+          <span class="post-arrow">↗</span>
+        </div>
+      </div>
+    `;
+    host.appendChild(card);
+  });
+  FlyunCMS.applyI18n(host);
+}
+
+document.getElementById('search').addEventListener('input', renderList);
+
+/* ===== ARTICLE VIEW ===== */
+function renderArticle(id){
+  const post = FlyunCMS.getPosts().find(p => p.id === id);
+  if (!post) {
+    document.getElementById('articleView').innerHTML =
+      '<a href="blog.html" class="back">← 返回博客</a><div class="empty" style="margin-top:32px;">未找到该文章 · NOT FOUND</div>';
+    return;
+  }
+  document.getElementById('listView').style.display = 'none';
+  document.getElementById('articleView').style.display = 'block';
+  const title = pickLang(post, 'title');
+  const excerpt = pickLang(post, 'excerpt');
+  const body = pickLang(post, 'body');
+  document.title = title + ' · FLYUN Journal';
+
+  // cover
+  const coverHost = document.getElementById('articleCover');
+  if (post.cover) {
+    coverHost.innerHTML = '<div class="article-cover" style="background-image:url(\''+post.cover.replace(/'/g,"\\'")+'\');"></div>';
+  } else { coverHost.innerHTML = ''; }
+
+  // meta
+  const metaTags = (post.tags||[]).map(t=>'<span class="tag-pill">#'+escapeHtml(t)+'</span>').join('');
+  document.getElementById('articleMeta').innerHTML =
+    '<span>' + (post.date || '') + '</span>' +
+    (post.status === 'draft' ? '<span style="color:var(--accent-warm);">[ DRAFT ]</span>' : '') +
+    metaTags;
+
+  document.getElementById('articleTitle').textContent = title;
+  document.getElementById('articleExcerpt').textContent = excerpt;
+  document.getElementById('articleBody').innerHTML = mdToHtml(body);
+  FlyunCMS.applyI18n(document.getElementById('articleView'));
+}
+
+/* ===== ROUTING ===== */
+function route(){
+  const params = new URLSearchParams(location.search);
+  const pid = params.get('p');
+  if (pid) renderArticle(pid);
+  else {
+    document.getElementById('listView').style.display = '';
+    document.getElementById('articleView').style.display = 'none';
+    renderList();
+  }
+}
+route();
+
+/* ===== Re-render on lang/post change ===== */
+document.addEventListener('flyun:langchange', route);
+document.addEventListener('flyun:postschange', route);
+</script>
+</body>
+</html>

@@ -278,7 +278,11 @@
             <small>SPATIAL · XR · TALENT</small>
         </div>
     </a>
-    <a href="index.html" class="nav-back">← 返回主站</a>
+    <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:flex-end;">
+        <a href="blog.html" class="nav-back" data-i18n="nav.blog">博客</a>
+        <a href="index.html" class="nav-back">← 主站</a>
+        <button class="nav-back" data-lang-toggle type="button" style="cursor:pointer;background:transparent;font-family:var(--mono);">EN</button>
+    </div>
 </nav>
 
 <div class="container">
@@ -697,5 +701,6 @@
         setTimeout(() => e.target.reset(), 200);
     });
 </script>
+<script src="assets/flyun-cms.js"></script>
 </body>
 </html>
