@@ -31,6 +31,36 @@ body{
 }
 ::selection{background:var(--accent);color:#fff;}
 
+/* === LIGHT THEME (cases) === */
+:root[data-theme="light"]{
+  --bg:#FAF6EE; --bg-2:#F2EBDB;
+  --surface:rgba(255,253,247,.78); --surface-2:rgba(247,240,224,.85);
+  --border:rgba(40,34,28,.10); --border-strong:rgba(40,34,28,.22);
+  --text:#1A1410; --text-dim:#5A5045; --text-mute:#8A7E6E;
+  --accent:#D93A14; --accent-2:#5BA32D; --accent-warm:#C58A3A;
+}
+:root[data-theme="light"] body{ background:var(--bg); color:var(--text); }
+:root[data-theme="light"] nav{ background:rgba(250,246,238,.78); }
+:root[data-theme="light"] .aura::before,
+:root[data-theme="light"] .aura::after{ opacity:.10; }
+:root[data-theme="light"] .grid-bg{
+  background-image:
+    linear-gradient(rgba(40,34,28,.04) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(40,34,28,.04) 1px,transparent 1px);
+}
+:root[data-theme="light"] .nav-mark{ background:#fff; }
+:root[data-theme="light"] .bg-warm,
+:root[data-theme="light"] .bg-cool,
+:root[data-theme="light"] .bg-amber,
+:root[data-theme="light"] .bg-fire,
+:root[data-theme="light"] .bg-lime,
+:root[data-theme="light"] .bg-mix{ filter:invert(1) hue-rotate(180deg) brightness(.96); }
+:root[data-theme="light"] .case-svg{ filter:invert(.85) hue-rotate(180deg); }
+:root[data-theme="light"] .case-info{ background:linear-gradient(180deg,transparent,rgba(255,253,247,.92)); }
+html, body, nav, .case, .chip, .cta{
+  transition: background-color .35s ease, color .35s ease, border-color .35s ease;
+}
+
 /* atmosphere */
 .aura{position:fixed;inset:0;z-index:-2;overflow:hidden;pointer-events:none;}
 .aura::before,.aura::after{content:"";position:absolute;width:60vw;height:60vw;border-radius:50%;filter:blur(140px);opacity:.18;}
@@ -216,7 +246,7 @@ footer a:hover{color:var(--accent);}
     <div class="nav-mark">F</div>
     <div class="nav-name">飞云 Flyun Studio<small>SPATIAL · XR · TALENT</small></div>
   </a>
-  <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:flex-end;">
+  <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:flex-end;" data-theme-mount>
     <a href="blog.html" class="nav-back" data-i18n="nav.blog">博客</a>
     <a href="index.html" class="nav-back">← 主站</a>
     <button class="nav-back" data-lang-toggle type="button" style="cursor:pointer;background:transparent;font-family:var(--mono);">EN</button>
@@ -444,6 +474,8 @@ footer a:hover{color:var(--accent);}
     });
   }));
 </script>
+<script src="assets/flyun-theme.js"></script>
+<script src="assets/flyun-supabase.js"></script>
 <script src="assets/flyun-cms.js"></script>
 </body>
 </html>

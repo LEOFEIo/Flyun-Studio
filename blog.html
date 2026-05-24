@@ -35,6 +35,31 @@ body{
 ::selection{background:var(--accent);color:#fff;}
 a{color:inherit;text-decoration:none;}
 
+/* === LIGHT THEME OVERRIDES (blog) === */
+:root[data-theme="light"]{
+  --bg:#FAF6EE; --bg-2:#F2EBDB;
+  --surface:rgba(255,253,247,.78); --surface-2:rgba(247,240,224,.85);
+  --border:rgba(40,34,28,.10); --border-strong:rgba(40,34,28,.22);
+  --text:#1A1410; --text-dim:#5A5045; --text-mute:#8A7E6E;
+  --accent:#D93A14; --accent-2:#5BA32D; --accent-warm:#C58A3A;
+}
+:root[data-theme="light"] body{ background:var(--bg); color:var(--text); }
+:root[data-theme="light"] nav.scrolled{ background:rgba(250,246,238,.78); }
+:root[data-theme="light"] .aura::before,
+:root[data-theme="light"] .aura::after{ opacity:.10; }
+:root[data-theme="light"] .grid-bg{
+  background-image:
+    linear-gradient(rgba(40,34,28,.04) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(40,34,28,.04) 1px,transparent 1px);
+}
+:root[data-theme="light"] .nav-mark{ background:#fff; }
+:root[data-theme="light"] .post-cover.placeholder::after{
+  background:radial-gradient(circle at 30% 40%,rgba(217,58,20,.32),transparent 60%),radial-gradient(circle at 80% 70%,rgba(197,138,58,.25),transparent 60%);
+}
+html, body, nav, .post-card, .filter-bar{
+  transition: background-color .35s ease, color .35s ease, border-color .35s ease;
+}
+
 /* texture */
 .aura{position:fixed;inset:0;z-index:-5;overflow:hidden;pointer-events:none;}
 .aura::before,.aura::after{
@@ -316,7 +341,7 @@ footer a:hover{color:var(--accent);}
     <a href="lab.html" data-i18n="nav.lab">实验室</a>
     <a href="letter.html" data-i18n="nav.letter">Letter</a>
   </div>
-  <div class="nav-actions" data-lang-mount>
+  <div class="nav-actions" data-lang-mount data-theme-mount>
     <button class="nav-burger" id="navBurger" aria-label="menu">
       <span></span><span></span><span></span>
     </button>
@@ -369,6 +394,8 @@ footer a:hover{color:var(--accent);}
   <div><a href="index.html">↑ 主站</a></div>
 </footer>
 
+<script src="assets/flyun-theme.js"></script>
+<script src="assets/flyun-supabase.js"></script>
 <script src="assets/flyun-cms.js"></script>
 <script>
 /* ===== NAV SCROLL ===== */
@@ -510,9 +537,15 @@ function renderList(){
 document.getElementById('search').addEventListener('input', renderList);
 
 /* ===== ARTICLE VIEW ===== */
-function renderArticle(id){
-  const post = FlyunCMS.getPosts().find(p => p.id === id);
+async function renderArticle(id){
+  let post = FlyunCMS.getPosts().find(p => p.id === id);
+  // 缓存里没有 → 直接从 Supabase 拉
+  if (!post && window.FlyunSupabase) {
+    try { post = await FlyunSupabase.getPost(id); } catch (e) {}
+  }
   if (!post) {
+    document.getElementById('articleView').style.display = 'block';
+    document.getElementById('listView').style.display = 'none';
     document.getElementById('articleView').innerHTML =
       '<a href="blog.html" class="back">← 返回博客</a><div class="empty" style="margin-top:32px;">未找到该文章 · NOT FOUND</div>';
     return;
@@ -554,11 +587,22 @@ function route(){
     renderList();
   }
 }
-route();
+// 首次渲染时如果还在等待同步，显示"载入中"
+function initialRender(){
+  const params = new URLSearchParams(location.search);
+  if (!params.get('p') && (FlyunCMS.getPosts() || []).length === 0) {
+    document.getElementById('posts').innerHTML =
+      '<div class="empty" style="grid-column:1/-1;">载入中 · loading…</div>';
+  }
+  route();
+}
+initialRender();
 
 /* ===== Re-render on lang/post change ===== */
 document.addEventListener('flyun:langchange', route);
 document.addEventListener('flyun:postschange', route);
+document.addEventListener('flyun:cms-synced', route);
+document.addEventListener('flyun:supabase-ready', route);
 </script>
 </body>
 </html>
