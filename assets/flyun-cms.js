@@ -1006,10 +1006,20 @@ html[data-theme="light"] .case .case-canvas.has-cms-img + .case-svg{
     installStealthGate();
 
     // 公共页面：异步从云端拉取，让所有访客都能看到
-    pullAll().then(() => {
-      applyI18n();
-      applyImageBindings();
-    });
+    // 但 admin 页：只有在已登录云端时才拉取，避免空云端把本地草稿清掉
+    const _here = (location.pathname || '').toLowerCase();
+    const _isAdmin = _here.endsWith('/admin.html') || _here.endsWith('admin.html');
+    if (_isAdmin) {
+      cloudSession().then(session => {
+        if (!session) return; // 本地优先，等用户在「系统」页登录云端后再 pull
+        pullAll().then(() => { applyI18n(); applyImageBindings(); });
+      });
+    } else {
+      pullAll().then(() => {
+        applyI18n();
+        applyImageBindings();
+      });
+    }
 
     // 跨标签页同步
     window.addEventListener('storage', e => {
