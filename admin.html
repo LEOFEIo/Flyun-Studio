@@ -13,6 +13,7 @@ href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Noto+Serif+SC:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 <style>
 :root{
@@ -168,7 +169,7 @@ a{color:inherit;text-decoration:none;}
 
 .main{padding:48px 56px 80px;max-width:none;overflow:hidden;}
 
-/* ===== TYPOGRAPHY (mirroring index) ===== */
+/* ===== TYPOGRAPHY ===== */
 .eyebrow{
   font-family:var(--mono);font-size:11px;letter-spacing:.3em;
   color:var(--text-mute);text-transform:uppercase;
@@ -279,9 +280,24 @@ a{color:inherit;text-decoration:none;}
 }
 .field input::placeholder,.field textarea::placeholder{color:var(--text-mute);}
 .field .pair{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
-@media(max-width:900px){.field .pair{grid-template-columns:1fr;}}
 
-/* ===== BUTTONS (homepage style) ===== */
+/* ===== EDITOR TOOLBAR (New Feature) ===== */
+.editor-toolbar {
+  display: flex; gap: 8px; margin-bottom: 8px; flex-wrap: wrap;
+}
+.editor-toolbar button {
+  background: rgba(10,9,8,0.4);
+  border: 1px solid var(--border);
+  color: var(--text-dim);
+  height: 28px; padding: 0 10px; font-size: 11px; border-radius: 6px;
+  cursor: pointer; transition: 0.2s; font-family:var(--sans);
+  display:inline-flex; align-items:center; gap:6px;
+}
+.editor-toolbar button:hover {
+  color: var(--text); border-color: var(--accent); background:rgba(10,9,8,0.8);
+}
+
+/* ===== BUTTONS ===== */
 .btn{
   position:relative;height:48px;padding:0 22px;border-radius:12px;
   display:inline-flex;align-items:center;justify-content:center;gap:10px;
@@ -514,7 +530,7 @@ a{color:inherit;text-decoration:none;}
 
 .post-row .acts{display:flex;gap:8px;flex-wrap:wrap;}
 
-/* ===== LOGIN GATE ===== */
+/* ===== LOGIN GATE / MODAL ===== */
 .gate{
   position:fixed;inset:0;z-index:1000;
   display:flex;align-items:center;justify-content:center;padding:24px;
@@ -638,6 +654,15 @@ input[type=file]::file-selector-button:hover{
 
 <div class="aura"></div>
 <div class="grid-bg"></div>
+
+<!-- ===== EDITOR MODAL (New Feature) ===== -->
+<div class="gate" id="editorModal" style="display:none;z-index:2000;">
+  <div class="gate-box" style="max-width:600px; max-height:80vh; overflow-y:auto; padding:32px;">
+    <div class="gate-eyebrow" id="editorModalTitle">从图库选择...</div>
+    <div id="editorModalContent" style="margin-bottom:24px;"></div>
+    <button type="button" class="btn ghost" style="width:100%;" onclick="closeEditorModal()">取消</button>
+  </div>
+</div>
 
 <!-- ===== LOGIN GATE ===== -->
 <div class="gate" id="gate">
@@ -782,13 +807,13 @@ input[type=file]::file-selector-button:hover{
       <div class="eyebrow">03 · HOMEPAGE / 首页图片</div>
       <div class="panel-head">
         <h2 class="panel-title">替换<em>主页</em>关键<br/>图位。</h2>
-        <div class="panel-hint">填 URL 或上传 → 自动同步到首页</div>
+        <div class="panel-hint">填 URL 或直接从图库点选</div>
       </div>
 
       <div class="card">
         <div class="card-head"><span>使用说明</span><span class="k">SLOT_GUIDE</span></div>
         <div class="guide-list">
-          每一个图位对应主页里的一张图。把图片 URL 粘进去（或本地上传），保存后主页会立刻使用新图。<br/>
+          每一个图位对应主页里的一张图。可以直接粘贴图片 URL，本地上传，或者<strong>点击“从图库选”</strong>拉起选择面板。保存后主页会立刻使用新图。<br/>
           清空留白即恢复默认 SVG 装饰。
           <span class="warn">建议尺寸：Hero 背景 2400×1400，主创头像 800×1000，案例封面 1600×1000；JPG/WebP 优先。</span>
         </div>
@@ -836,7 +861,7 @@ input[type=file]::file-selector-button:hover{
       <div class="eyebrow">04 · JOURNAL / 写作室</div>
       <div class="panel-head">
         <h2 class="panel-title">像写<em>一封信</em>一样<br/>写一篇日志。</h2>
-        <div class="panel-hint">支持中英双语 · 简版 Markdown</div>
+        <div class="panel-hint">支持中英双语 · 富文本插入</div>
       </div>
 
       <div class="writer">
@@ -856,14 +881,22 @@ input[type=file]::file-selector-button:hover{
           </div>
         </div>
 
-        <!-- 正文：双语并排，serif 阅读字体 -->
+        <!-- 正文：双语并排，添加富文本工具栏 -->
         <div class="body-pair">
           <div class="body-cell">
             <div class="body-tag zh">正文 · 中文</div>
+            <div class="editor-toolbar">
+                <button type="button" onclick="openImgPicker('postBodyZh')"><i class="fas fa-image"></i> 插入图片</button>
+                <button type="button" onclick="openEmojiPicker('postBodyZh')"><i class="fas fa-smile"></i> 表情包</button>
+            </div>
             <textarea class="body-textarea" id="postBodyZh" placeholder="在这里慢慢写。&#10;&#10;支持简版 Markdown：**粗体** · *斜体* · # 标题 · [链接](url) · ![alt](img) · > 引用 · `代码`"></textarea>
           </div>
           <div class="body-cell">
             <div class="body-tag en">BODY · ENGLISH</div>
+            <div class="editor-toolbar">
+                <button type="button" onclick="openImgPicker('postBodyEn')"><i class="fas fa-image"></i> Insert Image</button>
+                <button type="button" onclick="openEmojiPicker('postBodyEn')"><i class="fas fa-smile"></i> Emoji</button>
+            </div>
             <textarea class="body-textarea" id="postBodyEn" placeholder="Optional. Leave blank to fall back to Chinese.&#10;&#10;Supports simple Markdown."></textarea>
           </div>
         </div>
@@ -1041,10 +1074,18 @@ input[type=file]::file-selector-button:hover{
         <div class="body-pair">
           <div class="body-cell">
             <div class="body-tag zh">正文 · 中文</div>
+            <div class="editor-toolbar">
+                <button type="button" onclick="openImgPicker('letterBodyZh')"><i class="fas fa-image"></i> 插入图片</button>
+                <button type="button" onclick="openEmojiPicker('letterBodyZh')"><i class="fas fa-smile"></i> 表情包</button>
+            </div>
             <textarea class="body-textarea" id="letterBodyZh" placeholder="支持简版 Markdown"></textarea>
           </div>
           <div class="body-cell">
             <div class="body-tag en">BODY · ENGLISH</div>
+            <div class="editor-toolbar">
+                <button type="button" onclick="openImgPicker('letterBodyEn')"><i class="fas fa-image"></i> Insert Image</button>
+                <button type="button" onclick="openEmojiPicker('letterBodyEn')"><i class="fas fa-smile"></i> Emoji</button>
+            </div>
             <textarea class="body-textarea" id="letterBodyEn" placeholder="Optional"></textarea>
           </div>
         </div>
@@ -1494,6 +1535,108 @@ $('#saveImg')?.addEventListener('click', ()=>{
   toast('已保存 · ' + k);
 });
 
+/* ============== TEXT EDITOR HELPER (Rich Features) ============== */
+let currentEditorTargetId = '';
+let currentSlotTargetKey = '';
+
+// 在光标处插入内容
+function insertAtCursor(textareaId, text) {
+    const el = document.getElementById(textareaId);
+    if (!el) return;
+    const start = el.selectionStart;
+    const end = el.selectionEnd;
+    const val = el.value;
+    el.value = val.substring(0, start) + text + val.substring(end);
+    el.selectionStart = el.selectionEnd = start + text.length;
+    el.focus();
+    el.dispatchEvent(new Event('input')); // trigger word count
+}
+
+function closeEditorModal() {
+    $('#editorModal').style.display = 'none';
+}
+
+// 插入图片面板 (博客用)
+function openImgPicker(tid) {
+    currentEditorTargetId = tid;
+    const imgs = getImages();
+    const keys = Object.keys(imgs);
+    let html = '<div class="img-grid" style="grid-template-columns:repeat(auto-fill, minmax(140px, 1fr));">';
+    if(keys.length === 0) {
+        html += '<div style="grid-column:1/-1;text-align:center;padding:20px;color:var(--text-mute);">图库为空，请先到「图片库」添加</div>';
+    } else {
+        keys.forEach(k => {
+            const u = imgs[k];
+            html += `<div class="img-card" style="cursor:pointer;padding:8px;" onclick="insertEditorImg('${u.replace(/'/g,"\\'")}');">
+              <div class="preview" style="background-image:url('${u.replace(/'/g,"\\'")}'); height:80px;"></div>
+              <div class="name" style="font-size:11px;margin-top:8px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${k}</div>
+            </div>`;
+        });
+    }
+    html += '</div>';
+    $('#editorModalTitle').innerText = '从图库选择图片插入';
+    $('#editorModalContent').innerHTML = html;
+    $('#editorModal').style.display = 'flex';
+}
+
+function insertEditorImg(url) {
+    insertAtCursor(currentEditorTargetId, `\n![图片描述](${url})\n`);
+    closeEditorModal();
+    toast('图片代码已插入');
+}
+
+// 插入表情面板
+const COMMON_EMOJIS = ['😀','😂','🥰','😎','🤔','😭','🙏','✨','🔥','🚀','💡','🎉','❤️','👍','👀','✍️','🎨','💻','☕','🌿','📌','🌟','💪','👏'];
+function openEmojiPicker(tid) {
+    currentEditorTargetId = tid;
+    let html = '<div style="display:flex;flex-wrap:wrap;gap:10px;font-size:28px;">';
+    COMMON_EMOJIS.forEach(e => {
+        html += `<div style="cursor:pointer;padding:8px;background:var(--surface-2);border-radius:8px;transition:0.2s;" 
+                  onmouseover="this.style.background='var(--surface)'" 
+                  onmouseout="this.style.background='var(--surface-2)'" 
+                  onclick="insertEditorEmoji('${e}')">${e}</div>`;
+    });
+    html += '</div>';
+    $('#editorModalTitle').innerText = '插入表情包';
+    $('#editorModalContent').innerHTML = html;
+    $('#editorModal').style.display = 'flex';
+}
+
+function insertEditorEmoji(emoji) {
+    insertAtCursor(currentEditorTargetId, emoji);
+    closeEditorModal();
+}
+
+// Slot 图片选择器 (首页图片用)
+function openSlotImgPicker(slotKey) {
+    currentSlotTargetKey = slotKey;
+    const imgs = getImages();
+    const keys = Object.keys(imgs);
+    let html = '<div class="img-grid" style="grid-template-columns:repeat(auto-fill, minmax(140px, 1fr));">';
+    if(keys.length === 0) {
+        html += '<div style="grid-column:1/-1;text-align:center;padding:20px;color:var(--text-mute);">图库为空，请先到「图片库」添加</div>';
+    } else {
+        keys.forEach(k => {
+            const u = imgs[k];
+            html += `<div class="img-card" style="cursor:pointer;padding:8px;" onclick="selectSlotImg('${u.replace(/'/g,"\\'")}');">
+              <div class="preview" style="background-image:url('${u.replace(/'/g,"\\'")}'); height:80px;"></div>
+              <div class="name" style="font-size:11px;margin-top:8px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${k}</div>
+            </div>`;
+        });
+    }
+    html += '</div>';
+    $('#editorModalTitle').innerText = '为图位【' + slotKey + '】选择图片';
+    $('#editorModalContent').innerHTML = html;
+    $('#editorModal').style.display = 'flex';
+}
+
+function selectSlotImg(url) {
+    const inp = document.querySelector(`.slot-url[data-key="${currentSlotTargetKey}"]`);
+    if(inp) inp.value = url;
+    closeEditorModal();
+    toast('已选中图片，请点击保存生效');
+}
+
 /* ============== BLOG ============== */
 function clearPostForm(){
   $('#postId').value = '';
@@ -1542,7 +1685,6 @@ function buildPostFromForm(){
 function updateWordCount(){
   const zh = ($('#postBodyZh').value || '').trim();
   const en = ($('#postBodyEn').value || '').trim();
-  // 中文按字符，英文按词
   const zhCount = zh.replace(/\s/g, '').length;
   const enCount = en ? en.split(/\s+/).filter(Boolean).length : 0;
   $('#wordCount').textContent = `字数 · ${zhCount} 中 / ${enCount} EN`;
@@ -1599,14 +1741,12 @@ $('#postList')?.addEventListener('click', e => {
 $('#savePost')?.addEventListener('click', async ()=>{
   const p = buildPostFromForm();
   if (!p.title.zh && !p.title.en) { toast('至少填一个标题', 'err'); return; }
-  // 检查云端登录状态
   const session = await FlyunCMS.cloud.session();
   FlyunCMS.upsertPost(p);
   clearPostForm();
   renderPostList(); refreshDash();
   if (session) {
     toast('已保存并同步到云端 · ' + (p.title.zh || p.title.en));
-    // 主动验证云端写入是否成功
     try {
       await FlyunCMS.cloud.pushPost(p);
     } catch (e) {
@@ -1675,14 +1815,14 @@ $('#resetAll')?.addEventListener('click', ()=>{
  * HOMEPAGE IMAGE SLOTS — 主页关键图位
  * ==================================================================== */
 const HOME_SLOTS = [
-  { key:'home.hero.bg',           name:'Hero · 首屏背景',     hint:'置于全屏Hero的右上方',  size:'2400×1400' },
-  { key:'home.about.portrait',    name:'About · 主创头像',    hint:'about 区块的人像位',     size:'800×1000' },
-  { key:'home.case.1',            name:'Showcase · 案例 1',   hint:'首页 SHOWCASE 第 1 块', size:'1600×1000' },
-  { key:'home.case.2',            name:'Showcase · 案例 2',   hint:'首页 SHOWCASE 第 2 块', size:'1200×1000' },
-  { key:'home.case.3',            name:'Showcase · 案例 3',   hint:'首页 SHOWCASE 第 3 块', size:'800×800'   },
-  { key:'home.case.4',            name:'Showcase · 案例 4',   hint:'首页 SHOWCASE 第 4 块', size:'800×800'   },
-  { key:'home.case.5',            name:'Showcase · 案例 5',   hint:'首页 SHOWCASE 第 5 块', size:'800×800'   },
-  { key:'home.case.6',            name:'Showcase · 案例 6',   hint:'首页 SHOWCASE 第 6 块', size:'2400×1000' }
+  { key:'home.hero.bg',           name:'Hero · 首屏背景',   hint:'置于全屏Hero的右上方',  size:'2400×1400' },
+  { key:'home.about.portrait',    name:'About · 主创头像',  hint:'about 区块的人像位',    size:'800×1000' },
+  { key:'home.case.1',            name:'Showcase · 案例 1', hint:'首页 SHOWCASE 第 1 块', size:'1600×1000' },
+  { key:'home.case.2',            name:'Showcase · 案例 2', hint:'首页 SHOWCASE 第 2 块', size:'1200×1000' },
+  { key:'home.case.3',            name:'Showcase · 案例 3', hint:'首页 SHOWCASE 第 3 块', size:'800×800'   },
+  { key:'home.case.4',            name:'Showcase · 案例 4', hint:'首页 SHOWCASE 第 4 块', size:'800×800'   },
+  { key:'home.case.5',            name:'Showcase · 案例 5', hint:'首页 SHOWCASE 第 5 块', size:'800×800'   },
+  { key:'home.case.6',            name:'Showcase · 案例 6', hint:'首页 SHOWCASE 第 6 块', size:'2400×1000' }
 ];
 
 function renderSlots(){
@@ -1706,11 +1846,12 @@ function renderSlots(){
         <input type="text" class="slot-url" data-key="${slot.key}" placeholder="https://… 或 data:image/…" value="${url ? url.replace(/"/g,'&quot;') : ''}">
       </div>
       <div class="row-actions" style="margin-top:8px;">
-        <label class="btn small ghost" style="cursor:pointer;">
+        <button class="btn small ghost" type="button" onclick="openSlotImgPicker('${slot.key}')"><i class="fas fa-image"></i> 从图库选</button>
+        <label class="btn small ghost" style="cursor:pointer;margin-right:0;">
           上传
           <input type="file" accept="image/*" class="slot-file" data-key="${slot.key}" style="display:none;">
         </label>
-        <button class="btn small" data-act="slot-save" data-key="${slot.key}" type="button">保存</button>
+        <button class="btn small" data-act="slot-save" data-key="${slot.key}" type="button" style="margin-left:auto;">保存</button>
         ${url ? `<button class="btn small danger" data-act="slot-clear" data-key="${slot.key}" type="button">移除</button>` : ''}
       </div>
     `;
