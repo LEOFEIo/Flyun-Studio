@@ -16,18 +16,11 @@ href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 
 
 <style>
 :root{
-  --bg:#0A0908;
-  --bg-2:#13110F;
-  --surface:rgba(28,24,20,.55);
-  --surface-2:rgba(40,34,28,.45);
-  --border:rgba(237,230,214,.08);
-  --border-strong:rgba(237,230,214,.18);
-  --text:#EDE6D6;
-  --text-dim:#9B9285;
-  --text-mute:#6B6359;
-  --accent:#FF4D2E;
-  --accent-2:#C8FF4D;
-  --accent-warm:#F4B860;
+  --bg:#0A0908; --bg-2:#13110F;
+  --surface:rgba(28,24,20,.55); --surface-2:rgba(40,34,28,.45);
+  --border:rgba(237,230,214,.08); --border-strong:rgba(237,230,214,.18);
+  --text:#EDE6D6; --text-dim:#9B9285; --text-mute:#6B6359;
+  --accent:#FF4D2E; --accent-2:#C8FF4D; --accent-warm:#F4B860;
   --danger:#ff5252;
   --ease:cubic-bezier(.22,.61,.36,1);
   --serif:'Fraunces','Noto Serif SC',Georgia,serif;
@@ -37,18 +30,47 @@ href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 
 *{margin:0;padding:0;box-sizing:border-box;}
 html{scroll-behavior:smooth;}
 body{
-  font-family:var(--sans);
-  background:var(--bg);
-  color:var(--text);
-  min-height:100vh;
-  overflow-x:hidden;
-  -webkit-font-smoothing:antialiased;
-  -moz-osx-font-smoothing:grayscale;
+  font-family:var(--sans); background:var(--bg); color:var(--text);
+  min-height:100vh; overflow-x:hidden;
+  -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
   font-feature-settings:"ss01","cv11","calt";
-  text-rendering:optimizeLegibility;
 }
 ::selection{background:var(--accent);color:#fff;}
 a{color:inherit;text-decoration:none;}
+
+/* === LIGHT THEME === */
+:root[data-theme="light"]{
+  --bg:#FAF6EE; --bg-2:#F2EBDB;
+  --surface:rgba(255,253,247,.78); --surface-2:rgba(247,240,224,.85);
+  --border:rgba(40,34,28,.10); --border-strong:rgba(40,34,28,.22);
+  --text:#1A1410; --text-dim:#5A5045; --text-mute:#8A7E6E;
+  --accent:#D93A14; --accent-2:#5BA32D; --accent-warm:#C58A3A;
+}
+:root[data-theme="light"] body{ background:var(--bg); color:var(--text); }
+:root[data-theme="light"] .aura::before,
+:root[data-theme="light"] .aura::after{ opacity:.10; }
+:root[data-theme="light"] .grid-bg{
+  background-image:
+    linear-gradient(rgba(40,34,28,.04) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(40,34,28,.04) 1px,transparent 1px);
+}
+:root[data-theme="light"] .topbar{ background:rgba(250,246,238,.85); }
+:root[data-theme="light"] .sidebar{ background:rgba(247,240,224,.5); }
+:root[data-theme="light"] .brand-mark{ background:#fff; }
+:root[data-theme="light"] .input,
+:root[data-theme="light"] .field input,
+:root[data-theme="light"] .field textarea,
+:root[data-theme="light"] .field select,
+:root[data-theme="light"] .body-textarea,
+:root[data-theme="light"] .title-input,
+:root[data-theme="light"] .meta-cell input,
+:root[data-theme="light"] .meta-cell select,
+:root[data-theme="light"] .excerpt-cell textarea{
+  background:rgba(255,253,247,.7) !important;
+}
+html, body, .topbar, .sidebar, .card, .stat, .post-row, .img-card{
+  transition: background-color .35s ease, color .35s ease, border-color .35s ease;
+}
 
 /* ===== BACKGROUND TEXTURE ===== */
 .aura{position:fixed;inset:0;z-index:-5;overflow:hidden;pointer-events:none;}
@@ -56,14 +78,8 @@ a{color:inherit;text-decoration:none;}
   content:"";position:absolute;width:60vw;height:60vw;border-radius:50%;
   filter:blur(140px);opacity:.14;
 }
-.aura::before{
-  background:radial-gradient(circle,#FF4D2E,transparent 60%);
-  top:-25%;left:-15%;animation:floatA 28s ease-in-out infinite;
-}
-.aura::after{
-  background:radial-gradient(circle,#F4B860,transparent 60%);
-  bottom:-30%;right:-20%;animation:floatB 32s ease-in-out infinite;
-}
+.aura::before{ background:radial-gradient(circle,#FF4D2E,transparent 60%); top:-25%;left:-15%; animation:floatA 28s ease-in-out infinite; }
+.aura::after{ background:radial-gradient(circle,#F4B860,transparent 60%); bottom:-30%;right:-20%; animation:floatB 32s ease-in-out infinite; }
 @keyframes floatA{0%,100%{transform:translate(0,0) scale(1);}50%{transform:translate(8vw,4vw) scale(1.15);}}
 @keyframes floatB{0%,100%{transform:translate(0,0) scale(1);}50%{transform:translate(-6vw,-4vw) scale(1.1);}}
 .grid-bg{
@@ -75,9 +91,7 @@ a{color:inherit;text-decoration:none;}
   mask-image:radial-gradient(ellipse at center,black 30%,transparent 75%);
 }
 
-.serif{font-family:var(--serif);font-variation-settings:"opsz" 144,"SOFT" 30;}
-.italic{font-style:italic;}
-.mono{font-family:var(--mono);}
+.serif{font-family:var(--serif);} .mono{font-family:var(--mono);}
 
 /* ===== TOP BAR ===== */
 .topbar{
@@ -94,18 +108,13 @@ a{color:inherit;text-decoration:none;}
   width:36px;height:36px;border-radius:10px;
   background:var(--bg);border:1px solid var(--border-strong);
   display:flex;align-items:center;justify-content:center;
-  font-family:var(--serif);font-size:18px;font-weight:600;
-  position:relative;
+  font-family:var(--serif);font-size:18px;font-weight:600;position:relative;
 }
 .brand-mark::after{
   content:"";position:absolute;width:6px;height:6px;border-radius:50%;
-  background:var(--accent);right:-2px;top:-2px;
-  box-shadow:0 0 10px var(--accent);
+  background:var(--accent);right:-2px;top:-2px;box-shadow:0 0 10px var(--accent);
 }
-.brand-name{
-  font-family:var(--serif);font-size:15px;font-weight:500;
-  letter-spacing:.04em;line-height:1.1;
-}
+.brand-name{ font-family:var(--serif);font-size:15px;font-weight:500;letter-spacing:.04em;line-height:1.1; }
 .brand-name small{
   display:block;font-family:var(--mono);font-size:9px;color:var(--text-mute);
   letter-spacing:.25em;margin-top:3px;font-weight:400;
@@ -120,6 +129,8 @@ a{color:inherit;text-decoration:none;}
   content:"";width:6px;height:6px;border-radius:50%;
   background:var(--accent-2);box-shadow:0 0 8px var(--accent-2);
 }
+.sync-stat.local::before{ background:var(--text-mute);box-shadow:none; }
+.sync-stat.remote::before{ background:var(--accent);box-shadow:0 0 8px var(--accent); }
 .bar-link{
   padding:9px 14px;border-radius:10px;
   font-family:var(--mono);font-size:11px;letter-spacing:.18em;
@@ -130,15 +141,20 @@ a{color:inherit;text-decoration:none;}
 .bar-link.danger{color:var(--text-mute);}
 .bar-link.danger:hover{color:var(--danger);border-color:rgba(255,82,82,.4);}
 
-/* ===== LAYOUT ===== */
-.shell{
-  display:grid;grid-template-columns:240px 1fr;
-  min-height:calc(100vh - 64px);
+.theme-toggle{
+  width:38px;height:34px;border-radius:10px;
+  background:transparent;border:1px solid var(--border-strong);
+  color:var(--text-dim);
+  display:inline-flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:.2s var(--ease);padding:0;
 }
+.theme-toggle:hover{ color:var(--accent);border-color:var(--accent); }
+
+/* ===== LAYOUT ===== */
+.shell{ display:grid;grid-template-columns:240px 1fr;min-height:calc(100vh - 64px); }
 .sidebar{
   border-right:1px solid var(--border);
-  padding:32px 0 24px;
-  background:rgba(13,11,9,.4);
+  padding:32px 0 24px;background:rgba(13,11,9,.4);
 }
 .sidebar nav{display:flex;flex-direction:column;gap:2px;}
 .tab-btn{
@@ -149,10 +165,7 @@ a{color:inherit;text-decoration:none;}
   border-left:2px solid transparent;
   display:flex;align-items:center;gap:12px;
 }
-.tab-btn .num{
-  font-family:var(--mono);font-size:9px;color:var(--text-mute);
-  letter-spacing:.2em;
-}
+.tab-btn .num{ font-family:var(--mono);font-size:9px;color:var(--text-mute); letter-spacing:.2em;}
 .tab-btn:hover{color:var(--text);background:rgba(237,230,214,.03);}
 .tab-btn.active{
   color:var(--accent);border-left-color:var(--accent);
@@ -168,61 +181,41 @@ a{color:inherit;text-decoration:none;}
 
 .main{padding:48px 56px 80px;max-width:none;overflow:hidden;}
 
-/* ===== TYPOGRAPHY (mirroring index) ===== */
+/* ===== TYPOGRAPHY ===== */
 .eyebrow{
   font-family:var(--mono);font-size:11px;letter-spacing:.3em;
   color:var(--text-mute);text-transform:uppercase;
   display:inline-flex;align-items:center;gap:10px;margin-bottom:18px;
 }
-.eyebrow::before{
-  content:"";width:24px;height:1px;background:var(--accent);
-}
+.eyebrow::before{ content:"";width:24px;height:1px;background:var(--accent); }
 .panel-head{
   display:flex;justify-content:space-between;align-items:flex-end;gap:24px;
   padding-bottom:24px;margin-bottom:36px;
-  border-bottom:1px solid var(--border);
-  flex-wrap:wrap;
+  border-bottom:1px solid var(--border); flex-wrap:wrap;
 }
 .panel-title{
   font-family:var(--serif);font-weight:300;
   font-size:clamp(34px,5vw,56px);line-height:1;letter-spacing:-.03em;
-  font-variation-settings:"opsz" 144,"SOFT" 30;
 }
 .panel-title em{font-style:italic;color:var(--accent);font-weight:400;}
-.panel-hint{
-  font-family:var(--mono);font-size:11px;color:var(--text-mute);
-  letter-spacing:.2em;text-align:right;
-}
+.panel-hint{ font-family:var(--mono);font-size:11px;color:var(--text-mute); letter-spacing:.2em;text-align:right; }
 
 /* ===== STAT CARDS ===== */
-.stat-grid{
-  display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:28px;
-}
+.stat-grid{ display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:28px; }
 .stat{
   padding:24px;border:1px solid var(--border);border-radius:18px;
-  background:var(--surface);backdrop-filter:blur(20px);
-  transition:.3s var(--ease);
+  background:var(--surface);backdrop-filter:blur(20px); transition:.3s var(--ease);
 }
 .stat:hover{border-color:var(--border-strong);transform:translateY(-3px);}
-.stat-label{
-  font-family:var(--mono);font-size:10px;color:var(--text-mute);
-  letter-spacing:.25em;text-transform:uppercase;margin-bottom:14px;
-}
-.stat-num{
-  font-family:var(--serif);font-size:42px;font-weight:300;
-  letter-spacing:-.02em;color:var(--text);line-height:1;
-}
+.stat-label{ font-family:var(--mono);font-size:10px;color:var(--text-mute); letter-spacing:.25em;text-transform:uppercase;margin-bottom:14px; }
+.stat-num{ font-family:var(--serif);font-size:42px;font-weight:300; letter-spacing:-.02em;color:var(--text);line-height:1; }
 .stat-num em{color:var(--accent);font-style:italic;}
-.stat-sub{
-  font-family:var(--mono);font-size:10px;color:var(--text-mute);
-  letter-spacing:.18em;margin-top:8px;
-}
+.stat-sub{ font-family:var(--mono);font-size:10px;color:var(--text-mute); letter-spacing:.18em;margin-top:8px; }
 
 /* ===== SURFACE CARD ===== */
 .card{
   position:relative;padding:32px;border-radius:20px;
-  background:var(--surface);
-  border:1px solid var(--border);
+  background:var(--surface); border:1px solid var(--border);
   backdrop-filter:blur(20px);margin-bottom:18px;
 }
 .card-head{
@@ -233,14 +226,12 @@ a{color:inherit;text-decoration:none;}
   border-bottom:1px dashed var(--border);
 }
 .card-head .k{color:var(--accent);}
-
 .guide-list{font-size:14px;line-height:1.95;color:var(--text-dim);}
 .guide-list strong{color:var(--text);font-weight:500;}
 .guide-list .warn{
   display:block;margin-top:14px;padding:14px 16px;
   border:1px solid rgba(244,184,96,.3);border-radius:12px;
-  background:rgba(244,184,96,.05);color:var(--accent-warm);
-  font-size:13px;
+  background:rgba(244,184,96,.05);color:var(--accent-warm); font-size:13px;
 }
 
 /* ===== TAB SWAP ===== */
@@ -255,16 +246,13 @@ a{color:inherit;text-decoration:none;}
   font-family:var(--mono);font-size:10px;color:var(--text-dim);
   letter-spacing:.22em;margin-bottom:8px;text-transform:uppercase;
 }
-.field label .key{
-  color:var(--text-mute);font-size:9px;letter-spacing:.18em;
-}
+.field label .key{color:var(--text-mute);font-size:9px;letter-spacing:.18em;}
 .input,
-.field input[type=text],.field input[type=password],
+.field input[type=text],.field input[type=password],.field input[type=email],
 .field input[type=number],.field input[type=file],
 .field textarea,.field select{
   width:100%;padding:14px 16px;
-  background:rgba(10,9,8,.4);
-  border:1px solid var(--border);
+  background:rgba(10,9,8,.4); border:1px solid var(--border);
   color:var(--text);font-family:var(--sans);font-size:14px;line-height:1.5;
   border-radius:12px;
   transition:border .25s var(--ease),background .25s var(--ease);
@@ -274,14 +262,13 @@ a{color:inherit;text-decoration:none;}
   font-family:var(--mono);font-size:13px;line-height:1.7;
 }
 .field input:focus,.field textarea:focus,.field select:focus,.input:focus{
-  outline:none;border-color:var(--accent);
-  background:rgba(10,9,8,.6);
+  outline:none;border-color:var(--accent); background:rgba(10,9,8,.6);
 }
 .field input::placeholder,.field textarea::placeholder{color:var(--text-mute);}
 .field .pair{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
 @media(max-width:900px){.field .pair{grid-template-columns:1fr;}}
 
-/* ===== BUTTONS (homepage style) ===== */
+/* ===== BUTTONS ===== */
 .btn{
   position:relative;height:48px;padding:0 22px;border-radius:12px;
   display:inline-flex;align-items:center;justify-content:center;gap:10px;
@@ -310,26 +297,22 @@ a{color:inherit;text-decoration:none;}
 .btn.small{height:36px;padding:0 14px;font-size:11px;border-radius:10px;}
 .btn .arrow{display:inline-block;transition:.3s var(--ease);}
 .btn:hover .arrow{transform:translate(3px,-3px);}
-
 .row-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px;}
 
 /* ===== TOAST ===== */
 .toast{
   position:fixed;bottom:28px;right:28px;z-index:200;
   padding:16px 22px;border-radius:14px;
-  background:rgba(10,9,8,.92);
-  border:1px solid var(--accent);
-  color:var(--text);font-family:var(--mono);font-size:12px;
-  letter-spacing:.12em;
+  background:rgba(10,9,8,.92); border:1px solid var(--accent);
+  color:var(--text);font-family:var(--mono);font-size:12px;letter-spacing:.12em;
   box-shadow:0 24px 60px rgba(255,77,46,.3);
   backdrop-filter:blur(20px);
   opacity:0;transform:translateY(20px) scale(.95);
-  transition:.35s var(--ease);pointer-events:none;max-width:340px;
+  transition:.35s var(--ease);pointer-events:none;max-width:380px;
 }
 .toast.show{opacity:1;transform:none;}
-.toast.warn{border-color:var(--accent-warm);box-shadow:0 24px 60px rgba(244,184,96,.25);}
-.toast.warn::before{background:var(--accent-warm);}
-.toast.err{border-color:var(--danger);box-shadow:0 24px 60px rgba(255,82,82,.3);}
+.toast.warn{border-color:var(--accent-warm);}
+.toast.err{border-color:var(--danger);}
 .toast::before{
   content:"";display:inline-block;width:6px;height:6px;border-radius:50%;
   background:var(--accent);margin-right:10px;vertical-align:middle;
@@ -341,8 +324,7 @@ a{color:inherit;text-decoration:none;}
 .i18n-group{
   border:1px solid var(--border);border-radius:18px;
   padding:24px;margin-bottom:14px;
-  background:var(--surface);backdrop-filter:blur(20px);
-  transition:.3s var(--ease);
+  background:var(--surface);backdrop-filter:blur(20px); transition:.3s var(--ease);
 }
 .i18n-group:hover{border-color:var(--border-strong);}
 .i18n-group .key-line{
@@ -360,17 +342,23 @@ a{color:inherit;text-decoration:none;}
 .i18n-group .lang-row:last-child{margin-bottom:0;}
 .i18n-group .lang-row .tag{
   font-family:var(--serif);font-size:14px;font-style:italic;
-  color:var(--accent-warm);padding-top:14px;
-  letter-spacing:.05em;
+  color:var(--accent-warm);padding-top:14px; letter-spacing:.05em;
 }
 .i18n-group .lang-row .tag.en{color:var(--accent-2);font-style:normal;font-family:var(--mono);font-size:11px;letter-spacing:.18em;}
+.i18n-group input[type=text], .i18n-group textarea{
+  width:100%;padding:12px 14px;
+  background:rgba(10,9,8,.4); border:1px solid var(--border);
+  color:var(--text);font-family:var(--sans);font-size:14px;line-height:1.5;
+  border-radius:10px; transition:border .25s var(--ease);
+}
+.i18n-group textarea{ min-height:80px;resize:vertical; font-family:var(--mono);font-size:13px;line-height:1.7; }
+.i18n-group input:focus, .i18n-group textarea:focus{outline:none;border-color:var(--accent);}
 
 /* ===== BLOG: WRITING ROOM ===== */
 .writer{
   position:relative;padding:48px;border-radius:24px;
   background:var(--surface);backdrop-filter:blur(20px);
-  border:1px solid var(--border-strong);
-  margin-bottom:36px;
+  border:1px solid var(--border-strong); margin-bottom:36px;
   background-image:linear-gradient(135deg,rgba(255,77,46,.04),transparent 60%);
 }
 .writer-eyebrow{
@@ -382,24 +370,19 @@ a{color:inherit;text-decoration:none;}
 .writer-h{
   font-family:var(--serif);font-size:32px;font-weight:300;
   letter-spacing:-.02em;line-height:1.1;margin-bottom:32px;
-  font-variation-settings:"opsz" 144,"SOFT" 30;
 }
 .writer-h em{font-style:italic;color:var(--accent);}
-
 .title-input{
   width:100%;padding:8px 0;background:transparent;border:none;
   border-bottom:1px solid var(--border);
   font-family:var(--serif);font-weight:300;
   font-size:clamp(28px,4vw,44px);line-height:1.15;letter-spacing:-.02em;
   color:var(--text);margin-bottom:24px;
-  font-variation-settings:"opsz" 144,"SOFT" 30;
   transition:border-color .25s var(--ease);
 }
 .title-input:focus{outline:none;border-bottom-color:var(--accent);}
 .title-input::placeholder{color:var(--text-mute);font-style:italic;}
-.title-pair{
-  display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-bottom:8px;
-}
+.title-pair{ display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-bottom:8px; }
 .title-cell .lang-tag{
   font-family:var(--mono);font-size:10px;color:var(--text-mute);
   letter-spacing:.25em;margin-bottom:6px;
@@ -407,10 +390,7 @@ a{color:inherit;text-decoration:none;}
 .title-cell .lang-tag.en{color:var(--accent-2);}
 .title-cell .lang-tag.zh{color:var(--accent-warm);}
 @media(max-width:900px){.title-pair{grid-template-columns:1fr;gap:14px;}}
-
-.body-pair{
-  display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:8px;
-}
+.body-pair{ display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:8px; }
 .body-cell{display:flex;flex-direction:column;}
 .body-cell .body-tag{
   font-family:var(--mono);font-size:10px;color:var(--text-mute);
@@ -421,24 +401,20 @@ a{color:inherit;text-decoration:none;}
 .body-cell .body-tag::before{content:"";width:18px;height:1px;background:currentColor;}
 .body-textarea{
   width:100%;padding:20px 22px;
-  background:rgba(10,9,8,.4);
-  border:1px solid var(--border);border-radius:14px;
-  color:var(--text);
-  font-family:var(--serif);font-size:16px;line-height:1.85;
+  background:rgba(10,9,8,.4); border:1px solid var(--border);border-radius:14px;
+  color:var(--text); font-family:var(--serif);font-size:16px;line-height:1.85;
   min-height:280px;resize:vertical;
   transition:border .25s var(--ease),background .25s var(--ease);
 }
 .body-textarea:focus{outline:none;border-color:var(--accent);background:rgba(10,9,8,.6);}
 .body-textarea::placeholder{color:var(--text-mute);font-style:italic;}
 @media(max-width:900px){.body-pair{grid-template-columns:1fr;}}
-
 .writer-meta{
   margin-top:32px;padding-top:24px;border-top:1px solid var(--border);
   display:grid;grid-template-columns:repeat(4,1fr);gap:14px;
 }
 @media(max-width:1100px){.writer-meta{grid-template-columns:repeat(2,1fr);}}
 @media(max-width:600px){.writer-meta{grid-template-columns:1fr;}}
-
 .meta-cell label{
   display:block;font-family:var(--mono);font-size:9px;
   color:var(--text-mute);letter-spacing:.25em;
@@ -446,24 +422,17 @@ a{color:inherit;text-decoration:none;}
 }
 .meta-cell input,.meta-cell select{
   width:100%;padding:11px 14px;
-  background:rgba(10,9,8,.4);
-  border:1px solid var(--border);border-radius:10px;
+  background:rgba(10,9,8,.4); border:1px solid var(--border);border-radius:10px;
   color:var(--text);font-family:var(--mono);font-size:12px;letter-spacing:.05em;
   transition:.25s var(--ease);
 }
-.meta-cell input:focus,.meta-cell select:focus{
-  outline:none;border-color:var(--accent);background:rgba(10,9,8,.6);
-}
-
+.meta-cell input:focus,.meta-cell select:focus{ outline:none;border-color:var(--accent);background:rgba(10,9,8,.6); }
 .excerpt-pair{
   display:grid;grid-template-columns:1fr 1fr;gap:24px;
   margin-top:24px;padding-top:24px;border-top:1px solid var(--border);
 }
 @media(max-width:900px){.excerpt-pair{grid-template-columns:1fr;}}
-.excerpt-cell label{
-  display:block;font-family:var(--mono);font-size:10px;
-  color:var(--text-mute);letter-spacing:.25em;margin-bottom:8px;text-transform:uppercase;
-}
+.excerpt-cell label{ display:block;font-family:var(--mono);font-size:10px; color:var(--text-mute);letter-spacing:.25em;margin-bottom:8px;text-transform:uppercase; }
 .excerpt-cell .lt{color:var(--accent-warm);}
 .excerpt-cell .lt.en{color:var(--accent-2);}
 .excerpt-cell textarea{
@@ -473,33 +442,23 @@ a{color:inherit;text-decoration:none;}
   font-size:15px;line-height:1.7;min-height:80px;resize:vertical;
 }
 .excerpt-cell textarea:focus{outline:none;border-color:var(--accent);background:rgba(10,9,8,.6);}
-
 .writer-actions{
   display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;
   margin-top:32px;padding-top:24px;border-top:1px solid var(--border);
 }
-.writer-actions .word-count{
-  font-family:var(--mono);font-size:10px;color:var(--text-mute);letter-spacing:.2em;
-}
+.writer-actions .word-count{ font-family:var(--mono);font-size:10px;color:var(--text-mute);letter-spacing:.2em; }
 
 /* ===== BLOG LIST ===== */
 .post-list{display:flex;flex-direction:column;gap:10px;margin-top:18px;}
 .post-row{
   display:grid;grid-template-columns:1fr auto;gap:18px;align-items:center;
   padding:22px 24px;border:1px solid var(--border);border-radius:16px;
-  background:var(--surface);backdrop-filter:blur(20px);
-  transition:.3s var(--ease);
+  background:var(--surface);backdrop-filter:blur(20px); transition:.3s var(--ease);
 }
 .post-row:hover{border-color:var(--border-strong);transform:translateY(-2px);}
-.post-row .ttl{
-  font-family:var(--serif);font-size:18px;font-weight:400;
-  letter-spacing:-.01em;color:var(--text);line-height:1.3;
-}
+.post-row .ttl{ font-family:var(--serif);font-size:18px;font-weight:400; letter-spacing:-.01em;color:var(--text);line-height:1.3; }
 .post-row .ttl em{color:var(--accent);font-style:italic;}
-.post-row .meta-line{
-  font-family:var(--mono);font-size:10px;color:var(--text-mute);
-  letter-spacing:.18em;margin-top:8px;
-}
+.post-row .meta-line{ font-family:var(--mono);font-size:10px;color:var(--text-mute); letter-spacing:.18em;margin-top:8px; }
 .post-row .meta-line .tag-pill{color:var(--accent);}
 .lang-pill{
   display:inline-block;padding:3px 9px;border:1px solid var(--border-strong);
@@ -511,30 +470,25 @@ a{color:inherit;text-decoration:none;}
 .lang-pill.en{color:var(--accent-2);border-color:rgba(200,255,77,.4);}
 .lang-pill.both{color:var(--text);border-color:var(--border-strong);}
 .lang-pill.draft{color:var(--accent-warm);border-color:rgba(244,184,96,.4);}
-
 .post-row .acts{display:flex;gap:8px;flex-wrap:wrap;}
 
 /* ===== LOGIN GATE ===== */
 .gate{
   position:fixed;inset:0;z-index:1000;
   display:flex;align-items:center;justify-content:center;padding:24px;
-  background:rgba(10,9,8,.86);
-  backdrop-filter:blur(24px);
-  -webkit-backdrop-filter:blur(24px);
+  background:rgba(10,9,8,.86); backdrop-filter:blur(24px);
 }
 .gate-box{
-  width:100%;max-width:440px;
+  width:100%;max-width:480px;
   padding:48px 40px;border-radius:24px;
-  background:var(--surface);
-  border:1px solid var(--border-strong);
+  background:var(--surface); border:1px solid var(--border-strong);
   backdrop-filter:blur(40px);
   box-shadow:0 32px 80px rgba(0,0,0,.6),inset 0 1px 0 rgba(237,230,214,.06);
   position:relative;overflow:hidden;
 }
 .gate-box::before{
   content:"";position:absolute;inset:0;border-radius:24px;
-  background:linear-gradient(135deg,rgba(255,77,46,.06),transparent 60%);
-  pointer-events:none;
+  background:linear-gradient(135deg,rgba(255,77,46,.06),transparent 60%); pointer-events:none;
 }
 .gate-box .gate-eyebrow{
   font-family:var(--mono);font-size:10px;color:var(--accent);
@@ -544,21 +498,29 @@ a{color:inherit;text-decoration:none;}
 .gate-box .gate-eyebrow::before{content:"";width:24px;height:1px;background:var(--accent);}
 .gate-box h2{
   font-family:var(--serif);font-weight:300;
-  font-size:36px;line-height:1.1;letter-spacing:-.025em;
-  margin-bottom:8px;
-  font-variation-settings:"opsz" 144,"SOFT" 30;
+  font-size:32px;line-height:1.1;letter-spacing:-.025em; margin-bottom:8px;
 }
 .gate-box h2 em{color:var(--accent);font-style:italic;}
-.gate-box .sub{
-  font-family:var(--mono);font-size:11px;color:var(--text-mute);
-  letter-spacing:.2em;margin-bottom:32px;
+.gate-box .sub{ font-family:var(--mono);font-size:11px;color:var(--text-mute); letter-spacing:.2em;margin-bottom:28px; }
+.gate-tabs{
+  display:flex;gap:8px;margin-bottom:24px;
+  padding:4px;background:rgba(10,9,8,.4);border-radius:12px;
+  border:1px solid var(--border);
 }
+.gate-tab{
+  flex:1;padding:9px 12px;border-radius:9px;background:transparent;border:none;
+  color:var(--text-mute);font-family:var(--mono);font-size:11px;
+  letter-spacing:.18em;cursor:pointer;transition:.2s var(--ease);
+}
+.gate-tab.active{background:var(--accent);color:#fff;}
 .gate-back{
-  display:block;text-align:center;margin-top:20px;
+  display:block;text-align:center;margin-top:18px;
   font-family:var(--mono);font-size:10px;color:var(--text-mute);
   letter-spacing:.22em;transition:.2s;
 }
 .gate-back:hover{color:var(--text);}
+.gate-mode{display:none;}
+.gate-mode.active{display:block;}
 
 /* ===== IMAGES ===== */
 .img-grid{
@@ -584,7 +546,29 @@ a{color:inherit;text-decoration:none;}
   word-break:break-all;margin-top:6px;line-height:1.5;letter-spacing:.05em;
 }
 
-/* ===== UPLOAD INPUT TWEAK ===== */
+/* ===== HOMEPAGE SLOTS ===== */
+.slot-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;}
+.slot{
+  border:1px solid var(--border);border-radius:16px;padding:18px;
+  background:var(--surface);backdrop-filter:blur(20px);
+  display:flex;flex-direction:column;gap:10px;
+}
+.slot .preview{
+  width:100%;aspect-ratio:4/3;border-radius:10px;
+  background:rgba(10,9,8,.4) center/cover no-repeat;
+  border:1px dashed var(--border-strong);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--mono);font-size:11px;color:var(--text-mute);letter-spacing:.18em;
+}
+.slot .slot-label{
+  font-family:var(--serif);font-size:16px;color:var(--text);font-weight:400;
+}
+.slot .slot-key{
+  font-family:var(--mono);font-size:10px;color:var(--accent);letter-spacing:.2em;
+}
+.slot .slot-desc{ font-size:12px;color:var(--text-dim);line-height:1.6; }
+
+/* ===== UPLOAD ===== */
 input[type=file]{
   font-family:var(--mono);font-size:11px;color:var(--text-dim);letter-spacing:.1em;
 }
@@ -594,9 +578,7 @@ input[type=file]::file-selector-button{
   font-family:var(--mono);font-size:10px;letter-spacing:.18em;
   margin-right:14px;cursor:pointer;transition:.2s var(--ease);
 }
-input[type=file]::file-selector-button:hover{
-  background:var(--accent);color:#fff;border-color:var(--accent);
-}
+input[type=file]::file-selector-button:hover{ background:var(--accent);color:#fff;border-color:var(--accent); }
 
 /* ===== RESPONSIVE ===== */
 @media(max-width:980px){
@@ -612,10 +594,7 @@ input[type=file]::file-selector-button:hover{
     flex:0 0 auto;padding:14px 20px;
     border-left:none;border-bottom:2px solid transparent;
   }
-  .tab-btn.active{
-    border-left:none;border-bottom-color:var(--accent);
-    background:transparent;
-  }
+  .tab-btn.active{ border-left:none;border-bottom-color:var(--accent);background:transparent; }
   .side-foot{display:none;}
   .main{padding:32px 22px 60px;}
   .stat-grid{grid-template-columns:repeat(2,1fr);}
@@ -631,7 +610,6 @@ input[type=file]::file-selector-button:hover{
   .bar-link{padding:7px 10px;font-size:10px;}
   .sync-stat{display:none;}
 }
-
 </style>
 </head>
 <body>
@@ -641,18 +619,55 @@ input[type=file]::file-selector-button:hover{
 
 <!-- ===== LOGIN GATE ===== -->
 <div class="gate" id="gate">
-  <form class="gate-box" id="gateForm">
+  <form class="gate-box" id="gateForm" autocomplete="off">
     <div class="gate-eyebrow">FLYUN · Private Studio</div>
     <h2>仅<em>主理人</em><br/>可进入。</h2>
     <div class="sub">A QUIET ROOM · TLS · WUHAN-A</div>
-    <div class="field">
-      <label>访问口令<span class="key">PASSPHRASE</span></label>
-      <input type="password" id="gatePwd" placeholder="默认 flyun2026 · 请尽快修改" autocomplete="off">
+
+    <div class="gate-tabs">
+      <button class="gate-tab active" type="button" data-mode="cloud">云端登录 · CLOUD</button>
+      <button class="gate-tab" type="button" data-mode="local">本机口令 · LOCAL</button>
     </div>
-    <button type="submit" class="btn" style="width:100%;height:52px;">
-      <span>进入工作室</span>
-      <svg class="arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14m-6-6 6 6-6 6"/></svg>
-    </button>
+
+    <!-- Supabase email login -->
+    <div class="gate-mode active" data-mode="cloud">
+      <div class="field">
+        <label>邮箱<span class="key">EMAIL</span></label>
+        <input type="email" id="gateEmail" placeholder="leo@flyunstudio.com" autocomplete="username">
+      </div>
+      <div class="field">
+        <label>密码<span class="key">PASSWORD</span></label>
+        <input type="password" id="gatePass" placeholder="········" autocomplete="current-password">
+      </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;">
+        <button type="submit" class="btn" data-action="signin" style="flex:1;height:50px;">
+          <span>登录工作室</span>
+          <svg class="arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14m-6-6 6 6-6 6"/></svg>
+        </button>
+        <button type="button" class="btn ghost" id="signupBtn" style="height:50px;">注册账号</button>
+      </div>
+      <div style="margin-top:14px;font-family:var(--mono);font-size:10px;color:var(--text-mute);letter-spacing:.18em;line-height:1.7;">
+        · 通过 Supabase 登录后写入会同步到云端，所有访客可见。<br/>
+        · 首次使用：先到 Supabase 控制台创建账号，或点「注册」。
+      </div>
+    </div>
+
+    <!-- Local passphrase (legacy) -->
+    <div class="gate-mode" data-mode="local">
+      <div class="field">
+        <label>访问口令<span class="key">PASSPHRASE</span></label>
+        <input type="password" id="gatePwd" placeholder="默认 flyun2026" autocomplete="off">
+      </div>
+      <button type="submit" class="btn" data-action="local" style="width:100%;height:50px;">
+        <span>仅本机预览</span>
+        <svg class="arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14m-6-6 6 6-6 6"/></svg>
+      </button>
+      <div style="margin-top:14px;font-family:var(--mono);font-size:10px;color:var(--text-mute);letter-spacing:.18em;line-height:1.7;">
+        · 仅在本机浏览器编辑，访客看不到改动。<br/>
+        · 适合先草拟内容再用云端账号统一发布。
+      </div>
+    </div>
+
     <a href="index.html" class="gate-back">← 返回主站</a>
   </form>
 </div>
@@ -667,7 +682,8 @@ input[type=file]::file-selector-button:hover{
     </div>
   </div>
   <div class="bar-right">
-    <span class="sync-stat" id="syncStat">SYNC · LOCAL</span>
+    <span class="sync-stat local" id="syncStat">SYNC · LOCAL</span>
+    <button class="theme-toggle" data-theme-toggle aria-label="theme"></button>
     <a href="index.html" class="bar-link">← 主站</a>
     <a href="blog.html" class="bar-link">博客</a>
     <button id="logoutBtn" class="bar-link danger" type="button">注销</button>
@@ -681,15 +697,17 @@ input[type=file]::file-selector-button:hover{
     <nav>
       <button class="tab-btn active" data-tab="dashboard"><span class="num">01</span><span>概览</span></button>
       <button class="tab-btn" data-tab="content"><span class="num">02</span><span>首页文案</span></button>
-      <button class="tab-btn" data-tab="images"><span class="num">03</span><span>图片资源</span></button>
-      <button class="tab-btn" data-tab="blog"><span class="num">04</span><span>博客 · Journal</span></button>
-      <button class="tab-btn" data-tab="system"><span class="num">05</span><span>系统</span></button>
+      <button class="tab-btn" data-tab="homepage"><span class="num">03</span><span>首页板块</span></button>
+      <button class="tab-btn" data-tab="images"><span class="num">04</span><span>图片资源</span></button>
+      <button class="tab-btn" data-tab="blog"><span class="num">05</span><span>博客 · Journal</span></button>
+      <button class="tab-btn" data-tab="settings"><span class="num">06</span><span>站点设置</span></button>
+      <button class="tab-btn" data-tab="system"><span class="num">07</span><span>系统</span></button>
     </nav>
     <div class="side-foot">
       <strong>FLYUN_ADMIN</strong><br/>
-      v2.1 · QUIET<br/><br/>
-      数据保存于本机浏览器。<br/>
-      请定期到「系统」导出 JSON 备份。
+      v3.0 · CLOUD<br/><br/>
+      数据存于 Supabase。<br/>
+      未登录时仅本地预览。
     </div>
   </aside>
 
@@ -729,11 +747,24 @@ input[type=file]::file-selector-button:hover{
       <div class="card">
         <div class="card-head"><span>使用引导</span><span class="k">QUICK_START</span></div>
         <div class="guide-list">
-          1 · <strong>首页文案</strong> —— 修改主页任意文字，中英分别填写。<br/>
-          2 · <strong>图片资源</strong> —— 替换 Logo / 头像 / 案例封面（图床链接或本地上传）。<br/>
-          3 · <strong>博客 · Journal</strong> —— 像写信一样写日志、研究笔记、项目记录，支持中英双语与简版 Markdown。<br/>
-          4 · <strong>系统</strong> —— 导出 JSON 备份，跨设备恢复内容。
-          <span class="warn">数据保存在你当前浏览器的 localStorage。换电脑或清缓存前，请到「系统 → 导出」备份。</span>
+          1 · <strong>云端登录</strong> —— 推荐使用 Supabase 邮箱登录，所有改动自动同步给所有访客。<br/>
+          2 · <strong>首页文案</strong> —— 修改主页任意文字，中英分别填写。<br/>
+          3 · <strong>首页板块</strong> —— 替换主创头像、案例封面等关键图位。<br/>
+          4 · <strong>图片资源</strong> —— 通用图床（任意 key），可用作博客封面或页面贴图。<br/>
+          5 · <strong>博客 · Journal</strong> —— 双语 Markdown 写作，发布即对全网可见。<br/>
+          6 · <strong>站点设置</strong> —— 默认主题、公告条、SEO 等。
+          <span class="warn">未登录云端时，所有保存仅停留在本机浏览器，访客看不到。</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><span>同步状态</span><span class="k">SYNC</span></div>
+        <div style="font-size:13px;color:var(--text-dim);line-height:1.85;" id="syncBoard">
+          检查中 · checking…
+        </div>
+        <div class="row-actions">
+          <button class="btn ghost" id="pullBtn">从云端拉取最新</button>
+          <button class="btn" id="pushBtn">把本地草稿推送上云</button>
         </div>
       </div>
     </section>
@@ -754,7 +785,7 @@ input[type=file]::file-selector-button:hover{
       <div id="contentEditor"></div>
 
       <div class="row-actions">
-        <button class="btn" id="saveContent">保存全部
+        <button class="btn" id="saveContent">保存全部到云端
           <svg class="arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14m-6-6 6 6-6 6"/></svg>
         </button>
         <button class="btn ghost" id="reloadContent">刷新</button>
@@ -762,12 +793,31 @@ input[type=file]::file-selector-button:hover{
       </div>
     </section>
 
+    <!-- ===== HOMEPAGE SLOTS ===== -->
+    <section class="tab" data-tab="homepage">
+      <div class="eyebrow">03 · HOMEPAGE / 首页板块</div>
+      <div class="panel-head">
+        <h2 class="panel-title">替换主页的<em>关键图位</em>。</h2>
+        <div class="panel-hint">点击任意板块上传新图</div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><span>图位说明</span><span class="k">SLOTS</span></div>
+        <div class="guide-list" style="font-size:13px;">
+          每个图位对应主页一个具体位置。修改后保存到云端 → 全网同步。<br/>
+          支持网络 URL、本地上传（自动转 Base64 或上传到 Supabase Storage）。
+        </div>
+      </div>
+
+      <div class="slot-list" id="homepageSlots"></div>
+    </section>
+
     <!-- ===== IMAGES ===== -->
     <section class="tab" data-tab="images">
-      <div class="eyebrow">03 · IMAGES / 图片资源</div>
+      <div class="eyebrow">04 · IMAGES / 图片资源</div>
       <div class="panel-head">
         <h2 class="panel-title"><em>图像</em>仓库。</h2>
-        <div class="panel-hint">支持网络 URL 与 Base64</div>
+        <div class="panel-hint">支持 URL · Base64 · 云端上传</div>
       </div>
 
       <div class="card">
@@ -777,11 +827,15 @@ input[type=file]::file-selector-button:hover{
           <input type="text" id="imgKey" placeholder="hero.portrait">
         </div>
         <div class="field">
+          <label>显示名称（可选）<span class="key">LABEL</span></label>
+          <input type="text" id="imgLabel" placeholder="主创头像 / Hero Portrait">
+        </div>
+        <div class="field">
           <label>图片 URL 或 Base64<span class="key">SOURCE</span></label>
           <textarea id="imgUrl" placeholder="https://… 或 data:image/png;base64,…"></textarea>
         </div>
         <div class="field">
-          <label>或本地上传（自动转 Base64）<span class="key">UPLOAD</span></label>
+          <label>本地上传<span class="key">UPLOAD · 已登录云端会上传到 Supabase Storage</span></label>
           <input type="file" id="imgFile" accept="image/*">
         </div>
         <button class="btn" id="saveImg">保存图片
@@ -798,7 +852,7 @@ input[type=file]::file-selector-button:hover{
 
     <!-- ===== BLOG · WRITING ROOM ===== -->
     <section class="tab" data-tab="blog">
-      <div class="eyebrow">04 · JOURNAL / 写作室</div>
+      <div class="eyebrow">05 · JOURNAL / 写作室</div>
       <div class="panel-head">
         <h2 class="panel-title">像写<em>一封信</em>一样<br/>写一篇日志。</h2>
         <div class="panel-hint">支持中英双语 · 简版 Markdown</div>
@@ -806,10 +860,8 @@ input[type=file]::file-selector-button:hover{
 
       <div class="writer">
         <div class="writer-eyebrow" id="postEditTitle">撰写新文章 · NEW POST</div>
-
         <input type="hidden" id="postId">
 
-        <!-- 标题：双语并排，serif 大字 -->
         <div class="title-pair">
           <div class="title-cell">
             <div class="lang-tag zh">中文标题 · TITLE_ZH</div>
@@ -821,19 +873,17 @@ input[type=file]::file-selector-button:hover{
           </div>
         </div>
 
-        <!-- 正文：双语并排，serif 阅读字体 -->
         <div class="body-pair">
           <div class="body-cell">
             <div class="body-tag zh">正文 · 中文</div>
-            <textarea class="body-textarea" id="postBodyZh" placeholder="在这里慢慢写。&#10;&#10;支持简版 Markdown：**粗体** · *斜体* · # 标题 · [链接](url) · ![alt](img) · > 引用 · `代码`"></textarea>
+            <textarea class="body-textarea" id="postBodyZh" placeholder="支持简版 Markdown：**粗体** · *斜体* · # 标题 · [链接](url) · ![alt](img) · > 引用 · `代码`"></textarea>
           </div>
           <div class="body-cell">
             <div class="body-tag en">BODY · ENGLISH</div>
-            <textarea class="body-textarea" id="postBodyEn" placeholder="Optional. Leave blank to fall back to Chinese.&#10;&#10;Supports simple Markdown."></textarea>
+            <textarea class="body-textarea" id="postBodyEn" placeholder="Optional. Supports simple Markdown."></textarea>
           </div>
         </div>
 
-        <!-- 摘要 -->
         <div class="excerpt-pair">
           <div class="excerpt-cell">
             <label class="lt">摘要 · 中文 · EXCERPT_ZH</label>
@@ -845,7 +895,6 @@ input[type=file]::file-selector-button:hover{
           </div>
         </div>
 
-        <!-- 元信息 -->
         <div class="writer-meta">
           <div class="meta-cell">
             <label>状态 · STATUS</label>
@@ -868,7 +917,6 @@ input[type=file]::file-selector-button:hover{
           </div>
         </div>
 
-        <!-- 操作行 -->
         <div class="writer-actions">
           <div class="word-count" id="wordCount">字数 · 0 / 0</div>
           <div style="display:flex;gap:10px;flex-wrap:wrap;">
@@ -888,18 +936,81 @@ input[type=file]::file-selector-button:hover{
       <div class="post-list" id="postList"></div>
     </section>
 
+    <!-- ===== SITE SETTINGS ===== -->
+    <section class="tab" data-tab="settings">
+      <div class="eyebrow">06 · SITE / 站点设置</div>
+      <div class="panel-head">
+        <h2 class="panel-title">全站<em>规则</em>。</h2>
+        <div class="panel-hint">默认主题、公告条、SEO</div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><span>外观默认</span><span class="k">APPEARANCE</span></div>
+        <div class="field">
+          <label>默认主题<span class="key">THEME</span></label>
+          <select id="setTheme">
+            <option value="">跟随访客系统（推荐）</option>
+            <option value="dark">深色 · DARK</option>
+            <option value="light">浅色 · LIGHT</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><span>公告条 / Banner</span><span class="k">ANNOUNCE</span></div>
+        <div class="field">
+          <label>中文公告</label>
+          <input type="text" id="setAnnounceZh" placeholder="例如：FLYUN 接受 2026 Q4 新合作 · 联系 leo@flyun.studio">
+        </div>
+        <div class="field">
+          <label>英文公告 · EN</label>
+          <input type="text" id="setAnnounceEn" placeholder="Optional English announcement">
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><span>SEO</span><span class="k">META</span></div>
+        <div class="field">
+          <label>首页副标题<span class="key">SITE_TAGLINE</span></label>
+          <input type="text" id="setTagline" placeholder="交互空间 · XR · 猎头人才">
+        </div>
+        <div class="field">
+          <label>联系邮箱<span class="key">CONTACT</span></label>
+          <input type="email" id="setEmail" placeholder="hello@flyun.studio">
+        </div>
+      </div>
+
+      <div class="row-actions">
+        <button class="btn" id="saveSettings">保存全部设置
+          <svg class="arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14m-6-6 6 6-6 6"/></svg>
+        </button>
+        <button class="btn ghost" id="reloadSettings">从云端重新读取</button>
+      </div>
+    </section>
+
     <!-- ===== SYSTEM ===== -->
     <section class="tab" data-tab="system">
-      <div class="eyebrow">05 · SYSTEM / 系统</div>
+      <div class="eyebrow">07 · SYSTEM / 系统</div>
       <div class="panel-head">
         <h2 class="panel-title">备份 · <em>恢复</em><br/>· 安全。</h2>
-        <div class="panel-hint">所有数据保存在浏览器</div>
+        <div class="panel-hint">本地缓存 / 云端账户</div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><span>账号</span><span class="k">ACCOUNT</span></div>
+        <div style="font-size:14px;color:var(--text-dim);line-height:1.85;margin-bottom:16px;" id="acctInfo">
+          未登录云端 · 当前为本机预览模式
+        </div>
+        <div class="row-actions" style="margin:0;">
+          <button class="btn ghost" id="reSignIn">重新登录</button>
+          <button class="btn ghost" id="cloudSignOut">注销云端账号</button>
+        </div>
       </div>
 
       <div class="card">
         <div class="card-head"><span>导出 / 导入</span><span class="k">BACKUP</span></div>
         <div style="font-size:14px;color:var(--text-dim);line-height:1.85;margin-bottom:20px;">
-          导出会把所有文案覆盖、博客文章、图片打包成一个 JSON 文件。换设备时，在新设备上点「导入」选择这个 JSON 即可恢复。
+          导出会把所有文案覆盖、博客、图片、设置打包成一个 JSON 文件。换设备时点「导入」恢复。
         </div>
         <div class="row-actions" style="margin:0;">
           <button class="btn" id="exportBtn">导出 JSON
@@ -913,11 +1024,14 @@ input[type=file]::file-selector-button:hover{
       </div>
 
       <div class="card">
-        <div class="card-head"><span>修改密码</span><span class="k">CHANGE_PASSPHRASE</span></div>
+        <div class="card-head"><span>本机口令</span><span class="k">LOCAL_PASSPHRASE</span></div>
+        <div style="font-size:13px;color:var(--text-mute);line-height:1.85;margin-bottom:14px;">
+          仅用于本机预览模式（无云端账号时）。
+        </div>
         <div class="field" style="margin-bottom:14px;">
           <input type="password" id="newPwd" placeholder="新密码（至少 4 位）">
         </div>
-        <button class="btn" id="changePwdBtn">更新密码</button>
+        <button class="btn ghost" id="changePwdBtn">更新本机口令</button>
       </div>
 
       <div class="card" style="border-color:rgba(255,82,82,.3);">
@@ -926,7 +1040,7 @@ input[type=file]::file-selector-button:hover{
           以下操作不可恢复。请确认你已经导出过备份。
         </div>
         <div class="row-actions" style="margin:0;">
-          <button class="btn danger" id="resetAll">清空所有数据 · WIPE ALL</button>
+          <button class="btn danger" id="resetAll">清空本机缓存 · WIPE LOCAL</button>
         </div>
       </div>
     </section>
@@ -936,7 +1050,9 @@ input[type=file]::file-selector-button:hover{
 
 <div class="toast" id="toast"></div>
 
-<!-- ===== CMS CORE ===== -->
+<!-- ===== ASSETS ===== -->
+<script src="assets/flyun-theme.js"></script>
+<script src="assets/flyun-supabase.js"></script>
 <script src="assets/flyun-cms.js"></script>
 <script>
 /* ============== 短手 ============== */
@@ -947,42 +1063,121 @@ function toast(msg, type){
   t.className = 'toast show' + (type ? ' ' + type : '');
   t.textContent = msg;
   clearTimeout(toast._t);
-  toast._t = setTimeout(()=>t.classList.remove('show'), 2400);
+  toast._t = setTimeout(()=>t.classList.remove('show'), 2800);
 }
 
-/* ============== LOGIN ============== */
+/* ============== HOMEPAGE SLOTS PRESETS ==============*/
+const HOMEPAGE_SLOTS = [
+  { key: 'hero.portrait',     label: '主创头像',   desc: '关于板块 · 头像区背景图（推荐 4:5 竖图）' },
+  { key: 'case.echo.cover',   label: 'Echo Room',  desc: '案例 1 · 沉浸装置（16:10 宽图）' },
+  { key: 'case.vision.cover', label: 'Vision Gate',desc: '案例 2 · VR / Vision Pro（8:7 方图）' },
+  { key: 'case.holo.cover',   label: 'Holo Pavilion', desc: '案例 3 · AR / WebXR' },
+  { key: 'case.pulse.cover',  label: 'Pulse Garden',  desc: '案例 4 · 沉浸装置概念' },
+  { key: 'case.talent.cover', label: 'Talent Grid',   desc: '案例 5 · 飞云猎头工作站' },
+  { key: 'case.light.cover',  label: 'Light Script',  desc: '案例 6 · Letter 内容 IP（21:9 横幅）' }
+];
+
+/* ============== AUTH STATE ============== */
+let cloudUser = null;
+async function refreshAuth(){
+  if (!window.FlyunSupabase) return;
+  await FlyunSupabase.ready();
+  cloudUser = FlyunSupabase.getUser();
+  const stat = $('#syncStat');
+  if (cloudUser){
+    stat.textContent = 'SYNC · CLOUD ✓';
+    stat.className = 'sync-stat remote';
+    $('#acctInfo').innerHTML = '已登录 · <strong style="color:var(--text);">' + cloudUser.email + '</strong>';
+  } else {
+    stat.textContent = 'SYNC · LOCAL';
+    stat.className = 'sync-stat local';
+    $('#acctInfo').innerHTML = '未登录云端 · 当前为本机预览模式（保存仅停留在本机）';
+  }
+}
+document.addEventListener('flyun:supabase-ready', refreshAuth);
+document.addEventListener('flyun:auth-change', refreshAuth);
+
+/* ============== LOGIN GATE ============== */
 function showApp(){ $('#gate').style.display = 'none'; }
 function showGate(){
   $('#gate').style.display = 'flex';
-  $('#gatePwd').value = '';
-  setTimeout(()=>$('#gatePwd').focus(), 100);
+  setTimeout(()=>$('#gateEmail')?.focus(), 100);
 }
-if (FlyunCMS.isAuthed()) showApp(); else showGate();
 
-$('#gateForm').addEventListener('submit', e => {
+// gate tabs
+$$('.gate-tab').forEach(t => t.addEventListener('click', () => {
+  const m = t.dataset.mode;
+  $$('.gate-tab').forEach(x => x.classList.toggle('active', x === t));
+  $$('.gate-mode').forEach(x => x.classList.toggle('active', x.dataset.mode === m));
+}));
+
+// 是否已经认证（云端或本地任意一种）
+function isAuthedAny(){
+  if (cloudUser) return true;
+  return localStorage.getItem(FlyunCMS.KEYS.auth) === '1';
+}
+
+$('#gateForm').addEventListener('submit', async e => {
   e.preventDefault();
-  const pwd = $('#gatePwd').value;
-  if (FlyunCMS.login(pwd)) {
-    toast('链接已建立 · WELCOME');
-    showApp();
-    initAll();
-  } else {
-    toast('口令错误 · ACCESS DENIED', 'err');
+  const submitter = e.submitter;
+  const action = submitter?.dataset?.action || 'signin';
+  if (action === 'local') {
+    const pwd = $('#gatePwd').value;
+    if (FlyunCMS.login(pwd)) {
+      toast('本机预览模式 · LOCAL ONLY', 'warn');
+      showApp(); initAll();
+    } else {
+      toast('口令错误 · ACCESS DENIED', 'err');
+    }
+    return;
+  }
+  // signin via supabase
+  const email = $('#gateEmail').value.trim();
+  const pass = $('#gatePass').value;
+  if (!email || !pass) { toast('请填写邮箱与密码', 'err'); return; }
+  try {
+    await FlyunSupabase.signIn(email, pass);
+    localStorage.setItem(FlyunCMS.KEYS.auth, '1');
+    toast('云端登录成功 · WELCOME');
+    await refreshAuth();
+    showApp(); initAll();
+  } catch (err) {
+    console.error(err);
+    toast('登录失败：' + (err.message || err), 'err');
   }
 });
-$('#logoutBtn').addEventListener('click', ()=>{
-  FlyunCMS.logout();
+
+$('#signupBtn').addEventListener('click', async () => {
+  const email = $('#gateEmail').value.trim();
+  const pass = $('#gatePass').value;
+  if (!email || !pass) { toast('请填写邮箱与密码', 'err'); return; }
+  if (pass.length < 6) { toast('密码至少 6 位', 'err'); return; }
+  try {
+    await FlyunSupabase.signUp(email, pass);
+    toast('注册成功 · 请查收邮件验证后再登录', 'warn');
+  } catch (err) {
+    toast('注册失败：' + (err.message || err), 'err');
+  }
+});
+
+$('#logoutBtn').addEventListener('click', async () => {
+  try { await FlyunSupabase.signOut(); } catch(e){}
+  localStorage.removeItem(FlyunCMS.KEYS.auth);
+  cloudUser = null;
+  await refreshAuth();
   showGate();
   toast('已注销 · LOGGED OUT', 'warn');
 });
 
 /* ============== TABS ============== */
 $$('.tab-btn').forEach(b => {
-  b.addEventListener('click', ()=>{
+  b.addEventListener('click', () => {
     const tab = b.dataset.tab;
-    $$('.tab-btn').forEach(x=>x.classList.toggle('active', x===b));
-    $$('.tab').forEach(x=>x.classList.toggle('active', x.dataset.tab===tab));
-    window.scrollTo({top:0, behavior:'smooth'});
+    $$('.tab-btn').forEach(x => x.classList.toggle('active', x === b));
+    $$('.tab').forEach(x => x.classList.toggle('active', x.dataset.tab === tab));
+    if (tab === 'homepage') renderHomepageSlots();
+    if (tab === 'settings') loadSettingsToForm();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   });
 });
 
@@ -993,10 +1188,60 @@ function refreshDash(){
   $('#statContent').textContent = cnt;
   const posts = FlyunCMS.getPosts();
   $('#statPosts').textContent = posts.length;
-  $('#statPublished').textContent = posts.filter(p=>p.status==='published').length;
-  $('#statImages').textContent = Object.keys(getImages()).length;
+  $('#statPublished').textContent = posts.filter(p => p.status === 'published').length;
+  $('#statImages').textContent = Object.keys(FlyunCMS.getImages()).length;
   $('#dashTime').textContent = new Date().toLocaleString();
+  // sync board
+  const board = $('#syncBoard');
+  if (cloudUser){
+    board.innerHTML = '已连接 Supabase · <strong style="color:var(--accent-2);">' + cloudUser.email + '</strong><br/>所有保存都会同步到云端，全网访客可见。';
+  } else {
+    board.innerHTML = '<strong style="color:var(--accent-warm);">本地预览模式</strong><br/>保存仅写入当前浏览器。换设备前请「导出 JSON」备份，或登录云端账号。';
+  }
 }
+
+async function pullFromCloud(){
+  if (!cloudUser) { toast('请先登录云端账号', 'err'); return; }
+  toast('从云端拉取中…');
+  const ok = await FlyunCMS.bootstrapFromSupabase();
+  if (ok) {
+    buildContentEditor();
+    renderPostList();
+    renderImageGrid();
+    renderHomepageSlots();
+    loadSettingsToForm();
+    refreshDash();
+    toast('已同步');
+  } else {
+    toast('同步失败', 'err');
+  }
+}
+
+async function pushAllToCloud(){
+  if (!cloudUser) { toast('请先登录云端账号', 'err'); return; }
+  try {
+    toast('推送中…');
+    // content
+    await FlyunSupabase.bulkSaveContent(FlyunCMS.getContent());
+    // posts
+    const posts = FlyunCMS.getPosts();
+    for (const p of posts) await FlyunSupabase.upsertPost(p);
+    // images
+    const imgs = FlyunCMS.getImages();
+    for (const k of Object.keys(imgs)) {
+      await FlyunSupabase.upsertImage(k, imgs[k].url || '', imgs[k].label || '');
+    }
+    // settings
+    const s = FlyunCMS.getSettings();
+    for (const k of Object.keys(s)) await FlyunSupabase.upsertSetting(k, s[k]);
+    toast('已全部推送上云');
+  } catch (err) {
+    toast('推送失败：' + (err.message || err), 'err');
+  }
+}
+
+$('#pullBtn').addEventListener('click', pullFromCloud);
+$('#pushBtn').addEventListener('click', pushAllToCloud);
 
 /* ============== CONTENT EDITOR ============== */
 function buildContentEditor(filter){
@@ -1018,25 +1263,21 @@ function buildContentEditor(filter){
     }
     shown++;
     const isHtml = /\.html$/.test(k);
-    const tag = isHtml ? 'textarea' : 'input';
-    const inputAttrs = isHtml ? 'rows="3"' : 'type="text"';
     const wrap = document.createElement('div');
     wrap.className = 'i18n-group';
-    wrap.innerHTML = `
-      <div class="key-line">
-        <span>${isHtml ? 'HTML 富文本' : '纯文本'}</span>
-        <span class="k">${k}</span>
-      </div>
-      <div class="lang-row">
-        <div class="tag">中</div>
-        <${tag} ${inputAttrs} data-key="${k}" data-lang="zh">${isHtml?'</textarea>':''}
-      </div>
-      <div class="lang-row">
-        <div class="tag en">EN</div>
-        <${tag} ${inputAttrs} data-key="${k}" data-lang="en">${isHtml?'</textarea>':''}
-      </div>
-    `;
-    // value 单独设置（避免转义）
+    wrap.innerHTML = '\
+      <div class="key-line">\
+        <span>' + (isHtml ? 'HTML 富文本' : '纯文本') + '</span>\
+        <span class="k">' + k + '</span>\
+      </div>\
+      <div class="lang-row">\
+        <div class="tag">中</div>\
+        ' + (isHtml ? '<textarea data-key="' + k + '" data-lang="zh"></textarea>' : '<input type="text" data-key="' + k + '" data-lang="zh">') + '\
+      </div>\
+      <div class="lang-row">\
+        <div class="tag en">EN</div>\
+        ' + (isHtml ? '<textarea data-key="' + k + '" data-lang="en"></textarea>' : '<input type="text" data-key="' + k + '" data-lang="en">') + '\
+      </div>';
     const fields = wrap.querySelectorAll('[data-key]');
     fields[0].value = zhCur;
     fields[1].value = enCur;
@@ -1047,7 +1288,8 @@ function buildContentEditor(filter){
   }
 }
 $('#contentFilter')?.addEventListener('input', e => buildContentEditor(e.target.value));
-$('#saveContent')?.addEventListener('click', ()=>{
+
+$('#saveContent')?.addEventListener('click', async () => {
   const c = { zh: {}, en: {} };
   $$('#contentEditor [data-key]').forEach(el => {
     const k = el.dataset.key;
@@ -1060,14 +1302,29 @@ $('#saveContent')?.addEventListener('click', ()=>{
     }
   });
   FlyunCMS.setContent(c);
-  toast('已保存 · 主页同步更新');
+  if (cloudUser) {
+    try {
+      await FlyunSupabase.bulkSaveContent(c);
+      toast('已保存到云端 · 全网同步');
+    } catch (err) {
+      toast('云端保存失败：' + (err.message || err), 'err');
+    }
+  } else {
+    toast('已保存本机（未登录云端）', 'warn');
+  }
   refreshDash();
 });
-$('#reloadContent')?.addEventListener('click', ()=>{
+
+$('#reloadContent')?.addEventListener('click', async () => {
+  if (cloudUser) {
+    const remote = await FlyunSupabase.listContent();
+    FlyunCMS.setContent(remote);
+  }
   buildContentEditor($('#contentFilter').value);
   toast('已刷新');
 });
-$('#resetContent')?.addEventListener('click', ()=>{
+
+$('#resetContent')?.addEventListener('click', () => {
   if (!confirm('确认重置所有文案为默认？此操作不可恢复。')) return;
   FlyunCMS.resetContent();
   buildContentEditor($('#contentFilter').value);
@@ -1075,17 +1332,62 @@ $('#resetContent')?.addEventListener('click', ()=>{
   toast('已重置为默认', 'warn');
 });
 
-/* ============== IMAGES ============== */
-const IMG_KEY = 'flyun:images:v1';
-function getImages(){
-  try { return JSON.parse(localStorage.getItem(IMG_KEY) || '{}'); }
-  catch(e){ return {}; }
+/* ============== HOMEPAGE SLOTS ============== */
+function renderHomepageSlots(){
+  const host = $('#homepageSlots');
+  if (!host) return;
+  const imgs = FlyunCMS.getImages();
+  host.innerHTML = '';
+  HOMEPAGE_SLOTS.forEach(slot => {
+    const cur = imgs[slot.key]?.url || '';
+    const card = document.createElement('div');
+    card.className = 'slot';
+    card.innerHTML = '\
+      <div class="preview" ' + (cur ? 'style="background-image:url(\'' + cur.replace(/\'/g,"\\'") + '\');"' : '') + '>' + (cur ? '' : '未设置 · empty') + '</div>\
+      <div class="slot-label">' + slot.label + '</div>\
+      <div class="slot-key">' + slot.key + '</div>\
+      <div class="slot-desc">' + slot.desc + '</div>\
+      <input type="text" class="input" data-slot="' + slot.key + '" placeholder="https://… 或 data:image/…" value="' + cur.replace(/"/g,'&quot;') + '">\
+      <input type="file" data-slot-file="' + slot.key + '" accept="image/*">\
+      <div class="row-actions" style="margin-top:0;">\
+        <button class="btn small" data-slot-save="' + slot.key + '">保存</button>\
+        <button class="btn small ghost" data-slot-clear="' + slot.key + '">清除</button>\
+      </div>';
+    host.appendChild(card);
+  });
 }
-function setImages(o){ localStorage.setItem(IMG_KEY, JSON.stringify(o)); }
 
+$('#homepageSlots')?.addEventListener('click', async e => {
+  const saveBtn = e.target.closest('[data-slot-save]');
+  const clearBtn = e.target.closest('[data-slot-clear]');
+  if (saveBtn) {
+    const k = saveBtn.dataset.slotSave;
+    const url = $('[data-slot="' + k + '"]')?.value?.trim() || '';
+    if (!url) { toast('请填写或上传图片', 'err'); return; }
+    const meta = HOMEPAGE_SLOTS.find(s => s.key === k);
+    await saveImage(k, url, meta?.label || '');
+  } else if (clearBtn) {
+    const k = clearBtn.dataset.slotClear;
+    if (!confirm('清除「' + k + '」？')) return;
+    await deleteImage(k);
+  }
+});
+
+$('#homepageSlots')?.addEventListener('change', async e => {
+  const fileInput = e.target.closest('[data-slot-file]');
+  if (!fileInput) return;
+  const k = fileInput.dataset.slotFile;
+  const file = fileInput.files[0]; if (!file) return;
+  const url = await fileToUrl(file);
+  $('[data-slot="' + k + '"]').value = url;
+  toast('已读取 · 点保存写入云端');
+});
+
+/* ============== IMAGES ============== */
 function renderImageGrid(){
-  const imgs = getImages();
+  const imgs = FlyunCMS.getImages();
   const grid = $('#imgGrid');
+  if (!grid) return;
   grid.innerHTML = '';
   const keys = Object.keys(imgs);
   $('#imgCount').textContent = keys.length + ' 项';
@@ -1094,65 +1396,99 @@ function renderImageGrid(){
     return;
   }
   keys.forEach(k => {
-    const url = imgs[k];
+    const item = imgs[k];
     const card = document.createElement('div');
     card.className = 'img-card';
-    card.innerHTML = `
-      <div class="preview" style="background-image:url('${url.replace(/'/g,"\\'")}');"></div>
-      <div class="name">${k}</div>
-      <div class="url">${url.length > 80 ? url.slice(0,77)+'…' : url}</div>
-      <div class="row-actions" style="margin-top:12px;">
-        <button class="btn small ghost" data-act="copy" data-k="${k}">复制</button>
-        <button class="btn small danger" data-act="del" data-k="${k}">删除</button>
-      </div>
-    `;
+    const url = item.url || '';
+    card.innerHTML = '\
+      <div class="preview" style="background-image:url(\'' + url.replace(/\'/g,"\\'") + '\');"></div>\
+      <div class="name">' + (item.label || k) + '</div>\
+      <div class="url">' + (url.length > 80 ? url.slice(0,77)+'…' : url) + '</div>\
+      <div class="row-actions" style="margin-top:12px;">\
+        <button class="btn small ghost" data-act="copy" data-k="' + k + '">复制</button>\
+        <button class="btn small danger" data-act="del" data-k="' + k + '">删除</button>\
+      </div>';
     grid.appendChild(card);
   });
 }
-$('#imgGrid')?.addEventListener('click', e => {
+$('#imgGrid')?.addEventListener('click', async e => {
   const btn = e.target.closest('button[data-act]');
   if (!btn) return;
   const k = btn.dataset.k;
-  const imgs = getImages();
   if (btn.dataset.act === 'del') {
     if (!confirm('删除「' + k + '」？')) return;
-    delete imgs[k]; setImages(imgs); renderImageGrid(); refreshDash();
-    toast('已删除 · ' + k, 'warn');
+    await deleteImage(k);
   } else if (btn.dataset.act === 'copy') {
-    navigator.clipboard.writeText(imgs[k] || '');
+    const imgs = FlyunCMS.getImages();
+    navigator.clipboard.writeText(imgs[k]?.url || '');
     toast('已复制 URL');
   }
 });
-$('#imgFile')?.addEventListener('change', e => {
+
+async function fileToUrl(file){
+  // 已登录云端 → 上传到 Supabase Storage
+  if (cloudUser && window.FlyunSupabase && file.size <= 5 * 1024 * 1024) {
+    try {
+      return await FlyunSupabase.uploadFile(file);
+    } catch (err) {
+      console.warn('Storage upload failed, falling back to base64:', err);
+    }
+  }
+  return new Promise((resolve, reject) => {
+    const r = new FileReader();
+    r.onload = () => resolve(r.result);
+    r.onerror = reject;
+    r.readAsDataURL(file);
+  });
+}
+
+$('#imgFile')?.addEventListener('change', async e => {
   const file = e.target.files[0]; if (!file) return;
-  const r = new FileReader();
-  r.onload = () => { $('#imgUrl').value = r.result; toast('已转 Base64'); };
-  r.readAsDataURL(file);
+  toast('处理中…');
+  const url = await fileToUrl(file);
+  $('#imgUrl').value = url;
+  toast('已就绪 · 点保存图片');
 });
-$('#saveImg')?.addEventListener('click', ()=>{
+
+async function saveImage(key, url, label){
+  const imgs = FlyunCMS.getImages();
+  imgs[key] = { url, label: label || imgs[key]?.label || '' };
+  FlyunCMS.setImages(imgs);
+  if (cloudUser) {
+    try { await FlyunSupabase.upsertImage(key, url, label || ''); toast('已保存 · ' + key); }
+    catch (err) { toast('云端保存失败：' + (err.message || err), 'err'); }
+  } else {
+    toast('已保存本机 · ' + key, 'warn');
+  }
+  renderImageGrid(); renderHomepageSlots(); refreshDash();
+}
+
+async function deleteImage(key){
+  const imgs = FlyunCMS.getImages();
+  delete imgs[key];
+  FlyunCMS.setImages(imgs);
+  if (cloudUser) {
+    try { await FlyunSupabase.deleteImage(key); toast('已删除 · ' + key, 'warn'); }
+    catch (err) { toast('云端删除失败：' + (err.message || err), 'err'); }
+  } else {
+    toast('已删除本机 · ' + key, 'warn');
+  }
+  renderImageGrid(); renderHomepageSlots(); refreshDash();
+}
+
+$('#saveImg')?.addEventListener('click', async () => {
   const k = $('#imgKey').value.trim();
   const u = $('#imgUrl').value.trim();
+  const lbl = $('#imgLabel').value.trim();
   if (!k || !u) { toast('标识符与 URL 不能为空', 'err'); return; }
-  const imgs = getImages();
-  imgs[k] = u; setImages(imgs);
-  renderImageGrid(); refreshDash();
-  $('#imgKey').value = ''; $('#imgUrl').value = ''; $('#imgFile').value = '';
-  toast('已保存 · ' + k);
+  await saveImage(k, u, lbl);
+  $('#imgKey').value = ''; $('#imgUrl').value = ''; $('#imgFile').value = ''; $('#imgLabel').value = '';
 });
 
 /* ============== BLOG ============== */
 function clearPostForm(){
-  $('#postId').value = '';
-  $('#postTitleZh').value = '';
-  $('#postTitleEn').value = '';
-  $('#postTags').value = '';
-  $('#postCover').value = '';
-  $('#postExcerptZh').value = '';
-  $('#postExcerptEn').value = '';
-  $('#postBodyZh').value = '';
-  $('#postBodyEn').value = '';
+  ['#postId','#postTitleZh','#postTitleEn','#postTags','#postCover','#postExcerptZh','#postExcerptEn','#postBodyZh','#postBodyEn','#postDate'].forEach(s => $(s).value = '');
   $('#postStatus').value = 'published';
-  $('#postDate').value = '';
   $('#postEditTitle').textContent = '撰写新文章 · NEW POST';
   updateWordCount();
 }
@@ -1173,7 +1509,7 @@ function loadPostForm(p){
 }
 function buildPostFromForm(){
   const id = $('#postId').value.trim() || ('p_' + Date.now());
-  const tags = $('#postTags').value.split(',').map(s=>s.trim()).filter(Boolean);
+  const tags = $('#postTags').value.split(',').map(s => s.trim()).filter(Boolean);
   return {
     id,
     title: { zh: $('#postTitleZh').value.trim(), en: $('#postTitleEn').value.trim() },
@@ -1188,18 +1524,16 @@ function buildPostFromForm(){
 function updateWordCount(){
   const zh = ($('#postBodyZh').value || '').trim();
   const en = ($('#postBodyEn').value || '').trim();
-  // 中文按字符，英文按词
   const zhCount = zh.replace(/\s/g, '').length;
   const enCount = en ? en.split(/\s+/).filter(Boolean).length : 0;
-  $('#wordCount').textContent = `字数 · ${zhCount} 中 / ${enCount} EN`;
+  $('#wordCount').textContent = '字数 · ' + zhCount + ' 中 / ' + enCount + ' EN';
 }
-['#postBodyZh', '#postBodyEn'].forEach(sel => {
-  $(sel)?.addEventListener('input', updateWordCount);
-});
+['#postBodyZh','#postBodyEn'].forEach(sel => $(sel)?.addEventListener('input', updateWordCount));
 
 function renderPostList(){
   const posts = FlyunCMS.getPosts();
   const list = $('#postList');
+  if (!list) return;
   list.innerHTML = '';
   $('#postCount').textContent = posts.length + ' 篇';
   if (!posts.length) {
@@ -1212,50 +1546,104 @@ function renderPostList(){
       : hasEn ? '<span class="lang-pill en">EN</span>'
       : '<span class="lang-pill zh">中</span>';
     const draftPill = p.status === 'draft' ? '<span class="lang-pill draft">DRAFT</span>' : '';
+    const tags = (p.tags || []).map(t => '<span class="tag-pill">·#' + t + '</span>').join(' ');
     const row = document.createElement('div');
     row.className = 'post-row';
-    const tags = (p.tags||[]).map(t=>'<span class="tag-pill">·#'+t+'</span>').join(' ');
-    row.innerHTML = `
-      <div>
-        <div class="ttl">${langPill}${draftPill}${(p.title?.zh || p.title?.en || '<em>(无标题)</em>')}</div>
-        <div class="meta-line">${p.date || ''} ${tags}</div>
-      </div>
-      <div class="acts">
-        <button class="btn small ghost" data-act="edit" data-id="${p.id}">编辑</button>
-        <a class="btn small ghost" href="blog.html?p=${encodeURIComponent(p.id)}" target="_blank">预览</a>
-        <button class="btn small danger" data-act="del" data-id="${p.id}">删除</button>
-      </div>
-    `;
+    row.innerHTML = '\
+      <div>\
+        <div class="ttl">' + langPill + draftPill + ((p.title?.zh || p.title?.en) || '<em>(无标题)</em>') + '</div>\
+        <div class="meta-line">' + (p.date || '') + ' ' + tags + '</div>\
+      </div>\
+      <div class="acts">\
+        <button class="btn small ghost" data-act="edit" data-id="' + p.id + '">编辑</button>\
+        <a class="btn small ghost" href="blog.html?p=' + encodeURIComponent(p.id) + '" target="_blank">预览</a>\
+        <button class="btn small danger" data-act="del" data-id="' + p.id + '">删除</button>\
+      </div>';
     list.appendChild(row);
   });
 }
-$('#postList')?.addEventListener('click', e => {
+
+$('#postList')?.addEventListener('click', async e => {
   const btn = e.target.closest('button[data-act], a[data-act]');
   if (!btn) return;
   const id = btn.dataset.id;
   if (btn.dataset.act === 'edit') {
-    const p = FlyunCMS.getPosts().find(x=>x.id===id);
-    if (p) { loadPostForm(p); window.scrollTo({top:0,behavior:'smooth'}); }
+    const p = FlyunCMS.getPosts().find(x => x.id === id);
+    if (p) { loadPostForm(p); window.scrollTo({ top: 0, behavior: 'smooth' }); }
   } else if (btn.dataset.act === 'del') {
     if (!confirm('删除这篇文章？')) return;
-    FlyunCMS.deletePost(id); renderPostList(); refreshDash();
-    toast('已删除', 'warn');
+    FlyunCMS.deletePost(id);
+    if (cloudUser) {
+      try { await FlyunSupabase.deletePost(id); toast('已删除', 'warn'); }
+      catch (err) { toast('云端删除失败：' + (err.message || err), 'err'); }
+    } else { toast('已删除本机', 'warn'); }
+    renderPostList(); refreshDash();
   }
 });
-$('#savePost')?.addEventListener('click', ()=>{
+
+$('#savePost')?.addEventListener('click', async () => {
   const p = buildPostFromForm();
   if (!p.title.zh && !p.title.en) { toast('至少填一个标题', 'err'); return; }
   FlyunCMS.upsertPost(p);
+  if (cloudUser) {
+    try {
+      await FlyunSupabase.upsertPost(p);
+      toast('已发布到云端 · 全网可见');
+    } catch (err) {
+      toast('云端保存失败：' + (err.message || err), 'err');
+    }
+  } else {
+    toast('已保存本机（未登录云端）', 'warn');
+  }
   clearPostForm();
   renderPostList(); refreshDash();
-  toast('已保存 · ' + (p.title.zh || p.title.en));
 });
+
 $('#newPost')?.addEventListener('click', clearPostForm);
 
+/* ============== SETTINGS ============== */
+function loadSettingsToForm(){
+  const s = FlyunCMS.getSettings();
+  $('#setTheme').value = s.theme?.default || '';
+  $('#setAnnounceZh').value = s.announce?.zh || '';
+  $('#setAnnounceEn').value = s.announce?.en || '';
+  $('#setTagline').value = s.tagline || '';
+  $('#setEmail').value = s.email || '';
+}
+
+$('#saveSettings')?.addEventListener('click', async () => {
+  const settings = {
+    theme: { default: $('#setTheme').value || '' },
+    announce: { zh: $('#setAnnounceZh').value || '', en: $('#setAnnounceEn').value || '' },
+    tagline: $('#setTagline').value || '',
+    email: $('#setEmail').value || ''
+  };
+  FlyunCMS.setSettings(settings);
+  if (cloudUser) {
+    try {
+      for (const k of Object.keys(settings)) {
+        await FlyunSupabase.upsertSetting(k, settings[k]);
+      }
+      toast('已保存到云端');
+    } catch (err) {
+      toast('云端保存失败：' + (err.message || err), 'err');
+    }
+  } else {
+    toast('已保存本机（未登录云端）', 'warn');
+  }
+});
+
+$('#reloadSettings')?.addEventListener('click', async () => {
+  if (!cloudUser) { toast('请先登录云端账号', 'err'); return; }
+  const s = await FlyunSupabase.listSettings();
+  FlyunCMS.setSettings(s);
+  loadSettingsToForm();
+  toast('已重新读取');
+});
+
 /* ============== SYSTEM ============== */
-$('#exportBtn')?.addEventListener('click', ()=>{
+$('#exportBtn')?.addEventListener('click', () => {
   const data = FlyunCMS.exportAll();
-  data.images = getImages();
   const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
@@ -1264,6 +1652,7 @@ $('#exportBtn')?.addEventListener('click', ()=>{
   URL.revokeObjectURL(a.href);
   toast('已导出 JSON');
 });
+
 $('#importFile')?.addEventListener('change', e => {
   const file = e.target.files[0]; if (!file) return;
   const r = new FileReader();
@@ -1271,44 +1660,72 @@ $('#importFile')?.addEventListener('change', e => {
     try {
       const data = JSON.parse(r.result);
       FlyunCMS.importAll(data);
-      if (data.images) setImages(data.images);
       buildContentEditor($('#contentFilter').value);
-      renderPostList(); renderImageGrid(); refreshDash();
-      toast('已导入');
-    } catch(err) {
+      renderPostList(); renderImageGrid(); renderHomepageSlots(); loadSettingsToForm(); refreshDash();
+      toast('已导入本机');
+    } catch (err) {
       toast('JSON 解析失败', 'err');
     }
   };
   r.readAsText(file);
   e.target.value = '';
 });
-$('#changePwdBtn')?.addEventListener('click', ()=>{
+
+$('#changePwdBtn')?.addEventListener('click', () => {
   const p = $('#newPwd').value;
   if (!p || p.length < 4) { toast('至少 4 位', 'err'); return; }
   FlyunCMS.changePassword(p);
   $('#newPwd').value = '';
-  toast('密码已更新');
+  toast('本机口令已更新');
 });
-$('#resetAll')?.addEventListener('click', ()=>{
-  if (!confirm('确认清空所有内容覆盖、博客、图片？')) return;
+
+$('#reSignIn')?.addEventListener('click', () => { showGate(); });
+$('#cloudSignOut')?.addEventListener('click', async () => {
+  if (!cloudUser) { toast('未登录云端账号', 'err'); return; }
+  await FlyunSupabase.signOut();
+  await refreshAuth();
+  toast('已退出云端账号', 'warn');
+  refreshDash();
+});
+
+$('#resetAll')?.addEventListener('click', () => {
+  if (!confirm('确认清空本机缓存？（云端数据不会动）')) return;
   if (!confirm('再次确认 — 这个操作不可恢复！')) return;
   FlyunCMS.resetContent();
   FlyunCMS.setPosts([]);
-  setImages({});
-  buildContentEditor(); renderPostList(); renderImageGrid(); refreshDash();
-  toast('已清空全部数据', 'warn');
+  FlyunCMS.setImages({});
+  FlyunCMS.setSettings({});
+  buildContentEditor(); renderPostList(); renderImageGrid(); renderHomepageSlots(); loadSettingsToForm(); refreshDash();
+  toast('已清空本机', 'warn');
 });
 
 /* ============== INIT ============== */
-function initAll(){
+async function initAll(){
+  await refreshAuth();
+  // 已登录云端 → 拉一次
+  if (cloudUser) {
+    await FlyunCMS.bootstrapFromSupabase();
+  }
   buildContentEditor();
   renderPostList();
   renderImageGrid();
+  renderHomepageSlots();
+  loadSettingsToForm();
   refreshDash();
   updateWordCount();
   setInterval(refreshDash, 30000);
 }
-if (FlyunCMS.isAuthed()) initAll();
+
+// 启动：判断是否已经认证
+(async () => {
+  await (window.FlyunSupabase ? FlyunSupabase.ready() : Promise.resolve());
+  await refreshAuth();
+  if (isAuthedAny()) {
+    showApp(); initAll();
+  } else {
+    showGate();
+  }
+})();
 </script>
 </body>
 </html>

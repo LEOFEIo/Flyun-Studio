@@ -52,6 +52,57 @@ body{
 .mono,code,kbd{font-variant-numeric:tabular-nums;}
 ::selection{background:var(--accent);color:#fff;}
 
+/* ===== LIGHT THEME OVERRIDES (index) ===== */
+:root[data-theme="light"]{
+  --bg:#FAF6EE;
+  --bg-2:#F2EBDB;
+  --surface:rgba(255,253,247,.78);
+  --surface-2:rgba(247,240,224,.85);
+  --border:rgba(40,34,28,.10);
+  --border-strong:rgba(40,34,28,.22);
+  --text:#1A1410;
+  --text-dim:#5A5045;
+  --text-mute:#8A7E6E;
+  --accent:#D93A14;
+  --accent-2:#5BA32D;
+  --accent-warm:#C58A3A;
+  --grad:linear-gradient(135deg,#D93A14 0%,#C58A3A 100%);
+  --grad-cool:linear-gradient(135deg,#5BA32D 0%,#3FA37A 100%);
+}
+:root[data-theme="light"] body{ background:var(--bg); color:var(--text); cursor:auto; }
+:root[data-theme="light"] .cursor,
+:root[data-theme="light"] .cursor-dot{ display:none; }
+:root[data-theme="light"] .noise{ opacity:.025; mix-blend-mode:multiply; }
+:root[data-theme="light"] .aura::before,
+:root[data-theme="light"] .aura::after{ opacity:.10; }
+:root[data-theme="light"] .grid-bg{
+  background-image:
+    linear-gradient(rgba(40,34,28,.04) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(40,34,28,.04) 1px,transparent 1px);
+}
+:root[data-theme="light"] nav.scrolled{
+  background:rgba(250,246,238,.78);
+  border-bottom-color:var(--border);
+}
+:root[data-theme="light"] .nav-mark{ background:#fff; }
+:root[data-theme="light"] #boot{ background:var(--bg); }
+:root[data-theme="light"] .boot-mark{ color:var(--text); }
+:root[data-theme="light"] .stroke{ -webkit-text-stroke-color:var(--text); }
+:root[data-theme="light"] .case-bg-1,
+:root[data-theme="light"] .case-bg-2,
+:root[data-theme="light"] .case-bg-3,
+:root[data-theme="light"] .case-bg-4,
+:root[data-theme="light"] .case-bg-5,
+:root[data-theme="light"] .case-bg-6{ filter:invert(1) hue-rotate(180deg) brightness(.96); }
+:root[data-theme="light"] .case-info{
+  background:linear-gradient(180deg,transparent,rgba(255,253,247,.92));
+}
+:root[data-theme="light"] .case-svg,
+:root[data-theme="light"] .portrait-svg{ filter:invert(.85) hue-rotate(180deg); }
+html, body, nav, .case, .service, .tier, .channel, .strip-item, .stat{
+  transition: background-color .35s ease, color .35s ease, border-color .35s ease;
+}
+
 /* ===== BACKGROUND TEXTURE ===== */
 .noise{
   position:fixed;inset:0;z-index:-6;pointer-events:none;opacity:.04;
@@ -853,7 +904,7 @@ footer a:hover{color:var(--accent);}
     <a href="lab.html" data-hover data-i18n="nav.lab">实验室</a>
     <a href="letter.html" data-hover data-i18n="nav.letter">Letter</a>
   </div>
-  <div class="nav-actions" data-lang-mount>
+  <div class="nav-actions" data-lang-mount data-theme-mount>
     <a href="#contact" class="nav-cta" data-hover>
       <span data-i18n="nav.cta">建立合作</span>
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14m-6-6 6 6-6 6"/></svg>
@@ -934,7 +985,7 @@ footer a:hover{color:var(--accent);}
     </div>
 
     <div class="about-grid">
-      <div class="about-portrait reveal">
+      <div class="about-portrait reveal" data-img-bg="hero.portrait" style="background-size:cover;background-position:center;">
         <svg class="portrait-svg" viewBox="0 0 400 500" preserveAspectRatio="xMidYMid slice">
           <defs>
             <linearGradient id="pg1" x1="0" y1="0" x2="1" y2="1">
@@ -1315,7 +1366,7 @@ footer a:hover{color:var(--accent);}
     <div class="showcase-grid">
       <!-- Case 1 -->
       <a href="cases.html" class="case case-1 reveal" data-hover>
-        <div class="case-canvas case-bg-1"></div>
+        <div class="case-canvas case-bg-1" data-img-bg="case.echo.cover" style="background-size:cover;background-position:center;"></div>
         <svg class="case-svg" viewBox="0 0 800 500" preserveAspectRatio="xMidYMid slice">
           <g opacity=".5" stroke="#EDE6D6" stroke-width=".5" fill="none">
             <circle cx="400" cy="250" r="60"/>
@@ -1342,7 +1393,7 @@ footer a:hover{color:var(--accent);}
 
       <!-- Case 2 -->
       <a href="#contact" class="case case-2 reveal" data-delay="1" data-hover>
-        <div class="case-canvas case-bg-2"></div>
+        <div class="case-canvas case-bg-2" data-img-bg="case.vision.cover" style="background-size:cover;background-position:center;"></div>
         <svg class="case-svg" viewBox="0 0 600 500" preserveAspectRatio="xMidYMid slice">
           <g stroke="#C8FF4D" stroke-width=".6" fill="none" opacity=".6">
             <path d="M50 250 L300 100 L550 250 L300 400 Z"/>
@@ -1365,7 +1416,7 @@ footer a:hover{color:var(--accent);}
 
       <!-- Case 3 -->
       <a href="#contact" class="case case-3 reveal" data-hover>
-        <div class="case-canvas case-bg-3"></div>
+        <div class="case-canvas case-bg-3" data-img-bg="case.holo.cover" style="background-size:cover;background-position:center;"></div>
         <svg class="case-svg" viewBox="0 0 400 400" preserveAspectRatio="xMidYMid slice">
           <g opacity=".7">
             <ellipse cx="200" cy="200" rx="140" ry="40" fill="none" stroke="#F4B860" stroke-width=".6"/>
@@ -1387,7 +1438,7 @@ footer a:hover{color:var(--accent);}
 
       <!-- Case 4 -->
       <a href="lab.html" class="case case-4 reveal" data-delay="1" data-hover>
-        <div class="case-canvas case-bg-4"></div>
+        <div class="case-canvas case-bg-4" data-img-bg="case.pulse.cover" style="background-size:cover;background-position:center;"></div>
         <svg class="case-svg" viewBox="0 0 400 400" preserveAspectRatio="xMidYMid slice">
           <g stroke="#FF4D2E" fill="none" opacity=".6" stroke-width=".5">
             <path d="M50 350 Q100 200 150 350 Q200 200 250 350 Q300 200 350 350"/>
@@ -1413,7 +1464,7 @@ footer a:hover{color:var(--accent);}
 
       <!-- Case 5 -->
       <a href="F.html" class="case case-5 reveal" data-delay="2" data-hover>
-        <div class="case-canvas case-bg-5"></div>
+        <div class="case-canvas case-bg-5" data-img-bg="case.talent.cover" style="background-size:cover;background-position:center;"></div>
         <svg class="case-svg" viewBox="0 0 400 400" preserveAspectRatio="xMidYMid slice">
           <g stroke="#C8FF4D" stroke-width=".5" fill="none" opacity=".6">
             <rect x="80" y="80" width="240" height="240"/>
@@ -1437,7 +1488,7 @@ footer a:hover{color:var(--accent);}
 
       <!-- Case 6 (full-width) -->
       <a href="letter.html" class="case case-6 reveal" data-hover>
-        <div class="case-canvas case-bg-6"></div>
+        <div class="case-canvas case-bg-6" data-img-bg="case.light.cover" style="background-size:cover;background-position:center;"></div>
         <svg class="case-svg" viewBox="0 0 1200 500" preserveAspectRatio="xMidYMid slice">
           <g stroke="#FF4D2E" stroke-width=".4" fill="none" opacity=".5">
             <line x1="0" y1="100" x2="1200" y2="100"/>
@@ -1929,7 +1980,9 @@ if(matchMedia('(hover:none)').matches || matchMedia('(max-width:640px)').matches
 }
 </script>
 
-<!-- ===== FLYUN CMS · I18N ===== -->
+<!-- ===== FLYUN CMS · THEME · DATABASE ===== -->
+<script src="assets/flyun-theme.js"></script>
+<script src="assets/flyun-supabase.js"></script>
 <script src="assets/flyun-cms.js"></script>
 
 </body>

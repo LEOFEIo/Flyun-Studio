@@ -1,21 +1,21 @@
 /* ==========================================================
  * FLYUN CMS · 飞云内容管理 + 多语言核心
- * 纯前端方案：localStorage 持久化 + 跨页面同步 + 中英双语
+ * 数据来源:  Supabase (在线，所有访客可见)
+ * 兜底缓存:  localStorage (离线 / 数据库未就绪时)
  * ========================================================== */
 (function (global) {
   'use strict';
 
   const STORAGE_KEYS = {
-    content: 'flyun:content:v1',
-    posts: 'flyun:posts:v1',
+    content: 'flyun:content:v1',     // i18n overrides cache
+    posts: 'flyun:posts:v1',         // posts cache
+    images: 'flyun:images:v1',       // images cache
+    settings: 'flyun:settings:v1',   // site settings cache
     lang: 'flyun:lang',
-    auth: 'flyun:admin:auth'
+    auth: 'flyun:admin:auth'         // legacy passphrase flag (compat)
   };
 
-  /* ===== 默认中英文字典（页面共用键名） =====
-   * 用法：在 HTML 里给元素加 data-i18n="key"
-   * 文本会随语言切换自动替换。如果同一键还需要在后台被改写，
-   * 它的“当前值”可由 admin 写入 storage，覆盖默认。 */
+  /* ===== 默认中英文字典（页面共用键名） ===== */
   const DEFAULT_DICT = {
     zh: {
       'nav.about': '关于',
@@ -177,7 +177,6 @@
   function getLang() {
     const stored = localStorage.getItem(STORAGE_KEYS.lang);
     if (stored === 'zh' || stored === 'en') return stored;
-    // 默认按浏览器语言
     return (navigator.language || 'zh').toLowerCase().startsWith('en') ? 'en' : 'zh';
   }
   function setLang(lang) {
@@ -189,7 +188,6 @@
   function t(key, lang) {
     const L = lang || getLang();
     const dict = DEFAULT_DICT[L] || DEFAULT_DICT.zh;
-    // 后台覆盖优先
     const overrides = safeRead(STORAGE_KEYS.content, {});
     if (overrides[L] && overrides[L][key] != null && overrides[L][key] !== '') {
       return overrides[L][key];
@@ -200,15 +198,13 @@
   function applyI18n(root) {
     const scope = root || document;
     const lang = getLang();
-    // 文本节点
     scope.querySelectorAll('[data-i18n]').forEach(el => {
       const key = el.getAttribute('data-i18n');
-      const mode = el.getAttribute('data-i18n-mode'); // text | html
+      const mode = el.getAttribute('data-i18n-mode');
       const v = t(key, lang);
       if (mode === 'html' || /\.html$/.test(key)) el.innerHTML = v;
       else el.textContent = v;
     });
-    // 属性: data-i18n-attr="placeholder:key,title:key2"
     scope.querySelectorAll('[data-i18n-attr]').forEach(el => {
       const attrs = el.getAttribute('data-i18n-attr').split(',');
       attrs.forEach(p => {
@@ -216,13 +212,12 @@
         if (a && k) el.setAttribute(a, t(k, lang));
       });
     });
-    // 切换按钮文字
     scope.querySelectorAll('[data-lang-toggle]').forEach(el => {
       el.textContent = t('lang.toggle', lang);
     });
   }
 
-  /* ============== CONTENT (admin overrides) ============== */
+  /* ============== CONTENT (admin overrides, sync to Supabase) ============== */
   function getContent() {
     return safeRead(STORAGE_KEYS.content, { zh: {}, en: {} });
   }
@@ -241,7 +236,7 @@
     applyI18n();
   }
 
-  /* ============== BLOG ============== */
+  /* ============== POSTS (admin local cache) ============== */
   function getPosts() {
     return safeRead(STORAGE_KEYS.posts, []);
   }
@@ -260,12 +255,55 @@
     setPosts(getPosts().filter(p => p.id !== id));
   }
 
-  /* ============== AUTH (轻量密码门) ============== */
+  /* ============== IMAGES (cache) ============== */
+  function getImages() {
+    const v = safeRead(STORAGE_KEYS.images, {});
+    // 兼容旧格式（直接 URL 字符串）和新格式（{url,label}）
+    const out = {};
+    Object.keys(v).forEach(k => {
+      out[k] = typeof v[k] === 'string' ? { url: v[k], label: '' } : v[k];
+    });
+    return out;
+  }
+  function setImages(obj) {
+    safeWrite(STORAGE_KEYS.images, obj);
+    applyImages();
+  }
+  function imageUrl(key) {
+    const imgs = getImages();
+    return imgs[key]?.url || '';
+  }
+  function applyImages(root) {
+    const scope = root || document;
+    const imgs = getImages();
+    // <img data-img="key">
+    scope.querySelectorAll('img[data-img]').forEach(el => {
+      const k = el.getAttribute('data-img');
+      const url = imgs[k]?.url;
+      if (url) el.src = url;
+    });
+    // background style: <div data-img-bg="key">
+    scope.querySelectorAll('[data-img-bg]').forEach(el => {
+      const k = el.getAttribute('data-img-bg');
+      const url = imgs[k]?.url;
+      if (url) el.style.backgroundImage = "url('" + url.replace(/'/g, "\\'") + "')";
+    });
+  }
+
+  /* ============== SETTINGS ============== */
+  function getSettings() {
+    return safeRead(STORAGE_KEYS.settings, {});
+  }
+  function setSettings(obj) {
+    safeWrite(STORAGE_KEYS.settings, obj);
+  }
+
+  /* ============== AUTH (legacy 通行证 / Supabase) ============== */
   function isAuthed() {
+    if (window.FlyunSupabase && FlyunSupabase.getUser && FlyunSupabase.getUser()) return true;
     return localStorage.getItem(STORAGE_KEYS.auth) === '1';
   }
   function login(pwd) {
-    // 默认密码 flyun2026 — 后台可改
     const stored = localStorage.getItem('flyun:admin:pwd') || 'flyun2026';
     if (pwd === stored) {
       localStorage.setItem(STORAGE_KEYS.auth, '1');
@@ -273,7 +311,12 @@
     }
     return false;
   }
-  function logout() { localStorage.removeItem(STORAGE_KEYS.auth); }
+  function logout() {
+    localStorage.removeItem(STORAGE_KEYS.auth);
+    if (window.FlyunSupabase && FlyunSupabase.signOut) {
+      try { FlyunSupabase.signOut(); } catch (e) {}
+    }
+  }
   function changePassword(newPwd) {
     if (!newPwd) return false;
     localStorage.setItem('flyun:admin:pwd', newPwd);
@@ -283,22 +326,49 @@
   /* ============== EXPORT / IMPORT ============== */
   function exportAll() {
     return {
-      version: 1,
+      version: 2,
       exportedAt: new Date().toISOString(),
       content: getContent(),
-      posts: getPosts()
+      posts: getPosts(),
+      images: getImages(),
+      settings: getSettings()
     };
   }
   function importAll(data) {
     if (!data || typeof data !== 'object') return false;
     if (data.content) setContent(data.content);
     if (Array.isArray(data.posts)) setPosts(data.posts);
+    if (data.images) setImages(data.images);
+    if (data.settings) setSettings(data.settings);
     return true;
+  }
+
+  /* ============== SUPABASE BOOTSTRAP ============== */
+  /* 从 Supabase 拉取最新内容并写入本地缓存，所有访客在第一次加载页面时拿到的都是数据库里的最新版本。 */
+  async function bootstrapFromSupabase() {
+    if (!window.FlyunSupabase) return false;
+    try {
+      await FlyunSupabase.ready();
+      const [content, posts, images, settings] = await Promise.all([
+        FlyunSupabase.listContent().catch(() => null),
+        FlyunSupabase.listPosts({ includeDrafts: false }).catch(() => null),
+        FlyunSupabase.listImages().catch(() => null),
+        FlyunSupabase.listSettings().catch(() => null)
+      ]);
+      if (content) setContent(content);
+      if (posts) setPosts(posts);
+      if (images) setImages(images);
+      if (settings) setSettings(settings);
+      document.dispatchEvent(new CustomEvent('flyun:cms-synced', { detail: { posts, content, images, settings } }));
+      return true;
+    } catch (e) {
+      console.warn('[FlyunCMS] Supabase 同步失败，使用本地缓存：', e);
+      return false;
+    }
   }
 
   /* ============== AUTO INIT ============== */
   function injectLangToggle() {
-    // 给 nav 自动注入语言切换按钮（如果开发者在 HTML 加了 [data-lang-mount]）
     document.querySelectorAll('[data-lang-mount]').forEach(host => {
       if (host.querySelector('[data-lang-toggle]')) return;
       const btn = document.createElement('button');
@@ -308,7 +378,6 @@
       btn.textContent = t('lang.toggle');
       host.appendChild(btn);
     });
-    // 为所有 [data-lang-toggle] 按钮绑定点击（包括开发者手写的）
     document.querySelectorAll('[data-lang-toggle]').forEach(btn => {
       if (btn.__flyunBound) return;
       btn.__flyunBound = true;
@@ -320,62 +389,61 @@
 
   function init() {
     document.documentElement.lang = getLang() === 'en' ? 'en' : 'zh-CN';
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', () => {
-        injectLangToggle();
-        applyI18n();
-        installStealthGate();
-      });
-    } else {
+    const onReady = () => {
       injectLangToggle();
       applyI18n();
+      applyImages();
       installStealthGate();
+      // 异步拉取最新数据并刷新视图
+      bootstrapFromSupabase().then((ok) => {
+        if (ok) {
+          applyI18n();
+          applyImages();
+          document.dispatchEvent(new Event('flyun:postschange'));
+        }
+      });
+    };
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', onReady);
+    } else {
+      onReady();
     }
     // 跨标签页同步
     window.addEventListener('storage', e => {
       if (!e.key) return;
       if (e.key === STORAGE_KEYS.lang || e.key === STORAGE_KEYS.content) applyI18n();
+      if (e.key === STORAGE_KEYS.images) applyImages();
       if (e.key === STORAGE_KEYS.posts) document.dispatchEvent(new Event('flyun:postschange'));
     });
   }
 
-  /* ============== STEALTH ADMIN GATE ==============
-   * 公共页面不暴露任何后台入口。主理人可用以下任一方式静默进入：
-   *   1) 键盘组合：  Ctrl + Alt + A   （macOS：⌘ + Option + A 也可）
-   *   2) 触发短语：  连续输入 "flyun"（任意页面，1.5 秒内）
-   *   3) URL hash：  在主站地址后加 #studio  →  自动跳到 admin
-   * 这些入口都不会出现在 DOM 里，访客无法看见。 */
+  /* ============== STEALTH ADMIN GATE ===============
+   * 公开页面不暴露任何后台入口。主理人可用以下方式进入：
+   *   1) Ctrl/Cmd + Alt + A
+   *   2) 连续输入 "flyun"（1.5秒内）
+   *   3) URL hash: #studio  或 #admin */
   function installStealthGate() {
     if (window.__flyunStealthInstalled) return;
     window.__flyunStealthInstalled = true;
     const here = (location.pathname || '').toLowerCase();
     if (here.endsWith('/admin.html') || here.endsWith('admin.html')) return;
 
-    // 1) Hash 触发
     if (location.hash === '#studio' || location.hash === '#admin') {
-      // 清掉 hash 再跳，避免书签泄露
       try { history.replaceState(null, '', location.pathname + location.search); } catch (e) {}
       location.href = 'admin.html';
       return;
     }
-
-    // 2) 键盘组合
     document.addEventListener('keydown', e => {
       const key = (e.key || '').toLowerCase();
-      // Ctrl/Cmd + Alt + A
       if ((e.ctrlKey || e.metaKey) && e.altKey && key === 'a') {
         e.preventDefault();
         location.href = 'admin.html';
       }
     });
-
-    // 3) 触发短语：连续输入 "flyun"（不区分大小写）
     let buf = '';
     let bufTimer = null;
     document.addEventListener('keydown', e => {
-      // 忽略修饰键、功能键
       if (e.ctrlKey || e.metaKey || e.altKey) return;
-      // 当焦点在 input/textarea 时不触发，避免打扰用户
       const ae = document.activeElement;
       if (ae && /^(input|textarea|select)$/i.test(ae.tagName)) return;
       const k = (e.key || '');
@@ -394,12 +462,15 @@
   const FlyunCMS = {
     KEYS: STORAGE_KEYS,
     DICT: DEFAULT_DICT,
-    t, applyI18n,
+    t, applyI18n, applyImages,
     getLang, setLang,
     getContent, setContent, patchContent, resetContent,
     getPosts, setPosts, upsertPost, deletePost,
+    getImages, setImages, imageUrl,
+    getSettings, setSettings,
     isAuthed, login, logout, changePassword,
-    exportAll, importAll
+    exportAll, importAll,
+    bootstrapFromSupabase
   };
 
   global.FlyunCMS = FlyunCMS;
