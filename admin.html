@@ -681,15 +681,19 @@ input[type=file]::file-selector-button:hover{
     <nav>
       <button class="tab-btn active" data-tab="dashboard"><span class="num">01</span><span>概览</span></button>
       <button class="tab-btn" data-tab="content"><span class="num">02</span><span>首页文案</span></button>
-      <button class="tab-btn" data-tab="images"><span class="num">03</span><span>图片资源</span></button>
+      <button class="tab-btn" data-tab="slots"><span class="num">03</span><span>首页图片</span></button>
       <button class="tab-btn" data-tab="blog"><span class="num">04</span><span>博客 · Journal</span></button>
-      <button class="tab-btn" data-tab="system"><span class="num">05</span><span>系统</span></button>
+      <button class="tab-btn" data-tab="cases"><span class="num">05</span><span>案例 · Cases</span></button>
+      <button class="tab-btn" data-tab="letters"><span class="num">06</span><span>Letter · 双月刊</span></button>
+      <button class="tab-btn" data-tab="jobs"><span class="num">07</span><span>招聘 · Jobs</span></button>
+      <button class="tab-btn" data-tab="images"><span class="num">08</span><span>图片库</span></button>
+      <button class="tab-btn" data-tab="system"><span class="num">09</span><span>系统 · 云同步</span></button>
     </nav>
     <div class="side-foot">
       <strong>FLYUN_ADMIN</strong><br/>
-      v2.1 · QUIET<br/><br/>
-      数据保存于本机浏览器。<br/>
-      请定期到「系统」导出 JSON 备份。
+      v3.0 · CLOUD · QUIET<br/><br/>
+      数据双写：本地 + Supabase。<br/>
+      到「系统 · 云同步」登录后，所有改动会同步给全部访客。
     </div>
   </aside>
 
@@ -715,14 +719,24 @@ input[type=file]::file-selector-button:hover{
           <div class="stat-sub">博客文章</div>
         </div>
         <div class="stat">
-          <div class="stat-label">Published</div>
-          <div class="stat-num"><em id="statPublished">0</em></div>
-          <div class="stat-sub">已发布</div>
+          <div class="stat-label">Cases total</div>
+          <div class="stat-num"><em id="statCases">0</em></div>
+          <div class="stat-sub">案例条目</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Letters · Jobs</div>
+          <div class="stat-num"><em id="statLetters">0</em> · <em id="statJobs">0</em></div>
+          <div class="stat-sub">期刊 / 招聘</div>
         </div>
         <div class="stat">
           <div class="stat-label">Image refs</div>
           <div class="stat-num"><em id="statImages">0</em></div>
           <div class="stat-sub">图片记录</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Cloud sync</div>
+          <div class="stat-num"><em id="statCloud">本地</em></div>
+          <div class="stat-sub" id="statCloudSub">未登录 Supabase</div>
         </div>
       </div>
 
@@ -730,10 +744,11 @@ input[type=file]::file-selector-button:hover{
         <div class="card-head"><span>使用引导</span><span class="k">QUICK_START</span></div>
         <div class="guide-list">
           1 · <strong>首页文案</strong> —— 修改主页任意文字，中英分别填写。<br/>
-          2 · <strong>图片资源</strong> —— 替换 Logo / 头像 / 案例封面（图床链接或本地上传）。<br/>
-          3 · <strong>博客 · Journal</strong> —— 像写信一样写日志、研究笔记、项目记录，支持中英双语与简版 Markdown。<br/>
-          4 · <strong>系统</strong> —— 导出 JSON 备份，跨设备恢复内容。
-          <span class="warn">数据保存在你当前浏览器的 localStorage。换电脑或清缓存前，请到「系统 → 导出」备份。</span>
+          2 · <strong>首页图片</strong> —— 替换主页关键图位（Hero / 主创头像 / 案例封面）。<br/>
+          3 · <strong>博客 / 案例 / Letter / 招聘</strong> —— 全流程内容工作台，支持中英双语 · 草稿与发布状态。<br/>
+          4 · <strong>图片库</strong> —— 通用图片仓库（图床链接或上传转 Base64）。<br/>
+          5 · <strong>系统 · 云同步</strong> —— 用 Supabase 邮箱登录后，本地改动会自动写到云端，让所有访客看到。
+          <span class="warn">未登录云端时数据只在本机；登录后写入云端，所有访客实时可见。任何时候都可以到系统页导出 JSON 备份。</span>
         </div>
       </div>
     </section>
@@ -760,6 +775,26 @@ input[type=file]::file-selector-button:hover{
         <button class="btn ghost" id="reloadContent">刷新</button>
         <button class="btn danger" id="resetContent">重置为默认</button>
       </div>
+    </section>
+
+    <!-- ===== HOMEPAGE IMAGE SLOTS ===== -->
+    <section class="tab" data-tab="slots">
+      <div class="eyebrow">03 · HOMEPAGE / 首页图片</div>
+      <div class="panel-head">
+        <h2 class="panel-title">替换<em>主页</em>关键<br/>图位。</h2>
+        <div class="panel-hint">填 URL 或上传 → 自动同步到首页</div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><span>使用说明</span><span class="k">SLOT_GUIDE</span></div>
+        <div class="guide-list">
+          每一个图位对应主页里的一张图。把图片 URL 粘进去（或本地上传），保存后主页会立刻使用新图。<br/>
+          清空留白即恢复默认 SVG 装饰。
+          <span class="warn">建议尺寸：Hero 背景 2400×1400，主创头像 800×1000，案例封面 1600×1000；JPG/WebP 优先。</span>
+        </div>
+      </div>
+
+      <div id="slotEditor" class="img-grid"></div>
     </section>
 
     <!-- ===== IMAGES ===== -->
@@ -888,18 +923,326 @@ input[type=file]::file-selector-button:hover{
       <div class="post-list" id="postList"></div>
     </section>
 
+    <!-- ===== CASES ===== -->
+    <section class="tab" data-tab="cases">
+      <div class="eyebrow">05 · CASES / 案例</div>
+      <div class="panel-head">
+        <h2 class="panel-title">添加 / 编辑<br/><em>案例</em>条目。</h2>
+        <div class="panel-hint">案例页 / 首页将自动加载</div>
+      </div>
+
+      <div class="writer">
+        <div class="writer-eyebrow" id="caseEditTitle">新建案例 · NEW CASE</div>
+        <input type="hidden" id="caseId">
+
+        <div class="title-pair">
+          <div class="title-cell">
+            <div class="lang-tag zh">中文标题</div>
+            <input type="text" class="title-input" id="caseTitleZh" placeholder="例如：ECHO ROOM">
+          </div>
+          <div class="title-cell">
+            <div class="lang-tag en">ENGLISH TITLE</div>
+            <input type="text" class="title-input" id="caseTitleEn" placeholder="ECHO ROOM">
+          </div>
+        </div>
+
+        <div class="excerpt-pair" style="margin-top:0;padding-top:0;border-top:none;">
+          <div class="excerpt-cell">
+            <label class="lt">副标题 · 中文</label>
+            <textarea id="caseSubZh" placeholder="一句话描述（中文）"></textarea>
+          </div>
+          <div class="excerpt-cell">
+            <label class="lt en">SUBTITLE · ENGLISH</label>
+            <textarea id="caseSubEn" placeholder="One-line description (English)"></textarea>
+          </div>
+        </div>
+
+        <div class="writer-meta">
+          <div class="meta-cell">
+            <label>分类 · CATEGORY</label>
+            <select id="caseCategory">
+              <option value="immersive">沉浸装置 · immersive</option>
+              <option value="xr">VR · AR / XR</option>
+              <option value="brand">品牌空间 · brand</option>
+              <option value="talent">猎头人才 · talent</option>
+              <option value="ip">自有 IP · ip</option>
+            </select>
+          </div>
+          <div class="meta-cell">
+            <label>年份 · YEAR</label>
+            <input type="text" id="caseYear" placeholder="2025 / 2026">
+          </div>
+          <div class="meta-cell">
+            <label>排序 · POSITION</label>
+            <input type="number" id="casePosition" placeholder="0" value="0">
+          </div>
+          <div class="meta-cell">
+            <label>状态 · STATUS</label>
+            <select id="caseStatus">
+              <option value="published">已发布</option>
+              <option value="draft">草稿</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="writer-meta" style="margin-top:14px;padding-top:14px;border-top:none;">
+          <div class="meta-cell" style="grid-column:1/-1;">
+            <label>封面 URL · COVER</label>
+            <input type="text" id="caseCover" placeholder="https://…">
+          </div>
+          <div class="meta-cell" style="grid-column:1/-1;">
+            <label>外链 · LINK（点击案例跳转地址，可空）</label>
+            <input type="text" id="caseLink" placeholder="https://… 或 cases.html#xxx">
+          </div>
+        </div>
+
+        <div class="writer-actions">
+          <div class="word-count">将出现在 cases.html 顶部 + 首页 SHOWCASE</div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;">
+            <button class="btn ghost" id="newCase" type="button">清空 · NEW</button>
+            <button class="btn" id="saveCase" type="button">
+              <span>保存案例</span>
+              <svg class="arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14m-6-6 6 6-6 6"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel-head">
+        <h2 class="panel-title" style="font-size:32px;">全部<em>案例</em></h2>
+        <div class="panel-hint" id="caseCount">0 条</div>
+      </div>
+      <div class="post-list" id="caseList"></div>
+    </section>
+
+    <!-- ===== LETTERS ===== -->
+    <section class="tab" data-tab="letters">
+      <div class="eyebrow">06 · LETTER / 双月刊</div>
+      <div class="panel-head">
+        <h2 class="panel-title">FLYUN <em>Letter</em><br/>双月刊。</h2>
+        <div class="panel-hint">中英双语 · 简版 Markdown</div>
+      </div>
+
+      <div class="writer">
+        <div class="writer-eyebrow" id="letterEditTitle">新一期 Letter · NEW ISSUE</div>
+        <input type="hidden" id="letterId">
+
+        <div class="title-pair">
+          <div class="title-cell">
+            <div class="lang-tag zh">期刊标题 · 中文</div>
+            <input type="text" class="title-input" id="letterTitleZh" placeholder="例如：第一期 · 慢工出细活">
+          </div>
+          <div class="title-cell">
+            <div class="lang-tag en">ISSUE TITLE</div>
+            <input type="text" class="title-input" id="letterTitleEn" placeholder="Issue 01 · Slow craft">
+          </div>
+        </div>
+
+        <div class="body-pair">
+          <div class="body-cell">
+            <div class="body-tag zh">正文 · 中文</div>
+            <textarea class="body-textarea" id="letterBodyZh" placeholder="支持简版 Markdown"></textarea>
+          </div>
+          <div class="body-cell">
+            <div class="body-tag en">BODY · ENGLISH</div>
+            <textarea class="body-textarea" id="letterBodyEn" placeholder="Optional"></textarea>
+          </div>
+        </div>
+
+        <div class="excerpt-pair">
+          <div class="excerpt-cell">
+            <label class="lt">摘要 · 中文</label>
+            <textarea id="letterExcerptZh" placeholder="一段话"></textarea>
+          </div>
+          <div class="excerpt-cell">
+            <label class="lt en">EXCERPT · ENGLISH</label>
+            <textarea id="letterExcerptEn"></textarea>
+          </div>
+        </div>
+
+        <div class="writer-meta">
+          <div class="meta-cell">
+            <label>期号 · ISSUE</label>
+            <input type="text" id="letterIssue" placeholder="01 / 02 / 03">
+          </div>
+          <div class="meta-cell">
+            <label>日期 · DATE</label>
+            <input type="text" id="letterDate" placeholder="留空 = 今日">
+          </div>
+          <div class="meta-cell">
+            <label>状态 · STATUS</label>
+            <select id="letterStatus">
+              <option value="published">已发布</option>
+              <option value="draft">草稿</option>
+            </select>
+          </div>
+          <div class="meta-cell">
+            <label>封面 URL · COVER</label>
+            <input type="text" id="letterCover" placeholder="https://…">
+          </div>
+        </div>
+
+        <div class="writer-actions">
+          <div class="word-count" id="letterWordCount">字数 · 0 / 0</div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;">
+            <button class="btn ghost" id="newLetter" type="button">清空 · NEW</button>
+            <button class="btn" id="saveLetter" type="button"><span>保存这期</span></button>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel-head">
+        <h2 class="panel-title" style="font-size:32px;">全部<em>期刊</em></h2>
+        <div class="panel-hint" id="letterCount">0 期</div>
+      </div>
+      <div class="post-list" id="letterList"></div>
+    </section>
+
+    <!-- ===== JOBS ===== -->
+    <section class="tab" data-tab="jobs">
+      <div class="eyebrow">07 · JOBS / 招聘</div>
+      <div class="panel-head">
+        <h2 class="panel-title">招<em>对的人</em>。</h2>
+        <div class="panel-hint">将出现在 job.html</div>
+      </div>
+
+      <div class="writer">
+        <div class="writer-eyebrow" id="jobEditTitle">新岗位 · NEW ROLE</div>
+        <input type="hidden" id="jobId">
+
+        <div class="title-pair">
+          <div class="title-cell">
+            <div class="lang-tag zh">岗位 · 中文</div>
+            <input type="text" class="title-input" id="jobTitleZh" placeholder="例如：交互设计师">
+          </div>
+          <div class="title-cell">
+            <div class="lang-tag en">ROLE · ENGLISH</div>
+            <input type="text" class="title-input" id="jobTitleEn" placeholder="Interaction Designer">
+          </div>
+        </div>
+
+        <div class="body-pair">
+          <div class="body-cell">
+            <div class="body-tag zh">岗位描述 · 中文</div>
+            <textarea class="body-textarea" id="jobDescZh" placeholder="职责 · 要求 · 加分项"></textarea>
+          </div>
+          <div class="body-cell">
+            <div class="body-tag en">DESCRIPTION · ENGLISH</div>
+            <textarea class="body-textarea" id="jobDescEn"></textarea>
+          </div>
+        </div>
+
+        <div class="writer-meta">
+          <div class="meta-cell">
+            <label>团队 · TEAM</label>
+            <input type="text" id="jobTeam" placeholder="设计 / XR / 猎头 / 内容">
+          </div>
+          <div class="meta-cell">
+            <label>地点 · LOCATION</label>
+            <input type="text" id="jobLocation" placeholder="武汉 / Remote">
+          </div>
+          <div class="meta-cell">
+            <label>类型 · TYPE</label>
+            <select id="jobType">
+              <option value="full-time">全职 · full-time</option>
+              <option value="part-time">兼职 · part-time</option>
+              <option value="freelance">合作 · freelance</option>
+              <option value="internship">实习 · internship</option>
+            </select>
+          </div>
+          <div class="meta-cell">
+            <label>状态 · STATUS</label>
+            <select id="jobStatus">
+              <option value="open">招聘中 · open</option>
+              <option value="closed">已截止 · closed</option>
+              <option value="draft">草稿 · draft</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="writer-actions">
+          <div class="word-count">招聘信息将公开展示</div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;">
+            <button class="btn ghost" id="newJob" type="button">清空 · NEW</button>
+            <button class="btn" id="saveJob" type="button"><span>保存岗位</span></button>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel-head">
+        <h2 class="panel-title" style="font-size:32px;">全部<em>岗位</em></h2>
+        <div class="panel-hint" id="jobCount">0 个</div>
+      </div>
+      <div class="post-list" id="jobList"></div>
+    </section>
+
     <!-- ===== SYSTEM ===== -->
     <section class="tab" data-tab="system">
-      <div class="eyebrow">05 · SYSTEM / 系统</div>
+      <div class="eyebrow">09 · SYSTEM / 系统 · 云同步</div>
       <div class="panel-head">
-        <h2 class="panel-title">备份 · <em>恢复</em><br/>· 安全。</h2>
-        <div class="panel-hint">所有数据保存在浏览器</div>
+        <h2 class="panel-title">云端 · <em>备份</em><br/>· 安全。</h2>
+        <div class="panel-hint">本地 + Supabase 双写</div>
+      </div>
+
+      <div class="card" id="cloudCard">
+        <div class="card-head">
+          <span>云同步 · Supabase</span>
+          <span class="k" id="cloudCardK">DISCONNECTED</span>
+        </div>
+        <div style="font-size:14px;color:var(--text-dim);line-height:1.85;margin-bottom:14px;">
+          登录后，所有改动（文案 / 博客 / 案例 / Letter / 招聘 / 图片）会自动同步到 Supabase，
+          全部访客刷新即可看到最新内容。未登录时只在本机生效。
+        </div>
+        <div style="font-family:var(--mono);font-size:11px;color:var(--text-mute);letter-spacing:.18em;margin-bottom:18px;">
+          ENDPOINT · neppacfsixrjzpkvcgxy.supabase.co
+        </div>
+
+        <!-- 未登录 -->
+        <div id="cloudLoginBox">
+          <div class="field">
+            <label>邮箱<span class="key">EMAIL</span></label>
+            <input type="email" id="cloudEmail" placeholder="admin@flyun.studio" autocomplete="username">
+          </div>
+          <div class="field">
+            <label>密码<span class="key">PASSWORD</span></label>
+            <input type="password" id="cloudPwd" placeholder="…" autocomplete="current-password">
+          </div>
+          <div class="row-actions" style="margin:0;">
+            <button class="btn" id="cloudSignInBtn" type="button">
+              <span>登录云端</span>
+              <svg class="arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14m-6-6 6 6-6 6"/></svg>
+            </button>
+            <button class="btn ghost" id="cloudPullBtn" type="button">仅同步公开数据 · PULL</button>
+          </div>
+          <div style="margin-top:14px;font-family:var(--mono);font-size:10px;color:var(--text-mute);letter-spacing:.18em;line-height:1.8;">
+            · 首次使用：先在 Supabase Dashboard → Authentication → Users 添加一个用户，<br/>
+            &nbsp;&nbsp;然后用该邮箱密码登录这里。<br/>
+            · 还需要在 SQL Editor 运行一次 <code style="color:var(--accent);">supabase-schema.sql</code> 建表。
+          </div>
+        </div>
+
+        <!-- 已登录 -->
+        <div id="cloudOnlineBox" style="display:none;">
+          <div style="display:flex;align-items:center;gap:14px;margin-bottom:18px;flex-wrap:wrap;">
+            <div style="font-family:var(--mono);font-size:11px;color:var(--accent-2);letter-spacing:.18em;">
+              ● ONLINE · 已连接
+            </div>
+            <div style="font-family:var(--mono);font-size:11px;color:var(--text-dim);letter-spacing:.12em;" id="cloudUserEmail"></div>
+          </div>
+          <div class="row-actions" style="margin:0;">
+            <button class="btn" id="cloudPushBtn" type="button">
+              <span>把本地推到云端 · PUSH ALL</span>
+            </button>
+            <button class="btn ghost" id="cloudPullBtn2" type="button">从云端拉到本地 · PULL ALL</button>
+            <button class="btn danger" id="cloudSignOutBtn" type="button">退出云端</button>
+          </div>
+        </div>
       </div>
 
       <div class="card">
         <div class="card-head"><span>导出 / 导入</span><span class="k">BACKUP</span></div>
         <div style="font-size:14px;color:var(--text-dim);line-height:1.85;margin-bottom:20px;">
-          导出会把所有文案覆盖、博客文章、图片打包成一个 JSON 文件。换设备时，在新设备上点「导入」选择这个 JSON 即可恢复。
+          导出会把所有文案覆盖、博客 / 案例 / Letter / 招聘 / 图片打包成一个 JSON 文件。换设备时，在新设备上点「导入」选择这个 JSON 即可恢复。
         </div>
         <div class="row-actions" style="margin:0;">
           <button class="btn" id="exportBtn">导出 JSON
@@ -993,9 +1336,20 @@ function refreshDash(){
   $('#statContent').textContent = cnt;
   const posts = FlyunCMS.getPosts();
   $('#statPosts').textContent = posts.length;
-  $('#statPublished').textContent = posts.filter(p=>p.status==='published').length;
+  if ($('#statCases'))   $('#statCases').textContent   = FlyunCMS.getCases().length;
+  if ($('#statLetters')) $('#statLetters').textContent = FlyunCMS.getLetters().length;
+  if ($('#statJobs'))    $('#statJobs').textContent    = FlyunCMS.getJobs().length;
   $('#statImages').textContent = Object.keys(getImages()).length;
   $('#dashTime').textContent = new Date().toLocaleString();
+  if ($('#statCloud')) {
+    FlyunCMS.cloud.session().then(s => {
+      $('#statCloud').textContent = s ? '云端' : '本地';
+      $('#statCloudSub').textContent = s ? ('已登录 · ' + (s.user?.email || '')) : '未登录 Supabase';
+    }).catch(()=>{
+      $('#statCloud').textContent = '本地';
+      $('#statCloudSub').textContent = '未登录 Supabase';
+    });
+  }
 }
 
 /* ============== CONTENT EDITOR ============== */
@@ -1290,22 +1644,491 @@ $('#changePwdBtn')?.addEventListener('click', ()=>{
   toast('密码已更新');
 });
 $('#resetAll')?.addEventListener('click', ()=>{
-  if (!confirm('确认清空所有内容覆盖、博客、图片？')) return;
+  if (!confirm('确认清空所有内容覆盖、博客、案例、Letter、招聘、图片？')) return;
   if (!confirm('再次确认 — 这个操作不可恢复！')) return;
   FlyunCMS.resetContent();
   FlyunCMS.setPosts([]);
+  FlyunCMS.setCases([]);
+  FlyunCMS.setLetters([]);
+  FlyunCMS.setJobs([]);
   setImages({});
-  buildContentEditor(); renderPostList(); renderImageGrid(); refreshDash();
+  buildContentEditor(); renderPostList(); renderImageGrid();
+  renderCaseList(); renderLetterList(); renderJobList();
+  renderSlots();
+  refreshDash();
   toast('已清空全部数据', 'warn');
 });
+
+/* ====================================================================
+ * HOMEPAGE IMAGE SLOTS — 主页关键图位
+ * ==================================================================== */
+const HOME_SLOTS = [
+  { key:'home.hero.bg',           name:'Hero · 首屏背景',     hint:'置于全屏Hero的右上方',  size:'2400×1400' },
+  { key:'home.about.portrait',    name:'About · 主创头像',    hint:'about 区块的人像位',     size:'800×1000' },
+  { key:'home.case.1',            name:'Showcase · 案例 1',   hint:'首页 SHOWCASE 第 1 块', size:'1600×1000' },
+  { key:'home.case.2',            name:'Showcase · 案例 2',   hint:'首页 SHOWCASE 第 2 块', size:'1200×1000' },
+  { key:'home.case.3',            name:'Showcase · 案例 3',   hint:'首页 SHOWCASE 第 3 块', size:'800×800'   },
+  { key:'home.case.4',            name:'Showcase · 案例 4',   hint:'首页 SHOWCASE 第 4 块', size:'800×800'   },
+  { key:'home.case.5',            name:'Showcase · 案例 5',   hint:'首页 SHOWCASE 第 5 块', size:'800×800'   },
+  { key:'home.case.6',            name:'Showcase · 案例 6',   hint:'首页 SHOWCASE 第 6 块', size:'2400×1000' }
+];
+
+function renderSlots(){
+  const host = $('#slotEditor');
+  if (!host) return;
+  const imgs = getImages();
+  host.innerHTML = '';
+  HOME_SLOTS.forEach(slot => {
+    const card = document.createElement('div');
+    card.className = 'img-card';
+    const url = imgs[slot.key] || '';
+    card.innerHTML = `
+      <div class="preview" ${url ? `style="background-image:url('${url.replace(/'/g,"\\'")}');"` : 'style="background:linear-gradient(135deg,#1a1612,#0d0b09);display:flex;align-items:center;justify-content:center;color:var(--text-mute);font-family:var(--mono);font-size:10px;letter-spacing:.2em;"'}>
+        ${url ? '' : 'EMPTY · 默认 SVG'}
+      </div>
+      <div class="name">${slot.name}</div>
+      <div class="url" style="font-family:var(--mono);font-size:9px;color:var(--text-mute);letter-spacing:.1em;">
+        KEY · ${slot.key}<br/>${slot.hint} · 建议 ${slot.size}
+      </div>
+      <div class="field" style="margin:12px 0 0;">
+        <input type="text" class="slot-url" data-key="${slot.key}" placeholder="https://… 或 data:image/…" value="${url ? url.replace(/"/g,'&quot;') : ''}">
+      </div>
+      <div class="row-actions" style="margin-top:8px;">
+        <label class="btn small ghost" style="cursor:pointer;">
+          上传
+          <input type="file" accept="image/*" class="slot-file" data-key="${slot.key}" style="display:none;">
+        </label>
+        <button class="btn small" data-act="slot-save" data-key="${slot.key}" type="button">保存</button>
+        ${url ? `<button class="btn small danger" data-act="slot-clear" data-key="${slot.key}" type="button">移除</button>` : ''}
+      </div>
+    `;
+    host.appendChild(card);
+  });
+}
+
+document.addEventListener('change', e => {
+  const fileInput = e.target.closest('.slot-file');
+  if (!fileInput) return;
+  const file = fileInput.files[0]; if (!file) return;
+  const k = fileInput.dataset.key;
+  const r = new FileReader();
+  r.onload = () => {
+    const sib = document.querySelector('.slot-url[data-key="' + k + '"]');
+    if (sib) sib.value = r.result;
+    toast('图已读取，记得点保存');
+  };
+  r.readAsDataURL(file);
+});
+
+document.addEventListener('click', e => {
+  const btn = e.target.closest('button[data-act]');
+  if (!btn) return;
+  if (btn.dataset.act === 'slot-save') {
+    const k = btn.dataset.key;
+    const inp = document.querySelector('.slot-url[data-key="' + k + '"]');
+    const url = (inp?.value || '').trim();
+    if (!url) { toast('URL 为空，已忽略', 'warn'); return; }
+    FlyunCMS.setImage(k, url);
+    renderSlots(); refreshDash();
+    toast('已保存 · ' + k);
+  } else if (btn.dataset.act === 'slot-clear') {
+    const k = btn.dataset.key;
+    if (!confirm('清空 ' + k + '？将恢复主页默认装饰。')) return;
+    FlyunCMS.removeImage(k);
+    renderSlots(); refreshDash();
+    toast('已移除 · ' + k, 'warn');
+  }
+});
+
+/* ====================================================================
+ * CASES · 案例 CRUD
+ * ==================================================================== */
+function clearCaseForm(){
+  $('#caseId').value = '';
+  $('#caseTitleZh').value = '';
+  $('#caseTitleEn').value = '';
+  $('#caseSubZh').value = '';
+  $('#caseSubEn').value = '';
+  $('#caseCategory').value = 'immersive';
+  $('#caseYear').value = '';
+  $('#casePosition').value = '0';
+  $('#caseStatus').value = 'published';
+  $('#caseCover').value = '';
+  $('#caseLink').value = '';
+  $('#caseEditTitle').textContent = '新建案例 · NEW CASE';
+}
+function loadCaseForm(c){
+  $('#caseId').value = c.id || '';
+  $('#caseTitleZh').value = c.title?.zh || '';
+  $('#caseTitleEn').value = c.title?.en || '';
+  $('#caseSubZh').value = c.subtitle?.zh || '';
+  $('#caseSubEn').value = c.subtitle?.en || '';
+  $('#caseCategory').value = c.category || 'immersive';
+  $('#caseYear').value = c.year || '';
+  $('#casePosition').value = c.position || 0;
+  $('#caseStatus').value = c.status || 'published';
+  $('#caseCover').value = c.cover || '';
+  $('#caseLink').value = c.link || '';
+  $('#caseEditTitle').textContent = '编辑案例 · EDIT · ' + (c.title?.zh || c.title?.en || c.id);
+}
+function buildCaseFromForm(){
+  return {
+    id: $('#caseId').value.trim() || ('c_' + Date.now()),
+    title:    { zh: $('#caseTitleZh').value.trim(), en: $('#caseTitleEn').value.trim() },
+    subtitle: { zh: $('#caseSubZh').value.trim(),   en: $('#caseSubEn').value.trim() },
+    category: $('#caseCategory').value,
+    year:     $('#caseYear').value.trim(),
+    position: parseInt($('#casePosition').value, 10) || 0,
+    status:   $('#caseStatus').value,
+    cover:    $('#caseCover').value.trim(),
+    link:     $('#caseLink').value.trim()
+  };
+}
+function renderCaseList(){
+  const list = FlyunCMS.getCases();
+  const host = $('#caseList');
+  if (!host) return;
+  host.innerHTML = '';
+  $('#caseCount').textContent = list.length + ' 条';
+  if (!list.length) {
+    host.innerHTML = '<div style="padding:48px 32px;color:var(--text-mute);font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-align:center;border:1px dashed var(--border);border-radius:16px;">还没有案例 · 在上面新建</div>';
+    return;
+  }
+  list.forEach(c => {
+    const draft = c.status === 'draft' ? '<span class="lang-pill draft">DRAFT</span>' : '';
+    const cat = '<span class="lang-pill">' + (c.category || 'immersive').toUpperCase() + '</span>';
+    const row = document.createElement('div');
+    row.className = 'post-row';
+    row.innerHTML = `
+      <div>
+        <div class="ttl">${cat}${draft}${(c.title?.zh || c.title?.en || '<em>(无标题)</em>')}</div>
+        <div class="meta-line">${c.year || ''} ${c.subtitle?.zh ? '· ' + c.subtitle.zh : ''} · pos ${c.position||0}</div>
+      </div>
+      <div class="acts">
+        <button class="btn small ghost" data-act="case-edit" data-id="${c.id}">编辑</button>
+        <a class="btn small ghost" href="cases.html" target="_blank">预览</a>
+        <button class="btn small danger" data-act="case-del" data-id="${c.id}">删除</button>
+      </div>
+    `;
+    host.appendChild(row);
+  });
+}
+$('#caseList')?.addEventListener('click', e => {
+  const btn = e.target.closest('button[data-act]');
+  if (!btn) return;
+  const id = btn.dataset.id;
+  if (btn.dataset.act === 'case-edit') {
+    const c = FlyunCMS.getCases().find(x => x.id === id);
+    if (c) { loadCaseForm(c); window.scrollTo({top:0,behavior:'smooth'}); }
+  } else if (btn.dataset.act === 'case-del') {
+    if (!confirm('删除这个案例？')) return;
+    FlyunCMS.deleteCase(id);
+    renderCaseList(); refreshDash();
+    toast('已删除', 'warn');
+  }
+});
+$('#saveCase')?.addEventListener('click', () => {
+  const c = buildCaseFromForm();
+  if (!c.title.zh && !c.title.en) { toast('至少填一个标题', 'err'); return; }
+  FlyunCMS.upsertCase(c);
+  clearCaseForm();
+  renderCaseList(); refreshDash();
+  toast('已保存 · ' + (c.title.zh || c.title.en));
+});
+$('#newCase')?.addEventListener('click', clearCaseForm);
+
+/* ====================================================================
+ * LETTERS · 双月刊 CRUD
+ * ==================================================================== */
+function clearLetterForm(){
+  $('#letterId').value = '';
+  $('#letterTitleZh').value = ''; $('#letterTitleEn').value = '';
+  $('#letterExcerptZh').value = ''; $('#letterExcerptEn').value = '';
+  $('#letterBodyZh').value = ''; $('#letterBodyEn').value = '';
+  $('#letterIssue').value = '';
+  $('#letterDate').value = '';
+  $('#letterStatus').value = 'published';
+  $('#letterCover').value = '';
+  $('#letterEditTitle').textContent = '新一期 Letter · NEW ISSUE';
+  updateLetterWordCount();
+}
+function loadLetterForm(l){
+  $('#letterId').value = l.id || '';
+  $('#letterTitleZh').value = l.title?.zh || ''; $('#letterTitleEn').value = l.title?.en || '';
+  $('#letterExcerptZh').value = l.excerpt?.zh || ''; $('#letterExcerptEn').value = l.excerpt?.en || '';
+  $('#letterBodyZh').value = l.body?.zh || ''; $('#letterBodyEn').value = l.body?.en || '';
+  $('#letterIssue').value = l.issue || '';
+  $('#letterDate').value = l.date || '';
+  $('#letterStatus').value = l.status || 'published';
+  $('#letterCover').value = l.cover || '';
+  $('#letterEditTitle').textContent = '编辑 Letter · EDIT · ' + (l.issue || l.title?.zh || l.title?.en || l.id);
+  updateLetterWordCount();
+}
+function buildLetterFromForm(){
+  return {
+    id: $('#letterId').value.trim() || ('l_' + Date.now()),
+    issue:    $('#letterIssue').value.trim(),
+    title:    { zh: $('#letterTitleZh').value.trim(),   en: $('#letterTitleEn').value.trim() },
+    excerpt:  { zh: $('#letterExcerptZh').value.trim(), en: $('#letterExcerptEn').value.trim() },
+    body:     { zh: $('#letterBodyZh').value,           en: $('#letterBodyEn').value },
+    status:   $('#letterStatus').value,
+    cover:    $('#letterCover').value.trim(),
+    date:     $('#letterDate').value.trim() || new Date().toISOString().slice(0,10)
+  };
+}
+function updateLetterWordCount(){
+  const zh = ($('#letterBodyZh')?.value || '').trim();
+  const en = ($('#letterBodyEn')?.value || '').trim();
+  const zhCount = zh.replace(/\s/g, '').length;
+  const enCount = en ? en.split(/\s+/).filter(Boolean).length : 0;
+  if ($('#letterWordCount')) $('#letterWordCount').textContent = `字数 · ${zhCount} 中 / ${enCount} EN`;
+}
+['#letterBodyZh','#letterBodyEn'].forEach(s => $(s)?.addEventListener('input', updateLetterWordCount));
+
+function renderLetterList(){
+  const list = FlyunCMS.getLetters();
+  const host = $('#letterList'); if (!host) return;
+  host.innerHTML = '';
+  $('#letterCount').textContent = list.length + ' 期';
+  if (!list.length) {
+    host.innerHTML = '<div style="padding:48px 32px;color:var(--text-mute);font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-align:center;border:1px dashed var(--border);border-radius:16px;">还没有期刊 · 写第一期吧</div>';
+    return;
+  }
+  list.forEach(l => {
+    const draft = l.status === 'draft' ? '<span class="lang-pill draft">DRAFT</span>' : '';
+    const issue = l.issue ? '<span class="lang-pill">ISSUE ' + l.issue + '</span>' : '';
+    const row = document.createElement('div');
+    row.className = 'post-row';
+    row.innerHTML = `
+      <div>
+        <div class="ttl">${issue}${draft}${(l.title?.zh || l.title?.en || '<em>(未命名)</em>')}</div>
+        <div class="meta-line">${l.date || ''}</div>
+      </div>
+      <div class="acts">
+        <button class="btn small ghost" data-act="letter-edit" data-id="${l.id}">编辑</button>
+        <a class="btn small ghost" href="letter.html" target="_blank">预览</a>
+        <button class="btn small danger" data-act="letter-del" data-id="${l.id}">删除</button>
+      </div>
+    `;
+    host.appendChild(row);
+  });
+}
+$('#letterList')?.addEventListener('click', e => {
+  const btn = e.target.closest('button[data-act]');
+  if (!btn) return;
+  const id = btn.dataset.id;
+  if (btn.dataset.act === 'letter-edit') {
+    const l = FlyunCMS.getLetters().find(x => x.id === id);
+    if (l) { loadLetterForm(l); window.scrollTo({top:0,behavior:'smooth'}); }
+  } else if (btn.dataset.act === 'letter-del') {
+    if (!confirm('删除这期？')) return;
+    FlyunCMS.deleteLetter(id);
+    renderLetterList(); refreshDash();
+    toast('已删除', 'warn');
+  }
+});
+$('#saveLetter')?.addEventListener('click', () => {
+  const l = buildLetterFromForm();
+  if (!l.title.zh && !l.title.en && !l.issue) { toast('至少填一个标题或期号', 'err'); return; }
+  FlyunCMS.upsertLetter(l);
+  clearLetterForm();
+  renderLetterList(); refreshDash();
+  toast('已保存 · ' + (l.issue || l.title.zh || l.title.en));
+});
+$('#newLetter')?.addEventListener('click', clearLetterForm);
+
+/* ====================================================================
+ * JOBS · 招聘 CRUD
+ * ==================================================================== */
+function clearJobForm(){
+  $('#jobId').value = '';
+  $('#jobTitleZh').value = ''; $('#jobTitleEn').value = '';
+  $('#jobDescZh').value = ''; $('#jobDescEn').value = '';
+  $('#jobTeam').value = ''; $('#jobLocation').value = '';
+  $('#jobType').value = 'full-time';
+  $('#jobStatus').value = 'open';
+  $('#jobEditTitle').textContent = '新岗位 · NEW ROLE';
+}
+function loadJobForm(j){
+  $('#jobId').value = j.id || '';
+  $('#jobTitleZh').value = j.title?.zh || ''; $('#jobTitleEn').value = j.title?.en || '';
+  $('#jobDescZh').value = j.description?.zh || ''; $('#jobDescEn').value = j.description?.en || '';
+  $('#jobTeam').value = j.team || ''; $('#jobLocation').value = j.location || '';
+  $('#jobType').value = j.type || 'full-time';
+  $('#jobStatus').value = j.status || 'open';
+  $('#jobEditTitle').textContent = '编辑岗位 · EDIT · ' + (j.title?.zh || j.title?.en || j.id);
+}
+function buildJobFromForm(){
+  return {
+    id: $('#jobId').value.trim() || ('j_' + Date.now()),
+    title:       { zh: $('#jobTitleZh').value.trim(), en: $('#jobTitleEn').value.trim() },
+    description: { zh: $('#jobDescZh').value,         en: $('#jobDescEn').value },
+    team:     $('#jobTeam').value.trim(),
+    location: $('#jobLocation').value.trim(),
+    type:     $('#jobType').value,
+    status:   $('#jobStatus').value
+  };
+}
+function renderJobList(){
+  const list = FlyunCMS.getJobs();
+  const host = $('#jobList'); if (!host) return;
+  host.innerHTML = '';
+  $('#jobCount').textContent = list.length + ' 个';
+  if (!list.length) {
+    host.innerHTML = '<div style="padding:48px 32px;color:var(--text-mute);font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-align:center;border:1px dashed var(--border);border-radius:16px;">还没有岗位 · 添加第一个</div>';
+    return;
+  }
+  list.forEach(j => {
+    const stat = j.status === 'open' ? '<span class="lang-pill" style="color:var(--accent-2);border-color:rgba(200,255,77,.4);">OPEN</span>'
+              : j.status === 'closed' ? '<span class="lang-pill">CLOSED</span>'
+              : '<span class="lang-pill draft">DRAFT</span>';
+    const row = document.createElement('div');
+    row.className = 'post-row';
+    row.innerHTML = `
+      <div>
+        <div class="ttl">${stat}${(j.title?.zh || j.title?.en || '<em>(未命名)</em>')}</div>
+        <div class="meta-line">${j.team || ''} · ${j.location || ''} · ${j.type || ''}</div>
+      </div>
+      <div class="acts">
+        <button class="btn small ghost" data-act="job-edit" data-id="${j.id}">编辑</button>
+        <a class="btn small ghost" href="job.html" target="_blank">预览</a>
+        <button class="btn small danger" data-act="job-del" data-id="${j.id}">删除</button>
+      </div>
+    `;
+    host.appendChild(row);
+  });
+}
+$('#jobList')?.addEventListener('click', e => {
+  const btn = e.target.closest('button[data-act]');
+  if (!btn) return;
+  const id = btn.dataset.id;
+  if (btn.dataset.act === 'job-edit') {
+    const j = FlyunCMS.getJobs().find(x => x.id === id);
+    if (j) { loadJobForm(j); window.scrollTo({top:0,behavior:'smooth'}); }
+  } else if (btn.dataset.act === 'job-del') {
+    if (!confirm('删除这个岗位？')) return;
+    FlyunCMS.deleteJob(id);
+    renderJobList(); refreshDash();
+    toast('已删除', 'warn');
+  }
+});
+$('#saveJob')?.addEventListener('click', () => {
+  const j = buildJobFromForm();
+  if (!j.title.zh && !j.title.en) { toast('至少填一个岗位标题', 'err'); return; }
+  FlyunCMS.upsertJob(j);
+  clearJobForm();
+  renderJobList(); refreshDash();
+  toast('已保存 · ' + (j.title.zh || j.title.en));
+});
+$('#newJob')?.addEventListener('click', clearJobForm);
+
+/* ====================================================================
+ * CLOUD SYNC · Supabase
+ * ==================================================================== */
+async function refreshCloudUI(){
+  const session = await FlyunCMS.cloud.session();
+  const stat = $('#syncStat');
+  const cardK = $('#cloudCardK');
+  const loginBox = $('#cloudLoginBox');
+  const onlineBox = $('#cloudOnlineBox');
+  if (session) {
+    if (stat)  { stat.textContent = 'SYNC · CLOUD'; stat.style.color='var(--accent-2)'; }
+    if (cardK) cardK.textContent = 'CONNECTED';
+    if (loginBox)  loginBox.style.display = 'none';
+    if (onlineBox) onlineBox.style.display = '';
+    if ($('#cloudUserEmail')) $('#cloudUserEmail').textContent = session.user?.email || '';
+  } else {
+    if (stat)  { stat.textContent = 'SYNC · LOCAL'; stat.style.color=''; }
+    if (cardK) cardK.textContent = 'DISCONNECTED';
+    if (loginBox)  loginBox.style.display = '';
+    if (onlineBox) onlineBox.style.display = 'none';
+  }
+  refreshDash();
+}
+
+$('#cloudSignInBtn')?.addEventListener('click', async () => {
+  const email = $('#cloudEmail').value.trim();
+  const pwd = $('#cloudPwd').value;
+  if (!email || !pwd) { toast('请填邮箱和密码', 'err'); return; }
+  try {
+    toast('正在登录…');
+    await FlyunCMS.cloud.signIn(email, pwd);
+    toast('已连接云端 · CLOUD ON');
+    $('#cloudPwd').value = '';
+    await refreshCloudUI();
+    // 登录后立刻拉一次
+    await FlyunCMS.cloud.pullAll();
+    rerenderAll();
+  } catch (e) {
+    toast('登录失败 · ' + (e.message || ''), 'err');
+  }
+});
+
+$('#cloudSignOutBtn')?.addEventListener('click', async () => {
+  await FlyunCMS.cloud.signOut();
+  await refreshCloudUI();
+  toast('已退出云端', 'warn');
+});
+
+async function pullAndRerender(){
+  toast('同步中…');
+  try { await FlyunCMS.cloud.pullAll(); rerenderAll(); toast('已从云端同步'); }
+  catch (e) { toast('同步失败 · ' + (e.message || ''), 'err'); }
+}
+$('#cloudPullBtn')?.addEventListener('click', pullAndRerender);
+$('#cloudPullBtn2')?.addEventListener('click', pullAndRerender);
+
+$('#cloudPushBtn')?.addEventListener('click', async () => {
+  try {
+    toast('推送中…');
+    const cloud = FlyunCMS.cloud;
+    // 1) content
+    await cloud.pushContent(FlyunCMS.getContent());
+    // 2) images
+    const imgs = getImages();
+    for (const k of Object.keys(imgs)) await cloud.pushImage(k, imgs[k]);
+    // 3) posts / cases / letters / jobs
+    for (const p of FlyunCMS.getPosts())   await cloud.pushPost(p);
+    for (const c of FlyunCMS.getCases())   await cloud.pushCase(c);
+    for (const l of FlyunCMS.getLetters()) await cloud.pushLetter(l);
+    for (const j of FlyunCMS.getJobs())    await cloud.pushJob(j);
+    toast('已全部推送到云端');
+  } catch (e) {
+    toast('推送失败 · ' + (e.message || ''), 'err');
+  }
+});
+
+document.addEventListener('flyun:cloudauth', refreshCloudUI);
+
+function rerenderAll(){
+  buildContentEditor();
+  renderPostList();
+  renderCaseList();
+  renderLetterList();
+  renderJobList();
+  renderImageGrid();
+  renderSlots();
+  refreshDash();
+}
+
+document.addEventListener('flyun:postschange',   renderPostList);
+document.addEventListener('flyun:caseschange',   renderCaseList);
+document.addEventListener('flyun:letterschange', renderLetterList);
+document.addEventListener('flyun:jobschange',    renderJobList);
+document.addEventListener('flyun:imageschange',  () => { renderImageGrid(); renderSlots(); });
 
 /* ============== INIT ============== */
 function initAll(){
   buildContentEditor();
   renderPostList();
+  renderCaseList();
+  renderLetterList();
+  renderJobList();
   renderImageGrid();
+  renderSlots();
   refreshDash();
   updateWordCount();
+  refreshCloudUI();
   setInterval(refreshDash, 30000);
 }
 if (FlyunCMS.isAuthed()) initAll();

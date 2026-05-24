@@ -459,6 +459,7 @@ function renderTagBar(posts){
     bar.appendChild(c);
   });
 }
+let _firstRender = true;
 function renderList(){
   const all = FlyunCMS.getPosts().filter(p => p.status !== 'draft');
   const q = (document.getElementById('search').value || '').trim().toLowerCase();
@@ -474,12 +475,21 @@ function renderList(){
   renderTagBar(all);
   const host = document.getElementById('posts');
   if (!posts.length) {
+    // First paint with empty cache → show "loading" while pullAll() runs
+    if (_firstRender && !all.length && !q && !activeTag) {
+      host.innerHTML = '<div class="empty" style="grid-column:1/-1;">' +
+        '<span class="mono" style="opacity:.6;">FETCHING · 同步中…</span>' +
+        '</div>';
+      _firstRender = false;
+      return;
+    }
     host.innerHTML = '<div class="empty" style="grid-column:1/-1;">' +
       '<span data-i18n="blog.empty">这里还很安静，第一篇文章正在路上。</span>' +
       '</div>';
     FlyunCMS.applyI18n(host);
     return;
   }
+  _firstRender = false;
   host.innerHTML = '';
   posts.forEach(p => {
     const title = pickLang(p, 'title');
@@ -510,13 +520,32 @@ function renderList(){
 document.getElementById('search').addEventListener('input', renderList);
 
 /* ===== ARTICLE VIEW ===== */
+let _articleAttempts = 0;
 function renderArticle(id){
   const post = FlyunCMS.getPosts().find(p => p.id === id);
   if (!post) {
-    document.getElementById('articleView').innerHTML =
-      '<a href="blog.html" class="back">← 返回博客</a><div class="empty" style="margin-top:32px;">未找到该文章 · NOT FOUND</div>';
+    document.getElementById('listView').style.display = 'none';
+    document.getElementById('articleView').style.display = 'block';
+    // First miss → wait for postschange (cloud pull). Second miss → show 404.
+    if (_articleAttempts < 1) {
+      _articleAttempts++;
+      document.getElementById('articleCover').innerHTML = '';
+      document.getElementById('articleMeta').innerHTML = '';
+      document.getElementById('articleTitle').textContent = '';
+      document.getElementById('articleExcerpt').textContent = '';
+      document.getElementById('articleBody').innerHTML =
+        '<div class="empty" style="margin-top:32px;"><span style="font-family:var(--mono);opacity:.6;letter-spacing:.15em;">FETCHING · 同步中…</span></div>';
+      return;
+    }
+    document.getElementById('articleCover').innerHTML = '';
+    document.getElementById('articleMeta').innerHTML = '';
+    document.getElementById('articleTitle').textContent = '';
+    document.getElementById('articleExcerpt').textContent = '';
+    document.getElementById('articleBody').innerHTML =
+      '<div class="empty" style="margin-top:32px;">未找到该文章 · NOT FOUND</div>';
     return;
   }
+  _articleAttempts = 0;
   document.getElementById('listView').style.display = 'none';
   document.getElementById('articleView').style.display = 'block';
   const title = pickLang(post, 'title');
