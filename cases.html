@@ -433,16 +433,73 @@ footer a:hover{color:var(--accent);}
 </footer>
 
 <script>
+  const grid = document.getElementById('grid');
   const chips = document.querySelectorAll('.chip');
-  const cases = document.querySelectorAll('.case');
+
+  /* ===== Filter (works for static + dynamic cases) ===== */
+  function applyFilter(){
+    const active = document.querySelector('.chip.active');
+    const f = active ? active.dataset.filter : 'all';
+    grid.querySelectorAll('.case').forEach(card => {
+      card.style.display = (f === 'all' || card.dataset.cat === f) ? '' : 'none';
+    });
+  }
   chips.forEach(c => c.addEventListener('click', () => {
     chips.forEach(x => x.classList.remove('active'));
     c.classList.add('active');
-    const f = c.dataset.filter;
-    cases.forEach(card => {
-      card.style.display = (f === 'all' || card.dataset.cat === f) ? '' : 'none';
-    });
+    applyFilter();
   }));
+
+  /* ===== CMS-driven cases (rendered at the top of the grid) ===== */
+  function escapeHtml(s){
+    return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+  function pickCmsLang(c, field){
+    const lang = (window.FlyunCMS && FlyunCMS.getLang) ? FlyunCMS.getLang() : 'zh';
+    return (c[field] && c[field][lang]) || (c[field] && c[field].zh) || (c[field] && c[field].en) || '';
+  }
+  const W_BY_CAT = { immersive:'case-w7', xr:'case-w5', brand:'case-w6', talent:'case-w4', ip:'case-w12' };
+
+  function renderCmsCases(){
+    if (!window.FlyunCMS) return;
+    // Drop existing CMS-rendered cases first
+    grid.querySelectorAll('[data-cms-case="1"]').forEach(el => el.remove());
+    const list = FlyunCMS.getCases().filter(c => c.status !== 'draft');
+    // Sort by position then date
+    list.sort((a,b) => (a.position||0) - (b.position||0));
+    if (!list.length) return;
+    const frag = document.createDocumentFragment();
+    list.forEach(c => {
+      const a = document.createElement('a');
+      a.className = 'case ' + (W_BY_CAT[c.category] || 'case-w4');
+      a.dataset.cat = c.category || 'immersive';
+      a.dataset.cmsCase = '1';
+      a.href = c.link || '#';
+      if (c.link && /^https?:/.test(c.link)) { a.target = '_blank'; a.rel = 'noopener'; }
+      const cover = c.cover ? `style="background-image:url('${c.cover.replace(/'/g,"\\'")}');background-size:cover;background-position:center;"` : '';
+      const title = pickCmsLang(c, 'title');
+      const sub = pickCmsLang(c, 'subtitle');
+      a.innerHTML = `
+        <div class="case-canvas bg-warm" ${cover}></div>
+        <div class="case-arrow">↗</div>
+        <div class="case-info">
+          <div class="case-meta">
+            <span>${escapeHtml((c.category||'').toUpperCase())}</span>
+            <span class="tag">${escapeHtml(c.year||'')}</span>
+          </div>
+          <div class="case-name">${escapeHtml(title) || '(untitled)'}</div>
+          <div class="case-sub">${escapeHtml(sub)}</div>
+        </div>
+      `;
+      frag.appendChild(a);
+    });
+    grid.insertBefore(frag, grid.firstChild);
+    applyFilter();
+  }
+
+  renderCmsCases();
+  document.addEventListener('flyun:caseschange', renderCmsCases);
+  document.addEventListener('flyun:langchange',  renderCmsCases);
 </script>
 <script src="assets/flyun-cms.js"></script>
 </body>
