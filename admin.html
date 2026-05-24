@@ -1596,13 +1596,25 @@ $('#postList')?.addEventListener('click', e => {
     toast('已删除', 'warn');
   }
 });
-$('#savePost')?.addEventListener('click', ()=>{
+$('#savePost')?.addEventListener('click', async ()=>{
   const p = buildPostFromForm();
   if (!p.title.zh && !p.title.en) { toast('至少填一个标题', 'err'); return; }
+  // 检查云端登录状态
+  const session = await FlyunCMS.cloud.session();
   FlyunCMS.upsertPost(p);
   clearPostForm();
   renderPostList(); refreshDash();
-  toast('已保存 · ' + (p.title.zh || p.title.en));
+  if (session) {
+    toast('已保存并同步到云端 · ' + (p.title.zh || p.title.en));
+    // 主动验证云端写入是否成功
+    try {
+      await FlyunCMS.cloud.pushPost(p);
+    } catch (e) {
+      toast('云端写入失败 · ' + (e.message || '检查 Supabase 权限'), 'err');
+    }
+  } else {
+    toast('已保存到本地 · 去「系统 · 云同步」登录后才能让访客看到', 'warn');
+  }
 });
 $('#newPost')?.addEventListener('click', clearPostForm);
 
@@ -1827,13 +1839,15 @@ $('#caseList')?.addEventListener('click', e => {
     toast('已删除', 'warn');
   }
 });
-$('#saveCase')?.addEventListener('click', () => {
+$('#saveCase')?.addEventListener('click', async () => {
   const c = buildCaseFromForm();
   if (!c.title.zh && !c.title.en) { toast('至少填一个标题', 'err'); return; }
+  const session = await FlyunCMS.cloud.session();
   FlyunCMS.upsertCase(c);
   clearCaseForm();
   renderCaseList(); refreshDash();
-  toast('已保存 · ' + (c.title.zh || c.title.en));
+  if (session) toast('已保存 · ' + (c.title.zh || c.title.en));
+  else toast('已保存到本地 · 登录云端后访客才能看到', 'warn');
 });
 $('#newCase')?.addEventListener('click', clearCaseForm);
 
@@ -1927,13 +1941,15 @@ $('#letterList')?.addEventListener('click', e => {
     toast('已删除', 'warn');
   }
 });
-$('#saveLetter')?.addEventListener('click', () => {
+$('#saveLetter')?.addEventListener('click', async () => {
   const l = buildLetterFromForm();
   if (!l.title.zh && !l.title.en && !l.issue) { toast('至少填一个标题或期号', 'err'); return; }
+  const session = await FlyunCMS.cloud.session();
   FlyunCMS.upsertLetter(l);
   clearLetterForm();
   renderLetterList(); refreshDash();
-  toast('已保存 · ' + (l.issue || l.title.zh || l.title.en));
+  if (session) toast('已保存 · ' + (l.issue || l.title.zh || l.title.en));
+  else toast('已保存到本地 · 登录云端后访客才能看到', 'warn');
 });
 $('#newLetter')?.addEventListener('click', clearLetterForm);
 
@@ -2012,13 +2028,15 @@ $('#jobList')?.addEventListener('click', e => {
     toast('已删除', 'warn');
   }
 });
-$('#saveJob')?.addEventListener('click', () => {
+$('#saveJob')?.addEventListener('click', async () => {
   const j = buildJobFromForm();
   if (!j.title.zh && !j.title.en) { toast('至少填一个岗位标题', 'err'); return; }
+  const session = await FlyunCMS.cloud.session();
   FlyunCMS.upsertJob(j);
   clearJobForm();
   renderJobList(); refreshDash();
-  toast('已保存 · ' + (j.title.zh || j.title.en));
+  if (session) toast('已保存 · ' + (j.title.zh || j.title.en));
+  else toast('已保存到本地 · 登录云端后访客才能看到', 'warn');
 });
 $('#newJob')?.addEventListener('click', clearJobForm);
 
