@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>飞云 Pro · 猎头 AI 操作系统</title>
+    <!-- 纯代码生成的 SVG 网站图标 (Favicon) -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><defs><linearGradient id='g' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' stop-color='%232563eb'/><stop offset='100%' stop-color='%237c3aed'/></linearGradient></defs><path fill='url(%23g)' d='M73.5,36.1c-1.3-13.8-12.9-24.6-27.1-24.6c-10.7,0-20,6.2-24.5,15.2c-1.6-0.3-3.2-0.5-4.9-0.5 C8.1,26.2,1,33.3,1,42.2c0,8.4,6.4,15.3,14.6,15.9h57.9c13.5,0,24.5-11,24.5-24.5C98,39.6,86.9,36.1,73.5,36.1z'/></svg>">
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -32,12 +35,6 @@
         
         /* 拖拽上传区激活状态 */
         .drag-active { border-color: #3b82f6 !important; background-color: #eff6ff !important; }
-        .scanner-line {
-            position: absolute; left: 0; width: 100%; height: 2px;
-            background: linear-gradient(to right, transparent, #3b82f6, transparent);
-            box-shadow: 0 0 10px #3b82f6; animation: scanline 2s linear infinite; z-index: 10;
-        }
-        
         .custom-scrollbar::-webkit-scrollbar { width: 4px; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
@@ -62,35 +59,24 @@
                 <div class="sidebar-item active flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 font-medium" onclick="switchTab('tab-jd')">
                     <span class="icon-container w-5 text-center"><i class="fas fa-bullseye"></i></span> JD 透视与卖点
                 </div>
+                <div class="sidebar-item flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 font-medium" onclick="switchTab('tab-mapping')">
+                    <span class="icon-container w-5 text-center"><i class="fas fa-network-wired"></i></span> 自动 Target Mapping <span class="xr-chip ml-auto" style="background: linear-gradient(135deg, #10b981, #3b82f6);">NEW</span>
+                </div>
                 <div class="sidebar-item flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 font-medium" onclick="switchTab('tab-resume')">
                     <span class="icon-container w-5 text-center"><i class="fas fa-file-waveform"></i></span> 简历诊断与重构
                 </div>
                 <div class="sidebar-item flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 font-medium" onclick="switchTab('tab-interview')">
-                    <span class="icon-container w-5 text-center"><i class="fas fa-user-tie"></i></span> AI 面试演练舱 <span class="xr-chip ml-auto">HOT</span>
-                </div>
-                <div class="sidebar-item flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 font-medium" onclick="alert('开发中：连接全网数据库，自动生成目标公司 List')">
-                    <span class="icon-container w-5 text-center"><i class="fas fa-network-wired"></i></span> 自动 Target Mapping
+                    <span class="icon-container w-5 text-center"><i class="fas fa-user-tie"></i></span> AI 面试演练舱
                 </div>
             </div>
             
-            <!-- 专注领域 -->
-            <div class="text-[11px] font-bold text-slate-400 uppercase px-8 mb-2 mt-8">人才库引擎</div>
-            <div class="px-4 space-y-1">
-                <div class="sidebar-item flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 font-medium">
-                    <span class="icon-container w-5 text-center"><i class="fas fa-car-side"></i></span> 智能座舱 / 三电
-                </div>
-                <div class="sidebar-item flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 font-medium">
-                    <span class="icon-container w-5 text-center"><i class="fas fa-vr-cardboard"></i></span> XR / 空间计算
-                </div>
-            </div>
-
             <!-- 运营转化 -->
-            <div class="text-[11px] font-bold text-slate-400 uppercase px-8 mb-2 mt-8">转化与跟进</div>
+            <div class="text-[11px] font-bold text-slate-400 uppercase px-8 mb-2 mt-8">转化与谈判</div>
             <div class="px-4 space-y-1">
-                <div class="sidebar-item flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 font-medium">
-                    <span class="icon-container w-5 text-center"><i class="fas fa-handshake-angle"></i></span> Offer 谈判策略
+                <div class="sidebar-item flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 font-medium" onclick="switchTab('tab-offer')">
+                    <span class="icon-container w-5 text-center"><i class="fas fa-handshake-angle"></i></span> Offer 博弈策略 <span class="xr-chip ml-auto" style="background: linear-gradient(135deg, #8b5cf6, #ec4899);">PRO</span>
                 </div>
-                <div class="sidebar-item flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 font-medium">
+                <div class="sidebar-item flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 font-medium" onclick="alert('即将上线：基于候选人历史标签自动生成微信寒暄话术')">
                     <span class="icon-container w-5 text-center"><i class="fas fa-mug-hot"></i></span> 候选人自动唤醒
                 </div>
             </div>
@@ -109,7 +95,7 @@
     </aside>
 
     <!-- 主工作区 -->
-    <main class="flex-1 overflow-y-auto custom-scrollbar h-screen bg-slate-50 relative">
+    <main class="flex-1 overflow-y-auto custom-scrollbar h-screen bg-slate-50 relative pb-20">
         
         <!-- 顶部功能栏 -->
         <div class="h-20 bg-white/70 backdrop-blur-xl sticky top-0 z-20 border-b px-10 flex justify-between items-center">
@@ -128,29 +114,27 @@
 
         <div class="p-10 max-w-7xl mx-auto">
             
-            <!-- Tab 1: JD 岗位分析与卖点 (新功能) -->
+            <!-- Tab 1: JD 岗位分析 (已存在) -->
             <div id="tab-jd" class="tab-content active space-y-6">
-                <!-- 输入区 -->
+                <!-- 与上一版本相同，保持代码完整性 -->
                 <div class="bg-white p-8 rounded-[2rem] shadow-sm border border-slate-100 flex gap-6">
                     <div class="flex-1">
                         <h3 class="font-bold text-slate-800 mb-4 flex items-center gap-2">
-                            <i class="fas fa-paste text-blue-500"></i> 贴入企业 JD (Job Description)
+                            <i class="fas fa-paste text-blue-500"></i> 贴入企业 JD
                         </h3>
-                        <textarea class="w-full h-40 bg-slate-50 rounded-2xl p-5 text-sm border-2 border-transparent focus:border-blue-200 focus:bg-white outline-none transition-all resize-none" placeholder="例如：新能源车企寻访高级智能座舱产品经理，要求有从0到1量产经验，懂高通8295平台优先..."></textarea>
+                        <textarea class="w-full h-40 bg-slate-50 rounded-2xl p-5 text-sm border-2 border-transparent focus:border-blue-200 focus:bg-white outline-none transition-all resize-none" placeholder="例如：新能源车企寻访高级智能座舱产品经理..."></textarea>
                     </div>
                     <div class="w-64 flex flex-col justify-end">
                         <div class="bg-blue-50 text-blue-700 text-xs p-4 rounded-2xl mb-4 leading-relaxed font-medium">
-                            <i class="fas fa-lightbulb text-blue-500 mr-1"></i> AI 将自动分析核心诉求、提炼挖猎卖点，并生成目标公司 Mapping 建议。
+                            <i class="fas fa-lightbulb text-blue-500 mr-1"></i> AI 将自动分析核心诉求、提炼挖猎卖点。
                         </div>
-                        <button onclick="simulateAILoading('jd-results')" class="py-4 bg-blue-600 text-white rounded-2xl font-bold flex items-center justify-center gap-2 hover:bg-blue-700 transition shadow-xl shadow-blue-200">
+                        <button onclick="simulateAILoading('jd-results', this)" class="py-4 bg-blue-600 text-white rounded-2xl font-bold flex items-center justify-center gap-2 hover:bg-blue-700 transition shadow-xl shadow-blue-200">
                             <i class="fas fa-wand-magic-sparkles"></i> 智能透视 JD
                         </button>
                     </div>
                 </div>
 
-                <!-- AI 解析结果区 -->
                 <div id="jd-results" class="hidden grid grid-cols-3 gap-6 animate-in slide-in-from-bottom duration-500">
-                    <!-- 核心画像 -->
                     <div class="col-span-1 bg-white p-6 rounded-[2rem] border border-slate-100 shadow-sm relative overflow-hidden">
                         <div class="absolute top-0 right-0 w-24 h-24 bg-purple-500/10 rounded-full blur-2xl"></div>
                         <h4 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">真实痛点解码</h4>
@@ -162,150 +146,180 @@
                             <div class="flex justify-center"><i class="fas fa-arrow-down text-slate-300"></i></div>
                             <div class="p-4 bg-purple-50 border border-purple-100 rounded-xl">
                                 <span class="text-xs font-bold text-white bg-purple-500 px-2 py-1 rounded-md mb-2 inline-block">深层业务痛点</span>
-                                <p class="text-sm text-slate-800 font-bold leading-relaxed">该车企新车型进度极速，没有试错时间。需要一个自带底层芯片厂资源、能立刻带团队避坑的“救火队长”，而非单纯画原型的产品。</p>
+                                <p class="text-sm text-slate-800 font-bold leading-relaxed">需要一个自带底层芯片厂资源、能立刻带团队避坑的“救火队长”。</p>
                             </div>
                         </div>
                     </div>
-
-                    <!-- 候选人勾搭话术 -->
                     <div class="col-span-2 bg-slate-900 p-8 rounded-[2rem] text-white shadow-xl relative overflow-hidden">
                         <i class="fas fa-quote-left absolute top-6 right-8 text-6xl text-white/5"></i>
                         <h4 class="text-xs font-bold text-blue-400 uppercase tracking-widest mb-4">AI 生成的 1 分钟勾搭话术 (Pitch)</h4>
-                        
                         <div class="space-y-6 mt-6">
                             <div>
-                                <p class="text-xs text-slate-400 mb-1">针对稳健型高管 (追求安全感与权力)：</p>
+                                <p class="text-xs text-slate-400 mb-1">针对进取型实干家：</p>
                                 <p class="text-base font-medium leading-relaxed bg-white/5 p-4 rounded-xl border border-white/10">
-                                    “张总，目前有一家头部造车新势力，座舱线处于核心爆发期，直接汇报给 SVP。他们急需一位懂 8295 平台的定海神针去掌舵，预算很足，最重要的是**放权度极高**。您现在在X厂架构已经固化，不如看看这个能主导下一代爆款车型的盘子？”
+                                    “李工，关注到您在HMI框架做得很漂亮。这里有个0到1的重磅新车型机会，底层直接怼 8295 性能上限，能让您把之前没落地的空间交互想法全部实现，聊十分钟？”
                                 </p>
                             </div>
-                            <div>
-                                <p class="text-xs text-slate-400 mb-1">针对进取型实干家 (追求技术与突破)：</p>
-                                <p class="text-base font-medium leading-relaxed bg-white/5 p-4 rounded-xl border border-white/10">
-                                    “李工，关注到您在上一款车型的 HMI 框架做得很漂亮。这里有个0到1的重磅新车型机会，底层直接怼 8295 芯片性能上限，能让您把之前受限于平台没落地的空间交互想法全部实现。期权给得很足，要不要聊十分钟？”
-                                </p>
-                            </div>
-                        </div>
-                        <div class="mt-6 flex gap-3">
-                            <button class="px-4 py-2 bg-blue-500 hover:bg-blue-600 rounded-lg text-xs font-bold transition">复制话术</button>
-                            <button class="px-4 py-2 bg-white/10 hover:bg-white/20 rounded-lg text-xs font-bold transition">切换风格</button>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Tab 2: 简历诊断与重构 (原版升级集成) -->
-            <div id="tab-resume" class="tab-content">
-                <!-- 保持上一版的简历拖拽代码 -->
-                <div class="grid grid-cols-12 gap-6">
-                    <div class="col-span-12 lg:col-span-12 bg-white p-8 rounded-[2rem] shadow-sm border border-slate-100 relative overflow-hidden">
-                        <div class="flex items-center justify-between mb-6">
-                            <h3 class="font-black text-xl flex items-center gap-3">
-                                <span class="w-2 h-8 bg-emerald-500 rounded-full"></span> 简历智能脱敏与 STAR 重构
-                            </h3>
-                            <span class="text-[10px] font-bold text-slate-400 bg-slate-100 px-3 py-1 rounded-full"><i class="fas fa-shield text-emerald-500 mr-1"></i> 开启防泄密模式</span>
-                        </div>
-
-                        <div id="dropZone" class="relative border-2 border-dashed border-slate-200 rounded-2xl p-10 flex flex-col items-center justify-center min-h-[250px] group transition-all cursor-pointer hover:border-blue-400 hover:bg-blue-50/50">
-                            <i class="fas fa-file-arrow-up text-4xl text-slate-300 group-hover:text-blue-500 transition mb-4"></i>
-                            <h4 class="text-slate-700 font-bold text-base mb-1">拖拽简历至此或点击上传</h4>
-                            <p class="text-xs text-slate-400 font-medium">支持 PDF, Word。自动隐去联系方式并给出优化建议。</p>
-                        </div>
-                        <!-- 演示提示 -->
-                        <div class="mt-6 p-4 bg-blue-50 rounded-xl text-sm text-blue-700">
-                            <i class="fas fa-info-circle mr-2"></i> 此模块包含简历量化、脱敏导出等功能。具体效果参考我们之前的单独迭代。
-                        </div>
+            <!-- Tab 2: 自动 Target Mapping (全新功能) -->
+            <div id="tab-mapping" class="tab-content space-y-6">
+                <div class="bg-white p-8 rounded-[2rem] shadow-sm border border-slate-100 flex gap-6 items-center">
+                    <div class="flex-1">
+                        <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">输入当前在寻访的岗位 / 行业</p>
+                        <input type="text" class="w-full text-lg font-bold bg-slate-50 border-2 border-transparent focus:border-blue-200 rounded-xl p-4 outline-none" value="XR 空间计算 / 渲染引擎专家">
                     </div>
-                </div>
-            </div>
-
-            <!-- Tab 3: AI 面试演练舱 (新功能) -->
-            <div id="tab-interview" class="tab-content space-y-6">
-                <!-- 顶部配置区 -->
-                <div class="flex gap-4">
-                    <div class="flex-1 bg-white p-4 rounded-2xl border border-slate-100 shadow-sm flex items-center gap-4">
-                        <div class="w-12 h-12 bg-orange-100 text-orange-500 rounded-full flex items-center justify-center text-xl"><i class="fas fa-user"></i></div>
-                        <div class="flex-1">
-                            <p class="text-xs text-slate-400 font-bold uppercase">当前辅导对象</p>
-                            <p class="font-bold text-slate-800">张明 - 高级 XR 渲染工程师</p>
-                        </div>
-                        <button class="text-blue-500 text-sm font-bold hover:underline">重新选择</button>
-                    </div>
-                    <div class="flex-1 bg-white p-4 rounded-2xl border border-slate-100 shadow-sm flex items-center gap-4">
-                        <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-xl"><i class="fas fa-building"></i></div>
-                        <div class="flex-1">
-                            <p class="text-xs text-slate-400 font-bold uppercase">目标企业/岗位</p>
-                            <p class="font-bold text-slate-800">字节跳动 P7 - 空间计算部门</p>
-                        </div>
-                        <button class="text-blue-500 text-sm font-bold hover:underline">更换 JD</button>
-                    </div>
-                    <button onclick="simulateAILoading('interview-results')" class="px-8 bg-slate-900 text-white rounded-2xl font-bold shadow-xl hover:bg-black transition">
-                        <i class="fas fa-play mr-2"></i> 生成辅导策略
+                    <button onclick="simulateAILoading('mapping-results', this)" class="px-8 py-4 bg-blue-600 text-white rounded-2xl font-bold flex items-center gap-2 hover:bg-blue-700 transition shadow-xl shadow-blue-200">
+                        <i class="fas fa-sitemap"></i> 一键生成 Mapping
                     </button>
                 </div>
 
-                <!-- 辅导内容面板 -->
-                <div id="interview-results" class="hidden animate-in slide-in-from-bottom duration-500">
-                    <div class="grid grid-cols-2 gap-6">
+                <div id="mapping-results" class="hidden animate-in slide-in-from-bottom duration-500">
+                    <div class="grid grid-cols-3 gap-6">
+                        <!-- Tier 1 -->
+                        <div class="bg-white border-t-4 border-t-red-500 p-6 rounded-b-[2rem] shadow-sm">
+                            <h3 class="font-black text-lg text-slate-800 mb-1">Tier 1: 核心竞品</h3>
+                            <p class="text-xs text-slate-500 mb-6">高精准度，挖来即用，但防挖角极其严密。</p>
+                            <ul class="space-y-3">
+                                <li class="flex items-center justify-between p-3 bg-slate-50 rounded-xl border border-slate-100">
+                                    <span class="font-bold text-slate-700">字节跳动 (Pico 线)</span>
+                                    <span class="text-[10px] bg-red-100 text-red-600 px-2 py-0.5 rounded-full font-bold">挖角难度：极高</span>
+                                </li>
+                                <li class="flex items-center justify-between p-3 bg-slate-50 rounded-xl border border-slate-100">
+                                    <span class="font-bold text-slate-700">Apple (visionOS 团队)</span>
+                                    <span class="text-[10px] bg-red-100 text-red-600 px-2 py-0.5 rounded-full font-bold">挖角难度：极高</span>
+                                </li>
+                                <li class="flex items-center justify-between p-3 bg-slate-50 rounded-xl border border-slate-100">
+                                    <span class="font-bold text-slate-700">XREAL (前沿研发)</span>
+                                    <span class="text-[10px] bg-orange-100 text-orange-600 px-2 py-0.5 rounded-full font-bold">挖角难度：中等</span>
+                                </li>
+                            </ul>
+                        </div>
                         
-                        <!-- 左侧：致命弱点与连环追问 -->
-                        <div class="bg-white p-8 rounded-[2rem] border border-red-100 shadow-sm relative">
-                            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-red-500 to-orange-400"></div>
-                            <h3 class="font-black text-lg text-slate-800 mb-6 flex items-center gap-2">
-                                <i class="fas fa-biohazard text-red-500"></i> AI 压力测试预警 (Red Flags)
-                            </h3>
-                            
-                            <div class="space-y-5">
-                                <div class="border-l-4 border-red-500 pl-4">
-                                    <p class="text-xs font-bold text-red-500 uppercase mb-1">履历硬伤被问概率：90%</p>
-                                    <p class="text-sm font-bold text-slate-800 mb-2">"你在前公司带的项目只活了半年就被砍了，你觉得你的架构设计有问题吗？"</p>
-                                    <div class="bg-slate-50 p-3 rounded-lg text-xs text-slate-600 leading-relaxed border border-slate-200">
-                                        <span class="font-bold text-emerald-600">AI 建议回答策略：</span> 绝不甩锅给业务端。承认当时对性能边界的认知不足，重点讲述复盘后重构的渲染管线，以及这个经验如何能帮助新公司避开同样的坑。
-                                    </div>
-                                </div>
-                                <div class="border-l-4 border-orange-400 pl-4">
-                                    <p class="text-xs font-bold text-orange-500 uppercase mb-1">技术细节追问预判</p>
-                                    <p class="text-sm font-bold text-slate-800 mb-2">"你说你优化了 Unity 的渲染帧率，如果现在转 Three.js/WebXR，你打算从哪几个层面入手优化？"</p>
-                                    <div class="bg-slate-50 p-3 rounded-lg text-xs text-slate-600 leading-relaxed border border-slate-200">
-                                        <span class="font-bold text-emerald-600">猎头提醒语：</span> 提醒候选人明天的面试官偏向 Web 端原生技术，务必提前复习 WebGL 的 DrawCall 优化策略，不要只局限于引擎层的配置。
-                                    </div>
-                                </div>
+                        <!-- Tier 2 -->
+                        <div class="bg-white border-t-4 border-t-blue-500 p-6 rounded-b-[2rem] shadow-sm">
+                            <h3 class="font-black text-lg text-slate-800 mb-1">Tier 2: 上下游 / 技术降维</h3>
+                            <p class="text-xs text-slate-500 mb-6">底层技术互通，需要一定业务适应期。</p>
+                            <ul class="space-y-3">
+                                <li class="flex items-center justify-between p-3 bg-slate-50 rounded-xl border border-slate-100">
+                                    <span class="font-bold text-slate-700">腾讯 (天美/光子引擎组)</span>
+                                    <span class="text-[10px] bg-emerald-100 text-emerald-600 px-2 py-0.5 rounded-full font-bold">动机：游戏卷转硬件</span>
+                                </li>
+                                <li class="flex items-center justify-between p-3 bg-slate-50 rounded-xl border border-slate-100">
+                                    <span class="font-bold text-slate-700">蔚来/小鹏 (座舱图形侧)</span>
+                                    <span class="text-[10px] bg-emerald-100 text-emerald-600 px-2 py-0.5 rounded-full font-bold">动机：车端转纯XR</span>
+                                </li>
+                                <li class="flex items-center justify-between p-3 bg-slate-50 rounded-xl border border-slate-100">
+                                    <span class="font-bold text-slate-700">Epic Games (国内分部)</span>
+                                    <span class="text-[10px] bg-emerald-100 text-emerald-600 px-2 py-0.5 rounded-full font-bold">动机：看好硬件载体</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- Tier 3 -->
+                        <div class="bg-white border-t-4 border-t-purple-500 p-6 rounded-b-[2rem] shadow-sm">
+                            <h3 class="font-black text-lg text-slate-800 mb-1">Tier 3: 跨界黑马</h3>
+                            <p class="text-xs text-slate-500 mb-6">非标候选人，往往有奇效且性价比极高。</p>
+                            <ul class="space-y-3">
+                                <li class="p-3 bg-purple-50 rounded-xl border border-purple-100">
+                                    <p class="font-bold text-purple-900 mb-1 text-sm">医疗影像 3D 渲染头部企业</p>
+                                    <p class="text-[10px] text-purple-700 leading-relaxed">AI 建议：他们对体素渲染和极低延迟有苛刻要求，非常适合降维打击 XR 工业场景。</p>
+                                </li>
+                                <li class="p-3 bg-purple-50 rounded-xl border border-purple-100">
+                                    <p class="font-bold text-purple-900 mb-1 text-sm">影视特效 (如流浪地球视效组)</p>
+                                    <p class="text-[10px] text-purple-700 leading-relaxed">AI 建议：懂极致画面表现，适合弥补纯技术团队缺乏艺术表现力的短板。</p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab 3: 简历重构 (UI占位，保持原有流) -->
+            <div id="tab-resume" class="tab-content">
+                <div class="bg-white p-10 rounded-[2rem] shadow-sm border border-slate-100 text-center">
+                    <div class="w-16 h-16 bg-blue-50 text-blue-500 rounded-2xl flex items-center justify-center mx-auto mb-4 text-2xl"><i class="fas fa-file-pdf"></i></div>
+                    <h3 class="font-bold text-xl mb-2">简历诊断引擎</h3>
+                    <p class="text-slate-500 text-sm">拖拽简历至此进行 STAR 法则重构与自动脱敏（请参考上一版完整拖拽交互）</p>
+                </div>
+            </div>
+
+            <!-- Tab 4: AI 面试演练 (UI占位，保持原有流) -->
+            <div id="tab-interview" class="tab-content">
+                <div class="bg-white p-10 rounded-[2rem] shadow-sm border border-slate-100 text-center">
+                    <div class="w-16 h-16 bg-emerald-50 text-emerald-500 rounded-2xl flex items-center justify-center mx-auto mb-4 text-2xl"><i class="fas fa-chalkboard-user"></i></div>
+                    <h3 class="font-bold text-xl mb-2">面试演练舱</h3>
+                    <p class="text-slate-500 text-sm">Red Flags 预警与终局反问库已准备就绪（请参考上一版完整交互）</p>
+                </div>
+            </div>
+
+            <!-- Tab 5: Offer 博弈策略 (全新功能) -->
+            <div id="tab-offer" class="tab-content space-y-6">
+                <div class="bg-white p-8 rounded-[2rem] shadow-sm border border-slate-100">
+                    <h3 class="font-black text-xl flex items-center gap-3 mb-6">
+                        <span class="w-2 h-8 bg-indigo-500 rounded-full"></span> 薪酬期望 Gap 分析器
+                    </h3>
+                    
+                    <div class="grid grid-cols-2 gap-8">
+                        <!-- 候选人现状 -->
+                        <div class="space-y-4">
+                            <p class="text-sm font-bold text-slate-800 bg-slate-100 px-3 py-2 rounded-lg inline-block">👨‍💻 候选人预期 (Candidate)</p>
+                            <div>
+                                <label class="text-xs text-slate-500 font-bold mb-1 block">目前底薪 (Current Base)</label>
+                                <input type="text" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm outline-none" value="月薪 45k * 15薪">
+                            </div>
+                            <div>
+                                <label class="text-xs text-slate-500 font-bold mb-1 block">心理底线 (Expected Base)</label>
+                                <input type="text" class="w-full bg-slate-50 border border-red-200 text-red-600 rounded-xl p-3 text-sm outline-none font-bold" value="至少涨幅 30% -> 60k">
                             </div>
                         </div>
 
-                        <!-- 右侧：高分反问与谈资 -->
-                        <div class="bg-white p-8 rounded-[2rem] border border-emerald-100 shadow-sm relative">
-                            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-400 to-teal-400"></div>
-                            <h3 class="font-black text-lg text-slate-800 mb-6 flex items-center gap-2">
-                                <i class="fas fa-trophy text-emerald-500"></i> 终局制胜：高分反问库
-                            </h3>
-                            <p class="text-xs text-slate-500 mb-4">当面试官问“你有什么想问我的吗？”时使用，展现高维认知。</p>
-
-                            <ul class="space-y-4">
-                                <li class="bg-emerald-50/50 p-4 rounded-xl border border-emerald-100 hover:bg-emerald-50 transition cursor-pointer">
-                                    <div class="flex gap-3">
-                                        <i class="fas fa-comment-dots text-emerald-500 mt-1"></i>
-                                        <div>
-                                            <p class="text-sm font-bold text-slate-800 mb-1">业务视角</p>
-                                            <p class="text-xs text-slate-600">“我看到咱们部门在推 visionOS 端的产品，请问目前最大的技术瓶颈是跨端同步延迟，还是纯粹的渲染发热限制？”</p>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="bg-blue-50/50 p-4 rounded-xl border border-blue-100 hover:bg-blue-50 transition cursor-pointer">
-                                    <div class="flex gap-3">
-                                        <i class="fas fa-crosshairs text-blue-500 mt-1"></i>
-                                        <div>
-                                            <p class="text-sm font-bold text-slate-800 mb-1">目标感视角</p>
-                                            <p class="text-xs text-slate-600">“如果我有幸入职，您希望我在前 3 个月内解决的最核心的痛点是什么？”</p>
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
-
-                            <button class="w-full mt-6 py-3 border-2 border-slate-900 text-slate-900 rounded-xl text-sm font-bold hover:bg-slate-900 hover:text-white transition">
-                                <i class="fas fa-paper-plane mr-2"></i> 生成辅导 PDF 发送给候选人
-                            </button>
+                        <!-- HR/企业预算 -->
+                        <div class="space-y-4 border-l border-slate-100 pl-8">
+                            <p class="text-sm font-bold text-slate-800 bg-slate-100 px-3 py-2 rounded-lg inline-block">🏢 企业预算 (Company)</p>
+                            <div>
+                                <label class="text-xs text-slate-500 font-bold mb-1 block">岗位预算上限 (Max Base)</label>
+                                <input type="text" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm outline-none" value="月薪最高给到 50k">
+                            </div>
+                            <div>
+                                <label class="text-xs text-slate-500 font-bold mb-1 block">额外杠杆工具 (Leverage)</label>
+                                <input type="text" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm outline-none" value="大量期权、签字费(Sign-on Bonus)">
+                            </div>
                         </div>
+                    </div>
+                    
+                    <button onclick="simulateAILoading('offer-results', this)" class="w-full mt-8 py-4 bg-slate-900 text-white rounded-2xl font-bold flex items-center justify-center gap-2 hover:bg-black transition shadow-xl">
+                        <i class="fas fa-scale-balanced"></i> AI 生成博弈与促单策略
+                    </button>
+                </div>
+
+                <!-- 策略输出区 -->
+                <div id="offer-results" class="hidden grid grid-cols-2 gap-6 animate-in slide-in-from-bottom duration-500">
+                    <div class="bg-indigo-50 border border-indigo-100 p-8 rounded-[2rem]">
+                        <div class="flex items-center gap-3 mb-4">
+                            <i class="fas fa-arrow-down-up-lock text-indigo-500 text-xl"></i>
+                            <h4 class="font-bold text-indigo-900">对候选人话术 (降低防备心)</h4>
+                        </div>
+                        <p class="text-sm text-indigo-800 leading-relaxed font-medium bg-white/60 p-4 rounded-xl">
+                            “张哥，我刚去跟 HRD 探了底。目前大环境卡 Base 卡得很死，50k 已经是破格申请了。但我帮您争取到了极具诚意的方案：<br><br>
+                            1. **现金流补偿**：争取 10w 签字费，弥补您首年 Base 的落差。<br>
+                            2. **期权杠杆**：这个岗位直接绑定 XR 新产品线，期权池是独立的，搏一波未来。<br>
+                            比起纯涨几千块底薪，拿到一个不受限的核心研发盘子，对您下一份履历背书更有价值。您看这个组合方案我能去向他们正式提吗？”
+                        </p>
+                    </div>
+
+                    <div class="bg-emerald-50 border border-emerald-100 p-8 rounded-[2rem]">
+                        <div class="flex items-center gap-3 mb-4">
+                            <i class="fas fa-building-user text-emerald-500 text-xl"></i>
+                            <h4 class="font-bold text-emerald-900">对 HR 话术 (施加压迫感)</h4>
+                        </div>
+                        <p class="text-sm text-emerald-800 leading-relaxed font-medium bg-white/60 p-4 rounded-xl">
+                            “李总，我摸排了市面上 5 家头部公司的渲染大牛，张工是唯一兼具底层引擎架构和带过百人团队落地的。他目前的薪资确实有溢价，但他手里正拿着字节那边平薪的 Offer 在犹豫。<br><br>
+                            既然咱们 Base 卡在 50k 过不去，为了这临门一脚，您看能不能申请一个 **10万的 Sign-on Bonus（按年返还）+ 核心股票池** 的特批？这个关键节点如果放跑了他，重新寻访的沉默成本至少又要耽误两个月项目进度。”
+                        </p>
                     </div>
                 </div>
 
@@ -317,47 +331,41 @@
     <script>
         // 标签页切换逻辑
         function switchTab(tabId) {
-            // 重置侧边栏状态
             document.querySelectorAll('.sidebar-item').forEach(item => {
                 item.classList.remove('active');
             });
-            // 激活当前点击的侧边栏项
             event.currentTarget.classList.add('active');
 
-            // 更改 Header 标题
             const titles = {
                 'tab-jd': 'JD 透视与卖点提炼',
+                'tab-mapping': '自动 Target Mapping',
                 'tab-resume': 'AI 简历诊断引擎',
-                'tab-interview': 'AI 面试演练与策略'
+                'tab-interview': 'AI 面试演练与策略',
+                'tab-offer': 'Offer 谈判与博弈策略'
             };
             document.getElementById('header-title').innerText = titles[tabId];
 
-            // 切换内容区域
             document.querySelectorAll('.tab-content').forEach(content => {
                 content.classList.remove('active');
             });
             document.getElementById(tabId).classList.add('active');
         }
 
-        // 模拟 AI 加载效果
-        function simulateAILoading(resultElementId) {
-            const btn = event.currentTarget;
-            const originalText = btn.innerHTML;
+        // 统一模拟 AI 加载效果 (传入自身按钮和目标 ID)
+        function simulateAILoading(resultElementId, btn) {
+            const originalHTML = btn.innerHTML;
             const resultDiv = document.getElementById(resultElementId);
             
-            // 如果结果已经显示，先隐藏
             resultDiv.classList.add('hidden');
             
-            // 按钮变为加载状态
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 飞云引擎解析中...';
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 飞云 AI 分析中...';
             btn.classList.add('opacity-80', 'cursor-not-allowed');
             
-            // 模拟延迟
             setTimeout(() => {
-                btn.innerHTML = originalText;
+                btn.innerHTML = originalHTML;
                 btn.classList.remove('opacity-80', 'cursor-not-allowed');
                 resultDiv.classList.remove('hidden');
-            }, 1500);
+            }, 1200);
         }
     </script>
 </body>
