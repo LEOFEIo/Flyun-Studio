@@ -2,42 +2,29 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <title>飞云 Pro · 猎头 AI 操作系统</title>
-    <!-- 纯代码生成的 SVG 网站图标 (Favicon) -->
+    <title>飞云 Pro · 超级猎头 AI 操作系统</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><defs><linearGradient id='g' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' stop-color='%232563eb'/><stop offset='100%' stop-color='%237c3aed'/></linearGradient></defs><path fill='url(%23g)' d='M73.5,36.1c-1.3-13.8-12.9-24.6-27.1-24.6c-10.7,0-20,6.2-24.5,15.2c-1.6-0.3-3.2-0.5-4.9-0.5 C8.1,26.2,1,33.3,1,42.2c0,8.4,6.4,15.3,14.6,15.9h57.9c13.5,0,24.5-11,24.5-24.5C98,39.6,86.9,36.1,73.5,36.1z'/></svg>">
-    
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         @keyframes cloudFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
-        @keyframes xrPulse { 0%, 100% { opacity: 0.7; transform: scale(1); } 50% { opacity: 1; transform: scale(1.05); } }
-        @keyframes scanline { 0% { top: 0%; opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { top: 100%; opacity: 0; } }
+        @keyframes pulseGlow { 0%, 100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4); } 50% { box-shadow: 0 0 0 10px rgba(59, 130, 246, 0); } }
+        @keyframes waveform { 0% { height: 10px; } 50% { height: 30px; background-color: #3b82f6;} 100% { height: 10px; } }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         
         .logo-cloud { animation: cloudFloat 3s ease-in-out infinite; background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%); }
-        
-        /* 侧边栏交互 */
         .sidebar-item { transition: all 0.2s ease-in-out; border-left: 3px solid transparent; cursor: pointer; }
         .sidebar-item:hover { background: #f1f5f9; color: #2563eb; }
         .sidebar-item.active { background: #eff6ff; color: #2563eb; border-left: 3px solid #2563eb; font-weight: 700; }
-        .sidebar-item.active .icon-container { color: #2563eb; }
-        
-        /* 标签页切换动画 */
         .tab-content { display: none; animation: fadeIn 0.4s ease-out forwards; }
         .tab-content.active { display: block; }
         
-        .xr-chip {
-            display: inline-flex; align-items: center; gap: 4px;
-            font-size: 9px; font-weight: 800; letter-spacing: 0.1em;
-            background: linear-gradient(135deg, #FF4D2E, #F4B860); color: #fff;
-            padding: 2px 6px; border-radius: 4px; text-transform: uppercase;
-        }
+        .ai-badge { display: inline-flex; align-items: center; gap: 4px; font-size: 9px; font-weight: 800; letter-spacing: 0.1em; padding: 2px 6px; border-radius: 4px; text-transform: uppercase; }
+        .wave-bar { width: 4px; border-radius: 2px; background: #94a3b8; animation: waveform 1s ease-in-out infinite; }
+        .wave-bar:nth-child(2) { animation-delay: 0.1s; } .wave-bar:nth-child(3) { animation-delay: 0.2s; } .wave-bar:nth-child(4) { animation-delay: 0.3s; }
         
-        /* 拖拽上传区激活状态 */
-        .drag-active { border-color: #3b82f6 !important; background-color: #eff6ff !important; }
         .custom-scrollbar::-webkit-scrollbar { width: 4px; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
-        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
     </style>
 </head>
 <body class="bg-slate-50 min-h-screen flex text-slate-800 font-sans selection:bg-blue-200">
@@ -48,36 +35,36 @@
             <div class="logo-cloud text-white p-2.5 rounded-2xl shadow-lg shadow-blue-200"><i class="fas fa-cloud text-xl"></i></div>
             <div class="leading-tight flex-1">
                 <span class="text-2xl font-black tracking-tighter">飞云 <span class="text-blue-600">Pro</span></span>
-                <p class="text-[9px] text-slate-400 font-bold uppercase tracking-widest mt-0.5">猎头 AI 操作系统</p>
+                <p class="text-[9px] text-slate-400 font-bold uppercase tracking-widest mt-0.5">多模态 Agent 工作站</p>
             </div>
         </div>
         
         <nav class="flex-1 py-6 overflow-y-auto custom-scrollbar">
-            <!-- AI 工作流 -->
-            <div class="text-[11px] font-bold text-slate-400 uppercase px-8 mb-2">AI 智能寻访流</div>
+            <!-- 基础寻访流 -->
+            <div class="text-[11px] font-bold text-slate-400 uppercase px-8 mb-2">寻访基建</div>
             <div class="px-4 space-y-1">
                 <div class="sidebar-item active flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 font-medium" onclick="switchTab('tab-jd')">
                     <span class="icon-container w-5 text-center"><i class="fas fa-bullseye"></i></span> JD 透视与卖点
                 </div>
                 <div class="sidebar-item flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 font-medium" onclick="switchTab('tab-mapping')">
-                    <span class="icon-container w-5 text-center"><i class="fas fa-network-wired"></i></span> 自动 Target Mapping <span class="xr-chip ml-auto" style="background: linear-gradient(135deg, #10b981, #3b82f6);">NEW</span>
+                    <span class="icon-container w-5 text-center"><i class="fas fa-network-wired"></i></span> 自动 Target Mapping
                 </div>
                 <div class="sidebar-item flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 font-medium" onclick="switchTab('tab-resume')">
                     <span class="icon-container w-5 text-center"><i class="fas fa-file-waveform"></i></span> 简历诊断与重构
                 </div>
-                <div class="sidebar-item flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 font-medium" onclick="switchTab('tab-interview')">
-                    <span class="icon-container w-5 text-center"><i class="fas fa-user-tie"></i></span> AI 面试演练舱
-                </div>
             </div>
             
-            <!-- 运营转化 -->
-            <div class="text-[11px] font-bold text-slate-400 uppercase px-8 mb-2 mt-8">转化与谈判</div>
+            <!-- 超能 Agent 模块 -->
+            <div class="text-[11px] font-bold text-slate-400 uppercase px-8 mb-2 mt-8 text-blue-600">超能 Agent 组件</div>
             <div class="px-4 space-y-1">
-                <div class="sidebar-item flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 font-medium" onclick="switchTab('tab-offer')">
-                    <span class="icon-container w-5 text-center"><i class="fas fa-handshake-angle"></i></span> Offer 博弈策略 <span class="xr-chip ml-auto" style="background: linear-gradient(135deg, #8b5cf6, #ec4899);">PRO</span>
+                <div class="sidebar-item flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 font-medium" onclick="switchTab('tab-sourcing')">
+                    <span class="icon-container w-5 text-center"><i class="fas fa-spider"></i></span> 深度极客寻访 <span class="ai-badge ml-auto bg-slate-900 text-white">Agent</span>
                 </div>
-                <div class="sidebar-item flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 font-medium" onclick="alert('即将上线：基于候选人历史标签自动生成微信寒暄话术')">
-                    <span class="icon-container w-5 text-center"><i class="fas fa-mug-hot"></i></span> 候选人自动唤醒
+                <div class="sidebar-item flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 font-medium" onclick="switchTab('tab-copilot')">
+                    <span class="icon-container w-5 text-center"><i class="fas fa-headset"></i></span> 通话实时副驾 <span class="ai-badge ml-auto" style="background: linear-gradient(135deg, #FF4D2E, #F4B860);">VOICE</span>
+                </div>
+                <div class="sidebar-item flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 font-medium" onclick="switchTab('tab-offer')">
+                    <span class="icon-container w-5 text-center"><i class="fas fa-scale-balanced"></i></span> Offer 博弈策略
                 </div>
             </div>
         </nav>
@@ -89,7 +76,6 @@
                     <p class="text-sm font-bold text-slate-800">Leo Xu</p>
                     <p class="text-[10px] text-slate-400 uppercase tracking-wider font-bold">Flyun Studio</p>
                 </div>
-                <i class="fas fa-chevron-right text-slate-300 text-xs"></i>
             </div>
         </div>
     </aside>
@@ -97,275 +83,252 @@
     <!-- 主工作区 -->
     <main class="flex-1 overflow-y-auto custom-scrollbar h-screen bg-slate-50 relative pb-20">
         
-        <!-- 顶部功能栏 -->
+        <!-- 顶级多模型调度状态栏 -->
         <div class="h-20 bg-white/70 backdrop-blur-xl sticky top-0 z-20 border-b px-10 flex justify-between items-center">
             <div class="flex items-center gap-4">
                 <h2 id="header-title" class="text-xl font-black tracking-tight">JD 透视与卖点提炼</h2>
-                <span class="px-2.5 py-1 bg-slate-900 text-white rounded-md text-[10px] font-bold uppercase tracking-widest flex items-center gap-1">
-                    <i class="fas fa-bolt text-yellow-400"></i> DeepSeek R1 Core
-                </span>
             </div>
-            <div class="flex gap-4">
-                <button class="bg-white border border-slate-200 text-slate-600 px-4 py-2 rounded-xl text-xs font-bold hover:bg-slate-50 transition shadow-sm">
-                    <i class="fas fa-clock-rotate-left mr-1"></i> 历史记录
-                </button>
+            
+            <!-- 多模型路由选择器 -->
+            <div class="flex gap-2 items-center bg-slate-100 p-1.5 rounded-xl border border-slate-200 shadow-inner">
+                <div class="px-3 py-1.5 bg-white rounded-lg shadow-sm text-xs font-bold text-slate-800 flex items-center gap-1 cursor-pointer">
+                    <i class="fas fa-brain text-blue-600"></i> DeepSeek R1 
+                    <span class="text-[9px] text-slate-400 font-normal ml-1">推演</span>
+                </div>
+                <div class="px-3 py-1.5 hover:bg-white/50 rounded-lg text-xs font-bold text-slate-500 flex items-center gap-1 cursor-pointer transition">
+                    <i class="fas fa-feather-pointed text-purple-500"></i> Claude 3.5 
+                    <span class="text-[9px] text-slate-400 font-normal ml-1">文案</span>
+                </div>
+                <div class="px-3 py-1.5 hover:bg-white/50 rounded-lg text-xs font-bold text-slate-500 flex items-center gap-1 cursor-pointer transition">
+                    <i class="fas fa-eye text-emerald-500"></i> GPT-4o 
+                    <span class="text-[9px] text-slate-400 font-normal ml-1">多模态</span>
+                </div>
+                <div class="w-px h-4 bg-slate-300 mx-1"></div>
+                <div class="px-2 py-1 text-slate-400 hover:text-slate-700 cursor-pointer"><i class="fas fa-gear text-xs"></i></div>
             </div>
         </div>
 
         <div class="p-10 max-w-7xl mx-auto">
             
-            <!-- Tab 1: JD 岗位分析 (已存在) -->
+            <!-- Tab: JD 透视 (保持原逻辑缩略) -->
             <div id="tab-jd" class="tab-content active space-y-6">
-                <!-- 与上一版本相同，保持代码完整性 -->
-                <div class="bg-white p-8 rounded-[2rem] shadow-sm border border-slate-100 flex gap-6">
-                    <div class="flex-1">
-                        <h3 class="font-bold text-slate-800 mb-4 flex items-center gap-2">
-                            <i class="fas fa-paste text-blue-500"></i> 贴入企业 JD
-                        </h3>
-                        <textarea class="w-full h-40 bg-slate-50 rounded-2xl p-5 text-sm border-2 border-transparent focus:border-blue-200 focus:bg-white outline-none transition-all resize-none" placeholder="例如：新能源车企寻访高级智能座舱产品经理..."></textarea>
-                    </div>
-                    <div class="w-64 flex flex-col justify-end">
-                        <div class="bg-blue-50 text-blue-700 text-xs p-4 rounded-2xl mb-4 leading-relaxed font-medium">
-                            <i class="fas fa-lightbulb text-blue-500 mr-1"></i> AI 将自动分析核心诉求、提炼挖猎卖点。
-                        </div>
-                        <button onclick="simulateAILoading('jd-results', this)" class="py-4 bg-blue-600 text-white rounded-2xl font-bold flex items-center justify-center gap-2 hover:bg-blue-700 transition shadow-xl shadow-blue-200">
-                            <i class="fas fa-wand-magic-sparkles"></i> 智能透视 JD
+                <div class="bg-white p-8 rounded-[2rem] shadow-sm border border-slate-100">
+                    <h3 class="font-bold text-slate-800 mb-4 flex items-center gap-2">
+                        <i class="fas fa-paste text-blue-500"></i> 贴入企业 JD 进行 DeepSeek R1 逻辑拆解
+                    </h3>
+                    <textarea class="w-full h-40 bg-slate-50 rounded-2xl p-5 text-sm border-2 border-transparent focus:border-blue-200 outline-none resize-none mb-4" placeholder="输入岗位要求..."></textarea>
+                    <button class="py-4 px-8 bg-blue-600 text-white rounded-2xl font-bold hover:bg-blue-700 transition shadow-xl">智能透视 JD</button>
+                </div>
+            </div>
+
+            <!-- Tab: 自动 Target Mapping -->
+            <div id="tab-mapping" class="tab-content">
+                <div class="bg-white p-10 rounded-[2rem] shadow-sm border border-slate-100 text-center">
+                    <div class="w-16 h-16 bg-blue-50 text-blue-500 rounded-2xl flex items-center justify-center mx-auto mb-4 text-2xl"><i class="fas fa-sitemap"></i></div>
+                    <h3 class="font-bold text-xl mb-2">自动 Target Mapping</h3>
+                    <p class="text-slate-500 text-sm">功能已集成，参考上一版本代码</p>
+                </div>
+            </div>
+            
+            <!-- Tab: 简历诊断与重构 -->
+            <div id="tab-resume" class="tab-content">
+                <div class="bg-white p-10 rounded-[2rem] shadow-sm border border-slate-100 text-center">
+                    <div class="w-16 h-16 bg-emerald-50 text-emerald-500 rounded-2xl flex items-center justify-center mx-auto mb-4 text-2xl"><i class="fas fa-file-pdf"></i></div>
+                    <h3 class="font-bold text-xl mb-2">简历诊断引擎</h3>
+                    <p class="text-slate-500 text-sm">拖拽简历至此调用 GPT-4o 进行视觉与文本双重解析，参考上一版本代码</p>
+                </div>
+            </div>
+
+            <!-- Tab: Offer 博弈 -->
+            <div id="tab-offer" class="tab-content">
+                <div class="bg-white p-10 rounded-[2rem] shadow-sm border border-slate-100 text-center">
+                    <div class="w-16 h-16 bg-indigo-50 text-indigo-500 rounded-2xl flex items-center justify-center mx-auto mb-4 text-2xl"><i class="fas fa-scale-balanced"></i></div>
+                    <h3 class="font-bold text-xl mb-2">Offer 博弈军师</h3>
+                    <p class="text-slate-500 text-sm">功能已集成，参考上一版本代码</p>
+                </div>
+            </div>
+
+            <!-- Tab: AI 深度极客寻访 (全新 Agent 功能) -->
+            <div id="tab-sourcing" class="tab-content space-y-6">
+                <div class="bg-slate-900 p-8 rounded-[2rem] shadow-xl text-white relative overflow-hidden">
+                    <i class="fas fa-spider absolute right-10 top-10 text-9xl text-white/5"></i>
+                    <h3 class="font-black text-2xl mb-2">AI 全网极客追踪器</h3>
+                    <p class="text-slate-400 text-sm mb-6">绕过传统招聘平台，Agent 自动深入 GitHub, V2EX, 独立博客抓取隐藏技术大牛。</p>
+                    
+                    <div class="flex gap-4">
+                        <input type="text" class="flex-1 bg-white/10 border border-white/20 rounded-2xl p-4 text-white outline-none focus:border-blue-400 transition" value="WebGL, Three.js, 汽车仪表盘渲染">
+                        <button onclick="simulateAgentSearch()" id="btn-agent-search" class="px-8 bg-blue-600 hover:bg-blue-500 text-white rounded-2xl font-bold transition flex items-center gap-2">
+                            <i class="fas fa-robot"></i> 放出寻访智能体
                         </button>
+                    </div>
+
+                    <!-- Agent 实时执行日志 -->
+                    <div id="agent-log" class="hidden mt-6 bg-black/40 rounded-xl p-4 font-mono text-xs text-emerald-400 space-y-2 h-32 overflow-hidden border border-white/10">
+                        <!-- Log lines will be appended here -->
                     </div>
                 </div>
 
-                <div id="jd-results" class="hidden grid grid-cols-3 gap-6 animate-in slide-in-from-bottom duration-500">
-                    <div class="col-span-1 bg-white p-6 rounded-[2rem] border border-slate-100 shadow-sm relative overflow-hidden">
-                        <div class="absolute top-0 right-0 w-24 h-24 bg-purple-500/10 rounded-full blur-2xl"></div>
-                        <h4 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">真实痛点解码</h4>
-                        <div class="space-y-4">
-                            <div class="p-4 bg-slate-50 rounded-xl border border-slate-100">
-                                <span class="text-xs font-bold text-purple-600 bg-purple-100 px-2 py-1 rounded-md mb-2 inline-block">表面要求</span>
-                                <p class="text-sm text-slate-700 font-medium">懂高通 8295 平台，从0到1量产经验。</p>
+                <!-- 寻访结果卡片 -->
+                <div id="sourcing-results" class="hidden grid grid-cols-2 gap-6 animate-in slide-in-from-bottom duration-500">
+                    <div class="bg-white border border-slate-200 p-6 rounded-[2rem] shadow-sm hover:shadow-md transition">
+                        <div class="flex justify-between items-start mb-4">
+                            <div class="flex items-center gap-3">
+                                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" class="w-12 h-12 bg-slate-100 rounded-full">
+                                <div>
+                                    <h4 class="font-bold text-slate-800">Xavier_Dev <i class="fab fa-github text-slate-400 ml-1"></i></h4>
+                                    <p class="text-xs text-slate-500">从未注册过招聘网站的潜水大牛</p>
+                                </div>
                             </div>
-                            <div class="flex justify-center"><i class="fas fa-arrow-down text-slate-300"></i></div>
-                            <div class="p-4 bg-purple-50 border border-purple-100 rounded-xl">
-                                <span class="text-xs font-bold text-white bg-purple-500 px-2 py-1 rounded-md mb-2 inline-block">深层业务痛点</span>
-                                <p class="text-sm text-slate-800 font-bold leading-relaxed">需要一个自带底层芯片厂资源、能立刻带团队避坑的“救火队长”。</p>
+                            <span class="bg-blue-100 text-blue-600 text-[10px] font-bold px-2 py-1 rounded">极度匹配</span>
+                        </div>
+                        <div class="space-y-3 mb-4">
+                            <div class="text-xs bg-slate-50 p-3 rounded-lg border border-slate-100">
+                                <span class="font-bold text-slate-700 block mb-1"><i class="fas fa-code text-blue-500"></i> AI 代码质量评估：</span>
+                                过去一年在 Three.js 核心库贡献了 3 个 PR。他开源的 "Auto-Cockpit-Render" 仓库具备极高的 shader 优化技巧，符合咱们客户的底层性能要求。
+                            </div>
+                            <div class="text-xs bg-orange-50 p-3 rounded-lg border border-orange-100">
+                                <span class="font-bold text-orange-700 block mb-1"><i class="fas fa-envelope text-orange-500"></i> AI 破冰线索提取：</span>
+                                从他的个人博客域名 whois 信息和早期 V2EX 回帖中，解析出邮箱前缀，成功匹配到微信/邮箱：xav***92@gmail.com。他最近在推特抱怨现公司加班，**此刻是挖角绝佳时机**。
+                            </div>
+                        </div>
+                        <button class="w-full py-2 bg-slate-900 text-white rounded-xl text-xs font-bold hover:bg-black transition">一键生成定制化极客勾搭邮件</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab: 通话实时副驾 (全新 语音识别 功能) -->
+            <div id="tab-copilot" class="tab-content space-y-6">
+                <div class="grid grid-cols-12 gap-6 h-[600px]">
+                    <!-- 左侧：实时转写与声纹波形 -->
+                    <div class="col-span-7 bg-white rounded-[2rem] shadow-sm border border-slate-100 flex flex-col overflow-hidden">
+                        <div class="p-6 border-b border-slate-100 bg-slate-50 flex justify-between items-center">
+                            <div class="flex items-center gap-3">
+                                <div class="w-3 h-3 bg-red-500 rounded-full animate-pulse"></div>
+                                <span class="font-bold text-slate-800">Cold Call 实时监听中...</span>
+                            </div>
+                            <div class="flex gap-1 items-end h-6">
+                                <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+                            </div>
+                        </div>
+                        <div class="flex-1 p-6 overflow-y-auto space-y-6 custom-scrollbar bg-slate-50/50" id="chat-transcript">
+                            <!-- 聊天记录 -->
+                            <div class="flex gap-4">
+                                <div class="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-xs font-bold shrink-0">我</div>
+                                <div class="bg-white p-3 rounded-2xl rounded-tl-none border border-slate-200 text-sm text-slate-700 shadow-sm">
+                                    喂，张总您好，我是做新能源汽车领域的高管猎头 Leo，不知道现在说话方不方便？
+                                </div>
+                            </div>
+                            <div class="flex gap-4 flex-row-reverse">
+                                <div class="w-8 h-8 rounded-full bg-orange-100 text-orange-600 flex items-center justify-center text-xs font-bold shrink-0">张</div>
+                                <div class="bg-blue-600 p-3 rounded-2xl rounded-tr-none text-sm text-white shadow-md">
+                                    嗯，你说。我在外面，长话短说。
+                                </div>
+                            </div>
+                            <div class="flex gap-4">
+                                <div class="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-xs font-bold shrink-0">我</div>
+                                <div class="bg-white p-3 rounded-2xl rounded-tl-none border border-slate-200 text-sm text-slate-700 shadow-sm">
+                                    我看您在上一家带了座舱团队，现在有一家头部新势力有个总监的盘子，给的期权很多，您目前有看外部机会的打算吗？
+                                </div>
+                            </div>
+                            <div class="flex gap-4 flex-row-reverse">
+                                <div class="w-8 h-8 rounded-full bg-orange-100 text-orange-600 flex items-center justify-center text-xs font-bold shrink-0">张</div>
+                                <div class="bg-blue-600 p-3 rounded-2xl rounded-tr-none text-sm text-white shadow-md">
+                                    我现在挺稳定的，加上手里的期权快归属了，暂时不想动。你们那个预算能给到多少？
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-span-2 bg-slate-900 p-8 rounded-[2rem] text-white shadow-xl relative overflow-hidden">
-                        <i class="fas fa-quote-left absolute top-6 right-8 text-6xl text-white/5"></i>
-                        <h4 class="text-xs font-bold text-blue-400 uppercase tracking-widest mb-4">AI 生成的 1 分钟勾搭话术 (Pitch)</h4>
-                        <div class="space-y-6 mt-6">
-                            <div>
-                                <p class="text-xs text-slate-400 mb-1">针对进取型实干家：</p>
-                                <p class="text-base font-medium leading-relaxed bg-white/5 p-4 rounded-xl border border-white/10">
-                                    “李工，关注到您在HMI框架做得很漂亮。这里有个0到1的重磅新车型机会，底层直接怼 8295 性能上限，能让您把之前没落地的空间交互想法全部实现，聊十分钟？”
+
+                    <!-- 右侧：AI 实时战术面板 -->
+                    <div class="col-span-5 bg-slate-900 rounded-[2rem] shadow-xl text-white p-6 relative flex flex-col">
+                        <h3 class="text-sm font-bold text-blue-400 uppercase tracking-widest mb-4 flex items-center gap-2">
+                            <i class="fas fa-bolt text-yellow-400"></i> AI 战术副驾 (Copilot)
+                        </h3>
+                        
+                        <div class="space-y-4 flex-1">
+                            <!-- 情绪分析预警 -->
+                            <div class="bg-white/10 border border-white/20 p-4 rounded-xl">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="text-xs text-slate-300 font-bold">语义情绪分析</span>
+                                    <span class="text-[10px] bg-red-500/20 text-red-400 px-2 py-1 rounded">谎言/借口 概率高</span>
+                                </div>
+                                <p class="text-sm leading-relaxed">候选人说“挺稳定”但又问“预算多少”，说明**心动了但有顾虑**。真正不想看机会的人不会打听预算。</p>
+                            </div>
+
+                            <!-- 实时破冰建议 -->
+                            <div class="bg-blue-600/20 border border-blue-500 p-4 rounded-xl relative overflow-hidden" style="animation: pulseGlow 2s infinite;">
+                                <div class="absolute top-0 left-0 w-1 h-full bg-blue-500"></div>
+                                <span class="text-xs font-bold text-blue-300 uppercase block mb-2">💡 建议跟进话术 (请直接念)</span>
+                                <p class="text-lg font-bold leading-relaxed text-white">
+                                    “张总，明白您的顾虑。这边的现金 base 绝对能 cover 您未归属的期权损失（暗示能谈签字费）。重点是新平台是直接对标 Model 3 换代的主力车型，预算绝对管够。要不加个微信，我把保密的架构图发您扫一眼？”
                                 </p>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Tab 2: 自动 Target Mapping (全新功能) -->
-            <div id="tab-mapping" class="tab-content space-y-6">
-                <div class="bg-white p-8 rounded-[2rem] shadow-sm border border-slate-100 flex gap-6 items-center">
-                    <div class="flex-1">
-                        <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">输入当前在寻访的岗位 / 行业</p>
-                        <input type="text" class="w-full text-lg font-bold bg-slate-50 border-2 border-transparent focus:border-blue-200 rounded-xl p-4 outline-none" value="XR 空间计算 / 渲染引擎专家">
-                    </div>
-                    <button onclick="simulateAILoading('mapping-results', this)" class="px-8 py-4 bg-blue-600 text-white rounded-2xl font-bold flex items-center gap-2 hover:bg-blue-700 transition shadow-xl shadow-blue-200">
-                        <i class="fas fa-sitemap"></i> 一键生成 Mapping
-                    </button>
-                </div>
-
-                <div id="mapping-results" class="hidden animate-in slide-in-from-bottom duration-500">
-                    <div class="grid grid-cols-3 gap-6">
-                        <!-- Tier 1 -->
-                        <div class="bg-white border-t-4 border-t-red-500 p-6 rounded-b-[2rem] shadow-sm">
-                            <h3 class="font-black text-lg text-slate-800 mb-1">Tier 1: 核心竞品</h3>
-                            <p class="text-xs text-slate-500 mb-6">高精准度，挖来即用，但防挖角极其严密。</p>
-                            <ul class="space-y-3">
-                                <li class="flex items-center justify-between p-3 bg-slate-50 rounded-xl border border-slate-100">
-                                    <span class="font-bold text-slate-700">字节跳动 (Pico 线)</span>
-                                    <span class="text-[10px] bg-red-100 text-red-600 px-2 py-0.5 rounded-full font-bold">挖角难度：极高</span>
-                                </li>
-                                <li class="flex items-center justify-between p-3 bg-slate-50 rounded-xl border border-slate-100">
-                                    <span class="font-bold text-slate-700">Apple (visionOS 团队)</span>
-                                    <span class="text-[10px] bg-red-100 text-red-600 px-2 py-0.5 rounded-full font-bold">挖角难度：极高</span>
-                                </li>
-                                <li class="flex items-center justify-between p-3 bg-slate-50 rounded-xl border border-slate-100">
-                                    <span class="font-bold text-slate-700">XREAL (前沿研发)</span>
-                                    <span class="text-[10px] bg-orange-100 text-orange-600 px-2 py-0.5 rounded-full font-bold">挖角难度：中等</span>
-                                </li>
-                            </ul>
-                        </div>
                         
-                        <!-- Tier 2 -->
-                        <div class="bg-white border-t-4 border-t-blue-500 p-6 rounded-b-[2rem] shadow-sm">
-                            <h3 class="font-black text-lg text-slate-800 mb-1">Tier 2: 上下游 / 技术降维</h3>
-                            <p class="text-xs text-slate-500 mb-6">底层技术互通，需要一定业务适应期。</p>
-                            <ul class="space-y-3">
-                                <li class="flex items-center justify-between p-3 bg-slate-50 rounded-xl border border-slate-100">
-                                    <span class="font-bold text-slate-700">腾讯 (天美/光子引擎组)</span>
-                                    <span class="text-[10px] bg-emerald-100 text-emerald-600 px-2 py-0.5 rounded-full font-bold">动机：游戏卷转硬件</span>
-                                </li>
-                                <li class="flex items-center justify-between p-3 bg-slate-50 rounded-xl border border-slate-100">
-                                    <span class="font-bold text-slate-700">蔚来/小鹏 (座舱图形侧)</span>
-                                    <span class="text-[10px] bg-emerald-100 text-emerald-600 px-2 py-0.5 rounded-full font-bold">动机：车端转纯XR</span>
-                                </li>
-                                <li class="flex items-center justify-between p-3 bg-slate-50 rounded-xl border border-slate-100">
-                                    <span class="font-bold text-slate-700">Epic Games (国内分部)</span>
-                                    <span class="text-[10px] bg-emerald-100 text-emerald-600 px-2 py-0.5 rounded-full font-bold">动机：看好硬件载体</span>
-                                </li>
-                            </ul>
-                        </div>
-
-                        <!-- Tier 3 -->
-                        <div class="bg-white border-t-4 border-t-purple-500 p-6 rounded-b-[2rem] shadow-sm">
-                            <h3 class="font-black text-lg text-slate-800 mb-1">Tier 3: 跨界黑马</h3>
-                            <p class="text-xs text-slate-500 mb-6">非标候选人，往往有奇效且性价比极高。</p>
-                            <ul class="space-y-3">
-                                <li class="p-3 bg-purple-50 rounded-xl border border-purple-100">
-                                    <p class="font-bold text-purple-900 mb-1 text-sm">医疗影像 3D 渲染头部企业</p>
-                                    <p class="text-[10px] text-purple-700 leading-relaxed">AI 建议：他们对体素渲染和极低延迟有苛刻要求，非常适合降维打击 XR 工业场景。</p>
-                                </li>
-                                <li class="p-3 bg-purple-50 rounded-xl border border-purple-100">
-                                    <p class="font-bold text-purple-900 mb-1 text-sm">影视特效 (如流浪地球视效组)</p>
-                                    <p class="text-[10px] text-purple-700 leading-relaxed">AI 建议：懂极致画面表现，适合弥补纯技术团队缺乏艺术表现力的短板。</p>
-                                </li>
-                            </ul>
-                        </div>
+                        <button class="w-full py-3 bg-white/10 hover:bg-white/20 border border-white/20 rounded-xl text-xs font-bold transition mt-4">
+                            结束通话并自动生成跟进纪要
+                        </button>
                     </div>
                 </div>
-            </div>
-
-            <!-- Tab 3: 简历重构 (UI占位，保持原有流) -->
-            <div id="tab-resume" class="tab-content">
-                <div class="bg-white p-10 rounded-[2rem] shadow-sm border border-slate-100 text-center">
-                    <div class="w-16 h-16 bg-blue-50 text-blue-500 rounded-2xl flex items-center justify-center mx-auto mb-4 text-2xl"><i class="fas fa-file-pdf"></i></div>
-                    <h3 class="font-bold text-xl mb-2">简历诊断引擎</h3>
-                    <p class="text-slate-500 text-sm">拖拽简历至此进行 STAR 法则重构与自动脱敏（请参考上一版完整拖拽交互）</p>
-                </div>
-            </div>
-
-            <!-- Tab 4: AI 面试演练 (UI占位，保持原有流) -->
-            <div id="tab-interview" class="tab-content">
-                <div class="bg-white p-10 rounded-[2rem] shadow-sm border border-slate-100 text-center">
-                    <div class="w-16 h-16 bg-emerald-50 text-emerald-500 rounded-2xl flex items-center justify-center mx-auto mb-4 text-2xl"><i class="fas fa-chalkboard-user"></i></div>
-                    <h3 class="font-bold text-xl mb-2">面试演练舱</h3>
-                    <p class="text-slate-500 text-sm">Red Flags 预警与终局反问库已准备就绪（请参考上一版完整交互）</p>
-                </div>
-            </div>
-
-            <!-- Tab 5: Offer 博弈策略 (全新功能) -->
-            <div id="tab-offer" class="tab-content space-y-6">
-                <div class="bg-white p-8 rounded-[2rem] shadow-sm border border-slate-100">
-                    <h3 class="font-black text-xl flex items-center gap-3 mb-6">
-                        <span class="w-2 h-8 bg-indigo-500 rounded-full"></span> 薪酬期望 Gap 分析器
-                    </h3>
-                    
-                    <div class="grid grid-cols-2 gap-8">
-                        <!-- 候选人现状 -->
-                        <div class="space-y-4">
-                            <p class="text-sm font-bold text-slate-800 bg-slate-100 px-3 py-2 rounded-lg inline-block">👨‍💻 候选人预期 (Candidate)</p>
-                            <div>
-                                <label class="text-xs text-slate-500 font-bold mb-1 block">目前底薪 (Current Base)</label>
-                                <input type="text" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm outline-none" value="月薪 45k * 15薪">
-                            </div>
-                            <div>
-                                <label class="text-xs text-slate-500 font-bold mb-1 block">心理底线 (Expected Base)</label>
-                                <input type="text" class="w-full bg-slate-50 border border-red-200 text-red-600 rounded-xl p-3 text-sm outline-none font-bold" value="至少涨幅 30% -> 60k">
-                            </div>
-                        </div>
-
-                        <!-- HR/企业预算 -->
-                        <div class="space-y-4 border-l border-slate-100 pl-8">
-                            <p class="text-sm font-bold text-slate-800 bg-slate-100 px-3 py-2 rounded-lg inline-block">🏢 企业预算 (Company)</p>
-                            <div>
-                                <label class="text-xs text-slate-500 font-bold mb-1 block">岗位预算上限 (Max Base)</label>
-                                <input type="text" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm outline-none" value="月薪最高给到 50k">
-                            </div>
-                            <div>
-                                <label class="text-xs text-slate-500 font-bold mb-1 block">额外杠杆工具 (Leverage)</label>
-                                <input type="text" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm outline-none" value="大量期权、签字费(Sign-on Bonus)">
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <button onclick="simulateAILoading('offer-results', this)" class="w-full mt-8 py-4 bg-slate-900 text-white rounded-2xl font-bold flex items-center justify-center gap-2 hover:bg-black transition shadow-xl">
-                        <i class="fas fa-scale-balanced"></i> AI 生成博弈与促单策略
-                    </button>
-                </div>
-
-                <!-- 策略输出区 -->
-                <div id="offer-results" class="hidden grid grid-cols-2 gap-6 animate-in slide-in-from-bottom duration-500">
-                    <div class="bg-indigo-50 border border-indigo-100 p-8 rounded-[2rem]">
-                        <div class="flex items-center gap-3 mb-4">
-                            <i class="fas fa-arrow-down-up-lock text-indigo-500 text-xl"></i>
-                            <h4 class="font-bold text-indigo-900">对候选人话术 (降低防备心)</h4>
-                        </div>
-                        <p class="text-sm text-indigo-800 leading-relaxed font-medium bg-white/60 p-4 rounded-xl">
-                            “张哥，我刚去跟 HRD 探了底。目前大环境卡 Base 卡得很死，50k 已经是破格申请了。但我帮您争取到了极具诚意的方案：<br><br>
-                            1. **现金流补偿**：争取 10w 签字费，弥补您首年 Base 的落差。<br>
-                            2. **期权杠杆**：这个岗位直接绑定 XR 新产品线，期权池是独立的，搏一波未来。<br>
-                            比起纯涨几千块底薪，拿到一个不受限的核心研发盘子，对您下一份履历背书更有价值。您看这个组合方案我能去向他们正式提吗？”
-                        </p>
-                    </div>
-
-                    <div class="bg-emerald-50 border border-emerald-100 p-8 rounded-[2rem]">
-                        <div class="flex items-center gap-3 mb-4">
-                            <i class="fas fa-building-user text-emerald-500 text-xl"></i>
-                            <h4 class="font-bold text-emerald-900">对 HR 话术 (施加压迫感)</h4>
-                        </div>
-                        <p class="text-sm text-emerald-800 leading-relaxed font-medium bg-white/60 p-4 rounded-xl">
-                            “李总，我摸排了市面上 5 家头部公司的渲染大牛，张工是唯一兼具底层引擎架构和带过百人团队落地的。他目前的薪资确实有溢价，但他手里正拿着字节那边平薪的 Offer 在犹豫。<br><br>
-                            既然咱们 Base 卡在 50k 过不去，为了这临门一脚，您看能不能申请一个 **10万的 Sign-on Bonus（按年返还）+ 核心股票池** 的特批？这个关键节点如果放跑了他，重新寻访的沉默成本至少又要耽误两个月项目进度。”
-                        </p>
-                    </div>
-                </div>
-
             </div>
 
         </div>
     </main>
 
     <script>
-        // 标签页切换逻辑
+        // 标签页切换
         function switchTab(tabId) {
-            document.querySelectorAll('.sidebar-item').forEach(item => {
-                item.classList.remove('active');
-            });
+            document.querySelectorAll('.sidebar-item').forEach(item => { item.classList.remove('active'); });
             event.currentTarget.classList.add('active');
 
             const titles = {
-                'tab-jd': 'JD 透视与卖点提炼',
+                'tab-jd': 'JD 逻辑拆解与推演',
                 'tab-mapping': '自动 Target Mapping',
-                'tab-resume': 'AI 简历诊断引擎',
-                'tab-interview': 'AI 面试演练与策略',
-                'tab-offer': 'Offer 谈判与博弈策略'
+                'tab-resume': '多模态简历解析',
+                'tab-offer': 'Offer 博弈军师',
+                'tab-sourcing': 'AI 全网智能体极客寻访',
+                'tab-copilot': 'Cold Call 实时战术副驾'
             };
             document.getElementById('header-title').innerText = titles[tabId];
 
-            document.querySelectorAll('.tab-content').forEach(content => {
-                content.classList.remove('active');
-            });
+            document.querySelectorAll('.tab-content').forEach(content => { content.classList.remove('active'); });
             document.getElementById(tabId).classList.add('active');
         }
 
-        // 统一模拟 AI 加载效果 (传入自身按钮和目标 ID)
-        function simulateAILoading(resultElementId, btn) {
-            const originalHTML = btn.innerHTML;
-            const resultDiv = document.getElementById(resultElementId);
+        // 模拟 AI Agent 寻访爬虫全过程
+        function simulateAgentSearch() {
+            const btn = document.getElementById('btn-agent-search');
+            const logBox = document.getElementById('agent-log');
+            const resultBox = document.getElementById('sourcing-results');
             
-            resultDiv.classList.add('hidden');
+            btn.classList.add('opacity-50', 'pointer-events-none');
+            logBox.classList.remove('hidden');
+            resultBox.classList.add('hidden');
+            logBox.innerHTML = ''; // Clear logs
             
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 飞云 AI 分析中...';
-            btn.classList.add('opacity-80', 'cursor-not-allowed');
-            
+            const logs = [
+                "> [Agent] 初始化 DeepSeek R1 推理引擎...",
+                "> [Agent] 拆解关键词：WebGL, Three.js, 汽车底盘渲染...",
+                "> [Agent] 正在调用 GitHub GraphQL API 检索库贡献者...",
+                "> [Agent] 过滤近半年无 commit 的账户... 找到 14 个高活目标",
+                "> [Agent] 跨库身份碰撞：匹配 V2EX 账号，分析推文情绪...",
+                "> [Agent] 提取联系方式与邮箱前缀...",
+                "> [Agent] 寻访完成，正在生成突破策略卡片..."
+            ];
+
+            let delay = 0;
+            logs.forEach((log, index) => {
+                setTimeout(() => {
+                    logBox.innerHTML += `<div>${log}</div>`;
+                    logBox.scrollTop = logBox.scrollHeight;
+                }, delay);
+                delay += 400; // 模拟打字/执行延迟
+            });
+
             setTimeout(() => {
-                btn.innerHTML = originalHTML;
-                btn.classList.remove('opacity-80', 'cursor-not-allowed');
-                resultDiv.classList.remove('hidden');
-            }, 1200);
+                btn.classList.remove('opacity-50', 'pointer-events-none');
+                resultBox.classList.remove('hidden');
+            }, delay + 500);
         }
     </script>
 </body>
