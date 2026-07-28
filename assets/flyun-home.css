@@ -175,6 +175,36 @@ html[data-theme="light"] .fy-mobile-menu{background:rgba(242,244,238,.98)}
 }
 html[data-theme="light"] .fy-hero-stage{background:radial-gradient(circle at 51% 50%,rgba(108,169,0,.12),transparent 25%),linear-gradient(145deg,#f9fbf6,#dfe5db)}
 #heroField{position:absolute;inset:0;width:100%;height:100%;z-index:-1}
+#flyunAvatarCanvas{
+  position:absolute;z-index:2;inset:0;width:100%;height:100%;display:block;outline:none;
+  touch-action:none;cursor:grab
+}
+#flyunAvatarCanvas:active{cursor:grabbing}
+#flyunAvatarCanvas:focus-visible{box-shadow:inset 0 0 0 2px var(--fy-lime)}
+.fy-avatar-fallback{
+  position:absolute;z-index:1;left:50%;top:50%;width:230px;height:420px;border:1px solid rgba(201,255,87,.3);
+  border-radius:48% 48% 34% 34%;transform:translate(-50%,-50%);display:flex;flex-direction:column;
+  align-items:center;justify-content:center;color:var(--fy-lime);background:rgba(201,255,87,.035)
+}
+.fy-avatar-fallback span{font-size:92px;font-weight:650;line-height:1;letter-spacing:-.08em}
+.fy-avatar-fallback small{font-size:8px;letter-spacing:.18em}
+.fy-avatar-stage[data-avatar-ready="true"] .fy-avatar-fallback{display:none}
+.fy-avatar-controls{
+  position:absolute;z-index:8;left:24px;bottom:52px;display:flex;gap:6px;padding:5px;
+  border:1px solid var(--fy-line);border-radius:13px;background:rgba(9,11,9,.68);backdrop-filter:blur(16px)
+}
+html[data-theme="light"] .fy-avatar-controls{background:rgba(244,247,240,.75)}
+.fy-avatar-controls button{
+  height:34px;padding:0 11px;border:0;border-radius:8px;color:var(--fy-muted);background:transparent;
+  font-size:7px;font-weight:650;letter-spacing:.12em;transition:.25s
+}
+.fy-avatar-controls button:hover,.fy-avatar-controls button.active{
+  color:#091009;background:var(--fy-lime)
+}
+.fy-avatar-part{
+  position:absolute;z-index:8;right:24px;bottom:56px;color:var(--fy-muted);
+  font-size:8px;font-weight:600;letter-spacing:.14em;pointer-events:none
+}
 .fy-stage-topline,.fy-stage-caption{
   position:absolute;z-index:4;left:24px;right:24px;display:flex;align-items:center;justify-content:space-between;
   color:rgba(242,245,237,.55);font-size:9px;font-weight:600;letter-spacing:.17em
@@ -201,6 +231,7 @@ html[data-theme="light"] .fy-core{background:rgba(244,247,239,.78)}
 .fy-float-card{
   position:absolute;z-index:5;width:clamp(170px,19vw,255px);padding:16px 17px;border:1px solid var(--fy-line);
   border-radius:15px;background:rgba(15,18,15,.76);backdrop-filter:blur(18px);box-shadow:0 20px 55px rgba(0,0,0,.3)
+  ;pointer-events:none
 }
 html[data-theme="light"] .fy-float-card{background:rgba(250,252,247,.8)}
 .fy-float-card small{display:block;margin-bottom:24px;color:var(--fy-muted);font-size:8px;letter-spacing:.16em}
@@ -444,6 +475,8 @@ html[data-theme="light"] .fy-card-dark{background:#fff}
   .fy-hero-stage{min-height:590px}.fy-stage-topline,.fy-stage-caption{left:15px;right:15px}.fy-stage-caption span:last-child{display:none}
   .fy-core{width:180px;height:180px}.fy-orbit-one{width:75%}.fy-orbit-two{width:110%}.fy-float-card{width:155px;padding:13px}.fy-float-card small{margin-bottom:15px}
   .fy-float-card-a{left:4%;top:16%}.fy-float-card-b{right:4%;top:60%}.fy-float-card-c{left:5%;bottom:7%}
+  .fy-avatar-controls{left:12px;right:12px;bottom:45px;overflow-x:auto}.fy-avatar-controls button{flex:0 0 auto;padding-inline:9px}
+  .fy-avatar-part{display:none}
   .fy-context-nav{grid-template-columns:repeat(5,150px)}.fy-context-nav button{min-height:112px;padding:16px}.fy-context-panel{grid-template-columns:1fr;min-height:0}.fy-panel-copy{min-height:470px;border-right:0;border-bottom:1px solid var(--fy-line)}.fy-context-visual{min-height:440px}.fy-context-stage{min-height:0}.fy-radar{width:270px}
   .fy-stack{padding-block:20px}.fy-marquee span{font-size:25px}
   .fy-ability-grid{grid-template-columns:1fr}.fy-ability-card{min-height:480px}.fy-card-icon{width:60%;max-width:260px}
