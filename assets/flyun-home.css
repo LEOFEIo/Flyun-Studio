@@ -230,9 +230,10 @@ html[data-theme="light"] .fy-core{background:rgba(244,247,239,.78)}
 .fy-orbit-two::after{left:3%;bottom:37%;background:var(--fy-red)}
 .fy-float-card{
   position:absolute;z-index:5;width:clamp(170px,19vw,255px);padding:16px 17px;border:1px solid var(--fy-line);
-  border-radius:15px;background:rgba(15,18,15,.76);backdrop-filter:blur(18px);box-shadow:0 20px 55px rgba(0,0,0,.3)
-  ;pointer-events:none
+  border-radius:15px;background:rgba(15,18,15,.76);backdrop-filter:blur(18px);
+  box-shadow:0 20px 55px rgba(0,0,0,.3);pointer-events:none;transition:opacity .35s,transform .35s
 }
+.fy-avatar-stage[data-avatar-exploded="true"] .fy-float-card{opacity:.28;transform:scale(.97)}
 html[data-theme="light"] .fy-float-card{background:rgba(250,252,247,.8)}
 .fy-float-card small{display:block;margin-bottom:24px;color:var(--fy-muted);font-size:8px;letter-spacing:.16em}
 .fy-float-card strong{display:block;font-size:13px;font-weight:500}.fy-float-card>span{display:block;margin-top:9px;color:var(--fy-lime);font-size:9px}
