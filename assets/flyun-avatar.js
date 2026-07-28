@@ -6,8 +6,8 @@ const stage = document.querySelector('[data-avatar-stage]');
 if (canvas && stage) {
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(32, 1, 0.1, 50);
-  camera.position.set(0, 0.35, 13.5);
+  const camera = new THREE.PerspectiveCamera(34, 1, 0.1, 50);
+  camera.position.set(0, 0.35, 14.8);
 
   let renderer;
   try {
@@ -54,20 +54,46 @@ if (canvas && stage) {
     lime.position.set(-3.2, -1.8, 3);
     scene.add(lime);
 
-    const clay = new THREE.MeshStandardMaterial({
-      color: 0x96a29b,
-      roughness: 0.56,
-      metalness: 0.08
+    const graphite = new THREE.MeshStandardMaterial({
+      color: 0x2b302e,
+      roughness: 0.72,
+      metalness: 0.12
+    });
+    const shellMaterial = new THREE.MeshStandardMaterial({
+      color: 0xe7ece7,
+      roughness: 0.24,
+      metalness: 0.17
     });
     const jointMaterial = new THREE.MeshStandardMaterial({
-      color: 0x111512,
-      roughness: 0.38,
-      metalness: 0.22
+      color: 0x090b0a,
+      roughness: 0.34,
+      metalness: 0.35
+    });
+    const faceMaterial = new THREE.MeshStandardMaterial({
+      color: 0x8e7162,
+      roughness: 0.78,
+      metalness: 0
+    });
+    const visorMaterial = new THREE.MeshPhysicalMaterial({
+      color: 0xbdebf0,
+      roughness: 0.08,
+      metalness: 0.02,
+      transparent: true,
+      opacity: 0.25,
+      transmission: 0.6,
+      thickness: 0.08,
+      side: THREE.DoubleSide,
+      depthWrite: false
     });
     const accentMaterial = new THREE.MeshBasicMaterial({
       color: 0xc9ff57,
       toneMapped: false
     });
+    const cyanMaterial = new THREE.MeshBasicMaterial({
+      color: 0x72e7ff,
+      toneMapped: false
+    });
+    const clay = graphite;
 
     const root = new THREE.Group();
     root.name = 'digital-curator';
@@ -105,6 +131,10 @@ if (canvas && stage) {
 
     function mesh(geometry, material = clay, name = 'part') {
       const object = new THREE.Mesh(geometry, material.clone());
+      if (object.material.emissive) {
+        object.material.emissive.setHex(0xc9ff57);
+        object.material.emissiveIntensity = 0;
+      }
       object.name = name;
       object.castShadow = true;
       object.receiveShadow = true;
@@ -130,23 +160,56 @@ if (canvas && stage) {
       return group;
     }
 
-    const pelvis = register(ellipsoid(1, [0.72, 0.54, 0.48]), 'pelvis');
+    function detailBox(size, material, name, parent, position, rotation = [0, 0, 0]) {
+      const object = mesh(new THREE.BoxGeometry(...size), material);
+      object.position.set(...position);
+      object.rotation.set(...rotation);
+      object.castShadow = false;
+      return register(object, name, parent, false);
+    }
+
+    function detailCapsule(radius, length, material, name, parent, position, rotation = [0, 0, 0]) {
+      const object = capsule(radius, length, material);
+      object.position.set(...position);
+      object.rotation.set(...rotation);
+      object.castShadow = false;
+      return register(object, name, parent, false);
+    }
+
+    const pelvis = register(ellipsoid(1, [0.72, 0.54, 0.48], graphite), 'pelvis');
     pelvis.position.y = 0.15;
 
-    const torso = register(ellipsoid(1, [1.12, 1.58, 0.58]), 'torso', pelvis);
+    const torso = register(ellipsoid(1, [1.12, 1.58, 0.58], graphite), 'torso', pelvis);
     torso.position.y = 1.57;
 
-    const chest = register(ellipsoid(1, [1.18, 0.54, 0.62]), 'chest-shell', torso);
+    const chest = register(ellipsoid(1, [1.18, 0.54, 0.62], shellMaterial), 'chest-shell', torso);
     chest.position.set(0, 0.62, 0.04);
+    detailBox([0.045, 0.86, 0.035], cyanMaterial, 'sternum-signal', torso, [0, 0.29, 0.59]);
+    detailBox([0.18, 0.18, 0.045], accentMaterial, 'chest-core', torso, [0, 0.48, 0.62], [0, 0, Math.PI / 4]);
+    detailCapsule(0.025, 0.58, cyanMaterial, 'left-torso-seam', torso, [0.82, 0.02, 0.48], [0, 0, -0.1]);
+    detailCapsule(0.025, 0.58, cyanMaterial, 'right-torso-seam', torso, [-0.82, 0.02, 0.48], [0, 0, 0.1]);
 
     const neck = register(capsule(0.3, 0.36, jointMaterial), 'neck', torso);
     neck.position.y = 1.55;
+    for (let index = 0; index < 5; index += 1) {
+      const ring = mesh(new THREE.TorusGeometry(0.32 - index * 0.008, 0.018, 7, 30), index === 2 ? cyanMaterial : shellMaterial);
+      ring.rotation.x = Math.PI / 2;
+      ring.position.y = -0.18 + index * 0.09;
+      register(ring, `neck-ring-${index + 1}`, neck, false);
+    }
 
     const headPivot = register(new THREE.Group(), 'head-pivot', neck, false);
     headPivot.position.y = 0.53;
-    const head = register(ellipsoid(1, [0.54, 0.69, 0.57]), 'head', headPivot);
-    const visor = register(ellipsoid(1, [0.57, 0.7, 0.42]), 'visor', headPivot);
+    const head = register(ellipsoid(1, [0.5, 0.62, 0.53], graphite), 'head', headPivot);
+    const innerFace = register(ellipsoid(1, [0.33, 0.42, 0.3], faceMaterial), 'human-interface', headPivot);
+    innerFace.position.set(0, -0.02, 0.2);
+    const visor = register(ellipsoid(1, [0.53, 0.64, 0.4], visorMaterial), 'visor', headPivot);
     visor.position.z = 0.22;
+
+    detailCapsule(0.055, 0.82, shellMaterial, 'left-cranial-rail', headPivot, [0.49, 0.03, 0.04], [0, 0, -0.05]);
+    detailCapsule(0.055, 0.82, shellMaterial, 'right-cranial-rail', headPivot, [-0.49, 0.03, 0.04], [0, 0, 0.05]);
+    detailBox([0.11, 0.035, 0.035], cyanMaterial, 'left-eye-signal', innerFace, [0.15, 0.07, 0.31]);
+    detailBox([0.11, 0.035, 0.035], cyanMaterial, 'right-eye-signal', innerFace, [-0.15, 0.07, 0.31]);
 
     const visorRing = mesh(new THREE.TorusGeometry(0.55, 0.025, 6, 46), accentMaterial);
     visorRing.scale.y = 1.16;
@@ -157,24 +220,30 @@ if (canvas && stage) {
       const suffix = side > 0 ? 'l' : 'r';
       const shoulder = register(joint(0.29), `shoulder-${suffix}`, torso);
       shoulder.position.set(side * 1.08, 0.78, 0);
+      const shoulderShell = register(ellipsoid(1, [0.43, 0.27, 0.38], shellMaterial), `shoulder-shell-${suffix}`, shoulder);
+      shoulderShell.position.set(side * 0.04, 0.04, 0.02);
 
       const upperPivot = register(new THREE.Group(), `upper-arm-pivot-${suffix}`, shoulder, false);
       upperPivot.rotation.z = side * -0.28;
-      const upper = register(capsule(0.24, 0.92), `upper-arm-${suffix}`, upperPivot);
+      const upper = register(capsule(0.24, 0.92, graphite), `upper-arm-${suffix}`, upperPivot);
       upper.position.y = -0.62;
+      detailCapsule(0.022, 0.62, cyanMaterial, `upper-arm-seam-${suffix}`, upperPivot, [side * 0.18, -0.62, 0.1]);
 
       const elbow = register(joint(0.23), `elbow-${suffix}`, upperPivot);
       elbow.position.y = -1.26;
 
       const forePivot = register(new THREE.Group(), `forearm-pivot-${suffix}`, elbow, false);
       forePivot.rotation.z = side * -0.08;
-      const forearm = register(capsule(0.2, 0.92), `forearm-${suffix}`, forePivot);
+      const forearm = register(capsule(0.2, 0.92, shellMaterial), `forearm-${suffix}`, forePivot);
       forearm.position.y = -0.62;
 
       const wrist = register(joint(0.16), `wrist-${suffix}`, forePivot);
       wrist.position.y = -1.23;
-      const hand = register(ellipsoid(1, [0.2, 0.42, 0.15]), `hand-${suffix}`, wrist);
+      const hand = register(ellipsoid(1, [0.2, 0.42, 0.15], graphite), `hand-${suffix}`, wrist);
       hand.position.y = -0.39;
+      [-0.1, 0, 0.1].forEach((offset, index) => {
+        detailCapsule(0.035, 0.2 + index * 0.025, shellMaterial, `finger-${index + 1}-${suffix}`, wrist, [offset, -0.76, 0.02], [0, 0, side * offset * 0.5]);
+      });
 
       return { shoulder, upperPivot, elbow, forePivot, wrist, hand };
     }
@@ -185,20 +254,23 @@ if (canvas && stage) {
       hip.position.set(side * 0.47, -0.3, 0);
 
       const thighPivot = register(new THREE.Group(), `thigh-pivot-${suffix}`, hip, false);
-      const thigh = register(capsule(0.38, 1.32), `thigh-${suffix}`, thighPivot);
+      const thigh = register(capsule(0.38, 1.32, graphite), `thigh-${suffix}`, thighPivot);
       thigh.position.y = -0.9;
       thigh.scale.z = 1.08;
 
       const knee = register(joint(0.29), `knee-${suffix}`, thighPivot);
       knee.position.set(0, -1.78, 0.06);
+      const kneeCap = register(ellipsoid(1, [0.25, 0.28, 0.14], shellMaterial), `knee-cap-${suffix}`, knee);
+      kneeCap.position.z = 0.24;
 
       const shinPivot = register(new THREE.Group(), `shin-pivot-${suffix}`, knee, false);
-      const shin = register(capsule(0.3, 1.36), `shin-${suffix}`, shinPivot);
+      const shin = register(capsule(0.3, 1.36, shellMaterial), `shin-${suffix}`, shinPivot);
       shin.position.y = -0.9;
+      detailCapsule(0.026, 0.82, cyanMaterial, `shin-seam-${suffix}`, shinPivot, [side * 0.17, -0.92, 0.26]);
 
       const ankle = register(joint(0.19), `ankle-${suffix}`, shinPivot);
       ankle.position.y = -1.79;
-      const foot = register(mesh(new THREE.BoxGeometry(0.52, 0.42, 0.98), clay), `foot-${suffix}`, ankle);
+      const foot = register(mesh(new THREE.BoxGeometry(0.52, 0.42, 0.98), shellMaterial), `foot-${suffix}`, ankle);
       foot.position.set(0, -0.3, 0.23);
       foot.geometry.translate(0, 0, 0.13);
 
@@ -211,6 +283,15 @@ if (canvas && stage) {
     const rightArm = buildArm(-1);
     const leftLeg = buildLeg(1);
     const rightLeg = buildLeg(-1);
+
+    const explodeItems = [
+      { object: headPivot, offset: new THREE.Vector3(0, 0.72, 0.12) },
+      { object: chest, offset: new THREE.Vector3(0, 0.12, 0.58) },
+      { object: leftArm.shoulder, offset: new THREE.Vector3(0.72, 0.12, 0) },
+      { object: rightArm.shoulder, offset: new THREE.Vector3(-0.72, 0.12, 0) },
+      { object: leftLeg.hip, offset: new THREE.Vector3(0.34, -0.48, 0) },
+      { object: rightLeg.hip, offset: new THREE.Vector3(-0.34, -0.48, 0) }
+    ].map(item => ({ ...item, base: item.object.position.clone() }));
 
     const ground = new THREE.Mesh(
       new THREE.CircleGeometry(3.25, 64),
@@ -275,6 +356,8 @@ if (canvas && stage) {
       }
     };
     let activePose = 'idle';
+    let exploded = false;
+    let explodeProgress = 0;
     let selectedPart = null;
     let targetRotation = -0.12;
     let dragging = false;
@@ -292,6 +375,20 @@ if (canvas && stage) {
         button.classList.toggle('active', active);
         button.setAttribute('aria-pressed', String(active));
       });
+      if (reducedMotion && typeof render === 'function') render();
+    }
+
+    function setExploded(value = !exploded) {
+      exploded = Boolean(value);
+      stage.dataset.avatarExploded = String(exploded);
+      const button = document.querySelector('[data-avatar-action="explode"]');
+      if (button) {
+        button.classList.toggle('active', exploded);
+        button.setAttribute('aria-pressed', String(exploded));
+        button.textContent = exploded ? '05 ASSEMBLE' : '05 EXPLODE';
+      }
+      if (partLabel) partLabel.textContent = exploded ? 'ASSEMBLY MAP / 06 MODULES' : 'DRAG TO ROTATE';
+      if (reducedMotion && typeof render === 'function') render();
     }
 
     function setPointer(event) {
@@ -311,6 +408,7 @@ if (canvas && stage) {
       if (!dragging) return;
       targetRotation += (event.clientX - previousX) * 0.009;
       previousX = event.clientX;
+      if (reducedMotion) render();
     });
     canvas.addEventListener('pointerup', event => {
       dragging = false;
@@ -321,6 +419,7 @@ if (canvas && stage) {
       if (partLabel) {
         partLabel.textContent = selectedPart?.userData.partName?.replaceAll('-', ' ').toUpperCase() || 'DRAG TO ROTATE';
       }
+      if (reducedMotion) render();
     });
     canvas.addEventListener('pointerleave', () => { dragging = false; });
     canvas.addEventListener('keydown', event => {
@@ -329,10 +428,12 @@ if (canvas && stage) {
       if (['1', '2', '3', '4'].includes(event.key)) {
         setPose(['idle', 'observe', 'build', 'signal'][Number(event.key) - 1]);
       }
+      if (event.key === '5' || event.key.toLowerCase() === 'e') setExploded();
     });
     document.querySelectorAll('[data-avatar-pose]').forEach(button => {
       button.addEventListener('click', () => setPose(button.dataset.avatarPose));
     });
+    document.querySelector('[data-avatar-action="explode"]')?.addEventListener('click', () => setExploded());
 
     function resize() {
       const bounds = stage.getBoundingClientRect();
@@ -340,7 +441,7 @@ if (canvas && stage) {
       const height = Math.max(520, bounds.height);
       renderer.setSize(width, height, false);
       camera.aspect = width / height;
-      camera.position.z = width < 620 ? 15.5 : 13.5;
+      camera.position.z = width < 620 ? 16.5 : 14.8;
       camera.updateProjectionMatrix();
     }
 
@@ -357,6 +458,10 @@ if (canvas && stage) {
         }
       });
       root.rotation.y = THREE.MathUtils.lerp(root.rotation.y, targetRotation, 0.08);
+      explodeProgress = THREE.MathUtils.lerp(explodeProgress, exploded ? 1 : 0, 0.08);
+      explodeItems.forEach(({ object, base, offset }) => {
+        object.position.copy(base).addScaledVector(offset, explodeProgress);
+      });
       if (!reducedMotion) {
         root.position.y = Math.sin(elapsed * 1.4) * 0.035;
         torso.position.y = 1.57 + Math.sin(elapsed * 1.8) * 0.008;
@@ -383,8 +488,10 @@ if (canvas && stage) {
       root,
       rig,
       setPose,
+      setExploded,
       rotateTo(value) { targetRotation = value; },
-      get pose() { return activePose; }
+      get pose() { return activePose; },
+      get exploded() { return exploded; }
     };
     stage.dataset.avatarReady = 'true';
   }
