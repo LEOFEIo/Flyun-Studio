@@ -813,6 +813,7 @@ footer a:hover{color:var(--accent);}
   .rev-row{flex-wrap:wrap;}
 }
 </style>
+<link rel="stylesheet" href="assets/tezign-system.css" />
 </head>
 
 <body>
@@ -851,6 +852,7 @@ footer a:hover{color:var(--accent);}
     <a href="cases.html" data-hover data-i18n="nav.cases">案例</a>
     <a href="blog.html" data-hover data-i18n="nav.blog">博客</a>
     <a href="lab.html" data-hover data-i18n="nav.lab">实验室</a>
+    <a href="#play" data-hover>PLAY</a>
     <a href="letter.html" data-hover data-i18n="nav.letter">Letter</a>
   </div>
   <div class="nav-actions" data-lang-mount>
@@ -873,6 +875,7 @@ footer a:hover{color:var(--accent);}
   <a href="cases.html" data-i18n="nav.cases">案例</a>
   <a href="blog.html" data-i18n="nav.blog">博客</a>
   <a href="lab.html" data-i18n="nav.lab">实验室</a>
+  <a href="#play">PLAY · 信号场</a>
   <a href="letter.html" data-i18n="nav.letter">Letter</a>
   <a href="#contact" class="cta" data-i18n="nav.cta">建立合作</a>
   <div class="meta">FLYUN STUDIO · 2026</div>
@@ -916,6 +919,84 @@ footer a:hover{color:var(--accent);}
 
     <div class="strip reveal" data-delay="4">
       <div class="strip-track" id="stripTrack"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FLYUN SIGNAL FIELD · PLAYABLE BRAND EXPERIENCE ===== -->
+<section class="signal-game" id="play" aria-labelledby="signalGameTitle">
+  <div class="signal-shell">
+    <header class="signal-head">
+      <div>
+        <div class="signal-kicker">FLYUN LAB · INTERACTIVE 001</div>
+        <h2 class="signal-title" id="signalGameTitle">连接<span>信号</span>，<br/>让系统活起来。</h2>
+      </div>
+      <p class="signal-intro">
+        一场 45 秒的品牌互动实验。操控你的光点，按顺序连接
+        <strong>交互、XR、AI、人才与文化</strong>五个节点，同时避开漂移的噪声。
+        桌面端支持鼠标与键盘，移动端可直接拖动。
+      </p>
+    </header>
+
+    <div class="signal-stage">
+      <div class="signal-canvas-wrap">
+        <canvas
+          id="signalCanvas"
+          tabindex="0"
+          role="application"
+          aria-label="FLYUN 信号场游戏。使用鼠标拖动、WASD 或方向键移动光点，依次连接五个信号节点。"
+        ></canvas>
+
+        <div class="signal-hud" aria-hidden="true">
+          <div class="signal-hud-group">
+            <div class="signal-stat">
+              <span class="signal-stat-label">SCORE</span>
+              <strong id="signalScore">0000</strong>
+            </div>
+            <div class="signal-stat">
+              <span class="signal-stat-label">CLARITY</span>
+              <strong id="signalClarity">100%</strong>
+            </div>
+          </div>
+          <div class="signal-stat">
+            <span class="signal-stat-label">TIME</span>
+            <strong id="signalTime">45s</strong>
+          </div>
+        </div>
+
+        <div class="signal-overlay" id="signalOverlay">
+          <div class="signal-overlay-card">
+            <div class="signal-overline">MISSION · BUILD THE CONSTELLATION</div>
+            <h3 id="signalOverlayTitle">准备进入信号场？</h3>
+            <p id="signalOverlayCopy">靠近目标节点即可完成连接。避开红色噪声，保持清晰度，并尽可能快速完成整张网络。</p>
+            <button class="signal-start" id="signalStart" type="button">启动信号 / Start</button>
+          </div>
+        </div>
+        <div class="signal-live-region" id="signalLive" aria-live="polite"></div>
+      </div>
+
+      <aside class="signal-panel" aria-label="游戏任务说明">
+        <div>
+          <div class="signal-panel-label">MISSION MAP</div>
+          <h3>建立 FLYUN<br/>能力星图</h3>
+          <p>节点必须按顺序激活。每次连接都会让系统更完整，也会恢复少量清晰度。</p>
+          <div class="signal-progress" aria-hidden="true"><span id="signalProgress"></span></div>
+        </div>
+
+        <ol class="signal-mission-list">
+          <li data-signal-mission><span>交互设计</span><small>WAIT</small></li>
+          <li data-signal-mission><span>XR 空间</span><small>WAIT</small></li>
+          <li data-signal-mission><span>AI 智能</span><small>WAIT</small></li>
+          <li data-signal-mission><span>人才网络</span><small>WAIT</small></li>
+          <li data-signal-mission><span>文化叙事</span><small>WAIT</small></li>
+        </ol>
+
+        <div class="signal-controls">
+          POINTER · 拖动或移动鼠标<br/>
+          KEYBOARD · <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd>
+          / <kbd>↑</kbd><kbd>←</kbd><kbd>↓</kbd><kbd>→</kbd>
+        </div>
+      </aside>
     </div>
   </div>
 </section>
@@ -1929,8 +2010,10 @@ if(matchMedia('(hover:none)').matches || matchMedia('(max-width:640px)').matches
 }
 </script>
 
+<script src="assets/flyun-signal-game.js"></script>
 <!-- ===== FLYUN CMS · I18N ===== -->
 <script src="assets/flyun-cms.js"></script>
 
+<script src="assets/tezign-system.js"></script>
 </body>
 </html>
