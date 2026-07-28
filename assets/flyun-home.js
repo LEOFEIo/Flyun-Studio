@@ -304,7 +304,7 @@
         r: index % 8 === 0 ? random(2.2, 3.4) : random(.7, 1.6),
         phase: random(0, Math.PI * 2)
       }));
-      draw(0);
+      if (reduced) draw(0);
     }
 
     function palette() {
