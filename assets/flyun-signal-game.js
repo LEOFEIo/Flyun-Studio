@@ -92,7 +92,7 @@
       y: state.height * nodePositions[index][1],
       r: 15,
       phase: random(0, Math.PI * 2),
-      collected: false,
+      collected: index < state.mission,
       color: colors[index]
     }));
 
