@@ -60,56 +60,61 @@
       <div class="fy-container">
         <a class="fy-announcement" href="#insights" data-reveal>
           <span class="fy-live-dot"></span>
-          <span data-copy="announce">FLYUN · EXPERIENCE INTELLIGENCE 2026</span>
+          <span data-copy="announce">YUNFEI XU · INTERACTION DESIGN PORTFOLIO 2026</span>
           <span aria-hidden="true">↗</span>
         </a>
 
         <div class="fy-hero-copy" data-reveal>
-          <p class="fy-kicker" data-copy="hero.kicker">FLYUN 是一家空间智能与人才体验工作室</p>
-          <h1 data-copy-html="hero.title">让空间理解人，<br><em>让智能真正发生。</em></h1>
+          <p class="fy-kicker" data-copy="hero.kicker">许云飞 · 交互设计师 / 产品构建者 / 实时 3D 创作者</p>
+          <h1 data-copy-html="hero.title">我设计可以进入的系统，<br><em>也把它们真正做出来。</em></h1>
           <div class="fy-hero-bottom">
-            <p data-copy="hero.copy">我们连接空间计算、交互设计、AI 与人才洞察，把复杂技术转化为能够被感知、参与和持续生长的真实体验。</p>
+            <p data-copy="hero.copy">从视觉传达、Unity 与虚拟空间，到 AIGC、产品设计和人才智能，我用设计与代码把复杂问题转化为可运行、可参与的体验。</p>
             <div class="fy-actions">
-              <a class="fy-btn fy-btn-primary" href="#system">
-                <span data-copy="hero.primary">探索体验系统</span><span aria-hidden="true">↘</span>
+              <a class="fy-btn fy-btn-primary" href="#scenes">
+                <span data-copy="hero.primary">查看代表作品</span><span aria-hidden="true">↘</span>
               </a>
-              <a class="fy-btn fy-btn-ghost" href="cases.html">
-                <span data-copy="hero.secondary">查看项目案例</span><span aria-hidden="true">↗</span>
+              <a class="fy-btn fy-btn-ghost" href="mailto:hello@flyun.studio">
+                <span data-copy="hero.secondary">与我联系</span><span aria-hidden="true">↗</span>
               </a>
             </div>
           </div>
         </div>
 
-        <div class="fy-hero-stage" data-hero-stage data-reveal>
+        <div class="fy-hero-stage fy-avatar-stage" data-hero-stage data-avatar-stage data-reveal>
           <canvas id="heroField" aria-hidden="true"></canvas>
-          <div class="fy-stage-topline">
-            <span>FLYUN / EXPERIENCE OS</span>
-            <span class="fy-stage-state"><i></i><span data-copy="hero.online">SYSTEM ONLINE</span></span>
+          <canvas id="flyunAvatarCanvas" tabindex="0" aria-label="可旋转、可切换姿态的 FLYUN Three.js 数字人"></canvas>
+          <div class="fy-avatar-fallback" aria-hidden="true">
+            <span>F</span><small>DIGITAL CURATOR</small>
           </div>
-          <div class="fy-orbit fy-orbit-one" aria-hidden="true"></div>
-          <div class="fy-orbit fy-orbit-two" aria-hidden="true"></div>
-          <div class="fy-core" aria-hidden="true">
-            <span>F</span>
-            <small>CONTEXT<br>ENGINE</small>
+          <div class="fy-stage-topline">
+            <span>FLYUN / PORTFOLIO HUMAN 001</span>
+            <span class="fy-stage-state"><i></i><span data-copy="hero.online">MODEL ONLINE</span></span>
           </div>
           <article class="fy-float-card fy-float-card-a">
-            <small>01 / SIGNAL</small>
-            <strong data-copy="hero.card1">理解人的意图</strong>
-            <span>92.8%</span>
+            <small>01 / VIRTUAL MUSEUM</small>
+            <strong data-copy="hero.card1">虚拟空间与文化体验</strong>
+            <span>UNITY · XR</span>
           </article>
           <article class="fy-float-card fy-float-card-b">
-            <small>02 / SPACE</small>
-            <strong data-copy="hero.card2">响应空间状态</strong>
-            <span>REAL-TIME</span>
+            <small>02 / PRODUCT SYSTEM</small>
+            <strong data-copy="hero.card2">AI 产品与人才连接</strong>
+            <span>AI · UX</span>
           </article>
           <article class="fy-float-card fy-float-card-c">
-            <small>03 / AGENT</small>
-            <strong data-copy="hero.card3">让体验持续进化</strong>
-            <span>+18.6%</span>
+            <small>03 / CREATIVE CODE</small>
+            <strong data-copy="hero.card3">交互原型与实时 3D</strong>
+            <span>THREE.JS · GAME</span>
           </article>
+          <div class="fy-avatar-controls" role="group" aria-label="数字人姿态">
+            <button class="active" type="button" data-avatar-pose="idle" aria-pressed="true">01 IDLE</button>
+            <button type="button" data-avatar-pose="observe" aria-pressed="false">02 OBSERVE</button>
+            <button type="button" data-avatar-pose="build" aria-pressed="false">03 BUILD</button>
+            <button type="button" data-avatar-pose="signal" aria-pressed="false">04 SIGNAL</button>
+          </div>
+          <div class="fy-avatar-part" id="avatarPartLabel">DRAG TO ROTATE</div>
           <div class="fy-stage-caption">
-            <span data-copy="hero.visual">实时体验上下文可视化</span>
-            <span>SCROLL TO EXPLORE ↓</span>
+            <span data-copy="hero.visual">拖拽旋转 · 点击部件 · 切换姿态</span>
+            <span>THREE.JS PROCEDURAL HUMAN ↓</span>
           </div>
         </div>
       </div>
@@ -488,6 +493,7 @@
 
   <script src="assets/flyun-cms.js"></script>
   <script src="assets/flyun-home.js"></script>
+  <script type="module" src="assets/flyun-avatar.js"></script>
   <script src="assets/flyun-signal-game.js"></script>
   <script src="assets/tezign-system.js"></script>
 </body>
