@@ -8,7 +8,7 @@
   const $$ = (selector, root = document) => Array.from(root.querySelectorAll(selector));
   const state = {
     lang: localStorage.getItem('flyun:lang') === 'en' ? 'en' : 'zh',
-    theme: localStorage.getItem('flyun:portfolio:theme') === 'dark' ? 'dark' : 'light',
+    theme: localStorage.getItem('flyun:portfolio:theme') === 'light' ? 'light' : 'dark',
     projects: store.readProjects().filter((item) => item.status === 'published'),
     profile: store.readProfile(),
     activeCollection: null,
@@ -50,7 +50,7 @@
   };
 
   const accentPalette = [
-    ['#e5e8e1', '#232920'], ['#c8daf5', '#1c3455'], ['#f3e5aa', '#4d4321'], ['#f1c7cc', '#5b2932'], ['#d8c9ef', '#352050'], ['#c7e8df', '#1d4d45']
+    ['#17361f', '#c5ff4a'], ['#14294d', '#bcd0ff'], ['#3c2f0f', '#f6d776'], ['#431d2a', '#ffb8c3'], ['#30204e', '#dfc7ff'], ['#103a34', '#a6ffe8']
   ];
 
   function choose(project, key) {
