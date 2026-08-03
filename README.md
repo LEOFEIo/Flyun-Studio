@@ -1,22 +1,23 @@
 # FLYUN Studio · Leo Xu Portfolio
 
-A data-driven personal portfolio for interaction design, AI product, Unity/XR, spatial experience and talent technology.
+A data-driven personal portfolio for interaction design, AI product, Unity/XR, spatial experience and talent technology. The home page is presented as a small, folder-based archive inspired by the reference portfolio template.
 
 ## What changed
 
-- Restored a valid root `index.html` after the previous homepage was renamed to `index55.html`.
-- Removed the avatar-based Three.js hero and replaced it with a lightweight interactive signal field.
-- Rebuilt the visual system around editorial typography, Bento project layouts, responsive motion and strong mobile behavior.
-- Added a shared project/profile data layer with local-first caching and Supabase cloud sync.
-- Rebuilt `admin.html` as a focused portfolio CMS.
-- Removed obsolete avatar homepage assets.
+- Rebuilt the homepage as a light editorial archive with four interactive folders: Selected Work, Practice, Notes and Elsewhere.
+- Added a folder-to-stage transition: folders fan out into a full-screen project reader with keyboard navigation.
+- Kept the shared project/profile data layer with local-first caching and Supabase cloud sync.
+- Kept `admin.html` as the portfolio CMS; changes made there still update the Selected Work folder.
+- Added bilingual content, light/dark themes, responsive folder layouts and reduced-motion support.
 
 See [`DESIGN.md`](DESIGN.md) for the design and interaction rules.
 
 ## Main files
 
 ```text
-index.html                    Personal portfolio
+index.html                    Folder-based personal portfolio
+assets/folder-portfolio.css   Homepage visual system
+assets/folder-portfolio.js    Folder archive and stage interactions
 admin.html                    Portfolio CMS
 DESIGN.md                     Visual and interaction system
 assets/studio-base.css        Global and hero styling
@@ -30,11 +31,9 @@ supabase-schema.sql           Existing Supabase schema
 
 ## Portfolio features
 
-- interactive signal-field canvas
-- category filters
-- dynamic project cards
-- project detail dialog
-- command palette (`⌘/Ctrl + K`)
+- interactive folder archive
+- full-screen project reader with previous/next navigation
+- dynamic project cards from the CMS data layer
 - bilingual content
 - dark/light themes
 - responsive layouts
