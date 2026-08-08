@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="飞云招聘候选人中心：管理职业档案、申请进度与精选职位。">
+  <meta name="theme-color" content="#ffffff">
+  <title>候选人中心 · 飞云 Recruiting</title>
+  <link rel="icon" href="public/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="portal.css">
+  <link rel="stylesheet" href="portal-layout-fix.css">
+  <script src="site-preferences.js"></script>
+</head>
+<body data-portal="candidate">
+  <header class="portal-header">
+    <a class="portal-brand" href="index.html">
+      <i>拾</i><span>飞云 <small>Candidate workspace</small></span>
+    </a>
+    <nav class="portal-nav" aria-label="主导航">
+      <a class="active" href="candidate.html">候选人中心</a>
+      <a href="index.html#jobs">精选职位</a>
+      <a href="recruiter.html">招聘方后台</a>
+    </nav>
+    <div class="portal-account">
+      <span data-candidate-name>候选人</span>
+      <button class="icon-button" type="button" data-logout aria-label="退出登录">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M10 5H5v14h5M14 8l4 4-4 4M18 12H9"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <main class="portal-shell">
+    <section class="hero">
+      <div>
+        <p class="hero-kicker">Candidate intelligence · 02</p>
+        <h1>你的职业机会，<br><span>由你掌控。</span></h1>
+      </div>
+      <div class="hero-actions">
+        <button class="primary-button" type="button" data-open-modal="profile-modal">
+          <svg class="icon" viewBox="0 0 24 24"><path d="m4 20 4.5-1 10-10a2.1 2.1 0 0 0-3-3l-10 10L4 20Z"/><path d="m13.5 7.5 3 3"/></svg>
+          编辑职业档案
+        </button>
+        <a class="secondary-button" href="index.html#jobs">查看精选机会</a>
+      </div>
+    </section>
+
+    <section class="stats" aria-label="候选人数据">
+      <article class="stat-card"><span>职业档案完整度</span><strong>84%</strong><small>补充量化项目可达 92%</small></article>
+      <article class="stat-card"><span>当前申请</span><strong>03</strong><small>1 个技术面试待进行</small></article>
+      <article class="stat-card"><span>本周匹配机会</span><strong>12</strong><small>基于技能与偏好自动更新</small></article>
+      <article class="stat-card"><span>顾问回复中位数</span><strong>2.4h</strong><small>保持机会信息透明</small></article>
+    </section>
+
+    <div class="page-grid">
+      <aside class="sidebar">
+        <div class="profile-mini">
+          <div class="avatar" data-candidate-avatar>候选</div>
+          <strong data-candidate-name>候选人</strong>
+          <small data-candidate-email>candidate@example.com</small>
+        </div>
+        <nav class="side-nav" aria-label="候选人侧边导航">
+          <a class="active" href="#overview">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z"/></svg>
+            总览
+          </a>
+          <a href="#applications">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M8 6V4h8v2M4 7h16v13H4z"/><path d="M4 12h16"/></svg>
+            申请进度
+          </a>
+          <a href="#opportunities">
+            <svg class="icon" viewBox="0 0 24 24"><path d="m12 3 2.5 5 5.5.8-4 3.9.9 5.5-4.9-2.6-4.9 2.6.9-5.5-4-3.9 5.5-.8L12 3Z"/></svg>
+            推荐机会
+          </a>
+        </nav>
+      </aside>
+
+      <div class="content" id="overview">
+        <div class="content-head">
+          <div>
+            <p class="section-kicker">Personal workspace</p>
+            <h2>下午好，<span data-candidate-name>候选人</span></h2>
+          </div>
+          <button class="secondary-button" id="export-profile" type="button">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M12 3v12M7 10l5 5 5-5"/><path d="M5 21h14"/></svg>
+            导出档案
+          </button>
+        </div>
+
+        <div class="dashboard-grid">
+          <section class="panel" id="applications">
+            <div class="panel-head">
+              <div><p class="section-kicker">Application pipeline</p><h2>申请进度</h2></div>
+              <a href="#opportunities">寻找新机会 →</a>
+            </div>
+            <div class="pipeline-list" id="candidate-pipeline"></div>
+          </section>
+
+          <section class="panel dark">
+            <p class="section-kicker">Profile intelligence</p>
+            <h2>职业画像</h2>
+            <div class="profile-score">
+              <div class="score-ring">84</div>
+              <p id="profile-summary"></p>
+            </div>
+            <div class="quick-list">
+              <button type="button" data-open-modal="profile-modal"><span id="profile-title">AI / 科技人才</span><span>编辑 →</span></button>
+              <button type="button" data-open-modal="profile-modal"><span id="profile-city">上海</span><span>地点 →</span></button>
+              <button type="button" data-open-modal="profile-modal"><span id="profile-skills">大模型，AI Infra，Python</span><span>技能 →</span></button>
+            </div>
+          </section>
+
+          <section class="panel violet">
+            <p class="section-kicker" style="color:rgba(255,255,255,.6)">AI career advisor</p>
+            <h2>下一步建议</h2>
+            <p id="advisor-copy" style="max-width:660px;font-size:12px;line-height:1.7;color:rgba(255,255,255,.75)">你的技术方向与近期 AI 基础设施岗位高度匹配。补充一个可量化的性能优化案例，会显著提升顾问推荐信的说服力。</p>
+            <button class="tiny-button" id="advisor-action" type="button">
+              <svg class="icon" viewBox="0 0 24 24"><path d="m12 3 1.6 5.4L19 10l-5.4 1.6L12 17l-1.6-5.4L5 10l5.4-1.6L12 3Z"/></svg>
+              生成我的定位
+            </button>
+          </section>
+
+          <section class="panel" id="opportunities">
+            <div class="panel-head">
+              <div><p class="section-kicker">Selected opportunities</p><h2>为你精选</h2></div>
+              <a href="index.html#jobs">查看全部 →</a>
+            </div>
+            <div class="jobs-grid">
+              <a class="job-card" href="index.html#jobs"><span>上海 · AI Infra</span><strong>模型服务平台工程师</strong><small>¥70–95K · 核心团队 · 96% 匹配</small></a>
+              <a class="job-card" href="index.html#jobs"><span>北京 · Multimodal</span><strong>多模态算法研究员</strong><small>¥65–90K · 全球业务 · 93% 匹配</small></a>
+              <a class="job-card" href="index.html#jobs"><span>深圳 · Embodied AI</span><strong>具身智能算法工程师</strong><small>¥60–85K · 0-1 产品 · 89% 匹配</small></a>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <div class="modal-backdrop" id="profile-modal" aria-hidden="true">
+    <section class="modal" role="dialog" aria-modal="true" aria-labelledby="profile-modal-title">
+      <header class="modal-head">
+        <h2 id="profile-modal-title">编辑职业档案</h2>
+        <button class="modal-close" type="button" data-close-modal aria-label="关闭">
+          <svg class="icon" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></svg>
+        </button>
+      </header>
+      <form id="profile-form">
+        <div class="form-grid">
+          <label>姓名<input id="profile-name-input" required></label>
+          <label>邮箱<input id="profile-email-input" type="email" required></label>
+          <label>职业方向<input id="profile-title-input" required></label>
+          <label>期望城市<input id="profile-city-input" required></label>
+          <label class="full">核心技能<input id="profile-skills-input" placeholder="使用逗号分隔"></label>
+          <label class="full">职业摘要<textarea id="profile-summary-input"></textarea></label>
+        </div>
+        <div class="form-actions">
+          <button class="secondary-button" type="button" data-close-modal>取消</button>
+          <button class="primary-button" type="submit">保存档案</button>
+        </div>
+      </form>
+    </section>
+  </div>
+  <div class="toast" id="portal-toast" role="status"></div>
+  <script src="public/supabase-config.js"></script>
+  <script src="portal.js"></script>
+</body>
+</html>

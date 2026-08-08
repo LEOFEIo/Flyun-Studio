@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="飞云招聘候选人与招聘方登录入口。">
+  <meta name="theme-color" content="#ffffff">
+  <title>登录 · 飞云 Recruiting</title>
+  <link rel="icon" href="public/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="portal.css">
+  <link rel="stylesheet" href="portal-layout-fix.css">
+  <script src="site-preferences.js"></script>
+</head>
+<body class="login-page" data-portal="login">
+  <main class="login-shell">
+    <section class="login-form-side">
+      <a class="portal-brand login-brand" href="index.html" aria-label="返回飞云首页">
+        <i>拾</i>
+        <span>飞云 <small>Recruiting Intelligence</small></span>
+      </a>
+
+      <div class="login-copy">
+        <p class="hero-kicker">Workspace access · 01</p>
+        <h1>进入你的<br><span>人才工作流。</span></h1>
+        <p>候选人管理职业机会，招聘方将搜索、证据、沟通和流程推进集中在一个工作台。</p>
+      </div>
+
+      <div class="role-tabs" role="tablist" aria-label="选择登录身份">
+        <button class="role-tab active" type="button" data-role="candidate" role="tab" aria-selected="true">我是候选人</button>
+        <button class="role-tab" type="button" data-role="recruiter" role="tab" aria-selected="false">我是招聘方</button>
+      </div>
+
+      <form class="login-form" id="login-form" data-role="candidate">
+        <div id="candidate-fields">
+          <label>
+            姓名
+            <input id="candidate-login-name" name="name" autocomplete="name" placeholder="例如：林知夏">
+          </label>
+          <label style="margin-top:12px">
+            邮箱
+            <input id="candidate-login-email" name="email" type="email" autocomplete="email" placeholder="name@example.com">
+          </label>
+        </div>
+        <div id="recruiter-fields" class="hidden">
+          <label>
+            管理员用户名
+            <input id="admin-username" name="username" autocomplete="username" placeholder="部署后配置的管理员账号">
+          </label>
+          <label style="margin-top:12px">
+            管理员密码
+            <input id="admin-password" name="password" type="password" autocomplete="current-password" placeholder="输入密码">
+          </label>
+        </div>
+        <p class="login-error" id="login-error" aria-live="polite"></p>
+        <button class="primary-button" id="login-submit" type="submit">进入候选人中心</button>
+      </form>
+      <p class="login-hint" id="login-hint"></p>
+    </section>
+
+    <aside class="login-visual" aria-label="AI 人才匹配演示">
+      <div class="visual-card">
+        <span>Talent evidence · 96% match</span>
+        <div class="visual-score">96</div>
+        <h2>让每一次连接<br>都有证据。</h2>
+        <p>从自然语言需求，到候选人排序、履历证据、个性化沟通与面试推进，飞云让关键招聘判断变得可追踪。</p>
+      </div>
+    </aside>
+  </main>
+  <div class="toast" id="portal-toast" role="status"></div>
+  <script src="public/supabase-config.js"></script>
+  <script src="portal.js"></script>
+</body>
+</html>

@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="飞云招聘方后台：统一管理人才池、招聘阶段、匹配证据与数据导出。">
+  <meta name="theme-color" content="#ffffff">
+  <title>招聘方后台 · 飞云 Recruiting</title>
+  <link rel="icon" href="public/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="portal.css">
+  <link rel="stylesheet" href="portal-layout-fix.css">
+  <script src="site-preferences.js"></script>
+</head>
+<body data-portal="recruiter">
+  <header class="portal-header">
+    <a class="portal-brand" href="index.html">
+      <i>拾</i><span>飞云 <small>Recruiter intelligence</small></span>
+    </a>
+    <nav class="portal-nav" aria-label="主导航">
+      <a href="index.html">人才智能</a>
+      <a class="active" href="recruiter.html">招聘方后台</a>
+      <a href="candidate.html">候选人端</a>
+    </nav>
+    <div class="portal-account">
+      <span>管理员：<strong id="admin-name">admin</strong></span>
+      <button class="icon-button" type="button" data-logout aria-label="退出登录">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M10 5H5v14h5M14 8l4 4-4 4M18 12H9"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <main class="portal-shell">
+    <section class="hero">
+      <div>
+        <p class="hero-kicker">Recruiting operating system · 03</p>
+        <h1>让人才判断，<br><span>变成团队资产。</span></h1>
+      </div>
+      <div class="hero-actions">
+        <button class="primary-button" type="button" data-open-modal="add-talent-modal">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+          新增候选人
+        </button>
+        <button class="secondary-button" data-export-csv type="button">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M12 3v12M7 10l5 5 5-5"/><path d="M5 21h14"/></svg>
+          导出人才池
+        </button>
+      </div>
+    </section>
+
+    <section class="stats" aria-label="招聘数据">
+      <article class="stat-card"><span>人才池总数</span><strong id="talent-count">0</strong><small>跨岗位候选人统一管理</small></article>
+      <article class="stat-card"><span>面试进行中</span><strong id="interview-count">0</strong><small>阶段变更实时保存在本地</small></article>
+      <article class="stat-card"><span>Offer / 入职</span><strong id="offer-count">0</strong><small>本月目标完成度 72%</small></article>
+      <article class="stat-card"><span>平均匹配度</span><strong id="match-average">0%</strong><small>基于履历证据和岗位要求</small></article>
+    </section>
+
+    <div class="page-grid">
+      <aside class="sidebar">
+        <div class="profile-mini">
+          <div class="avatar">AD</div>
+          <strong>admin</strong>
+          <small>招聘管理员 · 全部权限</small>
+        </div>
+        <nav class="side-nav" aria-label="招聘方侧边导航">
+          <a class="active" href="#pipeline">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z"/></svg>
+            招聘看板
+          </a>
+          <a href="#talent-list">
+            <svg class="icon" viewBox="0 0 24 24"><circle cx="9" cy="8" r="4"/><path d="M2 21a7 7 0 0 1 14 0M17 4v8M13 8h8"/></svg>
+            人才池
+          </a>
+          <a href="index.html#jd-studio">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6z"/><path d="M15 3v5h5M9 13h7M9 17h7"/></svg>
+            JD 智能解析
+          </a>
+          <a href="index.html#compare">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M8 4v16M16 4v16M4 8h8M12 16h8"/></svg>
+            人才对比
+          </a>
+        </nav>
+      </aside>
+
+      <div class="content">
+        <div class="content-head">
+          <div>
+            <p class="section-kicker">Team workspace</p>
+            <h2>招聘任务驾驶舱</h2>
+          </div>
+          <span class="section-kicker">最后更新：刚刚</span>
+        </div>
+
+        <div class="toolbar">
+          <label class="search-box" for="talent-search">
+            <svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
+            <input id="talent-search" placeholder="搜索姓名、公司、方向或城市">
+          </label>
+          <select id="job-filter" aria-label="按职位项目筛选">
+            <option value="all">全部职位项目</option>
+            <option value="AI Infra">AI Infra</option>
+            <option value="多模态">多模态</option>
+            <option value="具身智能">具身智能</option>
+            <option value="AI 产品">AI 产品</option>
+            <option value="自动驾驶">自动驾驶</option>
+          </select>
+          <button class="primary-button" type="button" data-open-modal="add-talent-modal">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+            添加人才
+          </button>
+        </div>
+
+        <section id="pipeline" aria-labelledby="pipeline-title">
+          <div class="panel-head">
+            <div><p class="section-kicker">Live hiring pipeline</p><h2 id="pipeline-title">招聘看板</h2></div>
+            <span id="result-count" class="section-kicker">0 位人才</span>
+          </div>
+          <div class="kanban" id="kanban-board"></div>
+        </section>
+
+        <section class="panel" id="talent-list" style="margin-top:16px">
+          <div class="panel-head">
+            <div><p class="section-kicker">Evidence-backed talent pool</p><h2>最近人才</h2></div>
+            <button type="button" data-export-csv>导出 CSV →</button>
+          </div>
+          <div class="data-table">
+            <div class="table-row table-head">
+              <span>候选人</span><span>当前经历</span><span>职位项目</span><span>阶段 / 匹配</span><span></span>
+            </div>
+            <div id="talent-table"></div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <div class="modal-backdrop" id="add-talent-modal" aria-hidden="true">
+    <section class="modal" role="dialog" aria-modal="true" aria-labelledby="add-talent-title">
+      <header class="modal-head">
+        <h2 id="add-talent-title">新增候选人</h2>
+        <button class="modal-close" type="button" data-close-modal aria-label="关闭">
+          <svg class="icon" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></svg>
+        </button>
+      </header>
+      <form id="add-talent-form">
+        <div class="form-grid">
+          <label>姓名<input name="name" required></label>
+          <label>邮箱<input name="email" type="email" required></label>
+          <label>当前方向<input name="role" required placeholder="例如：推理优化工程师"></label>
+          <label>当前公司<input name="company" required></label>
+          <label>职位项目
+            <select name="job">
+              <option>AI Infra</option><option>多模态</option><option>具身智能</option><option>AI 产品</option><option>自动驾驶</option>
+            </select>
+          </label>
+          <label>招聘阶段
+            <select name="stage">
+              <option value="sourcing">人才发现</option><option value="screen">沟通筛选</option><option value="interview">面试进行</option><option value="offer">Offer / 入职</option>
+            </select>
+          </label>
+          <label>匹配度<input name="score" type="number" min="50" max="100" value="88"></label>
+          <label>所在城市<input name="city" value="上海" required></label>
+        </div>
+        <div class="form-actions">
+          <button class="secondary-button" type="button" data-close-modal>取消</button>
+          <button class="primary-button" type="submit">加入人才池</button>
+        </div>
+      </form>
+    </section>
+  </div>
+
+  <div class="modal-backdrop" id="talent-modal" aria-hidden="true">
+    <section class="modal" role="dialog" aria-modal="true" aria-labelledby="talent-modal-title">
+      <header class="modal-head">
+        <h2 id="talent-modal-title">候选人</h2>
+        <button class="modal-close" type="button" data-close-modal aria-label="关闭">
+          <svg class="icon" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></svg>
+        </button>
+      </header>
+      <div id="talent-modal-content"></div>
+    </section>
+  </div>
+  <div class="toast" id="portal-toast" role="status"></div>
+  <script src="public/supabase-config.js"></script>
+  <script src="portal.js"></script>
+</body>
+</html>

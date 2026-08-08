@@ -1,0 +1,1481 @@
+/*
+ * Feiyun V10 — one final, theme-aware visual authority.
+ * The older files still provide legacy component geometry; every color that
+ * reaches the product is normalized here through semantic tokens.
+ */
+
+:root,
+:root[data-theme="light"] {
+  --tone-canvas: #f8f8f5;
+  --tone-surface: #ffffff;
+  --tone-surface-soft: #f1f1ed;
+  --tone-surface-raised: #e9e9e4;
+  --tone-border: #dedfd9;
+  --tone-border-strong: #bfc2bb;
+  --tone-text: #0c0d0f;
+  --tone-text-secondary: #4f555b;
+  --tone-text-muted: #6a7076;
+  --tone-action: #111214;
+  --tone-action-hover: #2a2c2f;
+  --tone-on-action: #ffffff;
+  --tone-accent: #5665d8;
+  --tone-accent-hover: #4352c2;
+  --tone-on-accent: #ffffff;
+  --tone-success: #287a49;
+  --tone-warning: #9a650f;
+  --tone-danger: #bd4147;
+  --tone-inverse: #101214;
+  --tone-on-inverse: #f8f9fa;
+  --tone-inverse-muted: #b5bac0;
+  --tone-shadow: 0 24px 70px rgba(16, 18, 20, 0.08);
+  --tone-shadow-small: 0 10px 28px rgba(16, 18, 20, 0.07);
+
+  --linear-canvas: var(--tone-canvas);
+  --linear-surface-1: var(--tone-surface-soft);
+  --linear-surface-2: var(--tone-surface);
+  --linear-surface-3: var(--tone-surface-raised);
+  --linear-line: var(--tone-border);
+  --linear-line-strong: var(--tone-border-strong);
+  --linear-ink: var(--tone-text);
+  --linear-muted: var(--tone-text-secondary);
+  --linear-subtle: var(--tone-text-muted);
+  --linear-tertiary: var(--tone-text-muted);
+  --linear-primary: var(--tone-action);
+  --linear-primary-hover: var(--tone-action-hover);
+  --linear-success: var(--tone-success);
+  --paper: var(--tone-canvas);
+  --ink: var(--tone-text);
+  --muted: var(--tone-text-muted);
+  --line: var(--tone-border);
+  --soft: var(--tone-surface-soft);
+  --accent: var(--tone-accent);
+  --white: var(--tone-surface);
+  --surface: var(--tone-surface);
+  --surface-strong: var(--tone-surface-soft);
+  --surface-raised: var(--tone-surface-raised);
+  --success: var(--tone-success);
+  --warning: var(--tone-warning);
+  --danger: var(--tone-danger);
+  --shadow: var(--tone-shadow);
+  color-scheme: light;
+}
+
+:root[data-theme="dark"] {
+  --tone-canvas: #0b0c0e;
+  --tone-surface: #131519;
+  --tone-surface-soft: #181b20;
+  --tone-surface-raised: #20242a;
+  --tone-border: #2b3037;
+  --tone-border-strong: #414851;
+  --tone-text: #f3f4f5;
+  --tone-text-secondary: #c1c6cc;
+  --tone-text-muted: #969da6;
+  --tone-action: #edf0f2;
+  --tone-action-hover: #ffffff;
+  --tone-on-action: #0b0c0e;
+  --tone-accent: #93a1ff;
+  --tone-accent-hover: #aeb8ff;
+  --tone-on-accent: #111427;
+  --tone-success: #78ce98;
+  --tone-warning: #e7bc6f;
+  --tone-danger: #ff9197;
+  --tone-inverse: #181b20;
+  --tone-on-inverse: #f6f7f8;
+  --tone-inverse-muted: #a9afb7;
+  --tone-shadow: 0 28px 84px rgba(0, 0, 0, 0.32);
+  --tone-shadow-small: 0 12px 34px rgba(0, 0, 0, 0.25);
+
+  --linear-canvas: var(--tone-canvas);
+  --linear-surface-1: var(--tone-surface-soft);
+  --linear-surface-2: var(--tone-surface);
+  --linear-surface-3: var(--tone-surface-raised);
+  --linear-line: var(--tone-border);
+  --linear-line-strong: var(--tone-border-strong);
+  --linear-ink: var(--tone-text);
+  --linear-muted: var(--tone-text-secondary);
+  --linear-subtle: var(--tone-text-muted);
+  --linear-tertiary: var(--tone-text-muted);
+  --linear-primary: var(--tone-action);
+  --linear-primary-hover: var(--tone-action-hover);
+  --linear-success: var(--tone-success);
+  --paper: var(--tone-canvas);
+  --ink: var(--tone-text);
+  --muted: var(--tone-text-muted);
+  --line: var(--tone-border);
+  --soft: var(--tone-surface-soft);
+  --accent: var(--tone-accent);
+  --white: var(--tone-surface);
+  --surface: var(--tone-surface);
+  --surface-strong: var(--tone-surface-soft);
+  --surface-raised: var(--tone-surface-raised);
+  --success: var(--tone-success);
+  --warning: var(--tone-warning);
+  --danger: var(--tone-danger);
+  --shadow: var(--tone-shadow);
+  color-scheme: dark;
+}
+
+html,
+html[data-theme="light"] {
+  color-scheme: light;
+  background: var(--tone-canvas) !important;
+}
+
+html[data-theme="dark"] {
+  color-scheme: dark;
+  background: var(--tone-canvas) !important;
+}
+
+body {
+  color: var(--tone-text) !important;
+  background: var(--tone-canvas) !important;
+  font-family: Inter, "SF Pro Text", "PingFang SC", "Microsoft YaHei", "Noto Sans SC", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+  font-size: 16px;
+  line-height: 1.6;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  color: var(--tone-on-accent);
+  background: var(--tone-accent);
+}
+
+:focus-visible {
+  outline: 2px solid var(--tone-accent) !important;
+  outline-offset: 3px;
+}
+
+a,
+button,
+input,
+select,
+textarea,
+summary {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button,
+summary,
+a[href] {
+  cursor: pointer;
+}
+
+.page-progress {
+  display: none !important;
+}
+
+.motion-enabled .motion-item {
+  opacity: 0;
+  transform: translate3d(0, 10px, 0);
+  transition: opacity 0.34s cubic-bezier(0.22, 1, 0.36, 1), transform 0.34s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: var(--motion-delay, 0ms);
+}
+
+.motion-enabled .motion-item.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* Appearance controls */
+.site-preferences {
+  color: var(--tone-text) !important;
+}
+
+.preferences-panel {
+  border-color: var(--tone-border) !important;
+  background: color-mix(in srgb, var(--tone-surface) 88%, transparent) !important;
+  box-shadow: var(--tone-shadow-small) !important;
+}
+
+.preferences-panel > span {
+  background: var(--tone-border) !important;
+}
+
+.preference-group button {
+  color: var(--tone-text-muted) !important;
+  transition: color 0.18s ease, background-color 0.18s ease;
+}
+
+.preference-group button:hover {
+  color: var(--tone-text) !important;
+  background: var(--tone-surface-soft) !important;
+}
+
+.preference-group button[aria-pressed="true"] {
+  color: var(--tone-on-action) !important;
+  background: var(--tone-action) !important;
+  box-shadow: none !important;
+}
+
+.theme-swatch {
+  position: relative;
+  display: block;
+  width: 15px;
+  height: 15px;
+  border: 1.5px solid currentColor;
+  border-radius: 50%;
+}
+
+.theme-swatch-light::after {
+  position: absolute;
+  inset: 3px;
+  border-radius: inherit;
+  background: currentColor;
+  content: "";
+}
+
+.theme-swatch-dark {
+  overflow: hidden;
+}
+
+.theme-swatch-dark::after {
+  position: absolute;
+  top: -2px;
+  right: -3px;
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: var(--tone-surface);
+  content: "";
+}
+
+/* Navigation */
+.product-header,
+html[data-theme] .product-header,
+html[data-theme] .landing-page > .product-header {
+  min-height: 64px !important;
+  padding-inline: var(--linear-gutter) !important;
+  color: var(--tone-text) !important;
+  border: 0 !important;
+  border-bottom: 1px solid color-mix(in srgb, var(--tone-border) 76%, transparent) !important;
+  border-radius: 0 !important;
+  background: color-mix(in srgb, var(--tone-canvas) 86%, transparent) !important;
+  box-shadow: none !important;
+  backdrop-filter: blur(20px) saturate(120%);
+}
+
+.wordmark,
+.wordmark b,
+.header-text-action,
+html[data-theme] .product-header .wordmark,
+html[data-theme] .product-header .wordmark > span,
+html[data-theme] .product-header .header-text-action {
+  color: var(--tone-text) !important;
+}
+
+.wordmark > i,
+html[data-theme] .product-header .wordmark i {
+  width: 30px !important;
+  height: 30px !important;
+  color: var(--tone-on-action) !important;
+  border: 0 !important;
+  border-radius: 50% !important;
+  background: var(--tone-action) !important;
+  font-weight: 700;
+}
+
+.product-nav,
+html[data-theme] .product-nav {
+  gap: 2px !important;
+  border: 0 !important;
+  background: transparent !important;
+}
+
+.product-nav a,
+.header-text-action,
+html[data-theme] .product-nav a {
+  min-height: 40px;
+  padding: 9px 12px;
+  color: var(--tone-text-muted) !important;
+  border-radius: 8px;
+  transition: color 0.18s ease, background-color 0.18s ease;
+}
+
+.product-nav a:hover,
+.product-nav a.active,
+.header-text-action:hover,
+html[data-theme] .product-nav a:hover,
+html[data-theme] .product-nav a.active {
+  color: var(--tone-text) !important;
+  background: var(--tone-surface-soft) !important;
+}
+
+.header-primary-action,
+html[data-theme] .header-primary-action {
+  min-height: 40px !important;
+  padding-inline: 16px !important;
+  color: var(--tone-on-action) !important;
+  border: 1px solid var(--tone-action) !important;
+  border-radius: 999px !important;
+  background: var(--tone-action) !important;
+  box-shadow: none !important;
+}
+
+.header-primary-action:hover {
+  border-color: var(--tone-action-hover) !important;
+  background: var(--tone-action-hover) !important;
+}
+
+.account-name,
+.product-account {
+  color: var(--tone-text-muted) !important;
+}
+
+.mobile-nav summary,
+html[data-theme] .mobile-nav summary {
+  color: var(--tone-text) !important;
+  border: 1px solid var(--tone-border) !important;
+  background: var(--tone-surface) !important;
+}
+
+.mobile-nav nav {
+  color: var(--tone-text) !important;
+  border-color: var(--tone-border) !important;
+  background: var(--tone-surface) !important;
+  box-shadow: var(--tone-shadow-small) !important;
+}
+
+/* Buttons and common form controls */
+.primary-button,
+.job-apply-card .primary-button,
+.application-form .primary-button,
+.profile-form .primary-button,
+.success-panel .primary-button,
+.access-denied .primary-button,
+.drawer-actions .primary-button,
+.dashboard-heading .primary-button,
+.signin-form .primary-button {
+  min-height: 44px;
+  color: var(--tone-on-action) !important;
+  border-color: var(--tone-action) !important;
+  border-radius: 999px !important;
+  background: var(--tone-action) !important;
+  box-shadow: none !important;
+}
+
+.primary-button:hover,
+.job-apply-card .primary-button:hover,
+.application-form .primary-button:hover,
+.profile-form .primary-button:hover,
+.success-panel .primary-button:hover,
+.access-denied .primary-button:hover,
+.drawer-actions .primary-button:hover,
+.dashboard-heading .primary-button:hover,
+.signin-form .primary-button:hover {
+  border-color: var(--tone-action-hover) !important;
+  background: var(--tone-action-hover) !important;
+}
+
+.secondary-button {
+  min-height: 44px;
+  color: var(--tone-text) !important;
+  border-color: var(--tone-border-strong) !important;
+  border-radius: 999px !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.secondary-button:hover {
+  border-color: var(--tone-text) !important;
+  background: var(--tone-surface-soft) !important;
+}
+
+html[data-theme] input,
+html[data-theme] select,
+html[data-theme] textarea,
+html[data-theme] .admin-search,
+html[data-theme] .form-grid input,
+html[data-theme] .form-grid select,
+html[data-theme] .form-grid textarea,
+html[data-theme] .profile-form input,
+html[data-theme] .profile-form select,
+html[data-theme] .profile-form textarea,
+html[data-theme] .drawer-field select,
+html[data-theme] .drawer-field textarea,
+html[data-theme] .admin-toolbar select,
+html[data-theme] .signin-form input {
+  color: var(--tone-text) !important;
+  caret-color: var(--tone-accent);
+  border-color: var(--tone-border-strong) !important;
+  background: var(--tone-surface) !important;
+  box-shadow: none !important;
+}
+
+html[data-theme] input::placeholder,
+html[data-theme] textarea::placeholder,
+html[data-theme] .admin-search input::placeholder {
+  color: var(--tone-text-muted) !important;
+  opacity: 1;
+}
+
+html[data-theme] input:focus,
+html[data-theme] select:focus,
+html[data-theme] textarea:focus,
+html[data-theme] .admin-search:focus-within {
+  border-color: var(--tone-accent) !important;
+  outline: 0;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--tone-accent) 16%, transparent) !important;
+}
+
+html[data-theme] option {
+  color: var(--tone-text);
+  background: var(--tone-surface);
+}
+
+/* Marketing page: spacious outside, dense product proof inside. */
+.product-page,
+.landing-page,
+.dashboard-page,
+.portal-page,
+.public-profile-page,
+.admin-page,
+.form-page {
+  color: var(--tone-text) !important;
+  background: var(--tone-canvas) !important;
+}
+
+.landing-page .landing-hero {
+  grid-template-columns: minmax(0, 0.94fr) minmax(440px, 1.06fr) !important;
+  gap: clamp(52px, 7vw, 96px) !important;
+  min-height: 720px !important;
+  padding-top: 112px !important;
+  padding-bottom: 112px !important;
+}
+
+.landing-page .landing-hero .hero-copy {
+  max-width: 640px !important;
+}
+
+.landing-page .landing-hero h1 {
+  max-width: 760px !important;
+  margin: 18px 0 26px !important;
+  color: var(--tone-text) !important;
+  font-size: clamp(62px, 6.8vw, 88px) !important;
+  font-weight: 560 !important;
+  line-height: 0.98 !important;
+  letter-spacing: -0.055em !important;
+}
+
+.landing-page .landing-hero h1 span {
+  color: var(--tone-text-muted) !important;
+}
+
+.landing-page .landing-hero .hero-copy > p:last-of-type {
+  max-width: 580px !important;
+  color: var(--tone-text-secondary) !important;
+  font-size: 18px !important;
+  line-height: 1.65 !important;
+}
+
+.section-kicker,
+.ui-eyebrow {
+  color: var(--tone-text-muted) !important;
+  font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.09em !important;
+}
+
+.meta-hero-visual {
+  min-height: 540px !important;
+  color: var(--tone-text) !important;
+  border: 1px solid var(--tone-border) !important;
+  border-radius: 20px !important;
+  background: var(--tone-surface-soft) !important;
+  box-shadow: none !important;
+}
+
+.featured-talent-card {
+  color: var(--tone-text) !important;
+  border-color: var(--tone-border-strong) !important;
+  border-radius: 14px !important;
+  background: var(--tone-surface) !important;
+  box-shadow: var(--tone-shadow-small) !important;
+  transform: none !important;
+}
+
+.featured-talent-card header,
+.featured-talent-card footer,
+.featured-profile p,
+.featured-skills span,
+.signal-ribbon {
+  color: var(--tone-text-muted) !important;
+  border-color: var(--tone-border) !important;
+}
+
+.featured-profile h2,
+.featured-talent-card strong,
+.featured-talent-card b {
+  color: var(--tone-text) !important;
+}
+
+.featured-skills span {
+  background: var(--tone-surface-soft) !important;
+}
+
+.signal-ribbon {
+  background: color-mix(in srgb, var(--tone-surface) 90%, transparent) !important;
+}
+
+.orbit-avatar,
+.featured-avatar,
+.mini-avatar,
+.candidate-avatar {
+  color: var(--tone-on-action) !important;
+  background: var(--tone-action) !important;
+}
+
+.brand-pulse,
+.completion-track i,
+.signal-bars i,
+.planner-funnel i {
+  background: var(--tone-accent) !important;
+}
+
+.live-dot {
+  background: var(--tone-success) !important;
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--tone-success) 16%, transparent) !important;
+}
+
+.tezign-ticker,
+.metric-strip {
+  color: var(--tone-text) !important;
+  border-color: var(--tone-border) !important;
+  background: var(--tone-canvas) !important;
+}
+
+.tezign-ticker {
+  border-top: 1px solid var(--tone-border) !important;
+  border-bottom: 1px solid var(--tone-border) !important;
+}
+
+.showcase-section,
+.apple-planner-section,
+.landing-section {
+  padding-block: clamp(88px, 9vw, 128px) !important;
+  color: var(--tone-text) !important;
+  border-color: var(--tone-border) !important;
+  background: var(--tone-canvas) !important;
+}
+
+.showcase-section,
+.apple-planner-section {
+  background: var(--tone-surface-soft) !important;
+}
+
+.meta-section-intro h2,
+.apple-tile-heading h2,
+.landing-heading h2,
+.block-heading h2 {
+  color: var(--tone-text) !important;
+  font-weight: 560 !important;
+  letter-spacing: -0.04em !important;
+}
+
+.meta-section-intro > p:last-child,
+.apple-tile-heading > p:last-child,
+.landing-heading > p,
+.block-heading span {
+  color: var(--tone-text-secondary) !important;
+}
+
+.showcase-frame,
+.apple-planner,
+.ui-card,
+.reasoning-card,
+.evidence-stat,
+.task-card,
+.profile-primary,
+.insight-card,
+.recommendation-card,
+.domain-table {
+  color: var(--tone-text) !important;
+  border-color: var(--tone-border) !important;
+  border-radius: 16px !important;
+  background: var(--tone-surface) !important;
+  box-shadow: none !important;
+}
+
+.showcase-chrome,
+.showcase-sidebar,
+.showcase-main,
+.talent-prompt,
+.prompt-results,
+.planner-controls,
+.planner-output,
+.planner-segmented,
+.planner-controls select,
+.planner-funnel article {
+  color: var(--tone-text) !important;
+  border-color: var(--tone-border) !important;
+  background: var(--tone-surface) !important;
+}
+
+.showcase-chrome,
+.showcase-sidebar,
+.planner-output,
+.planner-segmented,
+.planner-funnel article {
+  background: var(--tone-surface-soft) !important;
+}
+
+.showcase-title,
+.showcase-title b,
+.showcase-status,
+.showcase-sidebar,
+.showcase-copy p,
+.talent-prompt label,
+.prompt-tools,
+.prompt-suggestions button,
+.results-head,
+.planner-controls label,
+.planner-controls label > span,
+.planner-output p,
+.planner-output span,
+.planner-output small {
+  color: var(--tone-text-muted) !important;
+}
+
+.showcase-copy h2,
+.planner-control-head h3,
+.planner-controls label strong,
+.planner-output strong,
+.planner-funnel strong {
+  color: var(--tone-text) !important;
+}
+
+.showcase-sidebar b.active,
+.prompt-suggestions button,
+.mini-result-actions button,
+.mini-result:hover,
+.mini-result,
+.talent-compare-panel {
+  color: var(--tone-text) !important;
+  border-color: var(--tone-border) !important;
+  background: var(--tone-surface-soft) !important;
+}
+
+.prompt-input-row button,
+.prompt-suggestions button:hover,
+.mini-result-actions button:hover,
+.mini-result-actions button[aria-pressed="true"],
+.planner-segmented button.active,
+.task-state.running,
+.reasoning-body em.is-running {
+  color: var(--tone-on-accent) !important;
+  border-color: var(--tone-accent) !important;
+  background: var(--tone-accent) !important;
+}
+
+.mini-result strong,
+.mini-result > b,
+.task-title b,
+.evidence-stat > strong,
+.profile-primary h3,
+.insight-card h3,
+.recommendation-card p,
+.recommendation-card code,
+.recommendation-card a,
+.domain-table strong,
+.reasoning-body article b,
+.panel-label b {
+  color: var(--tone-text) !important;
+}
+
+.panel-label,
+.reasoning-body article,
+.task-table-head,
+.task-row,
+.task-row summary,
+.task-details,
+.task-details div,
+.domain-head,
+.domain-table > a {
+  color: var(--tone-text) !important;
+  border-color: var(--tone-border) !important;
+  background: transparent !important;
+}
+
+.task-table-head,
+.domain-head,
+.task-details div,
+.task-row summary:hover,
+.domain-table > a:hover {
+  background: var(--tone-surface-soft) !important;
+}
+
+.reasoning-body article > span,
+.reasoning-body article p,
+.reasoning-body article em,
+.evidence-stat > span,
+.evidence-stat small,
+.task-table-head,
+.task-number,
+.task-title small,
+.task-row summary > i,
+.task-details span,
+.profile-primary p,
+.profile-sources,
+.insight-card > span,
+.insight-card p,
+.recommendation-card > span,
+.domain-head,
+.domain-table span,
+.domain-table code,
+.domain-table i {
+  color: var(--tone-text-muted) !important;
+}
+
+.completion-track,
+.signal-bars {
+  background: var(--tone-surface-raised) !important;
+}
+
+.verified-pill,
+.insight-tags span,
+.status-chip,
+.task-state {
+  color: var(--tone-text-secondary) !important;
+  border-color: var(--tone-border) !important;
+  background: var(--tone-surface-soft) !important;
+}
+
+.verified-pill {
+  color: var(--tone-accent) !important;
+}
+
+.confidence-ring {
+  color: var(--tone-accent) !important;
+  border-color: var(--tone-accent) !important;
+  background: transparent !important;
+}
+
+.final-card {
+  color: var(--tone-on-inverse) !important;
+  border: 1px solid color-mix(in srgb, var(--tone-on-inverse) 13%, transparent) !important;
+  border-radius: 20px !important;
+  background: var(--tone-inverse) !important;
+  box-shadow: none !important;
+}
+
+.final-card h2,
+.final-card strong {
+  color: var(--tone-on-inverse) !important;
+}
+
+.final-card p,
+.final-card .section-kicker {
+  color: var(--tone-inverse-muted) !important;
+}
+
+.final-card .primary-button {
+  color: var(--tone-inverse) !important;
+  border-color: var(--tone-on-inverse) !important;
+  background: var(--tone-on-inverse) !important;
+}
+
+.final-card .secondary-button {
+  color: var(--tone-on-inverse) !important;
+  border-color: color-mix(in srgb, var(--tone-on-inverse) 42%, transparent) !important;
+  background: transparent !important;
+}
+
+.canvas-footer {
+  color: var(--tone-text-muted) !important;
+}
+
+/* Product routes, dashboards and forms */
+.jobs-hero,
+.portal-hero,
+.recruiter-hero,
+.admin-hero {
+  color: var(--tone-text) !important;
+  border-color: var(--tone-border) !important;
+  border-radius: 20px !important;
+  background: var(--tone-surface-soft) !important;
+  box-shadow: none !important;
+}
+
+.jobs-hero h1,
+.portal-hero h1,
+.recruiter-hero h1,
+.admin-hero h1,
+.dashboard-heading h1,
+.signin-copy h1,
+.form-intro h1 {
+  color: var(--tone-text) !important;
+  font-weight: 560 !important;
+  letter-spacing: -0.045em !important;
+}
+
+.jobs-hero p,
+.portal-hero p,
+.recruiter-hero p,
+.admin-hero p,
+.dashboard-heading p,
+.form-intro p {
+  color: var(--tone-text-secondary) !important;
+}
+
+.jobs-filter,
+.job-card,
+.job-detail-main,
+.job-apply-card,
+.application-form,
+.profile-form,
+.success-panel,
+.portal-panel,
+.recruiter-block,
+.recruiter-side-card,
+.dashboard-block,
+.dashboard-stats,
+.recommend-grid a,
+.admin-summary,
+.candidate-table,
+.candidate-drawer,
+.github-connect-card,
+.github-account-summary,
+.public-profile-preview {
+  color: var(--tone-text) !important;
+  border-color: var(--tone-border) !important;
+  border-radius: 16px !important;
+  background: var(--tone-surface) !important;
+  box-shadow: none !important;
+}
+
+.job-card:hover,
+.recommend-grid a:hover {
+  border-color: var(--tone-border-strong) !important;
+  background: var(--tone-surface-soft) !important;
+  box-shadow: none !important;
+}
+
+.jobs-filter > span,
+.jobs-filter a,
+.job-card p,
+.job-index,
+.job-meta,
+.job-meta span,
+.job-facts,
+.job-detail-main p,
+.job-lead,
+.job-section p,
+.job-section li,
+.portal-panel p,
+.recruiter-block p,
+.dashboard-block p {
+  color: var(--tone-text-muted) !important;
+}
+
+.jobs-filter a:hover,
+.jobs-filter a.active {
+  color: var(--tone-on-action) !important;
+  background: var(--tone-action) !important;
+}
+
+.job-card h2,
+.job-card strong,
+.job-meta strong,
+.job-detail-main h1,
+.job-detail-main h2,
+.job-apply-card h2,
+.portal-panel h2,
+.recruiter-block h2,
+.dashboard-block h2 {
+  color: var(--tone-text) !important;
+}
+
+.job-tags span,
+.public-skill-list span,
+.github-language-list span {
+  color: var(--tone-text-secondary) !important;
+  border-color: var(--tone-border) !important;
+  background: var(--tone-surface-soft) !important;
+}
+
+.back-link,
+.portal-index {
+  color: var(--tone-accent) !important;
+}
+
+.selected-job,
+.candidate-motivation,
+.publish-toggle,
+.empty-state,
+.empty-table,
+.portal-empty,
+.kanban-empty,
+.drawer-contact {
+  color: var(--tone-text) !important;
+  border-color: var(--tone-border) !important;
+  background: var(--tone-surface-soft) !important;
+}
+
+.empty-state p,
+.empty-table,
+.portal-empty p,
+.kanban-empty,
+.drawer-contact span,
+.candidate-motivation > span,
+.candidate-motivation p,
+.selected-job span,
+.selected-job small {
+  color: var(--tone-text-muted) !important;
+}
+
+.selected-job strong,
+.portal-empty strong {
+  color: var(--tone-text) !important;
+}
+
+.sparkle,
+.tool-dot,
+.planner-live i,
+.searching-state i,
+.auth-orbit i::after {
+  color: var(--tone-on-accent) !important;
+  background: var(--tone-accent) !important;
+}
+
+.searching-state {
+  color: var(--tone-text-muted) !important;
+}
+
+.form-page,
+.dashboard-page,
+.admin-page {
+  background: var(--tone-canvas) !important;
+}
+
+.dashboard-sidebar,
+.rail-nav {
+  color: var(--tone-text) !important;
+  border-color: var(--tone-border) !important;
+  background: var(--tone-surface) !important;
+}
+
+.dashboard-sidebar nav a,
+.rail-nav a {
+  color: var(--tone-text-muted) !important;
+}
+
+.dashboard-sidebar nav a:hover,
+.dashboard-sidebar nav a.active,
+.rail-nav a:hover,
+.rail-nav a.active {
+  color: var(--tone-on-action) !important;
+  background: var(--tone-action) !important;
+}
+
+.dashboard-stats article,
+.portal-stats article,
+.recruiter-metrics article,
+.admin-summary article,
+.admin-summary article:not(:first-child),
+.portal-opportunities a,
+.kanban-column,
+.kanban-column article,
+.candidate-application-list > a,
+.recruiter-table-row,
+.table-row,
+.application-row,
+.candidate-facts div {
+  color: var(--tone-text) !important;
+  border-color: var(--tone-border) !important;
+  background: var(--tone-surface) !important;
+  box-shadow: none !important;
+}
+
+.dashboard-stats article:hover,
+.portal-opportunities a:hover,
+.kanban-column article:hover,
+.candidate-application-list > a:hover,
+.recruiter-table-row:hover,
+.table-row:hover,
+.table-row.active,
+.application-row:hover {
+  background: var(--tone-surface-soft) !important;
+}
+
+.dashboard-stats article strong,
+.portal-stats article strong,
+.recruiter-metrics article strong,
+.admin-summary article strong,
+.portal-opportunities a strong,
+.kanban-column strong,
+.candidate-application-list strong,
+.recruiter-table-row b,
+.table-row b,
+.candidate-drawer h2,
+.candidate-drawer h3,
+.drawer-title,
+.candidate-facts strong {
+  color: var(--tone-text) !important;
+}
+
+.dashboard-stats article span,
+.dashboard-stats article small,
+.portal-stats article span,
+.portal-stats article small,
+.recruiter-metrics article span,
+.recruiter-metrics article small,
+.admin-summary article span,
+.admin-summary article small,
+.portal-opportunities a span,
+.portal-opportunities a small,
+.kanban-column p,
+.kanban-column small,
+.candidate-application-list small,
+.candidate-application-list p,
+.recruiter-table-row small,
+.table-row span,
+.application-row span,
+.candidate-facts span,
+.drawer-field label,
+.drawer-field small {
+  color: var(--tone-text-muted) !important;
+}
+
+.table-head,
+.recruiter-table-head,
+.candidate-table .table-head,
+.admin-toolbar {
+  color: var(--tone-text-muted) !important;
+  border-color: var(--tone-border) !important;
+  background: var(--tone-surface-soft) !important;
+}
+
+.portal-hero-orbit,
+.portal-panel-icon,
+.kanban-avatar,
+.candidate-initial,
+.account-avatar,
+.github-mark {
+  color: var(--tone-on-action) !important;
+  border-color: var(--tone-action) !important;
+  background: var(--tone-action) !important;
+}
+
+.profile-health-track {
+  background: var(--tone-surface-raised) !important;
+}
+
+.profile-health-track i {
+  background: var(--tone-accent) !important;
+}
+
+.candidate-message,
+.recruiter-side-card {
+  background: var(--tone-surface-soft) !important;
+}
+
+.candidate-message blockquote,
+.candidate-message span,
+.recruiter-side-card li p {
+  color: var(--tone-text-secondary) !important;
+}
+
+.status-chip,
+.status-new,
+.status-contacted,
+.status-screening,
+.status-interview,
+.status-offer,
+.status-hired,
+.status-closed {
+  border: 1px solid var(--tone-border) !important;
+}
+
+.status-new,
+.status-contacted,
+.status-screening,
+.status-interview {
+  color: var(--tone-accent) !important;
+  background: color-mix(in srgb, var(--tone-accent) 12%, var(--tone-surface)) !important;
+  border-color: color-mix(in srgb, var(--tone-accent) 28%, var(--tone-border)) !important;
+}
+
+.status-offer,
+.status-hired {
+  color: var(--tone-success) !important;
+  background: color-mix(in srgb, var(--tone-success) 12%, var(--tone-surface)) !important;
+  border-color: color-mix(in srgb, var(--tone-success) 28%, var(--tone-border)) !important;
+}
+
+.status-closed {
+  color: var(--tone-text-muted) !important;
+  background: var(--tone-surface-soft) !important;
+}
+
+.form-error,
+.signin-error {
+  color: var(--tone-danger) !important;
+  border-color: color-mix(in srgb, var(--tone-danger) 34%, var(--tone-border)) !important;
+  background: color-mix(in srgb, var(--tone-danger) 9%, var(--tone-surface)) !important;
+}
+
+.form-message-inline,
+.profile-state,
+.success-panel {
+  color: var(--tone-success) !important;
+}
+
+/* Authentication */
+.signin-page,
+.register-page {
+  color: var(--tone-text) !important;
+  border-color: var(--tone-border) !important;
+  background: var(--tone-surface) !important;
+  box-shadow: none !important;
+}
+
+.signin-panel,
+.signin-form,
+.register-form {
+  color: var(--tone-text) !important;
+  border-color: var(--tone-border) !important;
+  background: var(--tone-surface) !important;
+}
+
+.signin-form,
+.register-form {
+  background: var(--tone-surface-soft) !important;
+}
+
+.ui-mark,
+.signin-topline,
+.signin-form label,
+.signin-note,
+.register-form label {
+  color: var(--tone-text-muted) !important;
+}
+
+.mark-symbol {
+  color: var(--tone-on-action) !important;
+  background: var(--tone-action) !important;
+}
+
+.signin-visual,
+.register-visual {
+  color: var(--tone-on-inverse) !important;
+  background: var(--tone-inverse) !important;
+  background-image: none !important;
+}
+
+.signin-visual h2,
+.signin-visual h3,
+.signin-visual strong,
+.register-visual h2,
+.register-visual h3,
+.register-visual strong {
+  color: var(--tone-on-inverse) !important;
+}
+
+.signin-visual p,
+.signin-visual span,
+.register-visual p,
+.register-visual span {
+  color: var(--tone-inverse-muted) !important;
+}
+
+/* Public profile: editorial rhythm instead of a card dashboard. */
+.public-profile-shell {
+  width: min(100%, 1080px) !important;
+  padding: clamp(72px, 9vw, 112px) 32px 96px !important;
+}
+
+.public-profile-hero {
+  align-items: flex-end !important;
+  padding-bottom: 56px;
+  border-bottom: 1px solid var(--tone-border);
+}
+
+.public-profile-identity h1 {
+  color: var(--tone-text) !important;
+  font-size: clamp(50px, 7vw, 72px) !important;
+  font-weight: 560 !important;
+  letter-spacing: -0.05em !important;
+}
+
+.public-profile-identity p,
+.public-meta-row,
+.public-profile-footer {
+  color: var(--tone-text-muted) !important;
+}
+
+.public-profile-identity > img,
+.public-profile-avatar {
+  border-color: var(--tone-border) !important;
+  background: var(--tone-surface-soft) !important;
+  box-shadow: none !important;
+}
+
+.public-profile-grid {
+  grid-template-columns: minmax(0, 1fr) !important;
+  gap: 0 !important;
+  margin-top: 0 !important;
+}
+
+.public-profile-main {
+  max-width: 780px;
+  padding: 72px 0 !important;
+  color: var(--tone-text) !important;
+  border: 0 !important;
+  background: transparent !important;
+}
+
+.public-profile-main h2 {
+  color: var(--tone-text) !important;
+  font-size: clamp(30px, 4.5vw, 46px) !important;
+  font-weight: 520 !important;
+  line-height: 1.35 !important;
+  letter-spacing: -0.035em !important;
+}
+
+.public-profile-side {
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 0 !important;
+  border-top: 1px solid var(--tone-border) !important;
+  border-bottom: 1px solid var(--tone-border) !important;
+  background: transparent !important;
+}
+
+.public-profile-side article {
+  min-height: 128px !important;
+  padding: 24px 0 !important;
+  color: var(--tone-text) !important;
+  border-right: 1px solid var(--tone-border);
+  background: transparent !important;
+}
+
+.public-profile-side article:not(:first-child) {
+  padding-left: 24px !important;
+}
+
+.public-profile-side article:last-child {
+  border-right: 0;
+}
+
+.public-profile-side span {
+  color: var(--tone-text-muted) !important;
+}
+
+.public-profile-side strong {
+  color: var(--tone-text) !important;
+}
+
+.public-work-section {
+  margin-top: 72px !important;
+  padding: 0 !important;
+  color: var(--tone-text) !important;
+  border: 0 !important;
+  background: transparent !important;
+}
+
+.public-repo-grid {
+  grid-template-columns: 1fr !important;
+  gap: 0 !important;
+  margin-top: 32px !important;
+  border-top: 1px solid var(--tone-border);
+}
+
+.public-repo-grid > a {
+  grid-template-columns: minmax(130px, 0.24fr) minmax(180px, 0.34fr) minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 24px !important;
+  min-height: 112px !important;
+  padding: 22px 0 !important;
+  color: var(--tone-text) !important;
+  border: 0 !important;
+  border-bottom: 1px solid var(--tone-border) !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  transform: none !important;
+}
+
+.public-repo-grid > a:hover {
+  padding-inline: 14px !important;
+  background: var(--tone-surface-soft) !important;
+}
+
+.public-repo-grid strong {
+  color: var(--tone-text) !important;
+}
+
+.public-repo-grid span,
+.public-repo-grid small,
+.public-repo-grid p {
+  color: var(--tone-text-muted) !important;
+}
+
+.public-empty-work {
+  color: var(--tone-text) !important;
+  border-color: var(--tone-border-strong) !important;
+  background: var(--tone-surface-soft) !important;
+}
+
+.public-profile-footer {
+  border-color: var(--tone-border) !important;
+  background: var(--tone-canvas) !important;
+}
+
+.public-profile-footer a,
+.text-link,
+.recommendation-card a,
+.job-meta strong {
+  color: var(--tone-accent) !important;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .primary-button,
+  .secondary-button,
+  .header-primary-action,
+  .job-card,
+  .public-repo-grid > a,
+  .portal-opportunities a,
+  .kanban-column article {
+    transition: color 0.18s ease, border-color 0.18s ease, background-color 0.18s ease, transform 0.18s ease;
+  }
+
+  .job-card:hover,
+  .ui-card:hover {
+    transform: translateY(-2px) !important;
+  }
+}
+
+@media (max-width: 1100px) {
+  .landing-page .landing-hero {
+    grid-template-columns: 1fr !important;
+    min-height: auto !important;
+  }
+
+  .landing-page .landing-hero .hero-copy,
+  .meta-hero-visual {
+    max-width: 820px !important;
+  }
+}
+
+@media (max-width: 860px) {
+  .product-header,
+  html[data-theme] .product-header {
+    padding-inline: 20px !important;
+  }
+
+  .portal-layout {
+    grid-template-columns: 1fr !important;
+  }
+
+  .portal-side {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    border: 0 !important;
+    background: transparent !important;
+  }
+
+  .public-profile-hero {
+    align-items: flex-start !important;
+  }
+
+  .public-repo-grid > a {
+    grid-template-columns: minmax(120px, 0.32fr) minmax(0, 1fr) auto;
+  }
+
+  .public-repo-grid > a p {
+    display: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .product-header,
+  html[data-theme] .product-header {
+    padding-inline: 16px !important;
+  }
+
+  .preference-trigger {
+    color: var(--tone-on-action) !important;
+    border-color: var(--tone-action) !important;
+    background: var(--tone-action) !important;
+    box-shadow: var(--tone-shadow-small) !important;
+  }
+
+  .landing-page .landing-hero {
+    gap: 44px !important;
+    padding: 72px 16px 64px !important;
+  }
+
+  .landing-page .landing-hero h1 {
+    font-size: clamp(46px, 13.5vw, 62px) !important;
+  }
+
+  .showcase-section,
+  .apple-planner-section,
+  .landing-section {
+    padding: 76px 16px !important;
+  }
+
+  .jobs-hero,
+  .portal-hero,
+  .recruiter-hero,
+  .admin-hero {
+    width: calc(100% - 32px) !important;
+    margin: 16px auto 0 !important;
+    padding: 52px 24px !important;
+    border-radius: 16px !important;
+  }
+
+  .public-profile-shell {
+    padding: 56px 16px 72px !important;
+  }
+
+  .public-profile-hero {
+    padding-bottom: 40px;
+  }
+
+  .public-profile-main {
+    padding: 52px 0 !important;
+  }
+
+  .public-profile-side {
+    grid-template-columns: 1fr !important;
+  }
+
+  .public-profile-side article,
+  .public-profile-side article:not(:first-child) {
+    min-height: 92px !important;
+    padding: 18px 0 !important;
+    border-right: 0;
+    border-bottom: 1px solid var(--tone-border);
+  }
+
+  .public-profile-side article:last-child {
+    border-bottom: 0;
+  }
+
+  .public-work-section {
+    margin-top: 56px !important;
+  }
+
+  .public-repo-grid > a {
+    grid-template-columns: 1fr auto !important;
+    gap: 8px 18px !important;
+    min-height: 128px !important;
+    padding: 24px 0 !important;
+  }
+
+  .public-repo-grid > a span,
+  .public-repo-grid > a strong {
+    grid-column: 1;
+  }
+
+  .public-repo-grid > a small {
+    grid-row: 1 / 3;
+    grid-column: 2;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .motion-enabled .motion-item {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}

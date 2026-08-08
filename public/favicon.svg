@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title">
+  <title id="title">飞云 Feiyun</title>
+  <rect width="64" height="64" rx="14" fill="#F6F5F4"/>
+  <path d="M19 43.5c0-15.5 26-7.5 26-23" fill="none" stroke="#5645D4" stroke-width="9" stroke-linecap="round"/>
+  <circle cx="19" cy="20.5" r="7.5" fill="#1A1A1A"/>
+  <circle cx="45" cy="43.5" r="7.5" fill="#5645D4"/>
+</svg>
