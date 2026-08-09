@@ -2,7 +2,8 @@
   "use strict";
 
   var root = document.documentElement;
-  var theme = localStorage.getItem("feiyun-theme") === "dark" ? "dark" : "light";
+  var savedTheme = localStorage.getItem("feiyun-theme");
+  var theme = savedTheme === "light" || savedTheme === "dark" ? savedTheme : "dark";
   var language = localStorage.getItem("feiyun-language") === "en" ? "en" : "zh";
   root.dataset.theme = theme;
   root.dataset.lang = language;
@@ -11,7 +12,7 @@
 
   function updateThemeColor() {
     var meta = document.querySelector('meta[name="theme-color"]');
-    if (meta) meta.setAttribute("content", theme === "dark" ? "#071829" : "#ffffff");
+    if (meta) meta.setAttribute("content", theme === "dark" ? "#000000" : "#ffffff");
   }
 
   var translations = {
