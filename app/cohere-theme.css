@@ -1,0 +1,1052 @@
+/*
+ * Flyun Cohere-inspired design system.
+ *
+ * This file is the final visual authority. Legacy styles retain stable layout
+ * geometry while every visible surface, state and breakpoint resolves through
+ * the semantic tokens below.
+ */
+
+:root,
+:root[data-theme="light"] {
+  --tone-canvas: #ffffff;
+  --tone-surface: #ffffff;
+  --tone-surface-soft: #eeece7;
+  --tone-surface-raised: #f6f5f1;
+  --tone-border: #d9d9dd;
+  --tone-border-strong: #b8bbc2;
+  --tone-text: #212121;
+  --tone-text-secondary: #616161;
+  --tone-text-muted: #75758a;
+  --tone-action: #17171c;
+  --tone-action-hover: #2c2c32;
+  --tone-on-action: #ffffff;
+  --tone-accent: #003c33;
+  --tone-accent-hover: #07564a;
+  --tone-on-accent: #ffffff;
+  --tone-success: #166b4f;
+  --tone-warning: #9b5b20;
+  --tone-danger: #b30000;
+  --tone-inverse: #003c33;
+  --tone-on-inverse: #ffffff;
+  --tone-inverse-muted: #b8d3cc;
+  --tone-shadow: 0 28px 90px rgba(7, 24, 41, 0.1);
+  --tone-shadow-small: 0 12px 34px rgba(7, 24, 41, 0.08);
+  --cohere-deep-green: #003c33;
+  --cohere-dark-navy: #071829;
+  --cohere-black: #000000;
+  --cohere-coral: #ff7759;
+  --cohere-coral-soft: #ffad9b;
+  --cohere-pale-green: #edfce9;
+  --cohere-pale-blue: #f1f5ff;
+  --cohere-stone: #eeece7;
+  --cohere-link: #1863dc;
+  --cohere-focus: #4c6ee6;
+  color-scheme: light;
+}
+
+:root[data-theme="dark"] {
+  --tone-canvas: #071829;
+  --tone-surface: #0d2533;
+  --tone-surface-soft: #102f38;
+  --tone-surface-raised: #173b42;
+  --tone-border: #294952;
+  --tone-border-strong: #45646b;
+  --tone-text: #ffffff;
+  --tone-text-secondary: #d4dee1;
+  --tone-text-muted: #9cafb4;
+  --tone-action: #ffffff;
+  --tone-action-hover: #edfce9;
+  --tone-on-action: #071829;
+  --tone-accent: #7fd9c4;
+  --tone-accent-hover: #a7ead9;
+  --tone-on-accent: #071829;
+  --tone-success: #80d8b5;
+  --tone-warning: #ffc58f;
+  --tone-danger: #ff9e95;
+  --tone-inverse: #003c33;
+  --tone-on-inverse: #ffffff;
+  --tone-inverse-muted: #b8d3cc;
+  --tone-shadow: 0 32px 96px rgba(0, 0, 0, 0.34);
+  --tone-shadow-small: 0 14px 38px rgba(0, 0, 0, 0.26);
+  --cohere-deep-green: #003c33;
+  --cohere-dark-navy: #071829;
+  --cohere-black: #000000;
+  --cohere-coral: #ff9279;
+  --cohere-coral-soft: #ffb9a9;
+  --cohere-pale-green: #173b42;
+  --cohere-pale-blue: #102f38;
+  --cohere-stone: #102f38;
+  --cohere-link: #9bb8ff;
+  --cohere-focus: #9bb8ff;
+  color-scheme: dark;
+}
+
+html,
+html[data-theme] {
+  background: var(--tone-canvas) !important;
+  scrollbar-color: var(--tone-border-strong) var(--tone-canvas);
+}
+
+body {
+  min-width: 320px;
+  color: var(--tone-text) !important;
+  background: var(--tone-canvas) !important;
+  font-family: "Unica77 Cohere Web", Inter, Arial, "PingFang SC",
+    "Microsoft YaHei", "Noto Sans SC", ui-sans-serif, system-ui, sans-serif !important;
+  font-size: 16px;
+  line-height: 1.5;
+  letter-spacing: 0;
+  text-rendering: optimizeLegibility;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+.wordmark,
+.ui-mark {
+  font-family: CohereText, "Space Grotesk", Inter, "PingFang SC",
+    "Microsoft YaHei", ui-sans-serif, system-ui, sans-serif !important;
+}
+
+::selection {
+  color: #ffffff;
+  background: var(--cohere-deep-green);
+}
+
+:focus-visible {
+  outline: 2px solid var(--cohere-focus) !important;
+  outline-offset: 3px;
+}
+
+a {
+  text-underline-offset: 3px;
+}
+
+.section-kicker,
+.ui-eyebrow,
+.hero-kicker {
+  color: var(--tone-text-muted) !important;
+  font-family: CohereMono, "SFMono-Regular", Consolas, "Liberation Mono",
+    monospace !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase;
+}
+
+/* Display preferences */
+.site-preferences {
+  border-radius: 16px !important;
+}
+
+.preference-trigger,
+.preferences-panel {
+  border-color: var(--tone-border) !important;
+  background: color-mix(in srgb, var(--tone-surface) 92%, transparent) !important;
+}
+
+.preference-trigger {
+  color: var(--tone-text) !important;
+}
+
+.preferences-panel {
+  box-shadow: var(--tone-shadow-small) !important;
+}
+
+.preference-group button[aria-pressed="true"] {
+  color: var(--tone-on-action) !important;
+  background: var(--tone-action) !important;
+}
+
+/* Navigation */
+.product-header,
+html[data-theme] .product-header,
+html[data-theme] .landing-page > .product-header {
+  min-height: 68px !important;
+  border-bottom: 1px solid var(--tone-border) !important;
+  background: color-mix(in srgb, var(--tone-canvas) 92%, transparent) !important;
+  backdrop-filter: blur(20px) saturate(120%);
+}
+
+.wordmark > i,
+html[data-theme] .product-header .wordmark i,
+html[data-theme] .landing-page .product-header .wordmark i {
+  width: 34px !important;
+  height: 34px !important;
+  color: #ffffff !important;
+  border-radius: 9px !important;
+  background: var(--cohere-deep-green) !important;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.16) !important;
+}
+
+.wordmark b {
+  font-weight: 600 !important;
+  letter-spacing: -0.02em !important;
+}
+
+.wordmark small,
+.product-account {
+  color: var(--tone-text-muted) !important;
+}
+
+.product-nav a,
+.header-text-action,
+html[data-theme] .product-nav a {
+  min-height: 40px;
+  padding: 9px 13px !important;
+  border-radius: 8px !important;
+  font-size: 14px !important;
+  font-weight: 400 !important;
+}
+
+.product-nav,
+html[data-theme] .product-nav,
+html[data-theme] .landing-page .product-nav {
+  border: 0 !important;
+  background: transparent !important;
+}
+
+.product-nav a:hover,
+.product-nav a.active,
+.header-text-action:hover,
+html[data-theme] .product-nav a:hover,
+html[data-theme] .product-nav a.active,
+html[data-theme] .landing-page .product-nav a:hover,
+html[data-theme] .landing-page .product-nav a.active {
+  color: var(--tone-text) !important;
+  background: var(--tone-surface-soft) !important;
+}
+
+.header-primary-action,
+html[data-theme] .header-primary-action,
+html[data-theme] .landing-page .header-primary-action {
+  min-height: 44px !important;
+  padding: 10px 22px !important;
+  color: var(--tone-on-action) !important;
+  border-color: var(--tone-action) !important;
+  border-radius: 999px !important;
+  background: var(--tone-action) !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+}
+
+.mobile-nav summary {
+  min-width: 44px;
+  min-height: 44px;
+  border-radius: 8px !important;
+}
+
+.mobile-nav nav {
+  border-radius: 16px !important;
+}
+
+/* Actions and controls */
+.primary-button,
+.header-primary-action,
+button.primary-button,
+a.primary-button {
+  min-height: 46px !important;
+  padding: 11px 24px !important;
+  color: var(--tone-on-action) !important;
+  border: 1px solid var(--tone-action) !important;
+  border-radius: 999px !important;
+  background: var(--tone-action) !important;
+  box-shadow: none !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  line-height: 1.5 !important;
+}
+
+.primary-button:hover,
+.header-primary-action:hover,
+button.primary-button:hover,
+a.primary-button:hover {
+  border-color: var(--tone-action-hover) !important;
+  background: var(--tone-action-hover) !important;
+  transform: translateY(-1px);
+}
+
+.secondary-button,
+a.secondary-button,
+button.secondary-button {
+  min-height: 44px !important;
+  padding: 10px 18px !important;
+  color: var(--tone-text) !important;
+  border: 1px solid var(--tone-border-strong) !important;
+  border-radius: 999px !important;
+  background: transparent !important;
+  font-size: 14px !important;
+  font-weight: 400 !important;
+  box-shadow: none !important;
+}
+
+.secondary-button:hover,
+a.secondary-button:hover,
+button.secondary-button:hover {
+  color: var(--tone-text) !important;
+  border-color: var(--tone-text) !important;
+  background: var(--tone-surface-soft) !important;
+}
+
+input,
+select,
+textarea,
+html[data-theme] input,
+html[data-theme] select,
+html[data-theme] textarea {
+  min-height: 46px;
+  color: var(--tone-text) !important;
+  border: 1px solid var(--tone-border-strong) !important;
+  border-radius: 8px !important;
+  background: var(--tone-surface) !important;
+  box-shadow: none !important;
+}
+
+textarea {
+  min-height: 120px;
+}
+
+input:focus,
+select:focus,
+textarea:focus,
+html[data-theme] input:focus,
+html[data-theme] select:focus,
+html[data-theme] textarea:focus {
+  border-color: var(--cohere-focus) !important;
+  outline: 0 !important;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--cohere-focus) 18%, transparent) !important;
+}
+
+.status-chip,
+.verified-pill,
+.profile-state,
+.planner-live,
+.tool-badge {
+  border-radius: 6px !important;
+  font-family: CohereMono, "SFMono-Regular", Consolas, monospace !important;
+  letter-spacing: 0.02em !important;
+}
+
+.live-dot,
+.brand-pulse,
+.tool-dot {
+  background: var(--cohere-coral) !important;
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--cohere-coral) 18%, transparent) !important;
+}
+
+/* Shared page shells */
+.product-page,
+.landing-page,
+.dashboard-page,
+.portal-page,
+.public-profile-page,
+.admin-page,
+.form-page,
+.signin-page {
+  color: var(--tone-text) !important;
+  background: var(--tone-canvas) !important;
+}
+
+.ui-card,
+.dashboard-block,
+.portal-panel,
+.recruiter-block,
+.recruiter-side-card,
+.job-card,
+.job-apply-card,
+.candidate-drawer,
+.admin-console,
+.public-profile-main,
+.public-profile-side,
+.public-work-section,
+.signin-panel,
+.application-form,
+.selected-job {
+  color: var(--tone-text) !important;
+  border-color: var(--tone-border) !important;
+  background: var(--tone-surface) !important;
+  box-shadow: none !important;
+}
+
+.ui-card,
+.dashboard-block,
+.portal-panel,
+.recruiter-block,
+.recruiter-side-card,
+.job-card,
+.job-apply-card,
+.candidate-drawer,
+.public-profile-main,
+.public-profile-side,
+.public-work-section {
+  border-radius: 8px !important;
+}
+
+/* Announcement and hero */
+.meta-promo {
+  min-height: 36px !important;
+  color: #ffffff !important;
+  background: var(--cohere-black) !important;
+  font-size: 12px !important;
+  letter-spacing: 0.02em;
+}
+
+.meta-promo a {
+  color: #ffffff !important;
+  text-decoration: underline;
+}
+
+.landing-page .landing-hero {
+  grid-template-columns: minmax(0, 0.92fr) minmax(440px, 1.08fr) !important;
+  gap: clamp(48px, 7vw, 96px) !important;
+  min-height: 760px !important;
+  padding-top: 118px !important;
+  padding-bottom: 118px !important;
+  color: var(--tone-text) !important;
+  background: var(--tone-canvas) !important;
+  background-image: none !important;
+}
+
+.landing-page .landing-hero h1 {
+  max-width: 780px !important;
+  margin: 18px 0 28px !important;
+  color: var(--tone-text) !important;
+  font-size: clamp(64px, 7.2vw, 96px) !important;
+  font-weight: 400 !important;
+  line-height: 0.98 !important;
+  letter-spacing: -0.025em !important;
+}
+
+.landing-page .landing-hero h1 span {
+  color: var(--cohere-deep-green) !important;
+}
+
+:root[data-theme="dark"] .landing-page .landing-hero h1 span {
+  color: var(--cohere-coral-soft) !important;
+}
+
+.landing-page .landing-hero .hero-copy > p:last-of-type {
+  max-width: 600px !important;
+  color: var(--tone-text-secondary) !important;
+  font-size: 18px !important;
+  line-height: 1.55 !important;
+}
+
+.hero-actions {
+  gap: 18px !important;
+}
+
+.meta-hero-visual {
+  min-height: 560px !important;
+  overflow: hidden !important;
+  color: #ffffff !important;
+  border: 0 !important;
+  border-radius: 22px !important;
+  background: var(--cohere-deep-green) !important;
+  box-shadow: none !important;
+}
+
+.meta-hero-visual::before {
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.08) 1px, transparent 1px) !important;
+  background-size: 42px 42px !important;
+  opacity: 0.26 !important;
+}
+
+.featured-talent-card {
+  color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.18) !important;
+  border-radius: 8px !important;
+  background: #17171c !important;
+  box-shadow: 0 28px 80px rgba(0, 0, 0, 0.2) !important;
+}
+
+.featured-talent-card header,
+.featured-talent-card footer,
+.featured-profile p,
+.featured-skills span,
+.signal-ribbon {
+  color: rgba(255, 255, 255, 0.72) !important;
+  border-color: rgba(255, 255, 255, 0.14) !important;
+}
+
+.featured-profile h2,
+.featured-talent-card b {
+  color: #ffffff !important;
+}
+
+.featured-skills span {
+  background: rgba(255, 255, 255, 0.08) !important;
+}
+
+.featured-avatar,
+.orbit-avatar {
+  color: var(--cohere-deep-green) !important;
+  border-color: rgba(255, 255, 255, 0.28) !important;
+  background: var(--cohere-pale-green) !important;
+}
+
+.signal-ribbon {
+  background: rgba(7, 24, 41, 0.82) !important;
+  backdrop-filter: blur(14px);
+}
+
+.tezign-ticker {
+  color: #ffffff !important;
+  border-block: 0 !important;
+  background: var(--cohere-deep-green) !important;
+}
+
+.tezign-ticker span:nth-child(odd) {
+  color: var(--cohere-coral-soft) !important;
+}
+
+/* Product proof */
+.showcase-section {
+  background: var(--tone-canvas) !important;
+}
+
+.meta-section-intro h2,
+.landing-heading h2,
+.apple-tile-heading h2,
+.jobs-hero h1,
+.portal-hero h1,
+.recruiter-hero h1,
+.dashboard-heading h1,
+.admin-hero h1,
+.form-intro h1 {
+  color: var(--tone-text) !important;
+  font-weight: 400 !important;
+  letter-spacing: -0.025em !important;
+}
+
+.meta-section-intro h2,
+.landing-heading h2,
+.apple-tile-heading h2 {
+  font-size: clamp(42px, 5vw, 60px) !important;
+  line-height: 1.02 !important;
+}
+
+.meta-section-intro p,
+.landing-heading > p,
+.apple-tile-heading > p {
+  color: var(--tone-text-secondary) !important;
+}
+
+.showcase-frame {
+  overflow: hidden !important;
+  color: #ffffff !important;
+  border: 0 !important;
+  border-radius: 22px !important;
+  background: var(--cohere-dark-navy) !important;
+  box-shadow: none !important;
+}
+
+.showcase-chrome,
+.showcase-sidebar {
+  color: rgba(255, 255, 255, 0.7) !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+  background: rgba(255, 255, 255, 0.035) !important;
+}
+
+.showcase-title b,
+.showcase-main h2,
+.showcase-sidebar b.active {
+  color: #ffffff !important;
+}
+
+.showcase-sidebar b.active {
+  background: rgba(255, 255, 255, 0.1) !important;
+}
+
+.showcase-main {
+  color: #ffffff !important;
+  background: transparent !important;
+}
+
+.showcase-main .section-kicker,
+.showcase-copy p {
+  color: rgba(255, 255, 255, 0.66) !important;
+}
+
+.talent-prompt {
+  border-color: rgba(255, 255, 255, 0.18) !important;
+  border-radius: 8px !important;
+  background: rgba(255, 255, 255, 0.08) !important;
+}
+
+.talent-prompt textarea {
+  color: #ffffff !important;
+  border: 0 !important;
+  background: transparent !important;
+}
+
+.talent-prompt textarea::placeholder {
+  color: rgba(255, 255, 255, 0.54) !important;
+}
+
+.prompt-suggestions button {
+  color: rgba(255, 255, 255, 0.78) !important;
+  border-color: rgba(255, 255, 255, 0.18) !important;
+  background: transparent !important;
+}
+
+.prompt-suggestions button:hover {
+  color: #ffffff !important;
+  background: rgba(255, 255, 255, 0.1) !important;
+}
+
+.prompt-results,
+.mini-result,
+.talent-compare-panel {
+  color: var(--tone-text) !important;
+  border-color: var(--tone-border) !important;
+  background: var(--tone-surface) !important;
+}
+
+.metric-strip {
+  border-block: 1px solid var(--tone-border) !important;
+  background: var(--tone-canvas) !important;
+}
+
+.metric-strip article + article {
+  border-left-color: var(--tone-border) !important;
+}
+
+.metric-strip strong {
+  color: var(--cohere-deep-green) !important;
+  font-weight: 400 !important;
+}
+
+:root[data-theme="dark"] .metric-strip strong {
+  color: var(--cohere-coral-soft) !important;
+}
+
+.apple-planner-section {
+  background: var(--cohere-stone) !important;
+}
+
+.apple-planner,
+.planner-controls,
+.planner-output {
+  border-color: var(--tone-border) !important;
+  border-radius: 8px !important;
+  background: var(--tone-surface) !important;
+  box-shadow: none !important;
+}
+
+.planner-output {
+  color: #ffffff !important;
+  border: 0 !important;
+  background: var(--cohere-deep-green) !important;
+}
+
+.planner-output h3,
+.planner-output strong {
+  color: #ffffff !important;
+}
+
+.planner-output p,
+.planner-output span,
+.planner-output small {
+  color: rgba(255, 255, 255, 0.68) !important;
+}
+
+.planner-segmented button.active,
+.planner-funnel i,
+.completion-track i,
+.profile-health-track i {
+  background: var(--cohere-deep-green) !important;
+}
+
+:root[data-theme="dark"] .planner-segmented button.active,
+:root[data-theme="dark"] .completion-track i,
+:root[data-theme="dark"] .profile-health-track i {
+  background: var(--tone-accent) !important;
+}
+
+.landing-section:nth-of-type(even) {
+  background: var(--tone-canvas) !important;
+}
+
+.reasoning-card,
+.task-card,
+.profile-primary,
+.insight-card,
+.recommendation-card,
+.domain-table,
+.final-card {
+  border-color: var(--tone-border) !important;
+  border-radius: 8px !important;
+  background: var(--tone-surface) !important;
+  box-shadow: none !important;
+}
+
+.reasoning-card {
+  border-top: 4px solid var(--cohere-deep-green) !important;
+}
+
+.evidence-stat:first-child {
+  background: var(--cohere-pale-green) !important;
+}
+
+.evidence-stat:last-child {
+  background: var(--cohere-pale-blue) !important;
+}
+
+.task-row,
+.domain-table > a,
+.application-row,
+.table-row,
+.recruiter-table-row {
+  border-color: var(--tone-border) !important;
+}
+
+.task-row:hover,
+.domain-table > a:hover,
+.application-row:hover,
+.table-row:hover,
+.recruiter-table-row:hover {
+  background: var(--tone-surface-raised) !important;
+}
+
+.confidence-ring,
+.candidate-avatar,
+.mini-avatar,
+.candidate-initial,
+.kanban-avatar,
+.account-avatar,
+.public-profile-avatar {
+  color: #ffffff !important;
+  background: var(--cohere-deep-green) !important;
+}
+
+.recommendation-card {
+  color: #ffffff !important;
+  border: 0 !important;
+  background: var(--cohere-dark-navy) !important;
+}
+
+.recommendation-card > span,
+.recommendation-card p,
+.recommendation-card code,
+.recommendation-card a {
+  color: #ffffff !important;
+}
+
+.recommendation-card a {
+  text-decoration: underline;
+}
+
+.final-card {
+  color: #ffffff !important;
+  border: 0 !important;
+  border-radius: 22px !important;
+  background: var(--cohere-deep-green) !important;
+}
+
+.final-card h2,
+.final-card p,
+.final-card .section-kicker {
+  color: #ffffff !important;
+}
+
+.final-card .primary-button {
+  color: #17171c !important;
+  border-color: #ffffff !important;
+  background: #ffffff !important;
+}
+
+.final-card .secondary-button {
+  color: #ffffff !important;
+  border-color: rgba(255, 255, 255, 0.44) !important;
+}
+
+.canvas-footer {
+  color: var(--tone-text-muted) !important;
+  border-color: var(--tone-border) !important;
+}
+
+/* Jobs and transactional pages */
+.jobs-hero,
+.portal-hero,
+.recruiter-hero,
+.admin-hero,
+.form-intro,
+.dashboard-heading {
+  border-color: var(--tone-border) !important;
+  background: var(--tone-canvas) !important;
+}
+
+.jobs-filter,
+.dashboard-sidebar {
+  border-color: var(--tone-border) !important;
+  background: var(--cohere-stone) !important;
+}
+
+.jobs-filter a,
+.dashboard-sidebar a {
+  border-radius: 6px !important;
+}
+
+.jobs-filter a.active,
+.dashboard-sidebar a.active,
+.dashboard-sidebar a:hover {
+  color: #ffffff !important;
+  background: var(--cohere-deep-green) !important;
+}
+
+.job-card {
+  border-radius: 8px !important;
+  transition: border-color 160ms ease, background-color 160ms ease, transform 160ms ease;
+}
+
+.job-card:hover {
+  border-color: var(--cohere-deep-green) !important;
+  background: var(--tone-surface-raised) !important;
+  transform: translateY(-2px);
+}
+
+.job-tags span,
+.public-skill-list span,
+.github-language-list span,
+.insight-tags span {
+  color: var(--cohere-deep-green) !important;
+  border-color: color-mix(in srgb, var(--cohere-deep-green) 24%, var(--tone-border)) !important;
+  border-radius: 6px !important;
+  background: var(--cohere-pale-green) !important;
+}
+
+:root[data-theme="dark"] .job-tags span,
+:root[data-theme="dark"] .public-skill-list span,
+:root[data-theme="dark"] .github-language-list span,
+:root[data-theme="dark"] .insight-tags span {
+  color: var(--tone-text-secondary) !important;
+}
+
+.job-apply-card,
+.candidate-message,
+.recruiter-side-card {
+  color: #ffffff !important;
+  border: 0 !important;
+  background: var(--cohere-deep-green) !important;
+}
+
+.job-apply-card h2,
+.job-apply-card p,
+.candidate-message h3,
+.candidate-message p,
+.recruiter-side-card h3,
+.recruiter-side-card p,
+.recruiter-side-card li,
+.job-apply-card .section-kicker,
+.candidate-message .section-kicker,
+.recruiter-side-card .section-kicker {
+  color: #ffffff !important;
+}
+
+.job-apply-card .primary-button,
+.candidate-message .primary-button,
+.recruiter-side-card .primary-button {
+  color: #17171c !important;
+  border-color: #ffffff !important;
+  background: #ffffff !important;
+}
+
+.portal-stats article,
+.recruiter-metrics article,
+.dashboard-stats article,
+.admin-summary article {
+  border-color: var(--tone-border) !important;
+  border-radius: 8px !important;
+  background: var(--tone-surface) !important;
+  box-shadow: none !important;
+}
+
+.portal-stats strong,
+.recruiter-metrics strong,
+.dashboard-stats strong,
+.admin-summary strong {
+  color: var(--cohere-deep-green) !important;
+  font-weight: 400 !important;
+}
+
+:root[data-theme="dark"] .portal-stats strong,
+:root[data-theme="dark"] .recruiter-metrics strong,
+:root[data-theme="dark"] .dashboard-stats strong,
+:root[data-theme="dark"] .admin-summary strong {
+  color: var(--cohere-coral-soft) !important;
+}
+
+.portal-hero-orbit,
+.auth-orbit {
+  border-color: var(--tone-border) !important;
+  background: var(--cohere-pale-green) !important;
+}
+
+.portal-panel-icon,
+.github-mark,
+.mark-symbol {
+  color: #ffffff !important;
+  border-radius: 8px !important;
+  background: var(--cohere-deep-green) !important;
+}
+
+.kanban-column,
+.candidate-table,
+.candidate-drawer,
+.github-connect-grid > div {
+  border-color: var(--tone-border) !important;
+  border-radius: 8px !important;
+  background: var(--tone-surface-raised) !important;
+}
+
+.table-row.active {
+  border-color: var(--cohere-deep-green) !important;
+  background: var(--cohere-pale-green) !important;
+}
+
+.signin-page {
+  background: var(--cohere-stone) !important;
+}
+
+.signin-panel {
+  border-radius: 0 !important;
+  background: var(--tone-surface) !important;
+}
+
+.signin-visual {
+  color: #ffffff !important;
+  background: var(--cohere-dark-navy) !important;
+}
+
+.signin-visual h2,
+.signin-visual p,
+.signin-visual span,
+.signin-visual strong {
+  color: inherit !important;
+}
+
+.public-profile-hero {
+  color: #ffffff !important;
+  border: 0 !important;
+  border-radius: 22px !important;
+  background: var(--cohere-deep-green) !important;
+}
+
+.public-profile-hero h1,
+.public-profile-hero p,
+.public-profile-hero span {
+  color: #ffffff !important;
+}
+
+.public-repo-grid article,
+.recommend-grid article {
+  border-color: var(--tone-border) !important;
+  border-radius: 8px !important;
+  background: var(--tone-surface) !important;
+}
+
+/* Responsive refinement */
+@media (max-width: 1023px) {
+  .landing-page .landing-hero {
+    grid-template-columns: 1fr !important;
+    min-height: auto !important;
+    padding-top: 88px !important;
+    padding-bottom: 88px !important;
+  }
+
+  .landing-page .landing-hero .hero-copy {
+    max-width: 760px !important;
+  }
+
+  .meta-hero-visual {
+    min-height: 520px !important;
+  }
+
+  .showcase-grid {
+    grid-template-columns: 180px minmax(0, 1fr) !important;
+  }
+}
+
+@media (max-width: 767px) {
+  .product-header,
+  html[data-theme] .product-header {
+    min-height: 60px !important;
+  }
+
+  .landing-page .landing-hero {
+    gap: 44px !important;
+    padding-top: 64px !important;
+    padding-bottom: 64px !important;
+  }
+
+  .landing-page .landing-hero h1 {
+    font-size: clamp(46px, 14vw, 64px) !important;
+    line-height: 1 !important;
+  }
+
+  .meta-hero-visual {
+    min-height: 460px !important;
+    border-radius: 16px !important;
+  }
+
+  .showcase-frame,
+  .final-card,
+  .public-profile-hero {
+    border-radius: 16px !important;
+  }
+
+  .showcase-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .showcase-sidebar {
+    display: none !important;
+  }
+
+  .metric-strip article + article {
+    border-left: 0 !important;
+    border-top: 1px solid var(--tone-border) !important;
+  }
+
+  .primary-button,
+  .secondary-button,
+  .header-primary-action {
+    min-height: 46px !important;
+  }
+}
+
+@media (max-width: 479px) {
+  .landing-page .landing-hero h1 {
+    font-size: 44px !important;
+  }
+
+  .landing-page .landing-hero .hero-copy > p:last-of-type {
+    font-size: 16px !important;
+  }
+
+  .meta-section-intro h2,
+  .landing-heading h2,
+  .apple-tile-heading h2 {
+    font-size: 36px !important;
+  }
+
+  .meta-hero-visual {
+    min-height: 420px !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
