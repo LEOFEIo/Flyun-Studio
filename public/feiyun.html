@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="theme-color" content="#f2f0e9">
+  <meta name="theme-color" content="#ffffff">
   <meta name="description" content="飞云把散落在全网的作品、代码、研究与表达，拼成可验证、会生长的个人智能档案。">
   <title>飞云 FEIYUN — 让真正做过的事被看见</title>
   <style>
@@ -844,6 +844,7 @@
       .reveal { opacity: 1; transform: none; }
     }
   </style>
+  <link rel="stylesheet" href="../cohere-static.css">
 </head>
 <body>
   <a class="skip-link" href="#main">跳到主要内容</a>
@@ -1139,14 +1140,21 @@
       }, 2800);
 
       const themeToggle = qs("#themeToggle");
+      const themeColor = document.querySelector('meta[name="theme-color"]');
+      const syncThemeColor = () => themeColor?.setAttribute(
+        "content",
+        root.dataset.theme === "dark" ? "#071829" : "#ffffff"
+      );
       themeToggle.addEventListener("click", () => {
         const next = root.dataset.theme === "dark" ? "light" : "dark";
         root.dataset.theme = next;
         localStorage.setItem("feiyun-theme", next);
         themeToggle.textContent = next === "dark" ? "◑" : "◐";
+        syncThemeColor();
       });
       const savedTheme = localStorage.getItem("feiyun-theme");
       if (savedTheme) root.dataset.theme = savedTheme;
+      syncThemeColor();
 
       const menuButton = qs("#menuButton");
       const mobileMenu = qs("#mobileMenu");
