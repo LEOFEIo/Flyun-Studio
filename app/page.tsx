@@ -4,44 +4,9 @@ import { ProductHeader } from "./components/product-header";
 import { HiringPlanner } from "./components/hiring-planner";
 import { TalentPrompt } from "./components/talent-prompt";
 import { PageMotion } from "./components/page-motion";
+import { MissionControl } from "./components/mission-control";
 
 export const dynamic = "force-dynamic";
-
-const taskRows = [
-  {
-    number: "01",
-    title: "读取公开工作",
-    meta: "12 个来源",
-    state: "已完成",
-    stateClass: "complete",
-    details: [
-      ["GitHub 贡献记录", "1,284 commits"],
-      ["论文与技术分享", "17 项"],
-    ],
-  },
-  {
-    number: "02",
-    title: "验证能力轨迹",
-    meta: "正在分析",
-    state: "运行中",
-    stateClass: "running",
-    details: [
-      ["训练恢复主题一致性", "92%"],
-      ["推理优化项目关联", "8 项证据"],
-    ],
-  },
-  {
-    number: "03",
-    title: "生成人才判断",
-    meta: "等待上游任务",
-    state: "排队中",
-    stateClass: "queued",
-    details: [
-      ["岗位适配度", "待计算"],
-      ["顾问推荐理由", "待生成"],
-    ],
-  },
-];
 
 const domains = [
   ["大模型与多模态", "18 个开放机会", "Foundation models"],
@@ -289,36 +254,7 @@ export default async function Home() {
           <p>每一步都有状态、输入和输出，方便顾问与业务团队共同复核。</p>
         </header>
 
-        <div className="ui-card task-card">
-          <div className="task-table-head">
-            <span>步骤</span>
-            <span>研究任务</span>
-            <span>状态</span>
-          </div>
-          {taskRows.map((task) => (
-            <details className="task-row" key={task.number}>
-              <summary>
-                <span className="task-number">{task.number}</span>
-                <span className="task-title">
-                  <b>{task.title}</b>
-                  <small>{task.meta}</small>
-                </span>
-                <span className={`task-state ${task.stateClass}`}>
-                  {task.state}
-                </span>
-                <i>⌄</i>
-              </summary>
-              <div className="task-details">
-                {task.details.map(([label, value]) => (
-                  <div key={label}>
-                    <span>{label}</span>
-                    <b>{value}</b>
-                  </div>
-                ))}
-              </div>
-            </details>
-          ))}
-        </div>
+        <MissionControl />
       </section>
 
       <section className="landing-section" id="profiles">
