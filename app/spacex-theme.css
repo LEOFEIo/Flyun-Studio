@@ -1671,3 +1671,868 @@ html[data-theme] textarea:focus {
     min-height: 50px !important;
   }
 }
+
+/* Mission operations: functional research controls built from DESIGN.md tokens. */
+.mission-control {
+  overflow: hidden;
+  color: var(--tone-text);
+  border: 1px solid var(--tone-border);
+  border-radius: 4px;
+  background: var(--tone-surface);
+  box-shadow: none;
+}
+
+.mission-control button,
+.job-explorer button,
+.results-operations button,
+.prompt-history button {
+  font-family: "D-DIN", Arial, Verdana, "PingFang SC", sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.mission-command-deck {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 230px 240px;
+  gap: 32px;
+  align-items: end;
+  min-height: 260px;
+  padding: 40px;
+  color: #ffffff;
+  border-bottom: 1px solid #3a3a3f;
+  background: #000000;
+}
+
+.mission-eyebrow {
+  display: block;
+  color: inherit;
+  font-size: 12px;
+  line-height: 2;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.mission-command-deck h3 {
+  max-width: 680px;
+  margin: 20px 0 16px;
+  color: #ffffff !important;
+  font-size: clamp(36px, 4.5vw, 60px);
+  line-height: 1;
+}
+
+.mission-command-deck p {
+  max-width: 600px;
+  margin: 0;
+  color: #a8a8ae;
+  line-height: 1.7;
+}
+
+.mission-telemetry {
+  display: grid;
+  gap: 10px;
+  align-content: end;
+}
+
+.mission-telemetry > span,
+.mission-counters span {
+  color: #a8a8ae;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.mission-telemetry strong {
+  color: #ffffff;
+  font-family: "D-DIN-Bold", "Arial Narrow", Arial, sans-serif;
+  font-size: 48px;
+  line-height: 1;
+  letter-spacing: 0.04em;
+}
+
+.mission-progress,
+.mission-signal > div {
+  overflow: hidden;
+  height: 3px;
+  background: #3a3a3f;
+}
+
+.mission-progress i,
+.mission-signal > div i {
+  display: block;
+  height: 100%;
+  background: #ffffff;
+}
+
+.mission-counters {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border: 1px solid #3a3a3f;
+}
+
+.mission-counters span {
+  display: grid;
+  gap: 6px;
+  min-height: 86px;
+  padding: 16px;
+}
+
+.mission-counters span + span {
+  border-left: 1px solid #3a3a3f;
+}
+
+.mission-counters b {
+  color: #ffffff;
+  font-size: 24px;
+  line-height: 1;
+}
+
+.mission-launch-form {
+  padding: 28px 32px;
+  border-bottom: 1px solid var(--tone-border);
+  background: var(--tone-surface-soft);
+}
+
+.mission-launch-form > label,
+.job-explorer-toolbar label > span {
+  display: block;
+  margin-bottom: 10px;
+  color: var(--tone-text-muted);
+  font-size: 11px;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.mission-launch-form > div {
+  display: grid;
+  grid-template-columns: minmax(240px, 1fr) 230px 160px;
+  gap: 10px;
+}
+
+.mission-launch-form input,
+.mission-launch-form select,
+.mission-launch-form button,
+.job-explorer-toolbar input,
+.job-explorer-toolbar select {
+  width: 100%;
+  min-height: 52px;
+  border: 1px solid var(--tone-border-strong) !important;
+  border-radius: 4px !important;
+  background: var(--tone-surface) !important;
+}
+
+.mission-launch-form input,
+.mission-launch-form select,
+.job-explorer-toolbar input,
+.job-explorer-toolbar select {
+  padding: 0 16px;
+  color: var(--tone-text) !important;
+}
+
+.mission-launch-form button {
+  color: var(--tone-on-action);
+  border-color: var(--tone-action) !important;
+  background: var(--tone-action) !important;
+}
+
+.mission-launch-form button:hover:not(:disabled) {
+  color: var(--tone-text);
+  background: transparent !important;
+}
+
+.mission-control button:disabled,
+.job-explorer button:disabled,
+.results-operations button:disabled {
+  cursor: not-allowed;
+  opacity: 0.38;
+}
+
+.mission-toolbar {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 24px;
+  border-bottom: 1px solid var(--tone-border);
+}
+
+.mission-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.mission-filters button,
+.mission-export,
+.mission-actions button,
+.results-operations button,
+.prompt-history button,
+.job-results-meta button,
+.job-save-button,
+.job-open-link,
+.job-empty-state button {
+  min-height: 46px;
+  padding: 0 16px;
+  color: var(--tone-text);
+  border: 1px solid var(--tone-border-strong);
+  border-radius: 4px;
+  background: transparent;
+}
+
+.mission-filters button:hover,
+.mission-filters button[aria-pressed="true"],
+.mission-export:hover,
+.mission-actions button:first-child:hover,
+.results-operations button:hover:not(:disabled),
+.prompt-history button:hover:not(:disabled),
+.job-results-meta button:hover,
+.job-save-button:hover,
+.job-save-button[aria-pressed="true"],
+.job-open-link:hover,
+.job-empty-state button:hover {
+  color: var(--tone-on-action);
+  border-color: var(--tone-action);
+  background: var(--tone-action);
+}
+
+.mission-filters b {
+  margin-left: 6px;
+  font-weight: 400;
+}
+
+.mission-feed-head,
+.mission-row {
+  display: grid;
+  grid-template-columns: 72px minmax(260px, 1fr) 220px 220px;
+  gap: 24px;
+  align-items: center;
+}
+
+.mission-feed-head {
+  min-height: 46px;
+  padding: 0 24px;
+  color: var(--tone-text-muted);
+  border-bottom: 1px solid var(--tone-border);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.mission-row {
+  min-height: 132px;
+  padding: 22px 24px;
+  border-bottom: 1px solid var(--tone-border);
+  transition: background-color 160ms ease;
+}
+
+.mission-row:hover {
+  background: var(--tone-surface-raised);
+}
+
+.mission-id {
+  color: var(--tone-text-muted);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+}
+
+.mission-target,
+.mission-signal {
+  display: grid;
+  gap: 8px;
+}
+
+.mission-target strong {
+  color: var(--tone-text);
+  font-size: 17px;
+  line-height: 1.4;
+}
+
+.mission-target span,
+.mission-signal small {
+  color: var(--tone-text-muted);
+  font-size: 12px;
+}
+
+.mission-state {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  color: var(--tone-text);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.mission-state > i {
+  width: 8px;
+  height: 8px;
+  border: 1px solid var(--tone-text);
+  background: transparent;
+}
+
+.mission-row[data-state="running"] .mission-state > i,
+.mission-row[data-state="verified"] .mission-state > i {
+  background: var(--tone-text);
+}
+
+.mission-row[data-state="verified"] .mission-state > i {
+  outline: 1px solid var(--tone-text);
+  outline-offset: 3px;
+}
+
+.mission-actions {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 8px;
+}
+
+.mission-actions button {
+  padding-inline: 12px;
+}
+
+.mission-actions button:last-child {
+  color: var(--tone-text-muted);
+  border-color: transparent;
+}
+
+.mission-actions button:last-child:hover {
+  color: var(--tone-text);
+  border-color: var(--tone-border-strong);
+}
+
+.mission-empty,
+.job-empty-state {
+  display: grid;
+  place-items: start;
+  min-height: 260px;
+  padding: 56px 32px;
+  border-bottom: 1px solid var(--tone-border);
+}
+
+.mission-empty strong,
+.job-empty-state h2 {
+  margin: 0 0 10px;
+  color: var(--tone-text);
+  font-size: 28px;
+}
+
+.mission-empty span,
+.job-empty-state p {
+  color: var(--tone-text-muted);
+}
+
+.mission-event-log {
+  display: grid;
+  grid-template-columns: 8px auto 1fr auto;
+  gap: 12px;
+  align-items: center;
+  min-height: 52px;
+  padding: 0 24px;
+  color: var(--tone-text-muted);
+  background: var(--tone-surface-soft);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+}
+
+.mission-event-log b {
+  color: var(--tone-text);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* Search history and shortlist controls. */
+.prompt-history {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: start;
+  margin-top: 14px;
+  padding-top: 14px;
+  color: rgba(255, 255, 255, 0.66);
+  border-top: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.prompt-history > span {
+  padding-top: 13px;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.prompt-history > div {
+  display: flex;
+  overflow: auto;
+  gap: 6px;
+  padding-bottom: 4px;
+  scrollbar-width: thin;
+}
+
+.prompt-history button {
+  flex: 0 0 auto;
+  max-width: 260px;
+  overflow: hidden;
+  color: rgba(255, 255, 255, 0.78);
+  border-color: rgba(255, 255, 255, 0.24);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.prompt-history > button:last-child {
+  color: rgba(255, 255, 255, 0.62);
+  border-color: transparent;
+}
+
+.results-head {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.results-head > div:first-child,
+.results-operations {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.results-head > div:first-child {
+  display: grid;
+}
+
+.results-head small {
+  color: var(--tone-text-muted);
+  font-size: 11px;
+}
+
+.results-operations {
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.results-operations button {
+  min-height: 38px;
+  padding-inline: 12px;
+}
+
+/* Jobs mission explorer. */
+.job-explorer {
+  display: grid;
+  grid-template-columns: 260px minmax(0, 1fr);
+  gap: 40px;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 64px 32px 120px;
+  background: var(--tone-canvas);
+}
+
+.job-explorer-filter {
+  position: sticky;
+  top: 92px;
+  align-self: start;
+  padding: 24px;
+  border: 1px solid var(--tone-border);
+  border-radius: 4px;
+  background: var(--tone-surface-soft);
+}
+
+.job-explorer-filter h2 {
+  margin: 8px 0 24px;
+  color: var(--tone-text);
+  font-size: 24px;
+  line-height: 1.1;
+}
+
+.job-domain-filters {
+  display: grid;
+}
+
+.job-domain-filters button,
+.favorite-filter {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 50px;
+  padding: 0 12px;
+  color: var(--tone-text-secondary);
+  border: 0;
+  border-top: 1px solid var(--tone-border);
+  border-radius: 0;
+  background: transparent;
+  text-align: left;
+}
+
+.job-domain-filters button:hover,
+.job-domain-filters button[aria-pressed="true"],
+.favorite-filter:hover,
+.favorite-filter[aria-pressed="true"] {
+  color: var(--tone-on-action);
+  background: var(--tone-action);
+}
+
+.job-domain-filters b,
+.favorite-filter b {
+  font-weight: 400;
+}
+
+.favorite-filter {
+  width: 100%;
+  margin-top: 20px;
+  border-bottom: 1px solid var(--tone-border);
+}
+
+.job-explorer-main {
+  min-width: 0;
+}
+
+.job-explorer-toolbar {
+  display: grid;
+  grid-template-columns: minmax(260px, 1fr) 180px 180px;
+  gap: 10px;
+  padding: 24px;
+  border: 1px solid var(--tone-border);
+  border-radius: 4px 4px 0 0;
+  background: var(--tone-surface-soft);
+}
+
+.job-explorer-toolbar label {
+  min-width: 0;
+}
+
+.job-results-meta {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: 20px;
+  align-items: center;
+  min-height: 66px;
+  padding: 8px 16px 8px 24px;
+  color: var(--tone-text-muted);
+  border: 1px solid var(--tone-border);
+  border-top: 0;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.job-results-meta b {
+  color: var(--tone-text);
+  font-size: 18px;
+}
+
+.job-results-meta button {
+  min-height: 42px;
+}
+
+.jobs-list.job-explorer-list {
+  overflow: visible;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+}
+
+.job-card.job-explorer-card {
+  display: grid;
+  grid-template-columns: 54px minmax(0, 1fr) 200px;
+  gap: 28px;
+  align-items: start;
+  min-height: 242px;
+  margin: 12px 0 0;
+  padding: 28px !important;
+  color: var(--tone-text);
+  border: 1px solid var(--tone-border) !important;
+  border-radius: 4px !important;
+  background: var(--tone-surface) !important;
+}
+
+.job-card.job-explorer-card:hover {
+  border-color: var(--tone-text) !important;
+  background: var(--tone-surface-raised) !important;
+}
+
+.job-card-body {
+  min-width: 0;
+}
+
+.job-card-body > a {
+  display: inline-block;
+}
+
+.job-card.job-explorer-card h2 {
+  margin: 22px 0 12px;
+  color: var(--tone-text) !important;
+  font-size: clamp(26px, 3vw, 40px);
+  line-height: 1.05;
+  letter-spacing: 0.035em !important;
+}
+
+.job-card.job-explorer-card p {
+  color: var(--tone-text-muted) !important;
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.job-card.job-explorer-card .job-meta {
+  display: grid;
+  gap: 10px;
+  justify-items: stretch;
+  height: 100%;
+  text-align: right;
+}
+
+.job-card.job-explorer-card .job-meta strong {
+  color: var(--tone-text) !important;
+}
+
+.job-save-button,
+.job-open-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 4px;
+  text-align: center;
+}
+
+.job-open-link {
+  margin-top: auto;
+  color: var(--tone-text);
+  font-family: "D-DIN", Arial, Verdana, sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.job-empty-state {
+  margin-top: 12px;
+  border: 1px solid var(--tone-border);
+  background: var(--tone-surface);
+}
+
+.job-empty-state h2 {
+  margin-top: 16px;
+}
+
+.job-empty-state button {
+  margin-top: 24px;
+}
+
+@media (max-width: 1100px) {
+  .mission-command-deck {
+    grid-template-columns: minmax(0, 1fr) 210px;
+  }
+
+  .mission-counters {
+    grid-column: 1 / -1;
+  }
+
+  .mission-feed-head,
+  .mission-row {
+    grid-template-columns: 58px minmax(220px, 1fr) 190px;
+  }
+
+  .mission-feed-head span:last-child {
+    display: none;
+  }
+
+  .mission-actions {
+    grid-column: 2 / -1;
+  }
+
+  .job-explorer {
+    grid-template-columns: 220px minmax(0, 1fr);
+    gap: 24px;
+  }
+
+  .job-explorer-toolbar {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .job-search-field {
+    grid-column: 1 / -1;
+  }
+
+  .job-card.job-explorer-card {
+    grid-template-columns: 44px minmax(0, 1fr);
+  }
+
+  .job-card.job-explorer-card .job-meta {
+    grid-column: 2;
+    grid-template-columns: 1fr auto auto;
+    align-items: center;
+    text-align: left;
+  }
+
+  .job-card.job-explorer-card .job-meta > span {
+    grid-column: 1 / -1;
+  }
+
+  .job-open-link {
+    margin-top: 4px;
+  }
+}
+
+@media (max-width: 767px) {
+  .mission-command-deck {
+    grid-template-columns: 1fr;
+    gap: 28px;
+    min-height: 0;
+    padding: 32px 20px;
+  }
+
+  .mission-telemetry {
+    max-width: none;
+  }
+
+  .mission-counters {
+    grid-column: auto;
+  }
+
+  .mission-launch-form {
+    padding: 24px 16px;
+  }
+
+  .mission-launch-form > div {
+    grid-template-columns: 1fr;
+  }
+
+  .mission-toolbar {
+    display: grid;
+    padding: 16px;
+  }
+
+  .mission-export {
+    width: 100%;
+  }
+
+  .mission-feed-head {
+    display: none;
+  }
+
+  .mission-row {
+    grid-template-columns: 48px minmax(0, 1fr);
+    gap: 16px;
+    padding: 22px 16px;
+  }
+
+  .mission-signal,
+  .mission-actions {
+    grid-column: 2;
+  }
+
+  .mission-event-log {
+    grid-template-columns: 8px auto 1fr;
+    padding: 12px 16px;
+  }
+
+  .mission-event-log time {
+    display: none;
+  }
+
+  .prompt-history {
+    grid-template-columns: 1fr auto;
+  }
+
+  .prompt-history > span {
+    grid-column: 1 / -1;
+    padding-top: 0;
+  }
+
+  .results-head,
+  .results-operations {
+    align-items: stretch;
+  }
+
+  .results-head {
+    display: grid;
+  }
+
+  .results-operations {
+    justify-content: flex-start;
+  }
+
+  .job-explorer {
+    grid-template-columns: 1fr;
+    padding: 32px 16px 80px;
+  }
+
+  .job-explorer-filter {
+    position: static;
+  }
+
+  .job-domain-filters {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .favorite-filter {
+    margin-top: 12px;
+  }
+
+  .job-results-meta {
+    grid-template-columns: 1fr auto;
+  }
+
+  .job-results-meta > span:nth-child(2) {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+}
+
+@media (max-width: 520px) {
+  .mission-command-deck h3 {
+    font-size: 36px;
+  }
+
+  .mission-counters span {
+    padding: 12px;
+  }
+
+  .mission-filters {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .mission-filters button {
+    width: 100%;
+  }
+
+  .mission-actions {
+    grid-template-columns: 1fr;
+  }
+
+  .job-domain-filters,
+  .job-explorer-toolbar {
+    grid-template-columns: 1fr;
+  }
+
+  .job-search-field {
+    grid-column: auto;
+  }
+
+  .job-results-meta {
+    grid-template-columns: 1fr;
+    padding: 16px;
+  }
+
+  .job-results-meta > span:nth-child(2) {
+    grid-column: auto;
+    grid-row: auto;
+  }
+
+  .job-card.job-explorer-card {
+    grid-template-columns: 1fr;
+    gap: 18px;
+    padding: 22px !important;
+  }
+
+  .job-card.job-explorer-card .job-meta {
+    grid-column: auto;
+    grid-template-columns: 1fr;
+    text-align: left;
+  }
+
+  .job-card.job-explorer-card .job-meta > span {
+    grid-column: auto;
+  }
+}

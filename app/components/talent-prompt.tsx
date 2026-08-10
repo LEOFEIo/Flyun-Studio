@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useMemo, useState } from "react";
+import { FormEvent, useEffect, useMemo, useState } from "react";
 
 const suggestions = [
   "懂千卡训练与推理优化的人",
@@ -49,16 +49,30 @@ export function TalentPrompt() {
   const [isSearching, setIsSearching] = useState(false);
   const [showResults, setShowResults] = useState(false);
   const [results, setResults] = useState<TalentResult[]>(fallbackResults);
-  const [savedIds, setSavedIds] = useState<number[]>(() => {
-    if (typeof window === "undefined") return [];
-    try {
-      const stored = JSON.parse(localStorage.getItem("feiyun_next_shortlist_v1") ?? "[]") as number[];
-      return Array.isArray(stored) ? stored.filter(Number.isInteger) : [];
-    } catch {
-      return [];
-    }
-  });
+  const [savedIds, setSavedIds] = useState<number[]>([]);
+  const [history, setHistory] = useState<string[]>([]);
+  const [searchNote, setSearchNote] = useState("等待研究任务");
   const [compareIds, setCompareIds] = useState<number[]>([]);
+
+  useEffect(() => {
+    const frame = window.requestAnimationFrame(() => {
+      try {
+        const stored = JSON.parse(localStorage.getItem("feiyun_next_shortlist_v1") ?? "[]") as number[];
+        if (Array.isArray(stored)) setSavedIds(stored.filter(Number.isInteger));
+      } catch {
+        localStorage.removeItem("feiyun_next_shortlist_v1");
+      }
+      try {
+        const stored = JSON.parse(localStorage.getItem("feiyun_talent_history_v1") ?? "[]") as unknown;
+        if (Array.isArray(stored)) {
+          setHistory(stored.filter((value): value is string => typeof value === "string").slice(0, 5));
+        }
+      } catch {
+        localStorage.removeItem("feiyun_talent_history_v1");
+      }
+    });
+    return () => window.cancelAnimationFrame(frame);
+  }, []);
 
   const compared = useMemo(
     () => compareIds.map((id) => results.find((result) => result.id === id)).filter(Boolean) as TalentResult[],
@@ -80,26 +94,77 @@ export function TalentPrompt() {
     });
   }
 
-  async function submit(event: FormEvent) {
-    event.preventDefault();
-    if (!query.trim()) return;
+  function rememberSearch(value: string) {
+    setHistory((current) => {
+      const next = [value, ...current.filter((item) => item !== value)].slice(0, 5);
+      localStorage.setItem("feiyun_talent_history_v1", JSON.stringify(next));
+      return next;
+    });
+  }
+
+  async function searchTalent(value: string) {
+    const nextQuery = value.trim();
+    if (!nextQuery) return;
+    setQuery(nextQuery);
+    rememberSearch(nextQuery);
     setIsSearching(true);
     setShowResults(false);
+    setSearchNote("正在连接公开信号源");
     try {
-      const response = await fetch(`/api/talent?q=${encodeURIComponent(query)}`);
+      const response = await fetch(`/api/talent?q=${encodeURIComponent(nextQuery)}`);
       const data = (await response.json()) as { profiles?: TalentResult[] };
       if (response.ok && data.profiles?.length) {
         setResults(data.profiles.slice(0, 3));
+        setSearchNote(`${data.profiles.length} 位候选人通过初步验证`);
       } else {
         setResults(fallbackResults);
+        setSearchNote("已载入演示人才网络结果");
       }
     } catch {
       setResults(fallbackResults);
+      setSearchNote("网络暂不可用，已载入本地验证样本");
     } finally {
-      await new Promise((resolve) => window.setTimeout(resolve, 520));
+      await new Promise((resolve) => window.setTimeout(resolve, 360));
       setIsSearching(false);
       setShowResults(true);
     }
+  }
+
+  function submit(event: FormEvent) {
+    event.preventDefault();
+    void searchTalent(query);
+  }
+
+  function clearHistory() {
+    setHistory([]);
+    localStorage.removeItem("feiyun_talent_history_v1");
+  }
+
+  function exportShortlist() {
+    const shortlist = results.filter((result) => savedIds.includes(result.id));
+    if (!shortlist.length) return;
+    const escape = (value: string | number) => {
+      const raw = String(value);
+      const safe = /^[=+\-@]/.test(raw) ? `'${raw}` : raw;
+      return `"${safe.replaceAll('"', '""')}"`;
+    };
+    const csv = `\uFEFF${[
+      ["姓名", "方向", "匹配度", "证据数", "来源数"],
+      ...shortlist.map((result) => [
+        result.name,
+        result.title,
+        `${result.matchScore}%`,
+        result.evidenceCount,
+        result.sourceCount,
+      ]),
+    ].map((row) => row.map(escape).join(",")).join("\n")}`;
+    const url = URL.createObjectURL(new Blob([csv], { type: "text/csv;charset=utf-8" }));
+    const anchor = document.createElement("a");
+    anchor.href = url;
+    anchor.download = "feiyun-talent-shortlist.csv";
+    anchor.click();
+    URL.revokeObjectURL(url);
+    setSearchNote(`已导出 ${shortlist.length} 位收藏人才`);
   }
 
   return (
@@ -134,6 +199,20 @@ export function TalentPrompt() {
         ))}
       </div>
 
+      {history.length > 0 && (
+        <div className="prompt-history">
+          <span>最近研究</span>
+          <div>
+            {history.map((item) => (
+              <button key={item} type="button" onClick={() => void searchTalent(item)} disabled={isSearching}>
+                {item}
+              </button>
+            ))}
+          </div>
+          <button type="button" onClick={clearHistory}>清除</button>
+        </div>
+      )}
+
       {(isSearching || showResults) && (
         <div className={`prompt-results ${isSearching ? "is-searching" : ""}`}>
           {isSearching ? (
@@ -144,8 +223,23 @@ export function TalentPrompt() {
           ) : (
             <>
               <div className="results-head">
-                <span>为你找到的高相关人才</span>
-                <span>{savedIds.length} 位已收藏 · 选择 2 位进行对比</span>
+                <div>
+                  <span>为你找到的高相关人才</span>
+                  <small>{searchNote}</small>
+                </div>
+                <div className="results-operations">
+                  <span>{savedIds.length} 位已收藏 · 选择 2 位进行对比</span>
+                  <button
+                    type="button"
+                    onClick={exportShortlist}
+                    disabled={!results.some((result) => savedIds.includes(result.id))}
+                  >
+                    导出当前收藏 ↓
+                  </button>
+                  {compareIds.length > 0 && (
+                    <button type="button" onClick={() => setCompareIds([])}>清除对比</button>
+                  )}
+                </div>
               </div>
               {results.map((result) => (
                 <article key={result.id} className="mini-result">
