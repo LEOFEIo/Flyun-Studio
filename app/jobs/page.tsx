@@ -12,10 +12,7 @@ export const metadata: Metadata = {
 };
 
 export default async function JobsPage() {
-  const [user, rows] = await Promise.all([
-    getChatGPTUser(),
-    getPublicJobs(),
-  ]);
+  const [user, rows] = await Promise.all([getChatGPTUser(), getPublicJobs()]);
 
   const explorerJobs = rows.map((job) => ({
     id: job.id,
@@ -31,7 +28,7 @@ export default async function JobsPage() {
   }));
 
   return (
-    <main className="product-page">
+    <main className="ios-app product-page ios-jobs">
       <ProductHeader user={user} active="jobs" />
       <section className="jobs-hero">
         <p className="section-kicker">Curated opportunities</p>

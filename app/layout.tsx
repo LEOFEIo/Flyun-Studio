@@ -1,8 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
-import "./linear-layout.css";
-import "./dinq-theme.css";
-import "./spacex-theme.css";
+import "./ios-theme.css";
+import "./ios-secondary.css";
 import { ThemeToggle } from "./components/theme-toggle";
 
 const deploymentUrl =
@@ -59,11 +58,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="zh-CN" data-theme="dark" data-lang="zh" suppressHydrationWarning>
+    <html lang="zh-CN" data-theme="light" data-lang="zh" suppressHydrationWarning>
       <head>
         <script
           dangerouslySetInnerHTML={{
-            __html: `(function(){try{var s=localStorage.getItem('feiyun-theme');var t=s==='light'||s==='dark'?s:'dark';var l=localStorage.getItem('feiyun-language');document.documentElement.dataset.theme=t;document.documentElement.dataset.lang=l==='en'?'en':'zh';document.documentElement.lang=l==='en'?'en':'zh-CN';document.documentElement.style.colorScheme=t}catch(e){}})();`,
+            __html: `(function(){try{var s=localStorage.getItem('feiyun-theme');var t=s==='dark'?'dark':'light';var l=localStorage.getItem('feiyun-language');document.documentElement.dataset.theme=t;document.documentElement.dataset.lang=l==='en'?'en':'zh';document.documentElement.lang=l==='en'?'en':'zh-CN';document.documentElement.style.colorScheme=t}catch(e){}})();`,
           }}
         />
       </head>
@@ -74,3 +73,4 @@ export default function RootLayout({
     </html>
   );
 }
+

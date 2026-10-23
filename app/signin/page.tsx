@@ -1,9 +1,8 @@
 import Link from "next/link";
+import { ProductHeader } from "../components/product-header";
+import { IosIcon } from "../components/ios-icon";
 import { redirect } from "next/navigation";
-import {
-  getChatGPTUser,
-  safeRelativeReturnPath,
-} from "../chatgpt-auth";
+import { getChatGPTUser, safeRelativeReturnPath } from "../chatgpt-auth";
 
 export const dynamic = "force-dynamic";
 
@@ -24,80 +23,72 @@ export default async function SignInPage({
   if (user) redirect(returnTo);
 
   return (
-    <main className="signin-page">
-      <section className="signin-panel">
-        <div className="signin-topline">
-          <Link className="ui-mark" href="/">
-            <span className="mark-symbol">拾</span>
-            <span>
-              飞云
-              <small>FEIYUN</small>
-            </span>
-          </Link>
-          <span className="status-chip">SECURE</span>
-        </div>
-
-        <div className="signin-copy">
-          <span className="ui-eyebrow">SECURE WORKSPACE</span>
-          <h1>进入你的<br />人才工作台。</h1>
-          <p>
-            候选人可查看申请进度；管理员使用用户名与密码进入招聘方后台。
+    <main className="ios-app ios-auth">
+      <ProductHeader />
+      <div className="ios-auth-shell">
+        <section className="ios-auth-paper">
+          <span className="ios-icon-tile blue">
+            <IosIcon name="shield" size={26} />
+          </span>
+          <span className="ios-overline">YOUR NEXT CONNECTION STARTS HERE</span>
+          <h1>欢迎回到飞云。</h1>
+          <p>登录工作台，让每一次连接都有进展。</p>
+          <form
+            action="/api/auth/signin"
+            method="post"
+            className="ios-auth-form"
+          >
+            <input type="hidden" name="returnTo" value={returnTo} />
+            <label>
+              姓名 <small>候选人填写</small>
+              <input
+                autoComplete="name"
+                name="displayName"
+                placeholder="你的姓名"
+              />
+            </label>
+            <label>
+              用户名或邮箱
+              <input
+                autoComplete="username"
+                name="email"
+                placeholder="候选人邮箱 / 管理员用户名"
+                required
+              />
+            </label>
+            <label>
+              密码 <small>已注册账号或管理员填写</small>
+              <input
+                autoComplete="current-password"
+                name="password"
+                placeholder="请输入密码"
+                type="password"
+              />
+            </label>
+            {params.error && (
+              <p className="ios-form-error" role="alert">
+                {errorMessages[params.error] ?? "登录失败，请重试。"}
+              </p>
+            )}
+            <button className="ios-button" type="submit">
+              进入工作台 <IosIcon name="arrow" size={18} />
+            </button>
+          </form>
+          <p className="ios-auth-register">
+            第一次来到飞云？
+            <Link href={`/register?return_to=${encodeURIComponent(returnTo)}`}>
+              创建账号
+            </Link>
           </p>
-        </div>
-
-        <form action="/api/auth/signin" method="post" className="signin-form">
-          <input type="hidden" name="returnTo" value={returnTo} />
-          <label>
-            <span>姓名 <small>候选人必填</small></span>
-            <input
-              autoComplete="name"
-              name="displayName"
-              placeholder="你的姓名"
-            />
-          </label>
-          <label>
-            <span>用户名或邮箱</span>
-            <input
-              autoComplete="username"
-              name="email"
-              placeholder="候选人邮箱 / 管理员用户名"
-              type="text"
-              required
-            />
-          </label>
-          <label>
-            <span>密码 <small>已注册账号或管理员填写</small></span>
-            <input
-              autoComplete="current-password"
-              name="password"
-              placeholder="••••••••"
-              type="password"
-            />
-          </label>
-          {params.error ? (
-            <p className="signin-error">
-              {errorMessages[params.error] ?? "登录失败，请重试。"}
-            </p>
-          ) : null}
-          <button className="primary-button" type="submit">
-            进入工作台 ↗
-          </button>
-        </form>
-
-        <p className="signin-note">
-          还没有公开主页？ <Link href={`/register?return_to=${encodeURIComponent(returnTo)}`}>注册账号</Link><br />
-          演示管理员：用户名 admin。生产部署请通过环境变量更换账号和密码。
-        </p>
-      </section>
-      <aside className="signin-visual" aria-hidden="true">
-        <span>FEIYUN / AUTH</span>
-        <div className="auth-orbit">
-          <i />
-          <i />
-          <i />
-        </div>
-        <p>Evidence first.<br />People always.</p>
-      </aside>
+          <div className="ios-auth-note">
+            <IosIcon name="shield" size={14} />
+            候选人查看个人申请，管理员进入招聘工作台。
+          </div>
+        </section>
+        <Link className="ios-text-link" href="/jobs">
+          先看看开放机会 <IosIcon name="chevron" size={15} />
+        </Link>
+      </div>
     </main>
   );
 }
