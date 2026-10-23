@@ -449,9 +449,7 @@ export function ThemeToggle() {
     const initialTheme: Theme =
       savedTheme === "light" || savedTheme === "dark"
         ? savedTheme
-        : window.matchMedia("(prefers-color-scheme: dark)").matches
-          ? "dark"
-          : "light";
+        : "light";
     const initialLanguage: Language = savedLanguage === "en" ? "en" : "zh";
     setDocumentTheme(initialTheme);
     setDocumentLanguage(initialLanguage);
@@ -530,3 +528,4 @@ export function ThemeToggle() {
     </div>
   );
 }
+

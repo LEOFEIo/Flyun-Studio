@@ -139,3 +139,23 @@ export const talentProfiles = pgTable("talent_profiles", {
   verified: boolean("verified").notNull().default(true),
   updatedAt: updatedAt(),
 });
+
+export const interviews = pgTable("interviews", {
+  id: text("id").primaryKey(),
+  requestId: text("request_id").notNull().unique(),
+  applicationId: integer("application_id").notNull().references(() => applications.id),
+  candidateName: text("candidate_name").notNull(),
+  candidateEmail: text("candidate_email").notNull(),
+  jobTitle: text("job_title").notNull(),
+  title: text("title").notNull(),
+  startsAt: timestamp("starts_at", { withTimezone: true, mode: "string" }).notNull(),
+  durationMinutes: integer("duration_minutes").notNull(),
+  location: text("location").notNull(),
+  message: text("message").notNull().default(""),
+  response: text("response").notNull().default("pending"),
+  deliveryStatus: text("delivery_status").notNull().default("pending"),
+  deliveryError: text("delivery_error").notNull().default(""),
+  createdAt: createdAt(),
+  updatedAt: updatedAt(),
+});
+

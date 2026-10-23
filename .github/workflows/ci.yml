@@ -34,3 +34,7 @@ jobs:
 
       - name: Build
         run: npm run build
+
+      - name: Interview workflow tests
+        run: npm test
+

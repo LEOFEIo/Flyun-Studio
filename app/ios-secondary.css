@@ -1,0 +1,441 @@
+/* Job discovery and account entry use the same iOS interface tokens. */
+html[data-theme] .ios-jobs .jobs-hero {
+  padding: 65px 32px 48px;
+  max-width: 1160px;
+  margin: auto;
+}
+html[data-theme] .ios-jobs .jobs-hero h1 {
+  font-size: 46px;
+  line-height: 1.3;
+  font-weight: 650;
+  letter-spacing: -0.045em;
+  margin: 16px 0 20px;
+}
+html[data-theme] .ios-jobs .jobs-hero p:first-child {
+  font-size: 10px;
+  letter-spacing: 0.13em;
+  color: var(--ios-muted);
+}
+html[data-theme] .ios-jobs .jobs-hero p:last-child {
+  font-size: 14px;
+  line-height: 1.9;
+  color: var(--ios-muted);
+  max-width: 600px;
+}
+.ios-jobs .job-explorer {
+  display: grid;
+  grid-template-columns: 210px minmax(0, 1fr);
+  gap: 28px;
+  max-width: 1160px;
+  margin: 0 auto;
+  padding: 0 32px 90px;
+}
+.ios-jobs .job-explorer-filter {
+  border: 1px solid var(--ios-line);
+  border-radius: 17px;
+  padding: 23px 16px;
+  align-self: start;
+  background: var(--ios-card);
+}
+.ios-jobs .mission-eyebrow {
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  color: var(--ios-muted);
+}
+.ios-jobs .job-explorer-filter h2 {
+  font-size: 18px;
+  margin: 9px 8px 20px;
+}
+.ios-jobs .job-domain-filters {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.ios-jobs .job-domain-filters button,
+.ios-jobs .favorite-filter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  border: 0;
+  background: transparent;
+  padding: 12px 10px;
+  min-height: 44px;
+  font-size: 12px;
+  color: var(--ios-muted);
+  border-radius: 9px;
+  text-align: left;
+}
+.ios-jobs .job-domain-filters button[aria-pressed="true"],
+.ios-jobs .favorite-filter[aria-pressed="true"] {
+  background: var(--ios-blue-soft);
+  color: var(--ios-blue);
+}
+.ios-jobs .job-domain-filters b,
+.ios-jobs .favorite-filter b {
+  font-weight: 500;
+  font-size: 10px;
+}
+.ios-jobs .favorite-filter {
+  width: 100%;
+  margin-top: 20px;
+  border-top: 1px solid var(--ios-line);
+  padding-top: 20px;
+  border-radius: 0;
+}
+.ios-jobs .job-explorer-main {
+  min-width: 0;
+}
+.ios-jobs .job-explorer-toolbar {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 130px 130px;
+  gap: 12px;
+  border: 1px solid var(--ios-line);
+  border-radius: 15px;
+  background: var(--ios-card);
+  padding: 18px;
+}
+.ios-jobs .job-explorer-toolbar label {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 11px;
+  color: var(--ios-muted);
+}
+.ios-jobs .job-explorer-toolbar :is(input, select) {
+  border: 1px solid var(--ios-line);
+  border-radius: 9px;
+  background: var(--ios-bg);
+  font-size: 12px;
+  color: var(--ios-ink);
+  padding: 10px;
+  min-height: 44px;
+  width: 100%;
+  min-width: 0;
+}
+.ios-jobs .job-results-meta {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 14px 5px;
+  color: var(--ios-muted);
+  font-size: 11px;
+}
+.ios-jobs .job-results-meta b {
+  color: var(--ios-ink);
+  font-weight: 600;
+}
+.ios-jobs .job-results-meta button {
+  margin-left: auto;
+  color: var(--ios-blue);
+  min-height: 44px;
+  font-size: 11px;
+  background: transparent;
+  border: 0;
+}
+.ios-jobs .job-explorer-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding: 0;
+}
+html[data-theme] .ios-jobs .job-explorer-card {
+  display: grid;
+  grid-template-columns: 20px minmax(0, 1fr) 125px;
+  gap: 18px;
+  padding: 26px;
+  min-height: 180px;
+  background: var(--ios-card);
+  border: 1px solid var(--ios-line);
+  border-radius: 17px;
+  box-shadow: 0 2px 6px #00000002;
+}
+.ios-jobs .job-index {
+  font-size: 10px;
+  color: var(--ios-muted);
+  padding-top: 4px;
+}
+.ios-jobs .job-card-body {
+  min-width: 0;
+}
+.ios-jobs .job-tags {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+}
+.ios-jobs .job-tags span {
+  background: var(--ios-bg);
+  color: var(--ios-muted);
+  font-size: 9px;
+  font-weight: 500;
+  border-radius: 6px;
+  padding: 4px 7px;
+}
+html[data-theme] .ios-jobs .job-card h2 {
+  font-size: 19px;
+  line-height: 1.5;
+  margin: 14px 0 9px;
+  font-weight: 600;
+}
+.ios-jobs .job-card-body > p {
+  font-size: 12px;
+  line-height: 1.8;
+  color: var(--ios-muted);
+}
+.ios-jobs .job-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  font-size: 10px;
+  gap: 8px;
+}
+.ios-jobs .job-meta > span {
+  color: var(--ios-muted);
+  text-align: right;
+  line-height: 1.8;
+}
+.ios-jobs .job-meta > strong {
+  font-size: 13px;
+  color: var(--ios-blue);
+  font-weight: 500;
+}
+.ios-jobs .job-save-button {
+  border: 1px solid var(--ios-line);
+  background: var(--ios-card);
+  color: var(--ios-muted);
+  min-height: 40px;
+  border-radius: 8px;
+  font-size: 11px;
+  padding: 8px 12px;
+  margin-top: auto;
+}
+.ios-jobs .job-save-button[aria-pressed="true"] {
+  color: var(--ios-blue);
+  background: var(--ios-blue-soft);
+}
+.ios-jobs .job-open-link {
+  min-height: 40px;
+  display: flex;
+  align-items: center;
+  color: var(--ios-blue);
+  font-size: 11px;
+}
+.ios-jobs .job-empty-state {
+  padding: 50px 24px;
+  border: 1px solid var(--ios-line);
+  border-radius: 18px;
+  background: var(--ios-card);
+  text-align: center;
+}
+.ios-jobs .job-empty-state h2 {
+  font-size: 23px;
+  margin: 15px 0;
+}
+.ios-jobs .job-empty-state p {
+  font-size: 13px;
+  color: var(--ios-muted);
+}
+.ios-jobs .job-empty-state button {
+  font-size: 12px;
+  color: var(--ios-blue);
+  border: 0;
+  background: transparent;
+  min-height: 44px;
+  margin-top: 20px;
+}
+.ios-auth-shell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 60px 20px 70px;
+  gap: 24px;
+}
+.ios-auth-paper {
+  max-width: 460px;
+  width: 100%;
+  border: 1px solid var(--ios-line);
+  border-radius: 24px;
+  background: var(--ios-card);
+  box-shadow: var(--ios-shadow);
+  padding: 36px;
+}
+.ios-auth-paper > .ios-icon-tile {
+  width: 50px;
+  height: 50px;
+  border-radius: 15px;
+  margin-bottom: 25px;
+}
+.ios-auth-paper .ios-overline {
+  font-size: 8px;
+}
+.ios-auth-paper h1 {
+  font-size: 30px;
+  font-weight: 650;
+  margin: 12px 0;
+}
+.ios-auth-paper > p {
+  font-size: 12px;
+  color: var(--ios-muted);
+  line-height: 1.8;
+}
+.ios-auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin: 29px 0;
+}
+.ios-auth-form label {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 9px;
+  font-size: 12px;
+  font-weight: 500;
+}
+.ios-auth-form label small {
+  margin-left: auto;
+  color: var(--ios-muted);
+  font-size: 10px;
+  font-weight: 400;
+}
+.ios-auth-form input {
+  width: 100%;
+  min-height: 48px;
+  border: 1px solid var(--ios-line);
+  border-radius: 11px;
+  background: var(--ios-bg);
+  color: var(--ios-ink);
+  padding: 12px;
+  font-size: 14px;
+}
+.ios-auth-form > .ios-button {
+  width: 100%;
+  margin-top: 3px;
+}
+.ios-auth-paper .ios-auth-register {
+  text-align: center;
+  font-size: 12px;
+}
+.ios-auth-register a {
+  color: var(--ios-blue);
+  margin-left: 5px;
+}
+.ios-auth-note {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 26px;
+  padding-top: 20px;
+  border-top: 1px solid var(--ios-line);
+  font-size: 10px;
+  color: var(--ios-muted);
+  line-height: 1.8;
+}
+@media (max-width: 1000px) {
+  .ios-jobs .job-explorer {
+    grid-template-columns: 175px minmax(0, 1fr);
+    gap: 20px;
+  }
+  .ios-jobs .job-explorer-toolbar {
+    grid-template-columns: 1fr 1fr;
+  }
+  .ios-jobs .job-search-field {
+    grid-column: 1/-1;
+  }
+  html[data-theme] .ios-jobs .job-explorer-card {
+    grid-template-columns: minmax(0, 1fr) 110px;
+    gap: 15px;
+    padding: 22px;
+  }
+  .ios-jobs .job-index {
+    display: none;
+  }
+  .ios-jobs .job-results-meta > span:nth-child(2) {
+    display: none;
+  }
+}
+@media (max-width: 760px) {
+  html[data-theme] .ios-jobs .jobs-hero {
+    padding: 38px 22px 32px;
+  }
+  html[data-theme] .ios-jobs .jobs-hero h1 {
+    font-size: 33px;
+  }
+  html[data-theme] .ios-jobs .jobs-hero p:last-child {
+    font-size: 13px;
+  }
+  .ios-jobs .job-explorer {
+    display: block;
+    padding: 0 16px 70px;
+  }
+  .ios-jobs .job-explorer-filter {
+    margin-bottom: 20px;
+    padding: 18px 14px;
+  }
+  .ios-jobs .job-explorer-filter h2 {
+    font-size: 15px;
+    margin: 0 6px 13px;
+  }
+  .ios-jobs .mission-eyebrow {
+    display: none;
+  }
+  .ios-jobs .job-domain-filters {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 5px;
+  }
+  .ios-jobs .job-domain-filters button {
+    font-size: 11px;
+    padding: 10px;
+    min-height: 44px;
+    background: var(--ios-bg);
+  }
+  .ios-jobs .favorite-filter {
+    font-size: 12px;
+    margin-top: 10px;
+    padding: 10px;
+  }
+  .ios-jobs .job-explorer-toolbar {
+    padding: 16px;
+  }
+  .ios-jobs .job-explorer-toolbar :is(input, select) {
+    font-size: 16px;
+  }
+  html[data-theme] .ios-jobs .job-explorer-card {
+    grid-template-columns: 1fr;
+    padding: 22px;
+  }
+  .ios-jobs .job-meta {
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .ios-jobs .job-meta > span {
+    font-size: 11px;
+    margin-right: auto;
+  }
+  .ios-jobs .job-meta > strong {
+    font-size: 13px;
+  }
+  .ios-jobs .job-meta .job-save-button {
+    margin: 0;
+    min-height: 44px;
+  }
+  .ios-jobs .job-meta .job-open-link {
+    min-height: 44px;
+  }
+  .ios-auth-shell {
+    padding: 32px 16px 70px;
+  }
+  .ios-auth-paper {
+    padding: 28px 24px;
+    border-radius: 20px;
+  }
+  .ios-auth-paper h1 {
+    font-size: 27px;
+  }
+  .ios-auth-form input {
+    font-size: 16px;
+  }
+}
