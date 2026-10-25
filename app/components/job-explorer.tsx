@@ -28,6 +28,8 @@ export function JobExplorer({ jobs }: { jobs: JobExplorerItem[] }) {
   const [sort, setSort] = useState<SortMode>("latest");
   const [favoriteOnly, setFavoriteOnly] = useState(false);
   const [favorites, setFavorites] = useState<string[]>([]);
+  const [favoriteReady, setFavoriteReady] = useState(false);
+  const [shareStatus, setShareStatus] = useState("");
 
   useEffect(() => {
     const frame = window.requestAnimationFrame(() => {
@@ -45,6 +47,16 @@ export function JobExplorer({ jobs }: { jobs: JobExplorerItem[] }) {
       } catch {
         localStorage.removeItem(favoritesKey);
       }
+      const params = new URLSearchParams(window.location.search);
+      const nextDomain = params.get("domain");
+      const nextMode = params.get("mode");
+      const nextSort = params.get("sort");
+      setQuery(params.get("q") ?? "");
+      if (nextDomain && jobs.some((job) => job.domain === nextDomain)) setDomain(nextDomain);
+      if (nextMode === "remote" || nextMode === "onsite") setWorkMode(nextMode);
+      if (nextSort === "title") setSort(nextSort);
+      setFavoriteOnly(params.get("saved") === "1");
+      setFavoriteReady(true);
     });
     return () => window.cancelAnimationFrame(frame);
   }, [jobs]);
@@ -89,14 +101,34 @@ export function JobExplorer({ jobs }: { jobs: JobExplorerItem[] }) {
       );
   }, [domain, favoriteOnly, favorites, jobs, query, sort, workMode]);
 
+  useEffect(() => {
+    if (!favoriteReady) return;
+    localStorage.setItem(favoritesKey, JSON.stringify(favorites));
+  }, [favoriteReady, favorites]);
+
   function toggleFavorite(slug: string) {
-    setFavorites((current) => {
-      const next = current.includes(slug)
+    setFavorites((current) =>
+      current.includes(slug)
         ? current.filter((item) => item !== slug)
-        : [...current, slug];
-      localStorage.setItem(favoritesKey, JSON.stringify(next));
-      return next;
-    });
+        : [...current, slug],
+    );
+  }
+
+  async function shareFilters() {
+    const url = new URL(window.location.href);
+    const params = url.searchParams;
+    ["q", "domain", "mode", "sort", "saved"].forEach((key) => params.delete(key));
+    if (query.trim()) params.set("q", query.trim());
+    if (domain !== "全部机会") params.set("domain", domain);
+    if (workMode !== "all") params.set("mode", workMode);
+    if (sort !== "latest") params.set("sort", sort);
+    if (favoriteOnly) params.set("saved", "1");
+    try {
+      await navigator.clipboard.writeText(url.toString());
+      setShareStatus(favoriteOnly ? "链接已复制；收藏仅在本设备有效" : "筛选链接已复制");
+    } catch {
+      setShareStatus("复制失败，请检查浏览器剪贴板权限");
+    }
   }
 
   function clearFilters() {
@@ -105,6 +137,10 @@ export function JobExplorer({ jobs }: { jobs: JobExplorerItem[] }) {
     setWorkMode("all");
     setSort("latest");
     setFavoriteOnly(false);
+    setShareStatus("");
+    const url = new URL(window.location.href);
+    ["q", "domain", "mode", "sort", "saved"].forEach((key) => url.searchParams.delete(key));
+    window.history.replaceState(window.history.state, "", url);
   }
 
   return (
@@ -166,10 +202,12 @@ export function JobExplorer({ jobs }: { jobs: JobExplorerItem[] }) {
 
         <div className="job-results-meta" aria-live="polite">
           <span><b>{String(visibleJobs.length).padStart(2, "0")}</b> 个匹配机会</span>
-          <span>{domain} · {favoriteOnly ? "已收藏任务" : "全部任务"}</span>
+          <span>{domain} · {favoriteOnly ? "已收藏职位" : "全部职位"}</span>
+          <button type="button" onClick={shareFilters}>复制筛选链接</button>
           <button type="button" onClick={clearFilters}>清除筛选</button>
         </div>
 
+        <p className="job-share-status" role="status">{shareStatus}</p>
         <div className="jobs-list job-explorer-list">
           {visibleJobs.map((job, index) => {
             const saved = favorites.includes(job.slug);
@@ -197,7 +235,7 @@ export function JobExplorer({ jobs }: { jobs: JobExplorerItem[] }) {
                     {saved ? "已收藏" : "收藏职位"}
                   </button>
                   <Link className="job-open-link" href={`/jobs/${job.slug}`} aria-label={`查看 ${job.title}`}>
-                    查看任务 ↗
+                    查看职位 ↗
                   </Link>
                 </div>
               </article>
@@ -208,7 +246,7 @@ export function JobExplorer({ jobs }: { jobs: JobExplorerItem[] }) {
               <span className="mission-eyebrow">NO MATCH / 00</span>
               <h2>没有符合条件的机会</h2>
               <p>试试更宽的研究方向，或清除当前筛选。</p>
-              <button type="button" onClick={clearFilters}>重置职位雷达</button>
+              <button type="button" onClick={clearFilters}>清除筛选</button>
             </div>
           )}
         </div>
