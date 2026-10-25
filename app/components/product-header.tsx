@@ -61,12 +61,17 @@ export function ProductHeader({
       </div>
       <details className="ios-mobile-menu">
         <summary aria-label="展开导航">菜单</summary>
-        <nav>
+        <nav aria-label="手机导航">
           {links.map(([key, href, label]) => (
-            <Link key={key} href={href}>
+            <Link key={key} href={href} aria-current={active === key ? "page" : undefined}>
               {label}
             </Link>
           ))}
+          {user ? (
+            <a href={chatGPTSignOutPath("/")}>退出登录</a>
+          ) : (
+            <Link href={chatGPTSignInPath("/recruiter")}>登录 / 开始使用</Link>
+          )}
         </nav>
       </details>
     </header>
